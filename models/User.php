@@ -24,6 +24,22 @@ class User {
     private $email;
     private UserRole $userRole;
     
+    public function __construct() {
+        $this->userId = null;
+        $this->username = null;
+        $this->password = null;
+        $this->email = null;
+        $this->userRole = null;
+    }
+    
+    public function initWith($userId, $username, $password, $email, UserRole $userRole) {
+        $this->userId = $userId;
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = $email;
+        $this->userRole = $userRole;
+    }
+    
     public function getUserId() {
         return $this->userId;
     }

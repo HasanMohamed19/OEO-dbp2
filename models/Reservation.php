@@ -13,8 +13,56 @@
 class Reservation {
     
     private $reservationId;
-    private Hall $hall;
-    private Client $client;
-    private Event $event;
+    private $hallId;
+    private $clientId;
+    private $eventId;
     
+    public function initWith($reservationId, $hallId, $clientId, $eventId) {
+        $this->reservationId = $reservationId;
+        $this->hallId = $hallId;
+        $this->clientId = $clientId;
+        $this->eventId = $eventId;
+    }
+
+    public function __construct($reservationId, $hallId, $clientId, $eventId) {
+        $this->reservationId = null;
+        $this->hallId = null;
+        $this->clientId = null;
+        $this->eventId = null;
+    }
+    
+    public function getReservationId() {
+        return $this->reservationId;
+    }
+
+    public function getHallId() {
+        return $this->hallId;
+    }
+
+    public function getClientId() {
+        return $this->clientId;
+    }
+
+    public function getEventId() {
+        return $this->eventId;
+    }
+
+    public function setReservationId($reservationId) {
+        $this->reservationId = $reservationId;
+    }
+
+    public function setHallId($hallId) {
+        $this->hallId = $hallId;
+    }
+
+    public function setClientId($clientId) {
+        $this->clientId = $clientId;
+    }
+
+    public function setEventId($eventId) {
+        $this->eventId = $eventId;
+    }
+
+
+
 }

@@ -16,7 +16,23 @@ class Event {
     private $name;
     private $startDate;
     private $endDate;
-    private $audience;
+    private $audienceNumber;
+    
+    public function __construct() {
+        $this->eventId = null;
+        $this->name = null;
+        $this->startDate = null;
+        $this->endDate = null;
+        $this->audienceNumber = null;
+    }
+    
+    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber) {
+        $this->eventId = $eventId;
+        $this->name = $name;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->audienceNumber = $audience;
+    }
     
     public function getEventId() {
         return $this->eventId;
@@ -34,8 +50,8 @@ class Event {
         return $this->endDate;
     }
 
-    public function getAudience() {
-        return $this->audience;
+    public function getAudienceNumber() {
+        return $this->audienceNumber;
     }
 
     public function setEventId($eventId) {
@@ -54,8 +70,8 @@ class Event {
         $this->endDate = $endDate;
     }
 
-    public function setAudience($audience) {
-        $this->audience = $audience;
+    public function setAudienceNumber($audienceNumber) {
+        $this->audienceNumber = $audienceNumber;
     }
 
 

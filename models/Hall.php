@@ -19,6 +19,24 @@ class Hall {
     private $capacity;
     private $imagePath;
     
+    public function __construct($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
+        $this->hallId = $hallId;
+        $this->hallName = $hallName;
+        $this->description = $description;
+        $this->rentalCharge = $rentalCharge;
+        $this->capacity = $capacity;
+        $this->imagePath = $imagePath;
+    }
+    
+    public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
+        $this->hallId = $hallId;
+        $this->hallName = $hallName;
+        $this->description = $description;
+        $this->rentalCharge = $rentalCharge;
+        $this->capacity = $capacity;
+        $this->imagePath = $imagePath;
+    }
+    
     public function getHallId() {
         return $this->hallId;
     }

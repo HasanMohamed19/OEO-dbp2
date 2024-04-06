@@ -25,6 +25,29 @@ class Client extends User {
     private $lastName;
     private $balance;
     private ClientStatus $clientStatus;
+    private $userId;
+    
+    public function __construct() {
+        $this->clientId = null;
+        $this->firstName = null;
+        $this->lastName = null;
+        $this->balance = null;
+        $this->clientStatus = null;
+        $this->userId = null;
+        parent::__construct();
+    }
+
+    
+    public function initClientWith($clientId, $firstName, $lastName, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+        $this->clientId = $clientId;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->balance = $balance;
+        $this->clientStatus = $clientStatus;
+        $this->userId = $userId;
+        parent::initWith($userId, $username, $password, $email, $userRole);
+    }
+
     
     public function getClientId() {
         return $this->clientId;
@@ -40,6 +63,10 @@ class Client extends User {
 
     public function getBalance() {
         return $this->balance;
+    }
+    
+    public function getUserId() {
+        return $this->clientId;
     }
 
     public function getClientStatus(): ClientStatus {
@@ -64,6 +91,10 @@ class Client extends User {
 
     public function setClientStatus(ClientStatus $clientStatus) {
         $this->clientStatus = $clientStatus;
+    }
+    
+    public function setUserId($userId) {
+        $this->userId = $userId;
     }
     
 }

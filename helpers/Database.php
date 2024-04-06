@@ -13,10 +13,10 @@
 class Database {
     
     // DB connection parameters
-    private $host = "";
-    private $dbName = "";
-    private $userName = "";
-    private $password = "";
+    private $host = "20.126.5.244";
+    private $dbName = "db02101277";
+    private $userName = "u202101277";
+    private $password = "u202101277";
     
     // singleton
     public static $instance = null;
@@ -29,7 +29,7 @@ class Database {
     }
     
     function connect() {
-        $this->dblink = mysqli_connect($this->host, $this->userName, $this->password, $this->password) or die("Can Not Connect!");
+        $this->dblink = mysqli_connect($this->host, $this->userName, $this->password, $this->dbName) or die("Can Not Connect!");
     }
     
     public function __destruct() {

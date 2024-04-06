@@ -10,6 +10,15 @@
  *
  * @author Hassan
  */
+
+// if required this can be changed to class as before
+enum CateringService: int {
+    case Breakfast = 1;
+    case Lunch = 2;
+    case HotBeverages = 3;
+    case ColdBeverages = 4;
+}
+
 class MenuItem {
     
     private $itemId;
@@ -17,6 +26,27 @@ class MenuItem {
     private $description;
     private $price;
     private $imagePath;
+    // service_id
+    private CateringService $cateringService;
+    
+    public function initWith($itemId, $name, $description, $price, $imagePath, CateringService $cateringService) {
+        $this->itemId = $itemId;
+        $this->name = $name;
+        $this->description = $description;
+        $this->price = $price;
+        $this->imagePath = $imagePath;
+        $this->cateringService = $cateringService;
+    }
+    
+    public function __construct() {
+        $this->itemId = null;
+        $this->name = null;
+        $this->description = null;
+        $this->price = null;
+        $this->imagePath = null;
+        $this->cateringService = null;
+    }
+
     
     public function getItemId() {
         return $this->itemId;
@@ -37,6 +67,10 @@ class MenuItem {
     public function getImagePath() {
         return $this->imagePath;
     }
+    
+    public function getCateringService(): CateringService {
+        return $this->cateringService;
+    }
 
     public function setItemId($itemId) {
         $this->itemId = $itemId;
@@ -56,6 +90,10 @@ class MenuItem {
 
     public function setImagePath($imagePath) {
         $this->imagePath = $imagePath;
+    }
+    
+    public function setCateringService(CateringService $cateringService) {
+        $this->cateringService = $cateringService;
     }
 
 }

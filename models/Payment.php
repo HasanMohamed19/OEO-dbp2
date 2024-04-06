@@ -14,7 +14,22 @@ class Payment {
     private $paymentId;
     private $amount;
     private $paymentDate;
+    private $invoiceId;
     
+    public function initWith($paymentId, $amount, $paymentDate, $invoiceId) {
+        $this->paymentId = $paymentId;
+        $this->amount = $amount;
+        $this->paymentDate = $paymentDate;
+        $this->invoiceId = $invoiceId;
+    }
+    
+    public function __construct($paymentId, $amount, $paymentDate, $invoiceId) {
+        $this->paymentId = null;
+        $this->amount = null;
+        $this->paymentDate = null;
+        $this->invoiceId = null;
+    }
+        
     public function getPaymentId() {
         return $this->paymentId;
     }
@@ -25,6 +40,10 @@ class Payment {
 
     public function getPaymentDate() {
         return $this->paymentDate;
+    }
+    
+    public function getInvoiceId() {
+        return $this->invoiceId;
     }
 
     public function setPaymentId($paymentId): void {
@@ -37,6 +56,10 @@ class Payment {
 
     public function setPaymentDate($paymentDate): void {
         $this->paymentDate = $paymentDate;
+    }
+    
+    public function setInvoiceId($invoiceId): void {
+        $this->invoiceId = $invoiceId;
     }
     
 }
