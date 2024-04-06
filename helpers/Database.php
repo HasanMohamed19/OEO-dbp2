@@ -14,7 +14,7 @@ class Database {
     
     // DB connection parameters
     private $host = "20.126.5.244";
-    private $dbName = "db02101277";
+    private $dbName = "db202101277";
     private $userName = "u202101277";
     private $password = "u202101277";
     
