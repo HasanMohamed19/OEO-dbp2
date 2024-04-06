@@ -29,3 +29,25 @@
 .footer {
     margin-top: auto;
 }
+
+
+/* Client Booking */
+
+.clientBookingContainer {
+    display: flex;
+}
+
+#bookingProgress li {
+    float: left;
+    margin-right: 4em;
+}
+
+.clientBookingSidebar {
+    min-width: 14em;
+    max-width: 20em;
+    flex: 2;
+}
+
+.clientBookingForm {
+    flex: 10;
+}

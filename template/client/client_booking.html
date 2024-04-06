@@ -1,0 +1,379 @@
+<div class="main">
+    <h1 class="m-4">Complete Your Booking</h1>
+    <div>
+        <!-- Progress Bar -->
+        <div class="d-flex flex-column mx-4">
+            <div class="clientBookingProgress d-flex justify-content-end">
+                <ol class="mb-0" id="bookingProgress">
+                    <li>Event Details</li>
+                    <li>Additional Services</li>
+                    <li>Personal/Company Details</li>
+                    <li>Checkout</li>
+                </ol>
+            </div>
+            <hr class="my-2">
+        </div>
+        
+        <div class="clientBookingContainer">
+            <!-- Sidebar Cards -->
+            <div class="clientBookingSidebar px-4">
+                <!-- Hall Info -->
+                <div class="row mb-4">
+                    <div class="card col p-0">
+                        <img class="card-img-top img-fluid" src="./images/hall_example1.jpg">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Hall Name</h3>
+                            <p class="card-text">
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                            </p>
+                            <div class="row">
+                                <div class="col text-secondary">Hall Type</div>
+                                <div class="col">Type</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Rental Charge</div>
+                                <div class="col">96.50 BHD/hr</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Capacity</div>
+                                <div class="col">60</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Event Info -->
+                <div class="row mb-4">
+                    <div class="card col p-0">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Event Details</h3>
+                            <div class="row">
+                                <div class="col text-secondary">Event Name</div>
+                                <div class="col">Name</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Start Date</div>
+                                <div class="col">7/5/2024</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">End Date</div>
+                                <div class="col">11/5/2024</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">No. Audiences</div>
+                                <div class="col">60</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Services Info -->
+                <div class="row mb-4">
+                    <div class="card col p-0">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Additional Services</h3>
+                            <div class="row">
+                                <div class="col text-secondary">Menu Choices</div>
+                                <div class="col">Breakfast, Hot Beverages</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Catering Cost</div>
+                                <div class="col">55.25 BHD</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Forms -->
+            <div class="clientBookingForm px-4">
+                <form>
+                    <!-- Event Details -->
+                    <fieldset>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Event Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>Number of Audiences</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>End Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Start Time</label>
+                                <input type="time" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>End Time</label>
+                                <input type="time" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Notes</label>
+                                <textarea class="form-control" placeholder="Type here"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <button class="btn btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Additional Services -->
+                    <fieldset>
+                        <div class="accordion mb-4" id="cateringBreakfast">
+                            <div class="accordion-item p-0">
+                                <h2 class="accordion-header">
+                                    <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseBreakfast" class="accordion-button cateringBar">
+                                        Breakfast
+                                    </button>
+                                </h2>
+                            </div>
+                            <div class="accordion-collapse collapse show form-check p-0" id="collapseBreakfast">
+                                <div class="accordion-body p-0">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-2">
+                                                    <input class="form-check-input ms-1" type="checkbox">
+                                                </div>
+                                                <div class="col-5">
+                                                    <label class="form-check-label">Menu Item</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <strong class="font-weight-bold">0.5 BHD</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <input class="form-control" type="number">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                        
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-2">
+                                                    <input class="form-check-input ms-1" type="checkbox">
+                                                </div>
+                                                <div class="col-5">
+                                                    <label class="form-check-label">Menu Item</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <strong class="font-weight-bold">0.5 BHD</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <input class="form-control" type="number">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion mb-4" id="cateringLunch">
+                            <div class="accordion-item p-0">
+                                <h2 class="accordion-header">
+                                    <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseLunch" class="accordion-button cateringBar">
+                                        Lunch
+                                    </button>
+                                </h2>
+                            </div>
+                            <div class="accordion-collapse collapse form-check p-0" id="collapseLunch">
+                                <div class="accordion-body p-0">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-2">
+                                                    <input class="form-check-input ms-1" type="checkbox">
+                                                </div>
+                                                <div class="col-5">
+                                                    <label class="form-check-label">Menu Item</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <strong class="font-weight-bold">0.5 BHD</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <input class="form-control" type="number">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                        
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <button class="btn btn-secondary me-4">Skip</button>
+                                <button class="btn btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Personal/Company Details -->
+                    <fieldset class="form-group">
+                        <div class="row mb-4">
+                            <div class="col form-check">
+                                <input type="checkbox" class="form-check-input m-2">
+                                <h3><label class="form-check-label">Personal Details</label></h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4" id="clientPersonalDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalFName">First Name</label>
+                                    <input class="form-control" type="text" id="clientPersonalFName">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalLName">Last Name</label>
+                                    <input class="form-control" type="text" id="clientPersonalLName">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalEmail">Email</label>
+                                    <input class="form-control" type="text" id="clientPersonalEmail">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalAddress">Address</label>
+                                    <input class="form-control" type="text" id="clientPersonalAddress">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row mb-4">
+                            <div class="col form-check">
+                                <input type="checkbox" class="form-check-input m-2">
+                                <h3><label class="form-check-label">Company Details</label></h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4" id="clientCompanyDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanyName">Company Name</label>
+                                    <input class="form-control" type="text" id="clientCompanyName">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanySize">Company Size</label>
+                                    <input class="form-control" type="text" id="clientCompanySize">
+                                </div>
+                            </div>
+<!--                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanyAddress">Address</label>
+                                    <input class="form-control" type="text"  id="clientCompanyAddress">
+                                </div>
+                            </div>-->
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <button class="btn btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Checkout -->
+                    <fieldset class="form-group">
+                        <div class="row mb-4">
+                            <div class="col">
+                                <h3>Billing Address</h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
+                                    <input class="form-control" type="text" id="paymentBillingBuilding">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
+                                    <input class="form-control" type="text" id="paymentBillingStreet">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingBlock">Block</label>
+                                    <input class="form-control" type="text" id="paymentBillingBlock">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingArea">Area</label>
+                                    <input class="form-control" type="text" id="paymentBillingArea">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingCountry">Country</label>
+                                    <input class="form-control" type="text" id="paymentBillingCountry">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentBillingPhone">Phone Number</label>
+                                    <input class="form-control" type="text" id="paymentBillingPhone">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row mb-4">
+                            <div class="col">
+                                <h3>Payment Details</h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4" id="clientCompanyDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardNumber">Card Number</label>
+                                    <input class="form-control" type="text" id="paymentCardNumber">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardCVV">CVV</label>
+                                    <input class="form-control" type="text" id="paymentCardCVV">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
+                                    <select class="form-select" id="paymentCardExpiryYear">
+                                        <option selected>Year</option>
+                                        <option value="1">1</option>
+                                        <!-- Programmatically create values 1-12 -->
+                                    </select>
+                                </div>
+                                <div class="col d-flex align-items-end">
+                                    <select class="form-select" id="paymentCardExpiryMonth">
+                                        <option selected>Month</option>
+                                        <option value="1">1</option>
+                                        <!-- Programmatically create values 1-31 -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <button class="btn btn-primary">Complete Booking</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
