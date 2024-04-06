@@ -14,14 +14,12 @@ class CompanyDetails {
     
     private $comapnyId;
     private $name;
-    private $address;
     private $comapnySize;
     private $clientId;
     
-    public function initWith($comapnyId, $name, $address, $comapnySize, $clientId) {
+    public function initWith($comapnyId, $name, $comapnySize, $clientId) {
         $this->comapnyId = $comapnyId;
         $this->name = $name;
-        $this->address = $address;
         $this->comapnySize = $comapnySize;
         $this->clientId = $clientId;
     }
@@ -29,7 +27,6 @@ class CompanyDetails {
     public function __construct() {
         $this->comapnyId = null;
         $this->name = null;
-        $this->address = null;
         $this->comapnySize = null;
         $this->clientId = null;
     }
@@ -40,10 +37,6 @@ class CompanyDetails {
 
     public function getName() {
         return $this->name;
-    }
-
-    public function getAddress() {
-        return $this->address;
     }
 
     public function getComapnySize() {
@@ -60,10 +53,6 @@ class CompanyDetails {
 
     public function setName($name) {
         $this->name = $name;
-    }
-
-    public function setAddress($address) {
-        $this->address = $address;
     }
 
     public function setComapnySize($comapnySize) {
