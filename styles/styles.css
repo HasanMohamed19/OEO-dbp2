@@ -1,0 +1,31 @@
+:root {
+    --primary: #2261AB;
+    --primary-400: #518FCC;
+    --success: #25991B;
+    --text: #272525;
+    --danger: #FF3B30; /* error */
+    --warning: #FFB600;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+}
+
+/* minimum height on the container to ensure footer is always at the bottom */
+/* temporary code */
+.main {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    background-color: turquoise;
+    height: 50px;
+}
+.logo {
+    height: auto;
+}
+
+.footer {
+    margin-top: auto;
+}
