@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4  mb-3 mt-3">
+                <button type="button" class="btn btn-primary">+ New Hall</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i>Search</i>
+                    </button>
+                </div>
+                <div class="card rounded mb-2">
+                    <div class="card-body admin-form-card">
+                        <span class="admin-form-card-title">Hall Number 1</span>
+                        <span class="admin-form-card-subtitle">Type</span> 
+                    </div>
+                </div>
+                <div class="card rounded mb-2">
+                    <div class="card-body admin-form-card">
+                        <span class="admin-form-card-title">Hall Number 1</span>
+                        <span class="admin-form-card-subtitle">Type</span> 
+                    </div>
+                </div>
+                <div class="card rounded mb-2">
+                    <div class="card-body admin-form-card">
+                        <span class="admin-form-card-title">Hall Number 1</span>
+                        <span class="admin-form-card-subtitle">Type</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8">
+                <form action="/ManageHalls.php">
+                    <div class="mb-3 d-flex justify-content-center">
+                        <img class="img-fluid" src="./images/upload-image.png" alt="New York" style="max-height: 300;">
+                    </div> 
+                    <div class="mb-3">
+                        <label for="HallName" class="form-label">Hall Name</label>
+                        <input type="text" class="form-control" id="HallName" placeholder="Enter Hall Name" name="HallName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="RntlCharge" class="form-label">Rental Charge</label>
+                        <input type="number" class="form-control" id="RntlCharge" placeholder="Enter Rental Charge" name="RntlCharge">
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Hall Capacity</label>
+                        <input type="number" class="form-control" id="capacity" placeholder="Enter Hall's Capacity" name="capacity">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">Hall Description</label>
+                        <textarea class="form-control" rows="5" id="description" placeholder="Enter Hall's Description" name="description" ></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col text-start">
+                            <button class="btn btn-danger">Delete</button>
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+

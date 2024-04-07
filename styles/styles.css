@@ -29,3 +29,19 @@
 .footer {
     margin-top: auto;
 }
+
+.admin-form-card {
+    background-color: #F7F7F7; /* Custom background color */
+    padding: 5px 20px;
+}
+.admin-form-card-title{
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0.25rem;
+}
+.admin-form-card-subtitle{
+    font-size: 10px;
+    color: #8D8D8D;
+    display: block;
+}
