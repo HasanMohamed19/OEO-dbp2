@@ -21,16 +21,16 @@ enum ClientStatus: int {
 class Client extends User {
     
     private $clientId;
-    private $firstName;
-    private $lastName;
+//    private $firstName;
+//    private $lastName;
     private $balance;
     private ClientStatus $clientStatus;
     private $userId;
     
     public function __construct() {
         $this->clientId = null;
-        $this->firstName = null;
-        $this->lastName = null;
+//        $this->firstName = null;
+//        $this->lastName = null;
         $this->balance = null;
         $this->clientStatus = null;
         $this->userId = null;
@@ -38,10 +38,8 @@ class Client extends User {
     }
 
     
-    public function initClientWith($clientId, $firstName, $lastName, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
         $this->clientId = $clientId;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
         $this->balance = $balance;
         $this->clientStatus = $clientStatus;
         $this->userId = $userId;
@@ -51,14 +49,6 @@ class Client extends User {
     
     public function getClientId() {
         return $this->clientId;
-    }
-
-    public function getFirstName() {
-        return $this->firstName;
-    }
-
-    public function getLastName() {
-        return $this->lastName;
     }
 
     public function getBalance() {
@@ -75,14 +65,6 @@ class Client extends User {
 
     public function setClientId($clientId) {
         $this->clientId = $clientId;
-    }
-
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
-    }
-
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
     }
 
     public function setBalance($balance) {
