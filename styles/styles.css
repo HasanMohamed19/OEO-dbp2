@@ -30,6 +30,7 @@
     margin-top: auto;
 }
 
+/* Admin Form with list Temp */
 .admin-form-card {
     background-color: #F7F7F7; /* Custom background color */
     padding: 5px 20px;
@@ -45,3 +46,7 @@
     color: #8D8D8D;
     display: block;
 }
+
+/* Admin View Halls */
+
+
