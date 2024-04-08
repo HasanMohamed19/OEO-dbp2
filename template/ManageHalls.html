@@ -3,72 +3,139 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
+<body>
     <div class="container">
         <div class="row">
-            <div class="col-xl-4  mb-3 mt-3">
-                <button type="button" class="btn btn-primary">+ New Hall</button>
-            </div>
+            <h1>Browse Halls</h1>
         </div>
         <div class="row">
-            <div class="col-xl-4">
+            <div class="col-xl-8">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" placeholder="Search for a Hall">
                     <button class="btn btn-outline-secondary" type="button">
                         <i>Search</i>
                     </button>
                 </div>
-                <div class="card rounded mb-2">
-                    <div class="card-body admin-form-card">
-                        <span class="admin-form-card-title">Hall Number 1</span>
-                        <span class="admin-form-card-subtitle">Type</span> 
-                    </div>
-                </div>
-                <div class="card rounded mb-2">
-                    <div class="card-body admin-form-card">
-                        <span class="admin-form-card-title">Hall Number 1</span>
-                        <span class="admin-form-card-subtitle">Type</span> 
-                    </div>
-                </div>
-                <div class="card rounded mb-2">
-                    <div class="card-body admin-form-card">
-                        <span class="admin-form-card-title">Hall Number 1</span>
-                        <span class="admin-form-card-subtitle">Type</span> 
-                    </div>
-                </div>
             </div>
+            <div class="col-xl-4">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
 
-            <div class="col-xl-8">
-                <form action="/ManageHalls.php">
-                    <div class="mb-3 d-flex justify-content-center">
-                        <img class="img-fluid" src="./images/upload-image.png" alt="New York" style="max-height: 300;">
-                    </div> 
-                    <div class="mb-3">
-                        <label for="HallName" class="form-label">Hall Name</label>
-                        <input type="text" class="form-control" id="HallName" placeholder="Enter Hall Name" name="HallName">
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="row ">
+                    <div class="col-xl-5 text-center">
+                        <img class="img-fluid" src="./images/upload-image.png">
                     </div>
-                    <div class="mb-3">
-                        <label for="RntlCharge" class="form-label">Rental Charge</label>
-                        <input type="number" class="form-control" id="RntlCharge" placeholder="Enter Rental Charge" name="RntlCharge">
-                    </div>
-                    <div class="mb-3">
-                        <label for="capacity" class="form-label">Hall Capacity</label>
-                        <input type="number" class="form-control" id="capacity" placeholder="Enter Hall's Capacity" name="capacity">
-                    </div>
-                    <div class="mb-3">
-                        <label for="description">Hall Description</label>
-                        <textarea class="form-control" rows="5" id="description" placeholder="Enter Hall's Description" name="description" ></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col text-start">
-                            <button class="btn btn-danger">Delete</button>
-                        </div>
-                        <div class="col text-end">
-                            <button class="btn btn-primary">Save</button>
+                    <div class="col-xl-6 text-center p-3">
+                        <br>
+                        <h3>Hall Name and stuff</h3>
+                        <br>
+                        <p>Description for the hall thats very long to show the length of the lthing is very long Description for the hall thats very long to show the length of the lthing is very long </p>
+                        <br><br>
+                        <div class="row">
+                            <div class="col text-start">
+                                <h3>$96.50/Hr</h3>
+                            </div>
+                            <div class="col text-end">
+                                <h3>80 seats</h3>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="col-xl-1">
+                        <div class="d-flex flex-column h-100 justify-content-between">
+                            <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
+                            <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="row ">
+                    <div class="col-xl-5 text-center">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="./images/upload-image.png">
+                            <button class="btn btn-primary  position-absolute bottom-0 end-0 rounded-0">Edit</button>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 text-center p-3">
+                        <br>
+                        <h3>Hall Name and stuff</h3>
+                        <br>
+                        <p>Description for the hall thats very long to show the length of the lthing is very long Description for the hall thats very long to show the length of the lthing is very long </p>
+                        <br><br>
+                        <div class="row">
+                            <div class="col text-start">
+                                <h3>$96.50/Hr</h3>
+                            </div>
+                            <div class="col text-end">
+                                <h3>80 seats</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-1">
+                        <div class="d-flex flex-column h-100 justify-content-between">
+                            <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Halls</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="/ManageHalls.php">
+                            <div class="text-center">
+                                <img class="img-fluid form-img" src="./images/upload-image.png">
+                            </div> 
+                            <div class="mb-3">
+                                <label for="HallName" class="form-label">Hall Name</label>
+                                <input type="text" class="form-control" id="HallName" placeholder="Enter Hall Name" name="HallName">
+                            </div>
+                            <div class="mb-3">
+                                <label for="RntlCharge" class="form-label">Rental Charge</label>
+                                <input type="number" class="form-control" id="RntlCharge" placeholder="Enter Rental Charge" name="RntlCharge">
+                            </div>
+                            <div class="mb-3">
+                                <label for="capacity" class="form-label">Hall Capacity</label>
+                                <input type="number" class="form-control" id="capacity" placeholder="Enter Hall's Capacity" name="capacity">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description">Hall Description</label>
+                                <textarea class="form-control" rows="5" id="description" placeholder="Enter Hall's Description" name="description" ></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col text-start">
+                                    <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Delete</button>
+                                </div>
+                                <div class="col text-end">
+                                    <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</body>
 

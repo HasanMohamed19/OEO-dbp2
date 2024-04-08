@@ -30,7 +30,7 @@
     margin-top: auto;
 }
 
-/* Admin Form with list Temp */
+/* Admin Form with list Temp Code Might be removed */
 .admin-form-card {
     background-color: #F7F7F7; /* Custom background color */
     padding: 5px 20px;
@@ -48,10 +48,17 @@
 }
 
 /* Admin View Halls */
-
 .rounded-top-right {
-    border-top-right-radius: 0.25rem!important; /* Adjust the radius as needed */
+    border-top-right-radius: 0.25rem!important;
 }
 .rounded-bottom-right {
-    border-bottom-right-radius: 0.25rem!important; /* Adjust the radius as needed */
+    border-bottom-right-radius: 0.25rem!important; 
+}
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
