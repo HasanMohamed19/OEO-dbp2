@@ -29,3 +29,8 @@
 .footer {
     margin-top: auto;
 }
+
+.cateringItem {
+    max-width: 280px;
+    max-height: 340px;
+}
