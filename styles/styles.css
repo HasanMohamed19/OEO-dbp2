@@ -49,4 +49,9 @@
 
 /* Admin View Halls */
 
-
+.rounded-top-right {
+    border-top-right-radius: 0.25rem!important; /* Adjust the radius as needed */
+}
+.rounded-bottom-right {
+    border-bottom-right-radius: 0.25rem!important; /* Adjust the radius as needed */
+}
