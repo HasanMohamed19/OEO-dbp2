@@ -62,11 +62,26 @@
     flex: 2;
 }
 
+.clientBookingSidebar img {
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.clientBookingSidebar .inactive {
+    display: none;
+}
+
+
 .clientBookingForm {
     flex: 10;
 }
 
 .cateringItem {
-    max-width: 280px;
-    max-height: 340px;
+    max-width: 265px;
+    max-height: 350px;
+}
+
+.cateringItem img {
+    min-height: 200px;
+    object-fit: cover;
 }

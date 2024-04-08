@@ -18,7 +18,7 @@
             <!-- Sidebar Cards -->
             <div class="clientBookingSidebar px-4">
                 <!-- Hall Info -->
-                <div class="row mb-4">
+                <div class="row mb-4 clientCard">
                     <div class="card col p-0">
                         <img class="card-img-top img-fluid" src="./images/hall_example1.jpg">
                         <div class="card-body">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <!-- Event Info -->
-                <div class="row mb-4">
+                <div class="row mb-4 clientCard inactive">
                     <div class="card col p-0">
                         <div class="card-body">
                             <h3 class="card-title text-center">Event Details</h3>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <!-- Additional Services Info -->
-                <div class="row mb-4">
+                <div class="row mb-4 clientCard inactive">
                     <div class="card col p-0">
                         <div class="card-body">
                             <h3 class="card-title text-center">Additional Services</h3>
@@ -135,6 +135,7 @@
                     
                     <!-- Additional Services -->
                     <fieldset class="active">
+                        <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="cateringTabBar" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="breakfast-tab" data-bs-toggle="tab" data-bs-target="#breakfast-tab-pane" 
@@ -151,20 +152,111 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="hot-tab" data-bs-toggle="tab" data-bs-target="#hot-tab-pane" 
                                         type="button" role="tab" aria-controls="hot-tab-pane" aria-selected="false">
-                                    Hot
+                                    Hot Beverages
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="cold-tab" data-bs-toggle="tab" data-bs-target="#cold-tab-pane" 
                                         type="button" role="tab" aria-controls="cold-tab-pane" aria-selected="false">
-                                    Cold
+                                    Cold Beverages
                                 </button>
                             </li>
                         </ul>
-                        <div class="tab-content" id="cateringContent">
+                        <!-- Item Window -->
+                        <div class="tab-content rounded-bottom border border-top-0" id="cateringContent">
                             <div class="tab-pane fade show active" id="breakfast-tab-pane" aria-labelledby="breakfast-tab" role="tabpanel" tabindex="0">
                                 <!-- Items List -->
-                                <div class="d-flex p-4">
+                                <div class="d-flex justify-content-center flex-wrap gap-4 p-4">
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item Name</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card p-0 cateringItem">
                                         <img class="card-img-top img-fluid" src="./images/food_example1.webp">
                                         <div class="card-body">
@@ -182,12 +274,23 @@
                                     </div>
                                 </div>
                                 <!-- Pagination bar -->
-                                <div>
-                                    
-                                </div>
+                                <!-- this needs to be created programmatically -->
+                                <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
+                                    <span class="me-2">Page: </span>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item disabled"><a class="page-link mx-2 rounded border-2" href="#">First</a></li>
+                                        <li class="page-item active"><a class="page-link ms-2 rounded border-2" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link ms-2 rounded border-2" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link ms-2 rounded border-2" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link mx-2 rounded border-2" href="#">Last</a></li>
+                                    </ul>
+                                </nav>
                             </div>
                             <div class="tab-pane fade" id="lunch-tab-pane" role="tabpanel" aria-labelledby="lunch-tab" tabindex="0">
-                            
+                                <!-- If there are no items -->
+                                <div class="p-4">
+                                    <h5 class="text-center">No items available for this menu.</h5>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="hot-tab-pane" role="tabpanel" aria-labelledby="hot-tab" tabindex="0">
                             
@@ -372,12 +475,14 @@
                             </div>
                         </div>-->
                     </fieldset>
-                        <div class="row mb-4">
-                            <div class="form-group col submitBar d-flex justify-content-end">
-                                <input type="button" class="previous btn btn-secondary me-4" value="Previous">
-                                <input type="button" class="next btn btn-primary" value="Next">
-                            </div>
+                    
+                    <!-- Previous/Next Buttons -->
+                    <div class="row my-4">
+                        <div class="form-group col submitBar d-flex justify-content-end">
+                            <input type="button" class="previous btn btn-secondary me-4" value="Previous">
+                            <input type="button" class="next btn btn-primary" value="Next">
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -396,20 +501,30 @@ triggerTabList.forEach(triggerEl => {
   });
 });
 
-
+// Previous/Next buttons functionality
 let currentSection = 0;
 let sections = document.querySelectorAll("#bookingForm > fieldset");
 let sectionButtons = document.querySelectorAll("#bookingProgress > li");
+let cards = document.querySelectorAll(".clientBookingSidebar > .clientCard");
 let nextButton = document.querySelector(".next");
 let previousButton = document.querySelector(".previous");
 for (let i = 0; i < sectionButtons.length; i++) {
-    console.log("Added listener to " + sectionButtons[i]);
+//    console.log("Added listener to " + sectionButtons[i]);
     sectionButtons[i].addEventListener("click", function() {
-        console.log("Clicked on me!!");
+//        console.log("Clicked on me!!");
         sections[currentSection].classList.remove("active");
         sectionButtons[currentSection].classList.remove("active");
+        // if going to previous section, make current card inactive
+        if (currentSection > i && currentSection < cards.length) {
+            cards[currentSection].classList.add("inactive");
+        }
+        
         sections[currentSection = i].classList.add("active");
         sectionButtons[currentSection].classList.add("active");
+        if (currentSection < cards.length) {
+            cards[currentSection].classList.remove("inactive");
+        }
+        
 //        if (i === 0) {
 //            if (previousButton.className.split(" ").indexOf("disable") < 0) {
 //                previousButton.classList.add("disable");
@@ -432,7 +547,7 @@ for (let i = 0; i < sectionButtons.length; i++) {
 }
 
 nextButton.addEventListener("click", function() {
-        console.log("Tried to click");
+//        console.log("Tried to click");
     if (currentSection < sectionButtons.length - 1) {
         sectionButtons[currentSection + 1].click();
     }

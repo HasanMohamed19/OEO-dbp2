@@ -1,8 +1,8 @@
 <?php
 
-readfile('./template/header.html');
+include('./template/header.html');
 
-readfile('./template/client/client_booking.html');
+include('./template/client/client_booking.html');
 
-readfile('./template/footer.html');
+include('./template/footer.html');
 ?>
