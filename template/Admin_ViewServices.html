@@ -6,12 +6,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <body>
     <div class="container">
         <div class="row">
-            <h1>Browse Halls</h1>
+            <h1>Browse Services</h1>
         </div>
         <div class="row">
             <div class="col-xl-8">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search for a Hall">
+                    <input type="text" class="form-control" placeholder="Search For a Menu Item">
                     <button class="btn btn-outline-secondary" type="button">
                         <i>Search</i>
                     </button>
@@ -36,16 +36,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                     <div class="col-xl-6 text-center p-3">
                         <br>
-                        <h3>Hall Name and stuff</h3>
+                        <h3>Item Name</h3>
                         <br>
                         <p>Description for the hall thats very long to show the length of the lthing is very long Description for the hall thats very long to show the length of the lthing is very long </p>
                         <br><br>
                         <div class="row">
                             <div class="col text-start">
-                                <h3>$96.50/Hr</h3>
+                                <h3>$96.50</h3>
                             </div>
                             <div class="col text-end">
-                                <h3>80 seats</h3>
+                                <h3>Catering Type</h3>
                             </div>
                         </div>
                     </div>
@@ -59,53 +59,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
         <br>
-        <div class="card">
-            <div class="card-body p-0">
-                <div class="row ">
-                    <div class="col-xl-5 text-center">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="./images/upload-image.png">
-                            <button class="btn btn-primary  position-absolute bottom-0 end-0 rounded-0">Edit</button>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 text-center p-3">
-                        <br>
-                        <h3>Hall Name and stuff</h3>
-                        <br>
-                        <p>Description for the hall thats very long to show the length of the lthing is very long Description for the hall thats very long to show the length of the lthing is very long </p>
-                        <br><br>
-                        <div class="row">
-                            <div class="col text-start">
-                                <h3>$96.50/Hr</h3>
-                            </div>
-                            <div class="col text-end">
-                                <h3>80 seats</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-1">
-                        <div class="d-flex flex-column h-100 justify-content-between">
-                            <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- The Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Halls</h4>
+                        <h4 class="modal-title">Edit Services</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="/ManageHalls.php">
                             <div class="text-center">
-                                <img class="img-fluid form-img" src="./images/upload-image.png">
+                                <img class="img-fluid form-img img-thumbnail" src="./images/upload-image.png" id="imagePreview">
+                                <input type="file" id="imageUpload" style="display: none;">
                             </div> 
                             <div class="mb-3">
                                 <label for="ItemName" class="form-label">Item Name</label>
@@ -113,15 +81,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
                             <div class="mb-3">
                                 <label for="Price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="Price" placeholder="Enter Item Price" name="Price">
+                                <input type="number" class="form-control" id="Price" placeholder="Enter Price" name="Price">
                             </div>
-                            <div class="mb-3">
-                                <label for="capacity" class="form-label">Hall Capacity</label>
-                                <input type="number" class="form-control" id="capacity" placeholder="Enter Hall's Capacity" name="capacity">
+                            <div class="dropdown mb-3">
+                                <button type="button" class="btn dropdown-toggle dropdown-btn" data-bs-toggle="dropdown">
+                                    Catering Type
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Breakfast</a></li>
+                                    <li><a class="dropdown-item" href="#">Lunch</a></li>
+                                    <li><a class="dropdown-item" href="#">Hot Beverages</a></li>
+                                    <li><a class="dropdown-item" href="#">Cold Beverages</a></li>
+                                </ul>
                             </div>
                             <div class="mb-3">
                                 <label for="description">Item Description</label>
-                                <textarea class="form-control" rows="5" id="description" placeholder="Enter Hall's Description" name="description" ></textarea>
+                                <textarea class="form-control" rows="5" id="description" placeholder="Enter Items's Description" name="description" ></textarea>
                             </div>
                             <div class="row">
                                 <div class="col text-start">
@@ -137,5 +112,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript to toggle the visibility of image upload on image click
+        document.getElementById('imagePreview').addEventListener('click', function () {
+            document.getElementById('imageUpload').click();
+        });
+    </script>
 </body>
 

@@ -52,13 +52,20 @@
     border-top-right-radius: 0.25rem!important;
 }
 .rounded-bottom-right {
-    border-bottom-right-radius: 0.25rem!important; 
+    border-bottom-right-radius: 0.25rem!important;
 }
-/* Important part */
+
 .modal-dialog{
     overflow-y: initial !important
 }
 .modal-body{
     max-height: calc(100vh - 100px);
     overflow-y: auto;
+}
+
+/* Drop Down button Style */
+
+dropdown-btn{
+    display: block !important;
+    border: 1px slategray !important;
 }
