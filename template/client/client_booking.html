@@ -3,11 +3,11 @@
     <div>
         <!-- Progress Bar -->
         <div class="d-flex flex-column mx-4">
-            <div class="clientBookingProgress d-flex justify-content-end">
+            <div class="clientBookingProgress d-flex justify-content-center">
                 <ol class="mb-0" id="bookingProgress">
                     <li id="event" class="active">Event Details</li>
                     <li id="services">Additional Services</li>
-                    <li id="clientDetails">Personal/Company Details</li>
+                    <!--<li id="clientDetails">Personal/Company Details</li>-->
                     <li id="checkout">Checkout</li>
                 </ol>
             </div>
@@ -88,7 +88,7 @@
             <div class="clientBookingForm px-4">
                 <form id="bookingForm">
                     <!-- Event Details -->
-                    <fieldset class="">
+                    <fieldset class="active">
                         <div class="row mb-4">
                             <div class="form-group col">
                                 <label>Event Name</label>
@@ -134,7 +134,7 @@
                     
                     
                     <!-- Additional Services -->
-                    <fieldset class="active">
+                    <fieldset>
                         <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="cateringTabBar" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -311,7 +311,7 @@
                     
                     
                     <!-- Personal/Company Details -->
-                    <fieldset class="form-group">
+<!--                    <fieldset class="form-group">
                         <div class="row mt-4">
                             <div class="col form-check">
                                 <input type="checkbox" class="form-check-input m-2">
@@ -385,13 +385,13 @@
                             </div>
                         </div>
                         
-<!--                        <div class="row mb-4">
+                        <div class="row mb-4">
                             <div class="form-group col submitBar d-flex justify-content-end">
                                 <input type="button" class="previous btn btn-secondary me-4" value="Previous">
                                 <input type="button" class="next btn btn-primary" value="Next">
                             </div>
-                        </div>-->
-                    </fieldset>
+                        </div>
+                    </fieldset>-->
                     
                     
                     <!-- Checkout -->
@@ -466,6 +466,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <hr>
+                            <!-- Display Total cost -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <h2>Total: XXX.XXX BHD</h2>
+                                    <p>Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes 
+                                        Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes
+                                     Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes
+                                     Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes Notes</p>
+                                </div>
+                            </div>
                         </div>
                         
 <!--                        <div class="row mb-4">
@@ -479,8 +490,10 @@
                     <!-- Previous/Next Buttons -->
                     <div class="row my-4">
                         <div class="form-group col submitBar d-flex justify-content-end">
-                            <input type="button" class="previous btn btn-secondary me-4" value="Previous">
+                            <input type="button" class="previous btn btn-secondary me-4 hide" value="Previous">
                             <input type="button" class="next btn btn-primary" value="Next">
+                            <!-- This button only shows up at the last screen -->
+                            <input type="button" class="save btn btn-primary hide" value="Complete Booking">
                         </div>
                     </div>
                 </form>
@@ -501,13 +514,15 @@ triggerTabList.forEach(triggerEl => {
   });
 });
 
-// Previous/Next buttons functionality
+//      Previous/Next buttons functionality
 let currentSection = 0;
 let sections = document.querySelectorAll("#bookingForm > fieldset");
 let sectionButtons = document.querySelectorAll("#bookingProgress > li");
 let cards = document.querySelectorAll(".clientBookingSidebar > .clientCard");
 let nextButton = document.querySelector(".next");
+let saveButton = document.querySelector(".save");
 let previousButton = document.querySelector(".previous");
+
 for (let i = 0; i < sectionButtons.length; i++) {
 //    console.log("Added listener to " + sectionButtons[i]);
     sectionButtons[i].addEventListener("click", function() {
@@ -525,26 +540,33 @@ for (let i = 0; i < sectionButtons.length; i++) {
             cards[currentSection].classList.remove("inactive");
         }
         
-//        if (i === 0) {
-//            if (previousButton.className.split(" ").indexOf("disable") < 0) {
-//                previousButton.classList.add("disable");
-//            }
-//        } else {
-//            if (previousButton.className.split(" ").indexOf("disable") >= 0) {
-//                previousButton.classList.remove("disable");
-//            }
-//        }
-//        if (i === sectionButtons.length - 1) {
-//            if (nextButton.className.split(" ").indexOf("disable") < 0) {
-//                nextButton.classList.add("disable");
-//            }
-//        } else {
-//            if (nextButton.className.split(" ").indexOf("disable") >= 0) {
-//                nextButton.classList.remove("disable");
-//            }
-//        }
+        if (i === 0) {
+            if (previousButton.className.split(" ").indexOf("hide") < 0) {
+                previousButton.classList.add("hide");
+            }
+        } else {
+            if (previousButton.className.split(" ").indexOf("hide") >= 0) {
+                previousButton.classList.remove("hide");
+            }
+        }
+        if (i === sectionButtons.length - 1) {
+            if (nextButton.className.split(" ").indexOf("hide") < 0) {
+                nextButton.classList.add("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") >= 0) {
+                saveButton.classList.remove("hide");
+            }
+        } else {
+            if (nextButton.className.split(" ").indexOf("hide") >= 0) {
+                nextButton.classList.remove("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") < 0) {
+                saveButton.classList.add("hide");
+            }
+        }
     });
 }
+
 
 nextButton.addEventListener("click", function() {
 //        console.log("Tried to click");
@@ -558,4 +580,12 @@ previousButton.addEventListener("click", function() {
         sectionButtons[currentSection - 1].click();
     }
 });
+
+
+//  add function for complete booking button
+saveButton.addEventListener("click", function() {
+    // take user to summary page
+    window.location.href = "booking_summary.php";
+});
+
 </script>
