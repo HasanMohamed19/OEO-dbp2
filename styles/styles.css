@@ -29,3 +29,13 @@
 .footer {
     margin-top: auto;
 }
+
+/* email template */
+.email-header {
+    background-color: var(--primary);
+    color: white;
+}
+
+.summaryImage {
+    height: 300px;
+}
