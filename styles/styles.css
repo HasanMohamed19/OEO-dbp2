@@ -34,3 +34,28 @@
     max-width: 280px;
     max-height: 340px;
 }
+
+/* myAccount */
+.my-account-container {
+    display: flex;
+}
+
+.my-account-sidebar {
+    flex: 4;
+}
+
+.my-account-body {
+    flex: 10;
+}
+
+.active-side-btn {
+    color: var(--primary) !important;
+}
+
+.active-side-btn:focus {
+    background-color: inherit;
+}
+
+.inactive {
+    display: none;
+}
