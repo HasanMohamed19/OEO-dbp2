@@ -65,7 +65,7 @@
 
 /* Drop Down button Style */
 
-dropdown-btn{
-    display: block !important;
-    border: 1px slategray !important;
+.dropdown-btn {
+    color: #495057;
+    text-align: left !important; /* Override the text alignment */
 }
