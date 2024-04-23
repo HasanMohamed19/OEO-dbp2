@@ -72,11 +72,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="row my-account-body">
                     <!-- my bookings -->
                     <div class="card col shadow-sm ms-4 ">
-                        <h1>My Bookings</h1>
-                        <div class="row">
+                        <div class="card-header">
+                            <h3>My Bookings</h3>
+                        </div>
+                        <div class="row justify-content-between">
                             <div class="col">Booking#: ME1193655626</div>
-                            <div class="col">7 July, 2028</div>
-                            <div class="col">Total: BHD 1700.16</div>
+                            <div class="col text-secondary text-center">7 July, 2028</div>
+                            <div class="col text-end">Total: BHD 1700.16</div>
                         </div>
 
                         <div class="card mb-2">
@@ -86,21 +88,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
 
                                 <div class="col-xl-5">
-                                    <div class="row d-flex justify-content-end">
-                                        <div class="col">Upcoming</div>
+                                    <div class="row m-2">
+                                        <div class="col text-start completed">Completed</div>
                                         <div class="col"><button class="btn btn-danger">Cancel Booking</button></div>
+                                </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">Hall Name: </span>
+                                        <span class="col text-start">Hall Name</span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
-
-                                        </div>
-                                        <div class="col"></div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">Event Name: </span>
+                                        <span class="col text-start">Event Name</span>
+                                    </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">Start Date: </span>
+                                        <span class="col text-start">Jab 1, 2026</span>
+                                    </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">End Date: </span>
+                                        <span class="col text-start">Jan1, 2026</span>
+                                    </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">Daily Start Time: </span>
+                                        <span class="col text-start">9:00 AM</span>
+                                    </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">Daily End Time: </span>
+                                        <span class="col text-start">7:00 PM</span>
+                                    </div>
+                                    <div class="row m-2">
+                                        <span class="col text-start text-secondary">No, Audiences </span>
+                                        <span class="col text-start">100</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mx-1">
-                                <span>Notes: </span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores exercitationem nulla earum dolorem dignissimos quos quisquam dolorum voluptatibus? Minima perferendis aliquid saepe, quod voluptatibus suscipit laudantium optio nisi ea dolorum sit culpa voluptatum sint enim amet dolores.
+                                <span class="text-secondary">Notes: </span>
+                                <p class="justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores exercitationem nulla earum dolorem dignissimos quos quisquam dolorum voluptatibus? Minima perferendis aliquid saepe, quod voluptatibus suscipit laudantium optio nisi ea dolorum sit culpa voluptatum sint enim amet dolores.
                                     Veritatis odio a dolorem id, dolor, unde consequatur exercitationem cum distinctio magnam dolores.</p>
                             </div>
 
@@ -109,7 +133,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#additionalServiceCollapse" aria-expanded="true" aria-controls="collapseOne">
-                                                Additional Services
+                                                <span class="fs-3">Additional Services</span>
                                             </button>
                                         </h2>
                                         <div id="additionalServiceCollapse" class="accordion-collapse collapse show">
@@ -284,17 +308,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     <!-- Wallet & Royalty Points -->
                     <div class="card mb-2 inactive">
-                        Wallet & Royalty Points
+                        <div class="card-header">
+                            <h6>Wallet & Royalty Points</h6>
+                        </div>
 
-                        <div class="row">Account Balance: BHD -20:750</div>
-                        <div class="row">SILVER</div>
+                        <div class="row my-status align-self-center my-2">
+                            <h1 class="text-uppercase text-center text-white align-self-center">Silver</h1>
+                            <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
+                        </div>
 
                         <div class="card rounded shadow-sm">
                             <p>How it works?</p>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Gold Tier</strong> are earned on More than 15 booked events</li>
-                                <li class="list-group-item"><strong>Silver Tier</strong> are earned on More than 10 booked events</li>
-                                <li class="list-group-item"><strong>Bronze Tier</strong> are earned on More than 5 booked events</li>
+                                <li class="list-group-item"><i class="fa-solid fa-star gold"></i><strong class="ms-2">Gold Tier</strong> are earned on More than 15 booked events</li>
+                                <li class="list-group-item"><i class="fa-solid fa-circle silver"></i><strong class="ms-2">Silver Tier</strong> are earned on More than 10 booked events</li>
+                                <li class="list-group-item"><i class="fa-solid fa-circle bronze"></i><strong class="ms-2">Bronze Tier</strong> are earned on More than 5 booked events</li>
                             </ul>
                         </div>
 
@@ -303,7 +331,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     <!--Profile -->
                     <div class="card col shadow-sm ms-4 inactive">
-                        Profile
+                        <div class="card-header">
+                            <h6>Profile</h6>
+                        </div>
+                        <div class="row">
+                            <h6>Personal Information</h6>
+                        </div>
                         <form action="">
                             <div class="container">
                                 <div class="row my-2">
@@ -338,11 +371,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                                 <div class="row my-2">
                                     <div class="col">
-                                        <label for="age" class="form-label">Age</label>
-                                        <input type="number" name="age" class="form-control" placeholder="Age" min="18" max="90">
+                                        <label for="dob" class="form-label">DOB</label>
+                                        <input type="date" name="dob" class="form-control" placeholder="DOB">
                                     </div>
                                     <div class="col">
-                                        <label for="gender" class="form-label">Password</label>
+                                        <label for="gender" class="form-label">Gender</label>
                                         <select name="gender" class="form-select" id="">
                                             <option value="" disabled>Gender</option>
                                             <option value="M">Male</option>
@@ -354,7 +387,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </form>
 
                         <hr>
-                        Company Information
+                        <div class="row">
+                            <h6>Company Information</h6>
+                        </div>
                         <form action="">
                             <div class="container">
                                 <div class="row my-2">
