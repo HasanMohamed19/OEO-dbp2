@@ -167,32 +167,35 @@
                             <div class="tab-pane fade show active" id="breakfast-tab-pane" aria-labelledby="breakfast-tab" role="tabpanel" tabindex="0">
                                 <!-- Items List -->
                                 <div id="pagination-items-breakfast" class="d-flex justify-content-center flex-wrap gap-4 p-4">
-                                    <div class="card p-0 cateringItem">
+                                    
+                                    <!-- prototype for catering item card -->
+                                    <div id="catering-item-breakfast-1" class="card p-0 cateringItem">
                                         <img class="card-img-top img-fluid" src="./images/food_example1.webp">
                                         <div class="card-body">
                                             <h3 class="card-title text-center fs-5">Menu Item 1</h3>
                                             <p class="card-text text-center"><strong>0.6 BHD</strong></p>
                                             <div class="row">
                                                 <div class="col-2 offset-1">
-                                                    <input class="cateringItemCheck" type="checkbox">
+                                                    <input id="catering-item-breakfast-1-check" class="cateringItemCheck" type="checkbox">
                                                 </div>
                                                 <div class="col-8">
-                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                    <input id="catering-item-breakfast-1-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card p-0 cateringItem">
+                                    
+                                    <div id="catering-item-breakfast-2" class="card p-0 cateringItem">
                                         <img class="card-img-top img-fluid" src="./images/food_example1.webp">
                                         <div class="card-body">
                                             <h3 class="card-title text-center fs-5">Menu Item 2</h3>
                                             <p class="card-text text-center"><strong>0.6 BHD</strong></p>
                                             <div class="row">
                                                 <div class="col-2 offset-1">
-                                                    <input class="cateringItemCheck" type="checkbox">
+                                                    <input id="catering-item-breakfast-2-check" class="cateringItemCheck" type="checkbox">
                                                 </div>
                                                 <div class="col-8">
-                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                    <input id="catering-item-breakfast-2-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -758,6 +761,7 @@
 window.addEventListener("load", () => {
     // load pages for first menu
    enablePagination("breakfast"); 
+    handleCateringCheckboxes("breakfast");
 });
 // enable catering menu tabs
 const triggerTabList = document.querySelectorAll('#cateringTabBar button');
@@ -769,9 +773,33 @@ triggerTabList.forEach(triggerEl => {
     event.preventDefault();
     const menuType = triggerEl.id.split("-",1)[0];
     enablePagination(menuType);
+    handleCateringCheckboxes(menuType);
     tabTrigger.show();
   });
 });
+
+//      Catering Item Quantity and Checkbox 
+// disable quantity box based on checkbox for all menu items
+const handleCateringCheckboxes = (menuType) => {
+    const paginationList = document.getElementById("pagination-items-"+menuType);
+    
+    const SetQuantityActive = (index, state) => {
+        const quantityElement = paginationList.querySelector("#catering-item-"+menuType+"-"+index+"-quantity");
+        quantityElement.disabled = state;
+    };
+    
+    // add event listeners to checkboxes
+    paginationList.querySelectorAll(".cateringItemCheck").forEach(checkbox => {
+        checkbox.addEventListener('click', () => {
+            const index = checkbox.id.split("-", 4)[3];
+            const state = checkbox.checked;
+            SetQuantityActive(index, !state);
+        });
+    });
+    
+};
+
+
 
 //      Catering Menus Pagination
 const enablePagination = (menuType) => {
