@@ -29,6 +29,9 @@
 .footer {
     margin-top: auto;
 }
+.hidden {
+    display: none;
+}
 
 
 /* Client Booking */
