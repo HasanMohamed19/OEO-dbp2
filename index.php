@@ -2,7 +2,7 @@
 
 include './template/header.html';
     
-    echo '<div class="main"> </div>';
+include './template/home.html';
 
 include './template/footer.html';
 ?>
