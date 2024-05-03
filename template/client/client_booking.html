@@ -646,47 +646,46 @@
                                         <option value="3">To prevent flooding</option>
                                     </select>
                                 </div>
-                                <div class="col-6 d-flex flex-column-reverse">
+                                <div class="col-4 d-flex flex-column-reverse">
                                     <div class="row">
                                         <div class="col">
-                                            <button class="btn btn-danger w-100">Delete Selected Address</button>
+                                            <input type="button" class="btn btn-primary w-100" value="Save Address Below">
                                         </div>
                                         <div class="col">
-                                            <button class="btn btn-primary w-100">Save Address Below</button>
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-secondary w-100">Clear Form</button>
+                                            <input type="button" class="btn btn-secondary w-100" onclick="clearBillingForm()" value="Clear Form">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr>
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
-                                    <input class="form-control" type="text" id="paymentBillingBuilding">
+                            <div id="billingForm">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingBuilding">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingStreet">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingBlock">Block</label>
+                                        <input class="form-control" type="text" id="paymentBillingBlock">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
-                                    <input class="form-control" type="text" id="paymentBillingStreet">
-                                </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingBlock">Block</label>
-                                    <input class="form-control" type="text" id="paymentBillingBlock">
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingArea">Area</label>
-                                    <input class="form-control" type="text" id="paymentBillingArea">
-                                </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingCountry">Country</label>
-                                    <input class="form-control" type="text" id="paymentBillingCountry">
-                                </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentBillingPhone">Phone Number</label>
-                                    <input class="form-control" type="text" id="paymentBillingPhone">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingArea">Area</label>
+                                        <input class="form-control" type="text" id="paymentBillingArea">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingCountry">Country</label>
+                                        <input class="form-control" type="text" id="paymentBillingCountry">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingPhone">Phone Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingPhone">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -919,7 +918,14 @@ const enablePagination = (menuType) => {
 };
 
 
-
+//      Clear Billing Form
+const clearBillingForm = () => {
+    // get and clear inputs
+    const billingForm = document.getElementById("billingForm");
+    billingForm.querySelectorAll("input").forEach(field => {
+        field.value = "";
+    });
+};
 
 
 //      Previous/Next buttons functionality
