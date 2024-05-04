@@ -1,10 +1,10 @@
 //      Catering Menus Pagination
 const enablePagination = (menuType, dataListClass) => {
-    const paginationNumbersDiv = document.getElementById("pagination-numbers-"+menuType);
+    const paginationNumbersDivs = document.querySelectorAll(".pagination-numbers-"+menuType);
     const paginationList = document.getElementById("pagination-items-"+menuType);
     const listItems = paginationList.querySelectorAll(dataListClass);
-    const firstButton = document.getElementById("pagination-first-"+menuType);
-    const lastButton = document.getElementById("pagination-last-"+menuType);
+    const firstButtons = document.querySelectorAll(".pagination-first-"+menuType);
+    const lastButtons = document.querySelectorAll(".pagination-last-"+menuType);
     const paginationLimit = 10;
     const pageCount = Math.ceil(listItems.length / paginationLimit);
     let currentPage;
@@ -25,10 +25,17 @@ const enablePagination = (menuType, dataListClass) => {
         const pageNumber = document.createElement("li");
         pageNumber.className = "page-item pagination-number-"+menuType;
         pageNumber.appendChild(pageButton);
-        paginationNumbersDiv.appendChild(pageNumber);
+        // since there can be multiple pagination bars, add numbers to each
+        // using cloneNode to create copies of each number element
+        paginationNumbersDivs.forEach((div) => {
+            console.log("added number to div "+index);
+            div.appendChild(pageNumber.cloneNode(true));
+        });
     };
     const setPaginationNumbers = () => {
-        paginationNumbersDiv.innerHTML = "";
+        paginationNumbersDivs.forEach((div) => {
+            div.innerHTML = "";
+        });
         for (let i = 1;i <= pageCount; i++) {
             appendPageNumber(i);
         }
@@ -54,16 +61,25 @@ const enablePagination = (menuType, dataListClass) => {
         button.classList.remove("disabled");
         button.removeAttribute("disabled");
     };
+    // enables or disables first/last buttons based on current page
     const handlePageButtonsStatus = () => {
         if (currentPage === 1) {
-            disableButton(firstButton);
+            firstButtons.forEach((button) => {
+                disableButton(button);
+            });
         } else {
-            enableButton(firstButton);
+            firstButtons.forEach((button) => {
+                enableButton(button);
+            });
         }
         if (currentPage === pageCount) {
-            disableButton(lastButton);
+            lastButtons.forEach((button) => {
+                disableButton(button);
+            });
         } else {
-            enableButton(lastButton);
+            lastButtons.forEach((button) => {
+                enableButton(button);
+            });
         }
     };
 
@@ -96,11 +112,16 @@ const enablePagination = (menuType, dataListClass) => {
     };
 
     const addFirstLastEventListeners = () => {
-        firstButton.addEventListener("click", () => {
-           setCurrentPage(1); 
+        firstButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+               setCurrentPage(1); 
+            });
         });
-        lastButton.addEventListener("click", () => {
-           setCurrentPage(pageCount); 
+        
+        lastButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+               setCurrentPage(pageCount); 
+            });
         });
 
     };

@@ -163,9 +163,22 @@
                                 </button>
                             </li>
                         </ul>
+                        
                         <!-- Item Window -->
                         <div class="tab-content rounded-bottom border border-top-0" id="cateringContent">
                             <div class="tab-pane fade show active" id="breakfast-tab-pane" aria-labelledby="breakfast-tab" role="tabpanel" tabindex="0">
+                                <!-- Pagination bar -->
+                                <nav class="mt-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
+                                    <span class="me-2">Page: </span>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
+                                    </ul>
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
+                                    </ul>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
+                                    </ul>
+                                </nav>
                                 <!-- Items List -->
                                 <div id="pagination-items-breakfast" class="d-flex justify-content-center flex-wrap gap-4 p-4">
                                     
@@ -503,16 +516,15 @@
                                     </div>
                                 </div>
                                 <!-- Pagination bar -->
-                                <!-- this needs to be created programmatically -->
                                 <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
                                     <span class="me-2">Page: </span>
                                     <ul class="pagination d-flex flex-row m-0">
-                                        <li class="page-item"><button id="pagination-first-breakfast" class="page-link mx-2 rounded border-2">First</button></li>
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
                                     </ul>
-                                    <ul id="pagination-numbers-breakfast" class="pagination d-flex flex-row m-0">
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
                                     </ul>
                                     <ul class="pagination d-flex flex-row m-0">
-                                        <li class="page-item"><button id="pagination-last-breakfast" class="page-link mx-2 rounded border-2">Last</button></li>
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
                                     </ul>
                                 </nav>
                             </div>
