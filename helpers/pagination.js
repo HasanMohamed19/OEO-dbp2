@@ -1,11 +1,10 @@
 //      Catering Menus Pagination
-const enablePagination = (menuType) => {
+const enablePagination = (menuType, dataListClass) => {
     const paginationNumbersDiv = document.getElementById("pagination-numbers-"+menuType);
     const paginationList = document.getElementById("pagination-items-"+menuType);
-    const listItems = paginationList.querySelectorAll(".cateringItem");
+    const listItems = paginationList.querySelectorAll(dataListClass);
     const firstButton = document.getElementById("pagination-first-"+menuType);
     const lastButton = document.getElementById("pagination-last-"+menuType);
-
     const paginationLimit = 10;
     const pageCount = Math.ceil(listItems.length / paginationLimit);
     let currentPage;

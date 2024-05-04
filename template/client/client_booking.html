@@ -760,7 +760,7 @@
     
 window.addEventListener("load", () => {
     // load pages for first menu
-   enablePagination("breakfast"); 
+   enablePagination("breakfast", ".cateringItem");
     handleCateringCheckboxes("breakfast");
 });
 // enable catering menu tabs
@@ -772,7 +772,7 @@ triggerTabList.forEach(triggerEl => {
 //      console.log("CLICKED ON TABBB");
     event.preventDefault();
     const menuType = triggerEl.id.split("-",1)[0];
-    enablePagination(menuType);
+    enablePagination(menuType, ".cateringItem");
     handleCateringCheckboxes(menuType);
     tabTrigger.show();
   });
