@@ -71,26 +71,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                 <div class="row my-account-body">
                     <!-- my bookings -->
-                    <div class="card col shadow-sm ms-4 ">
+                    <div class="card col shadow-sm ms-4 px-0">
                         <div class="card-header">
                             <h3>My Bookings</h3>
                         </div>
-                        <div class="row justify-content-between">
+                        <div class="row justify-content-between mx-3 mt-2">
                             <div class="col">Booking#: ME1193655626</div>
                             <div class="col text-secondary text-center">7 July, 2028</div>
                             <div class="col text-end">Total: BHD 1700.16</div>
                         </div>
-
-                        <div class="card mb-2">
+                        <hr>
+                        <div class="card mb-2 border-0 mx-3">
                             <div class="row g-0">
                                 <div class="col-xl-5 p-2">
                                     <img src="https://placehold.co/550x400" alt="" class="img-fluid rounded">
                                 </div>
 
-                                <div class="col-xl-5">
+                                <div class="col-xl-5 p-2 flex-grow-1">
                                     <div class="row m-2">
                                         <div class="col text-start completed">Completed</div>
-                                        <div class="col"><button class="btn btn-danger">Cancel Booking</button></div>
+                                        <div class="col text-end"><button class="btn btn-danger">Cancel Booking</button></div>
                                 </div>
                                     <div class="row m-2">
                                         <span class="col text-start text-secondary">Hall Name: </span>
@@ -215,31 +215,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <!-- end of  my bookings-->
 
                     <!-- mycards -->
-                    <div class="card col shadow-sm ms-4 inactive">
-                        <h1>My Cards</h1>
+                    <div class="card col shadow-sm ms-4 px-0 inactive">
+                        <div class="card-header">
+                            <h3>My Cards</h3>
+                        </div>
 
-                        <div class="card my-3">
-                            <div class="card-body vstack gap-2 mx-auto">
-                                <div class="row">*****   *****   *****  7324</div>
-                                <div class="row"><span>07/26</span><button class="btn btn-outline-primary fw-bold">Edit</button></div>
+                        <div class="card my-3 mx-3">
+                            <div class="card-body vstack gap-2">
+                                <div class="row fw-bold justify-content-center"><h2 class="text-center">*****   *****   *****  7324</h2></div>
+                                <div class="row justify-content-between">
+                                    <span class="col-3 justify-content-end fw-bold">07/26</span>
+                                    <button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
                             </div>
                         </div>
 
-                        <div class="card my-3">
-                            <div class="card-body vstack gap-2 mx-auto">
-                                <div >*****   *****   *****  7324</div>
-                                <div >07/26 <button class="btn btn-outline-primary fw-bold align-self-end">Edit</button></div>
+                        <div class="card my-3 mx-3">
+                            <div class="card-body vstack gap-2">
+                                <div class="row fw-bold justify-content-center"><h2 class="text-center">*****   *****   *****  7324</h2></div>
+                                <div class="row justify-content-between">
+                                    <span class="col-3 justify-content-end fw-bold">07/26</span>
+                                    <button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
                             </div>
                         </div>
 
-                        <div class="card my-3">
-                            <div class="card-body vstack gap-2 mx-auto">
-                                <div >*****   *****   *****  7324</div>
-                                <div >07/26 <button class="btn btn-outline-primary fw-bold align-self-end">Edit</button></div>
+                        <div class="card my-3 mx-3">
+                            <div class="card-body vstack gap-2">
+                                <div class="row fw-bold justify-content-center"><h2 class="text-center">*****   *****   *****  7324</h2></div>
+                                <div class="row justify-content-between">
+                                    <span class="col-3 justify-content-end fw-bold">07/26</span>
+                                    <button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
                             </div>
                         </div>
 
-                        <div class="row mx-auto" style="width: 15%;">
+                        <div class="row mx-auto mb-2" style="width: 15%;">
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
                         </div>
 
@@ -307,9 +315,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <!-- end of my cards -->
 
                     <!-- Wallet & Royalty Points -->
-                    <div class="card mb-2 inactive">
+                    <div class="card mb-2 ms-4 px-0 inactive">
                         <div class="card-header">
-                            <h6>Wallet & Royalty Points</h6>
+                            <h3>Wallet & Royalty Points</h3>
                         </div>
 
                         <div class="row my-status align-self-center my-2">
@@ -317,12 +325,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                         </div>
 
-                        <div class="card rounded shadow-sm">
-                            <p>How it works?</p>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><i class="fa-solid fa-star gold"></i><strong class="ms-2">Gold Tier</strong> are earned on More than 15 booked events</li>
-                                <li class="list-group-item"><i class="fa-solid fa-circle silver"></i><strong class="ms-2">Silver Tier</strong> are earned on More than 10 booked events</li>
-                                <li class="list-group-item"><i class="fa-solid fa-circle bronze"></i><strong class="ms-2">Bronze Tier</strong> are earned on More than 5 booked events</li>
+                        <div class="card rounded shadow-sm mb-2 mx-3">
+                            
+                            <ul class="list-group list-group-flush border-0">
+                                <li class="list-group-item border-0"><span>How it works?</span></li>
+                                <li class="list-group-item border-0"><i class="fa-solid fa-star gold"></i><strong class="ms-2">Gold Tier</strong> are earned on More than 15 booked events</li>
+                                <li class="list-group-item border-0"><i class="fa-solid fa-circle silver"></i><strong class="ms-2">Silver Tier</strong> are earned on More than 10 booked events</li>
+                                <li class="list-group-item border-0"><i class="fa-solid fa-circle bronze"></i><strong class="ms-2">Bronze Tier</strong> are earned on More than 5 booked events</li>
                             </ul>
                         </div>
 
@@ -330,11 +339,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <!-- end of Walletr & Royalty Points -->
 
                     <!--Profile -->
-                    <div class="card col shadow-sm ms-4 inactive">
+                    <div class="card col shadow-sm ms-4 px-0 inactive">
                         <div class="card-header">
-                            <h6>Profile</h6>
+                            <h3>Profile</h3>
                         </div>
-                        <div class="row">
+                        <div class="row mx-3">
                             <h6>Personal Information</h6>
                         </div>
                         <form action="">
@@ -384,13 +393,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        <!-- </form> -->
 
                         <hr>
-                        <div class="row">
+                        <div class="row mx-3">
                             <h6>Company Information</h6>
                         </div>
-                        <form action="">
+                        <!-- <form action=""> -->
                             <div class="container">
                                 <div class="row my-2">
                                     <div class="col">
