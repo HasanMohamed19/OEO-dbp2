@@ -88,3 +88,13 @@
     border: 1px solid #CDCDCD;
     border-radius: 12px;
 }
+
+/* email template */
+.email-header {
+    background-color: var(--primary);
+    color: white;
+}
+
+.summaryImage {
+    height: 300px;
+}
