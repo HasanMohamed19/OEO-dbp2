@@ -11,8 +11,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="row">
             <div class="col-xl-8">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search For a Client">
-                    <button class="btn btn-outline-secondary" type="button">
+                    <input type="text" class="form-control" placeholder="Search For a Client" id="search">
+                    <button class="btn btn-outline-secondary" type="button" id="searchBtn">
                         <i>Search</i>
                     </button>
                 </div>
@@ -29,7 +29,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
         <div class="row">
             <div class="col-xl-2">
-                <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal">+ New Client</button>
+                <button id="addClientBtn" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal">+ New Client</button>
             </div>
         </div>
         <br>
@@ -99,19 +99,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Client</h4>
+                        <h4 class="modal-title">Add/Edit Client</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <form action="/ManageHalls.php">
+                        <form action="/ManageHalls.php" id ="clientForm">
                             <h5>Personal Details:</h5>
                             <hr>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username">
                             </div>
-                            <div class="mb-3">
+                            <div hidden class="mb-3" id="passwordDiv">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password">
                             </div>
@@ -172,11 +172,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
     </div>
-    <script>
+</body>
+
+        <script type="text/javascript">
         // JavaScript to toggle the visibility of image upload on image click
         document.getElementById('imagePreview').addEventListener('click', function () {
             document.getElementById('imageUpload').click();
         });
+        //JavaScript to unhide password when add button is clicked
+        document.getElementById("addClientBtn").addEventListener("click", function () {
+            document.getElementById('passwordDiv').removeAttribute("hidden");            
+        });
+
     </script>
-</body>
 

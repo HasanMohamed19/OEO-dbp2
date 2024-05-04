@@ -47,7 +47,7 @@
     display: block;
 }
 
-/* Admin View Halls */
+/* Admin Forms */
 .rounded-top-right {
     border-top-right-radius: 0.25rem!important;
 }
@@ -61,11 +61,4 @@
 .modal-body{
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-}
-
-/* Drop Down button Style */
-
-.dropdown-btn {
-    color: #495057;
-    text-align: left !important; /* Override the text alignment */
 }

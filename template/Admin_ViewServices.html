@@ -70,7 +70,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Services</h4>
+                        <h4 class="modal-title">Add/Edit Services</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <!-- Modal body -->
@@ -88,17 +88,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <label for="Price" class="form-label">Price</label>
                                 <input type="number" class="form-control" id="Price" placeholder="Enter Price" name="Price">
                             </div>
-                            <label for="catType" class="form-label">Category Type:</label>
-                            <div class="dropdown mb-3">
-                                <button class=" dropdown-btn form-control dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-                                    Select Category Type:
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Breakfast</a></li>
-                                    <li><a class="dropdown-item" href="#">Lunch</a></li>
-                                    <li><a class="dropdown-item" href="#">Hot Beverages</a></li>
-                                    <li><a class="dropdown-item" href="#">Cold Beverages</a></li>
-                                </ul>
+                            <div class="mb-3">
+                            <label for="serviceType" class="form-label">Service Type</label>
+                            <select name="serviceType" class="form-select" id="serviceType">
+                                <option value="" >Select Service Type</option>
+                                <option value="Type1">Breakfast</option>
+                                <option value="Type2">Lunch</option>
+                                <option value="Type3">Hot Beverages</option>
+                                <option value="Type4">Cold Beverages</option>  
+                            </select>
                             </div>
                             <div class="mb-3">
                                 <label for="description">Item Description</label>
