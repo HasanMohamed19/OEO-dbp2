@@ -4,19 +4,24 @@
     <div class="form-outline mt-5 mb-5" data-mdb-input-init>
         <div class="row">
             <div class="col">
-            <input type="search" id="form1" class="form-control" placeholder="Search" aria-label="Search"/>
-            <!-- <button type="submit" class="btn btn-primary">Search</button> -->
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search For a Client" id="search">
+                    <button class="btn btn-outline-secondary" type="button" id="searchBtn">
+                        <i>Search</i>
+                    </button>
+                </div>
             </div>
             <div class="col">
+                 <!-- Pagination bar -->
                 <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
                     <span class="me-2">Page: </span>
                     <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><button id="pagination-first-bookings" class="page-link mx-2 rounded border-2">First</button></li>
+                        <li class="page-item"><input type="button" class="pagination-first-bookings page-link mx-2 rounded border-2" value="First"></li>
                     </ul>
-                    <ul id="pagination-numbers-bookings" class="pagination d-flex flex-row m-0">
+                    <ul class="pagination pagination-numbers-bookings d-flex flex-row m-0">
                     </ul>
                     <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><button id="pagination-last-bookings" class="page-link mx-2 rounded border-2">Last</button></li>
+                        <li class="page-item"><input type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="Last"></li>
                     </ul>
                 </nav>
         </div>
@@ -178,18 +183,17 @@
         </table>
     </div>
 
-    <!-- this needs to be created programmitcally -->
+    
     <!-- Pagination bar -->
-    <!-- this needs to be created programmatically -->
     <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
         <span class="me-2">Page: </span>
         <ul class="pagination d-flex flex-row m-0">
-            <li class="page-item"><button id="pagination-first-bookings" class="page-link mx-2 rounded border-2">First</button></li>
+            <li class="page-item"><input type="button" class="pagination-first-bookings page-link mx-2 rounded border-2" value="First"></li>
         </ul>
-        <ul id="pagination-numbers-bookings" class="pagination d-flex flex-row m-0">
+        <ul class="pagination pagination-numbers-bookings d-flex flex-row m-0">
         </ul>
         <ul class="pagination d-flex flex-row m-0">
-            <li class="page-item"><button id="pagination-last-bookings" class="page-link mx-2 rounded border-2">Last</button></li>
+            <li class="page-item"><input type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="Last"></li>
         </ul>
     </nav>
 
@@ -201,7 +205,6 @@
 
 <script>
     window.addEventListener("load", () => {
-        enablePagination("bookings", ".booking");
         enablePagination("bookings", ".booking");
     })
 </script>
