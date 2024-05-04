@@ -14,7 +14,7 @@
 /* minimum height on the container to ensure footer is always at the bottom */
 /* temporary code */
 .main {
-    min-height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -166,4 +166,20 @@
 
 .summaryImage {
     height: 300px;
+}
+.active>.page-link {
+    background-color: var(--primary) !important;
+    border-color: none !important;
+    color: white !important;
+}
+
+.page-link {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    font-weight: 600;
+}
+
+.disabled {
+    border: none !important;
+
 }
