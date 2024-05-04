@@ -30,6 +30,7 @@
     margin-top: auto;
 }
 
+
 .cateringItem {
     max-width: 250px;
     max-height: 350px;
@@ -94,6 +95,74 @@
     background-color: var(--primary);
     color: white;
 }
+
+
+.hidden {
+    display: none;
+}
+
+
+/* Client Booking */
+
+/*Hide all except first fieldset*/
+#bookingForm fieldset.active {
+    display: inherit;
+}
+
+#bookingForm fieldset:not(.active) {
+    display: none;
+}
+
+.clientBookingContainer {
+    display: flex;
+}
+
+#bookingProgress .active{
+    color: var(--bs-primary);
+    border-bottom: 1px solid var(--bs-primary);
+}
+
+#bookingProgress li {
+    float: left;
+    margin-right: 4em;
+}
+
+.clientBookingSidebar {
+    min-width: 14em;
+    max-width: 20em;
+    flex: 2;
+}
+
+.clientBookingSidebar img {
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.clientBookingSidebar .inactive {
+    display: none;
+}
+
+
+.clientBookingForm {
+    flex: 10;
+}
+
+.cateringItem {
+    max-width: 265px;
+    max-height: 350px;
+}
+
+.cateringItem img {
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.submitBar .hide {
+    display: none;
+}
+
+/* Booking Summary */
+
 
 .summaryImage {
     height: 300px;
