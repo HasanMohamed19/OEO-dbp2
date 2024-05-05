@@ -29,7 +29,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
         <div class="row">
             <div class="col-xl-2">
-                <button id="addClientBtn" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal">+ New Client</button>
+                <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="removeAttributeOnClick()">+ New Client</button>
             </div>
         </div>
         <br>
@@ -85,7 +85,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                     <div class="col-xl-1">
                         <div class="d-flex flex-column h-100 justify-content-between">
-                            <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
+                            <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#myModal" onclick="setAttributeOnClick()">Edit</button>
                             <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right">Delete</button>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username">
                             </div>
-                            <div hidden class="mb-3" id="passwordDiv">
+                            <div class="mb-3" id="passwordDiv">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password">
                             </div>
@@ -174,15 +174,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </div>
 </body>
 
-        <script type="text/javascript">
-        // JavaScript to toggle the visibility of image upload on image click
-        document.getElementById('imagePreview').addEventListener('click', function () {
-            document.getElementById('imageUpload').click();
-        });
-        //JavaScript to unhide password when add button is clicked
-        document.getElementById("addClientBtn").addEventListener("click", function () {
-            document.getElementById('passwordDiv').removeAttribute("hidden");            
-        });
+<script type="text/javascript">
+    // JavaScript to toggle the visibility of image upload on image click
+    document.getElementById('imagePreview').addEventListener('click', function () {
+        document.getElementById('imageUpload').click();
+    });
+    function setAttributeOnClick() {
+        // Get the button element
+        var passwordDiv = document.getElementById("passwordDiv");
 
-    </script>
+        // Set the attribute you want, for example, let's set the 'data-clicked' attribute to 'true'
+        passwordDiv.setAttribute('hidden','');
+    }
+    
+        function removeAttributeOnClick() {
+        // Get the button element
+        var passwordDiv = document.getElementById("passwordDiv");
+
+        // Set the attribute you want, for example, let's set the 'data-clicked' attribute to 'true'
+        passwordDiv.removeAttribute('hidden');
+    }
+
+</script>
 
