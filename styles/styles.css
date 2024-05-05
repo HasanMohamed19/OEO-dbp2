@@ -147,10 +147,10 @@
     flex: 10;
 }
 
-.cateringItem {
+/*.cateringItem {
     max-width: 265px;
     max-height: 350px;
-}
+}*/
 
 .cateringItem img {
     min-height: 200px;
