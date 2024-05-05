@@ -5,11 +5,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <body>
     <div class="container">
+        <br>
         <div class="row">
             <h1>Browse Clients</h1>
         </div>
         <div class="row">
-            <div class="col-xl-8">
+            <div class="col-xl-10">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Search For a Client" id="search">
                     <button class="btn btn-outline-secondary" type="button" id="searchBtn">
@@ -17,7 +18,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </button>
                 </div>
             </div>
-            <div class="col-xl-4">
+            <div class="col-xl-2 text-end">
+                <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="removeAttributeOnClick()">+ New Client</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-2">
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -25,11 +31,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>
                 </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-2">
-                <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="removeAttributeOnClick()">+ New Client</button>
             </div>
         </div>
         <br>
@@ -184,10 +185,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         var passwordDiv = document.getElementById("passwordDiv");
 
         // Set the attribute you want, for example, let's set the 'data-clicked' attribute to 'true'
-        passwordDiv.setAttribute('hidden','');
+        passwordDiv.setAttribute('hidden', '');
     }
-    
-        function removeAttributeOnClick() {
+
+    function removeAttributeOnClick() {
         // Get the button element
         var passwordDiv = document.getElementById("passwordDiv");
 
