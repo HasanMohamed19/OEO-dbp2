@@ -6,5 +6,5 @@
  */
 
 include './template/header.html';
-include './template/Admin_ViewServices.html';
+include './template/admin/Admin_ViewServices.html';
 include './template/footer.html';
