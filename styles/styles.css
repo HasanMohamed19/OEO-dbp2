@@ -167,19 +167,8 @@
 .summaryImage {
     height: 300px;
 }
-.active>.page-link {
+
+.page-link.active {
     background-color: var(--primary) !important;
-    border-color: none !important;
-    color: white !important;
-}
-
-.page-link {
     border-color: var(--primary) !important;
-    color: var(--primary) !important;
-    font-weight: 600;
-}
-
-.disabled {
-    border: none !important;
-
 }
