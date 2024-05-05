@@ -31,6 +31,7 @@
 }
 
 
+
 .cateringItem {
     max-width: 250px;
     max-height: 350px;
@@ -171,4 +172,38 @@
 .page-link.active {
     background-color: var(--primary) !important;
     border-color: var(--primary) !important;
+}
+    
+/* Admin Form with list Temp Code Might be removed */
+.admin-form-card {
+    background-color: #F7F7F7; /* Custom background color */
+    padding: 5px 20px;
+}
+.admin-form-card-title{
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0.25rem;
+}
+.admin-form-card-subtitle{
+    font-size: 10px;
+    color: #8D8D8D;
+    display: block;
+}
+
+/* Admin Forms */
+.rounded-top-right {
+    border-top-right-radius: 0.25rem!important;
+}
+.rounded-bottom-right {
+    border-bottom-right-radius: 0.25rem!important;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+
 }
