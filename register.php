@@ -1,5 +1,4 @@
 <?php
-echo 'hello,';
 include 'debugging.php';
 
 include './template/header.html';

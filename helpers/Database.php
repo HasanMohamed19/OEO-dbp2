@@ -34,13 +34,6 @@ class Database {
             $this->connect();
         }
     }
-
-    public static function getInstance() {
-        if (is_null(self::$instance)) {
-            self::$instance = new Database ( );
-        }
-        return self::$instance;
-    }
     
     function connect() {
         $this->dblink = mysqli_connect($this->host, $this->userName, $this->password, $this->dbName) or die("Can Not Connect!");
