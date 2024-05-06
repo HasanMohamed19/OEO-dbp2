@@ -11,33 +11,31 @@
  * @author Hassan
  */
 
-enum UserRole {
-    case client;
-    case employee;
-    case admin;
-}
+const ROLE_ADMIN = 1;
+const ROLE_CLIENT = 2;
+const ROLE_EMPLOYEE = 3;
 
 class User {
     private $userId;
     private $username;
     private $password;
     private $email;
-    private UserRole $userRole;
+    private $roleId;
     
     public function __construct() {
         $this->userId = null;
         $this->username = null;
         $this->password = null;
         $this->email = null;
-        $this->userRole = null;
+        $this->roleId = null;
     }
     
-    public function initWith($userId, $username, $password, $email, UserRole $userRole) {
+    public function initWith($userId, $username, $password, $email, $roleId) {
         $this->userId = $userId;
         $this->username = $username;
         $this->password = $password;
         $this->email = $email;
-        $this->userRole = $userRole;
+        $this->roleId = $roleId;
     }
 
     public function isValid() {
@@ -52,7 +50,7 @@ class User {
         if (empty($this->email))
             $errors = false;
 
-        if (empty($this->userRole))
+        if (empty($this->roleId))
             $errors = false;
 
         return $errors;
@@ -66,9 +64,10 @@ class User {
         if ($this->isValid()) {
             try {
                 $db = Database::getInstance();
-                $data = $db->querySql('INSERT INTO dbProj_User (uid, user_name, password, email, role_id)
-                 VALUES (NULL, \'' . $this->username . '\',\'' . $this->firstname . '\',\'' . $this->lastname . 
-                 '\',\'' . $this->password . '\',\'' . $this->email . '\')');
+                $q = 'INSERT INTO dbProj_User (user_id, username, password, email, role_id)
+                 VALUES (NULL, \'' . $this->username . '\',\'' . $this->password . '\',\'' . $this->email . '\',' . $this->roleId . ')';
+                $data = $db->querySql($q);
+                var_dump($q);
                  return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
@@ -115,8 +114,8 @@ class User {
         return $this->email;
     }
 
-    public function getUserRole(): UserRole {
-        return $this->userRole;
+    public function getRoleId() {
+        return $this->roleId;
     }
 
     public function setUserId($userId) {
@@ -135,8 +134,8 @@ class User {
         $this->email = $email;
     }
 
-    public function setUserRole(UserRole $userRole) {
-        $this->userRole = $userRole;
+    public function setRoleId($roleId) {
+        $this->roleId = $roleId;
     }
 
 }

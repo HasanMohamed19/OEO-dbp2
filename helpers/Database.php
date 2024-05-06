@@ -13,7 +13,7 @@
 class Database {
     
     // DB connection parameters
-    private $host = "20.126.5.244";
+    private $host = "localhost";
     private $dbName = "db202101277";
     private $userName = "u202101277";
     private $password = "u202101277";
@@ -21,6 +21,13 @@ class Database {
     // singleton
     public static $instance = null;
     public $dblink = null;
+    
+    public static function getInstance() {
+        if (is_null(self::$instance)) {
+            self::$instance = new Database ( );
+        }
+        return self::$instance;
+    }
     
     public function __construct() {
         if (is_null($this->dblink)) {
