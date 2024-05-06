@@ -1,3 +1,25 @@
+<?php
+    include './helpers/Database.php'
+    echo 'hello,';
+    if (isset($_POST['submitted'])) {
+        $user = new User();
+        $user->setEmail($_POST['email']);
+        $user->setUsername($_POST['username']);
+        $user->setPassword($_POST['password']);
+
+        if ($user->initWithUsername()) {
+
+            if ($user->registerUser())
+                echo 'Registerd Successfully';
+            else
+                echo '<p class="error"> Not Successfull </p>';
+        }else {
+            echo '<p class="error"> Username Already Exists </p>';
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,12 +55,13 @@
                                     <div class="text-center">
                                         <h1 class="h1 text-gray-900 mb-4">Create Account</h1>
                                     </div>
-                                    <form class="user account-form">
-                                        <input type="text" class="form-control form-control-user" id="username" placeholder="Username">
-                                        <input type="password" class="form-control form-control-user" id="pass" placeholder="Password">
-                                        <input type="email" class="form-control form-control-user" id="email" placeholder="Email">
+                                    <form class="user account-form" action="register.php" method="post">
+                                        <input type="text" class="form-control form-control-user" id="username" placeholder="Username" name="username" value="<?php echo $_POST['username']?>">
+                                        <input type="password" class="form-control form-control-user" id="pass" placeholder="Password" name="password">
+                                        <input type="email" class="form-control form-control-user" id="email" placeholder="Email" name="email">
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary" id="regBtn">Register</button>
+                                            <input type="hidden" name="submitted" value="1" />
                                         </div>
                                     </form>
                                     <div class="text-center">

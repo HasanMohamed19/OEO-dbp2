@@ -39,6 +39,65 @@ class User {
         $this->email = $email;
         $this->userRole = $userRole;
     }
+
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->username))
+            $errors = false;
+        
+        if (empty($this->password))
+            $errors = false;
+        
+        if (empty($this->email))
+            $errors = false;
+
+        if (empty($this->userRole))
+            $errors = false;
+
+        return $errors;
+    }
+
+    // function getRoldId(UserRole $role) {
+        
+    // }
+
+    function registerUser() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $data = $db->querySql('INSERT INTO dbProj_User (uid, user_name, password, email, role_id)
+                 VALUES (NULL, \'' . $this->username . '\',\'' . $this->firstname . '\',\'' . $this->lastname . 
+                 '\',\'' . $this->password . '\',\'' . $this->email . '\')');
+                 return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function initWithUsername() {
+
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $this->username . '\'');
+        if ($data != null) {
+            return false;
+        }
+        return true;
+    }
+
+    function initWithEmail() {
+
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $this->email . '\'');
+        if ($data != null) {
+            return false;
+        }
+        return true;
+    }
     
     public function getUserId() {
         return $this->userId;
