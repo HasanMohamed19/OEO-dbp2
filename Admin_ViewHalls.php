@@ -8,6 +8,7 @@
 include './template/header.html';
 include './models/Hall.php';
 include './helpers/Database.php';
+
 function uploadImg() {
     //$_FILES is a PHP global array simialr to $_POST and $_GET
     if (isset($_FILES['HallImage'])) {
@@ -25,7 +26,6 @@ function uploadImg() {
         } else {
             // echo "<p>Uploaded image '$name'</p><br /><img src='$name' />";
             //the above line of code displays the image now stored in the images sub directory
-            echo "<p>Image uploaded successfully</p>";
         }
     }
     return $name;
@@ -40,28 +40,24 @@ if (isset($_POST['submitted'])) {
     $hall->setRentalCharge(trim($_POST['RntlCharge']));
     $hall->setCapacity(trim($_POST['capacity']));
     // check the uploading of the image and assigning the image path
-//    $imgFileName = uploadImg();
-//    $hall->setImagePath($imgFileName);
-
+    $imgFileName=uploadImg();
+    $hall->setImagePath($imgFileName);
     //check if Hall is valid and added it to the database
     if ($hall->isValid()) {
-        echo "<h1>Valid Inputs</h1>";
+        echo "<h1>Valid Inputs</h1> image path is:".$hall->getImagePath();
         $db = Database::getInstance();
-        $insertQry = "INSERT INTO dbProj_Hall VALUES( NULL,'HallName','description', 'rentalCharge','capacity','Null')";
-//        if ($hall->addHall()=='true') {
-//            //display book image and successful message
-//            echo "<h1>Thank you the hall has been added to the database</h1>";
-//        } else {
-//            echo "<h1>the hall has not been added :(</h1>";
-//        }
+        if ($hall->addHall()) {
+            //display book image and successful message
+            echo "<h1>Thank you the hall has been added to the database</h1>";
+        } else {
+            echo "<h1>the hall has not been added :(</h1>";
+        }
     } else {
-         echo "<h1>InValid Inputs</h1>";
-         echo "<h1>InValid Inputs</h1>".$hall->getHallName()."is Hall Name";
+        echo "<h1>InValid Inputs</h1>";
     }
 } else {
     include './template/admin/Admin_ViewHalls.html';
 }
-
 
 include './template/footer.html';
 ?>

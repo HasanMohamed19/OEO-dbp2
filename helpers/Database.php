@@ -11,48 +11,54 @@
  * @author Hassan
  */
 class Database {
-    
+
     // DB connection parameters
     private $host = "localhost";
-    private $dbName = "db202101277";
-    private $userName = "u202101277";
-    private $password = "u202101277";
-    
+    private $dbName = "db202100523";
+    private $userName = "u202100523";
+    private $password = "u202100523";
     // singleton
     public static $instance = null;
     public $dblink = null;
-    
+
     public static function getInstance() {
         if (is_null(self::$instance)) {
             self::$instance = new Database ( );
         }
         return self::$instance;
     }
-    
+
     public function __construct() {
         if (is_null($this->dblink)) {
             $this->connect();
         }
     }
-    
+
     function connect() {
         $this->dblink = mysqli_connect($this->host, $this->userName, $this->password, $this->dbName) or die("Can Not Connect!");
     }
-    
+
     public function __destruct() {
         if (!is_null($this->dblink)) {
             $this->close();
         }
     }
-    
+
     function close() {
         mysqli_close($this->dblink);
     }
-    
+
     // use prepared statements
     function querySQL($sql) {
         if ($sql != null || $sql != '') {
-            mysqli_query($this->dblink, $sql);
+            if (!mysqli_query($this->dblink, $sql)) {
+                echo "<br>Error in a Query" . mysqli_error($this->dblink) . "<br>";
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -90,8 +96,8 @@ class Database {
           $string = str_ireplace("script", "blocked", $string);
           $string = addcslashes($escaped, '%_');
 
-          $string = trim($string);*/
-          //$newString = mysqli_escape_string($this->dblink, $string); 
+          $string = trim($string); */
+        //$newString = mysqli_escape_string($this->dblink, $string); 
 
         return $string;
     }
@@ -104,5 +110,4 @@ class Database {
         }
         return $rows;
     }
-    
 }

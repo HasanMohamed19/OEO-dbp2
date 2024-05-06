@@ -98,8 +98,8 @@ class Hall {
     function addHall() {
         try {
             $db = Database::getInstance();
-            $insertQry = "INSERT INTO dbProj_Hall VALUES( NULL,'$this->hallName','$this->description', '$this->rentalCharge','$this->capacity','Null')";
-            if (!($db->querySql($insertQry))) {
+            $insertQry = "INSERT INTO dbProj_Hall(hall_id,hall_name,description,rental_charge,capacity,image_path) VALUES( NULL,'$this->hallName','$this->description', '$this->rentalCharge','$this->capacity','$this->imagePath')";
+            if (!($db->querySQL($insertQry))) {
                 echo'insert failed';
                 return false;
             }
