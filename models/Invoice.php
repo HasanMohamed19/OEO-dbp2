@@ -24,7 +24,7 @@ class Invoice {
         $this->reservationId = $reservationId;
     }
     
-    public function __construct($invoiceId, $hallCost, $cateringCost, $reservationId) {
+    public function __construct() {
         $this->invoiceId = null;
         $this->hallCost = null;
         $this->cateringCost = null;

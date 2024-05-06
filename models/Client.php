@@ -11,12 +11,16 @@
  * @author Hassan
  */
 
-enum ClientStatus: int {
-    // clientStatus with its discount rate
-    case golden = 0.2;
-    case silver = 0.1;
-    case bronze = 0.05;
-}
+//enum ClientStatus: int {
+//    // clientStatus with its discount rate
+//    case golden = 0.2;
+//    case silver = 0.1;
+//    case bronze = 0.05;
+//}
+
+const GOLDEN_STATUS = 0.2;
+const SILVER_STATUS = 0.1;
+const BRONZE_STATUS = 0.05;
 
 class Client extends User {
     
@@ -24,7 +28,7 @@ class Client extends User {
 //    private $firstName;
 //    private $lastName;
     private $balance;
-    private ClientStatus $clientStatus;
+    private $clientStatusId;
     private $userId;
     
     public function __construct() {
@@ -32,16 +36,16 @@ class Client extends User {
 //        $this->firstName = null;
 //        $this->lastName = null;
         $this->balance = null;
-        $this->clientStatus = null;
+        $this->clientStatusId = null;
         $this->userId = null;
         parent::__construct();
     }
 
     
-    public function initClientWith($clientId, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $balance, $clientStatusId, $userId, $userId, $username, $password, $email, UserRole $userRole) {
         $this->clientId = $clientId;
         $this->balance = $balance;
-        $this->clientStatus = $clientStatus;
+        $this->clientStatusId = $clientStatusId;
         $this->userId = $userId;
         parent::initWith($userId, $username, $password, $email, $userRole);
     }
@@ -59,8 +63,8 @@ class Client extends User {
         return $this->clientId;
     }
 
-    public function getClientStatus(): ClientStatus {
-        return $this->clientStatus;
+    public function getClientStatusId() {
+        return $this->clientStatusId;
     }
 
     public function setClientId($clientId) {
@@ -71,8 +75,8 @@ class Client extends User {
         $this->balance = $balance;
     }
 
-    public function setClientStatus(ClientStatus $clientStatus) {
-        $this->clientStatus = $clientStatus;
+    public function setClientStatus($clientStatusId) {
+        $this->clientStatusId = $clientStatusId;
     }
     
     public function setUserId($userId) {

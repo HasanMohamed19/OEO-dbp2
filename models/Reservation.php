@@ -24,7 +24,7 @@ class Reservation {
         $this->eventId = $eventId;
     }
 
-    public function __construct($reservationId, $hallId, $clientId, $eventId) {
+    public function __construct() {
         $this->reservationId = null;
         $this->hallId = null;
         $this->clientId = null;
