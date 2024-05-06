@@ -69,6 +69,7 @@
                 </div>
                 <!-- Additional Services Info -->
                 <div class="row mb-4 clientCard inactive">
+                    <script src="./helpers/pagination.js"></script>
                     <div class="card col p-0">
                         <div class="card-body">
                             <h3 class="card-title text-center">Additional Services</h3>
@@ -162,9 +163,22 @@
                                 </button>
                             </li>
                         </ul>
+                        
                         <!-- Item Window -->
                         <div class="tab-content rounded-bottom border border-top-0" id="cateringContent">
                             <div class="tab-pane fade show active" id="breakfast-tab-pane" aria-labelledby="breakfast-tab" role="tabpanel" tabindex="0">
+                                <!-- Pagination bar -->
+                                <nav class="pt-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
+                                    <span class="me-2">Page: </span>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
+                                    </ul>
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
+                                    </ul>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
+                                    </ul>
+                                </nav>
                                 <!-- Items List -->
                                 <div id="pagination-items-breakfast" class="d-flex justify-content-center flex-wrap gap-4 p-4">
                                     
@@ -502,16 +516,15 @@
                                     </div>
                                 </div>
                                 <!-- Pagination bar -->
-                                <!-- this needs to be created programmatically -->
                                 <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
                                     <span class="me-2">Page: </span>
                                     <ul class="pagination d-flex flex-row m-0">
-                                        <li class="page-item"><button id="pagination-first-breakfast" class="page-link mx-2 rounded border-2">First</button></li>
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
                                     </ul>
-                                    <ul id="pagination-numbers-breakfast" class="pagination d-flex flex-row m-0">
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
                                     </ul>
                                     <ul class="pagination d-flex flex-row m-0">
-                                        <li class="page-item"><button id="pagination-last-breakfast" class="page-link mx-2 rounded border-2">Last</button></li>
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -759,7 +772,7 @@
     
 window.addEventListener("load", () => {
     // load pages for first menu
-   enablePagination("breakfast"); 
+   enablePagination("breakfast", ".cateringItem");
     handleCateringCheckboxes("breakfast");
 });
 // enable catering menu tabs
@@ -771,7 +784,7 @@ triggerTabList.forEach(triggerEl => {
 //      console.log("CLICKED ON TABBB");
     event.preventDefault();
     const menuType = triggerEl.id.split("-",1)[0];
-    enablePagination(menuType);
+    enablePagination(menuType, ".cateringItem");
     handleCateringCheckboxes(menuType);
     tabTrigger.show();
   });
@@ -801,121 +814,7 @@ const handleCateringCheckboxes = (menuType) => {
 
 
 //      Catering Menus Pagination
-const enablePagination = (menuType) => {
-    const paginationNumbersDiv = document.getElementById("pagination-numbers-"+menuType);
-    const paginationList = document.getElementById("pagination-items-"+menuType);
-    const listItems = paginationList.querySelectorAll(".cateringItem");
-    const firstButton = document.getElementById("pagination-first-"+menuType);
-    const lastButton = document.getElementById("pagination-last-"+menuType);
 
-    const paginationLimit = 10;
-    const pageCount = Math.ceil(listItems.length / paginationLimit);
-    let currentPage;
-    
-    // if there are no items, dont do anything
-    if (listItems.length === 0) {
-        return;
-    }
-    
-    //  function declarations
-    
-    const appendPageNumber = (index) => {
-        const pageButton = document.createElement("button");
-        pageButton.className = "page-link ms-2 rounded border-2 pagination-number-button-"+menuType;
-        pageButton.innerHTML = index;
-        pageButton.setAttribute("page-index", index);
-        pageButton.setAttribute("type", "button");
-        const pageNumber = document.createElement("li");
-        pageNumber.className = "page-item pagination-number-"+menuType;
-        pageNumber.appendChild(pageButton);
-        paginationNumbersDiv.appendChild(pageNumber);
-    };
-    const setPaginationNumbers = () => {
-        paginationNumbersDiv.innerHTML = "";
-        for (let i = 1;i <= pageCount; i++) {
-            appendPageNumber(i);
-        }
-    };
-    
-    // will update the active page number
-    const handleActivePageNumber = () => {
-      document.querySelectorAll(".pagination-number-button-"+menuType).forEach((button) => {
-          button.classList.remove("active");
-          
-          const pageIndex = Number(button.getAttribute("page-index")); 
-           if (pageIndex === currentPage) {
-               button.classList.add("active");
-           }
-      });  
-    };
-    
-    const disableButton = (button) => {
-        button.classList.add("disabled");
-        button.setAttribute("disabled", true);
-    };
-    const enableButton = (button) => {
-        button.classList.remove("disabled");
-        button.removeAttribute("disabled");
-    };
-    const handlePageButtonsStatus = () => {
-        if (currentPage === 1) {
-            disableButton(firstButton);
-        } else {
-            enableButton(firstButton);
-        }
-        if (currentPage === pageCount) {
-            disableButton(lastButton);
-        } else {
-            enableButton(lastButton);
-        }
-    };
-    
-    const setCurrentPage = (pageNum) => {
-      currentPage = pageNum;  
-      
-      handleActivePageNumber();
-      handlePageButtonsStatus();
-      
-      const prevRange = (pageNum - 1) * paginationLimit;
-      const currRange = pageNum * paginationLimit;
-      
-      listItems.forEach((item, index) => {
-         item.classList.add("hidden");
-         if (index >= prevRange && index < currRange) {
-             item.classList.remove("hidden");
-         }
-      });
-    };
-    
-    const addPageNumberEventListeners = () => {
-        document.querySelectorAll(".pagination-number-button-"+menuType).forEach((button) => {
-           const pageIndex = Number(button.getAttribute("page-index")); 
-           if (pageIndex) {
-               button.addEventListener("click", () => {
-                  setCurrentPage(pageIndex); 
-               });
-           }
-        });
-    };
-    
-    const addFirstLastEventListeners = () => {
-        firstButton.addEventListener("click", () => {
-           setCurrentPage(1); 
-        });
-        lastButton.addEventListener("click", () => {
-           setCurrentPage(pageCount); 
-        });
-        
-    };
-    
-    
-    
-    setPaginationNumbers();
-    setCurrentPage(1);
-    addPageNumberEventListeners();
-    addFirstLastEventListeners();
-    
-};
 
 
 //      Clear Billing Form
