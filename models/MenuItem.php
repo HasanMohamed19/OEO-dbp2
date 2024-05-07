@@ -1,9 +1,6 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
+include '../helpers/Database.php';
 
 /**
  * Description of MenuItem
@@ -52,6 +49,12 @@ class MenuItem {
         $this->cateringServiceId = null;
     }
 
+    public static function getAllItems() {
+        $db = Database::getInstance();
+        $q = 'SELECT * FROM dbProj_Menu_Item;';
+        $data = $db->multiFetch($q);
+        return $data;
+    }
     
     public function getItemId() {
         return $this->itemId;
