@@ -1,4 +1,6 @@
-
+$(document).ready(function() {
+    updateSideMenu();
+});
 window.addEventListener("load", () => {
     // load pages for first menu
    enablePagination("breakfast", ".cateringItem");
@@ -62,6 +64,7 @@ let previousButton = document.querySelector(".previous");
 for (let i = 0; i < sectionButtons.length; i++) {
 //    console.log("Added listener to " + sectionButtons[i]);
     sectionButtons[i].addEventListener("click", function() {
+        updateSideMenu();
 //        console.log("Clicked on me!!");
         sections[currentSection].classList.remove("active");
         sectionButtons[currentSection].classList.remove("active");
@@ -123,3 +126,49 @@ saveButton.addEventListener("click", function() {
     // take user to summary page
     window.location.href = "booking_summary.php";
 });
+
+
+//   Update valuse for side menu
+
+const updateSideMenu = () => {
+    const updateHallDetails = (name, description, type, charge, capacity) => {
+        $('#sideMenu-hallName').html(name);
+        $('#sideMenu-hallDescription').html(description);
+        $('#sideMenu-hallType').html(type);
+        $('#sideMenu-rentalCharge').html(charge);
+        $('#sideMenu-capacity').html(capacity);
+    };
+    const updateEventDetails = (name, startDate, endDate, noAudiences) => {
+        $('#sideMenu-eventName').html(name);
+        $('#sideMenu-startDate').html(startDate);
+        $('#sideMenu-endDate').html(endDate);
+        $('#sideMenu-noAudiences').html(noAudiences);
+    };
+    
+    // use ajax to acquire the hall and use it to update side menu
+    $.ajax({
+        type: 'GET',
+        url: 'ajaxQueries/booking_getHall.php',
+        datatype: 'json'
+    }).then(function(res) {
+        let data = JSON.parse(res);
+//        if (data.error)
+        updateHallDetails(
+                data.hallName,
+                data.hallDescription,
+                "Type",
+                data.rentalCharge,
+                data.capacity
+            );
+    });
+    updateEventDetails(
+            $('#bookingEventName').val(),
+            $('#bookingStartDate').val(),
+            $('#bookingEndDate').val(),
+            $('#bookingNoAudiences').val()
+        );
+};
+
+
+//      AJAX for catering menu items
+
