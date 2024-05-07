@@ -1,6 +1,7 @@
 $(document).ready(function() {
     updateSideMenu();
     updateCateringMenus();
+    handleCateringCheckboxes('breakfast');
 });
 window.addEventListener("load", () => {
     // load pages for first menu
@@ -46,10 +47,13 @@ const handleCateringCheckboxes = (menuType) => {
 //      Clear Billing Form
 const clearBillingForm = () => {
     // get and clear inputs
-    const billingForm = document.getElementById("billingForm");
-    billingForm.querySelectorAll("input").forEach(field => {
-        field.value = "";
-    });
+    $('#billingForm input').val("");
+};
+//      Clear Card Form
+const clearCardForm = () => {
+    // get and clear inputs
+    $('#cardForm input').val("");
+    $('#cardForm select').prop('selectedIndex',0);
 };
 
 
@@ -129,7 +133,7 @@ saveButton.addEventListener("click", function() {
 });
 
 
-//   Update valuse for side menu
+//   Update values for side menu
 
 const updateSideMenu = () => {
     const updateHallDetails = (name, description, type, charge, capacity) => {

@@ -500,35 +500,58 @@
                         </div>
                         <div class="card p-4 pb-2" id="clientCompanyDetailsCard">
                             <div class="row mb-4">
-                                <div class="col">
-                                    <label class="form-label" for="paymentCardNumber">Card Number</label>
-                                    <input class="form-control" type="text" id="paymentCardNumber">
+                                <div class="col-4">
+                                    <label class="form-label" for="paymentCardSelection">Choose Saved Card</label>
+                                    <!-- If there is already a saved card, immediately fill the form with it -->
+                                    <select class="form-select" id="paymentCardSelection">
+                                        <option selected>Default Card</option>
+                                        <option value="1">Second Card</option>
+                                    </select>
                                 </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
-                                    <input class="form-control" type="text" id="paymentCardholderName">
+                                <div class="col-4 d-flex flex-column-reverse">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" class="btn btn-primary w-100" value="Save Card Below">
+                                        </div>
+                                        <div class="col">
+                                            <input type="button" class="btn btn-secondary w-100" onclick="clearCardForm()" value="Clear Form">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
-                                    <select class="form-select" id="paymentCardExpiryYear">
-                                        <option selected>Year</option>
-                                        <option value="1">1</option>
-                                        <!-- Programmatically create values 1-12 -->
-                                    </select>
+                            <hr>
+                            <div id="cardForm">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentCardNumber">Card Number</label>
+                                        <input class="form-control" type="text" id="paymentCardNumber">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
+                                        <input class="form-control" type="text" id="paymentCardholderName">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
-                                    <select class="form-select" id="paymentCardExpiryMonth">
-                                        <option selected>Month</option>
-                                        <option value="1">1</option>
-                                        <!-- Programmatically create values 1-31 -->
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <label class="form-label" for="paymentCardCVV">CVV</label>
-                                    <input class="form-control" type="text" id="paymentCardCVV">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
+                                        <select class="form-select" id="paymentCardExpiryYear">
+                                            <option selected>Year</option>
+                                            <option value="1">1</option>
+                                            <!-- Programmatically create values 1-12 -->
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
+                                        <select class="form-select" id="paymentCardExpiryMonth">
+                                            <option selected>Month</option>
+                                            <option value="1">1</option>
+                                            <!-- Programmatically create values 1-31 -->
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentCardCVV">CVV</label>
+                                        <input class="form-control" type="text" id="paymentCardCVV">
+                                    </div>
                                 </div>
                             </div>
                             <hr>
