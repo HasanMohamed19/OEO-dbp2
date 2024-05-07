@@ -324,7 +324,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="row mx-3">
                             <h6>Personal Information</h6>
                         </div>
-                        <form action="">
+                        <form action="myAccount.php" method="post">
                             <div class="container">
                                 <div class="row my-2">
                                     <div class="col">
@@ -363,7 +363,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     </div>
                                     <div class="col">
                                         <label for="gender" class="form-label">Gender</label>
-                                        <select name="gender" class="form-select" id="">
+                                        <select name="gender" class="form-select" id="n">
                                             <option value="" disabled>Gender</option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
@@ -399,6 +399,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <label for="website" class="form-label">Website</label>
                                         <input type="text" name="website" class="form-control" placeholder="Website">
                                     </div>
+                                </div>
+                                
+                                <div class="row my-2">
+                                    <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                    <input type="hidden" name="profileSubmitted" value="1">
                                 </div>
 
                             </div>

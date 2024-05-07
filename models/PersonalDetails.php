@@ -11,10 +11,8 @@
  * @author Hassan
  */
 
-enum Gender {
-    case M;
-    case F;
-}
+const M = 'M';
+const F = 'F';
 
 class PersonalDetails {
     
@@ -23,7 +21,7 @@ class PersonalDetails {
     private $lastName;
 //    private $department;
     private $age;
-    private Gender $gender;
+    private $gender;
     private $nationality;
     private $clientId;
     
@@ -37,7 +35,7 @@ class PersonalDetails {
         $this->clientId = null;
     }
 
-        public function initWith($personalDetialId, $firstName, $lastName, $age, Gender $gender, $nationality, $clientId) {
+        public function initWith($personalDetialId, $firstName, $lastName, $age, $gender, $nationality, $clientId) {
         $this->personalDetialId = $personalDetialId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -45,6 +43,52 @@ class PersonalDetails {
         $this->gender = $gender;
         $this->nationality = $nationality;
         $this->clientId = $clientId;
+    }
+    
+    function addPersonalDetails() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                // TODO: get client_id from cookie
+                $q = "INSERT INTO dbProj_PersonalDetails (personal_details_id, first_name, last_name, dob, gender, nationality, client_id)
+                 VALUES (NULL,' $this->firstName','$this->lastName','$this->age','$this->gender','$this->nationality','$this->clientId')"; 
+                $data = $db->querySql($q);
+                var_dump($q);
+                 return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    function getAllPersonalDetails() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_PersonalDetails");
+        return $data;
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->firstName))
+            $errors = false;
+        
+        if (empty($this->lastName))
+            $errors = false;
+        
+        if (empty($this->age))
+            $errors = false;
+
+        if (empty($this->gender))
+            $errors = false;
+        
+        if (empty($this->nationality))
+            $errors = false;
+
+        return $errors;
     }
 
     
@@ -68,7 +112,7 @@ class PersonalDetails {
         return $this->age;
     }
 
-    public function getGender(): Gender {
+    public function getGender() {
         return $this->gender;
     }
 
@@ -100,7 +144,7 @@ class PersonalDetails {
         $this->age = $age;
     }
 
-    public function setGender(Gender $gender) {
+    public function setGender($gender) {
         $this->gender = $gender;
     }
 

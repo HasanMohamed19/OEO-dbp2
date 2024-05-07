@@ -36,7 +36,49 @@ class CompanyDetails {
         $this->website = $website;
         $this->clientId = $clientId;
     }
+    
+    function addCompanyDetails() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                // TODO: get client_id from cookie
+                $q = "INSERT INTO dbProj_CompanyDetails (company_id, name, company_size, city, website, client_id)
+                 VALUES (NULL,' $this->name','$this->comapnySize','$this->city','$this->website','$this->clientId')"; 
+                $data = $db->querySql($q);
+                var_dump($q);
+                 return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    function getAllCompanyDetails() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_CompanyDetails");
+        return $data;
+    }
+    
+    public function isValid() {
+        $errors = true;
 
+        if (empty($this->name))
+            $errors = false;
+        
+        if (empty($this->comapnySize))
+            $errors = false;
+        
+        if (empty($this->city))
+            $errors = false;
+
+        if (empty($this->website))
+            $errors = false;
+
+        return $errors;
+    }
     
     public function getComapnyId() {
         return $this->comapnyId;
