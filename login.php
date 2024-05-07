@@ -1,9 +1,10 @@
 <?php
-
-// include 'header.php';
-
-include 'debugging.php';
 include './template/header.html';
+include 'header.php';
+// start_session();
+
+// include 'debugging.php';
+
     
 echo '<div class="main">';
 include './template/login.html';
@@ -23,9 +24,10 @@ if (isset($_POST['submitted'])) {
     // echo 'manually: ' . $login->login($username, $password) . ' is';
     
     if ($login->login($username, $password)) {
+        header('Location: index.php');
         echo "Success";
     } else {
-        echo "Wrong Credintals";
+        echo $error = "Wrong Credintals";
     }
 
     // if ($login->login($username, $password)) {

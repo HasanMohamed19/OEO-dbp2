@@ -20,7 +20,7 @@ Class Login extends User {
 
     function check_session() {
 
-        if (!empty($_SESSION['uid'])) {
+        if (!empty($_SESSION['userId'])) {
             $this->ok = true;
             return true;
         }
@@ -29,9 +29,9 @@ Class Login extends User {
     }
 
     function check_cookie() {
-        if (!empty($_COOKIE['uid'])) {
+        if (!empty($_COOKIE['userId'])) {
             $this->ok = true;
-            return $this->check($_COOKIE['uid']);
+            return $this->check($_COOKIE['userId']);
         }
         else
             return false;
@@ -59,11 +59,8 @@ Class Login extends User {
 
         try {
             $this->checkUser($username, $password);
-            echo 'login function first echo: ';
-            // echo 'User: ' . $this->getUsername() . 'password    ' . $this->getPassword();
             if ($this->getUserId() != null) {
                 $this->ok = true;
-                echo '<h1>Inside login function</h1>';
                 $_SESSION['userId'] = $this->getUserId();
                 $_SESSION['username'] = $this->getUsername();
                 setcookie('userId', $_SESSION['userId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
@@ -71,7 +68,6 @@ Class Login extends User {
 
                 return true;
             } else {
-                echo 'NULLLLL';
                 $error[] = 'Wrong Username OR password';
             }
             return false;

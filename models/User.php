@@ -40,8 +40,8 @@ class User {
 
     function initWithUserid($userid) {
         $db = Database::getInstance();
-        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE user_id = ' . $userId);
-        $this->initWith($data->userId, $data->username, $data->password, $data->email, $data->roleId);
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE user_id = ' . $userid);
+        $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
     }
 
     public function isValid() {
@@ -87,9 +87,7 @@ class User {
     function checkUser($username, $password) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $username . '\' AND password = \'' . $password . '\'');
-        echo "Username: $username, Password: $password\n";
-        $this->initWith($data->userId, $data->username, $data->password, $data->email, $data->roleId);
-        echo "after initating: Username: $this->username, Password: $this->password\n";
+        $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
     }
 
     function initWithUsername() {

@@ -1,6 +1,6 @@
 <?php
 
-include './models/Login.php';
+// include './models/Login.php';
 
 session_start();
 
@@ -14,13 +14,12 @@ session_start();
 // }
 
 
-$obj = new Login();
-if (!$obj->ok) {
-    if($_SERVER['PHP_SELF'] != '/~u202101277/Users/index.php'){
-        header('Location: index.php');
-        die();
-    }    
-    
-}
+// $obj = new Login();
+// if (!$obj->ok) {
+//     if($_SERVER['PHP_SELF'] != '/~u202101277/OEOProject/login.php'){
+//         header('Location: login.php');
+//         die();
+//     }    
+// }
 
 ?>
