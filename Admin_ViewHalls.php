@@ -23,6 +23,7 @@ function uploadImg() {
         if ($_FILES['HallImage']['error'] > 0) {
             echo "<p>There was an error</p>";
             echo $_FILES['HallImage']['error'];
+            return "";
         } else {
             // echo "<p>Uploaded image '$name'</p><br /><img src='$name' />";
             //the above line of code displays the image now stored in the images sub directory
@@ -41,23 +42,35 @@ if (isset($_POST['submitted'])) {
     $hall->setCapacity(trim($_POST['capacity']));
     // check the uploading of the image and assigning the image path
     $imgFileName=uploadImg();
-    $hall->setImagePath($imgFileName);
+    //check if file name != //images
+    if ($imgFileName != ""){
+        $hall->setImagePath($imgFileName);
+    }
     //check if Hall is valid and added it to the database
     if ($hall->isValid()) {
-        echo "<h1>Valid Inputs</h1> image path is:".$hall->getImagePath();
+        echo "<h1>Valid Inputs</h1>";
         $db = Database::getInstance();
         if ($hall->addHall()) {
             //display book image and successful message
             echo "<h1>Thank you the hall has been added to the database</h1>";
         } else {
-            echo "<h1>the hall has not been added :(</h1>";
+            echo "<h1>the hall has not been added :( </h1>";
         }
     } else {
         echo "<h1>InValid Inputs</h1>";
     }
-} else {
-    include './template/admin/Admin_ViewHalls.html';
 }
+
+if (isset($_POST['deleteSubmitted'])) {
+    $hallID = trim($_POST['hallId']);
+    $deletedHall = new Hall();
+    $deletedHall->initWithHallid($hallID);
+    if ($deletedHall->deleteHall()){
+        echo 'Hall with this ID has been deleted : ' . $hallID;
+    }  
+}
+
+include './template/admin/DisplayHalls.php';
 
 include './template/footer.html';
 ?>

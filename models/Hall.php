@@ -47,6 +47,12 @@ class Hall {
         $this->imagePath = $imagePath;
     }
 
+    public function initWithHallid($id) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $id);
+        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
+    }
+
     public function getHallId() {
         return $this->hallId;
     }
@@ -95,14 +101,32 @@ class Hall {
         $this->imagePath = $imagePath;
     }
 
+    function getAllHalls() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch('Select * from dbProj_Hall');
+        return $data;
+    }
+
     function addHall() {
         try {
             $db = Database::getInstance();
             $insertQry = "INSERT INTO dbProj_Hall(hall_id,hall_name,description,rental_charge,capacity,image_path) VALUES( NULL,'$this->hallName','$this->description', '$this->rentalCharge','$this->capacity','$this->imagePath')";
             if (!($db->querySQL($insertQry))) {
-                echo'insert failed';
+                echo'insert failed  :(';
                 return false;
             }
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
+    function deleteHall() {
+        try {
+            $db = Database::getInstance();
+            $deleteQry = $db->querySQL("Delete from dbProj_Hall where hall_id=" . $this->hallId);
+//            unlink($this->imagePath);
             return true;
         } catch (Exception $e) {
             echo 'Exception: ' . $e;
@@ -121,8 +145,9 @@ class Hall {
 
         if (empty($this->capacity))
             $errors[] = 'You must enter a Capacity';
-//        if (empty($this->imagePath))
-////            $errors[] = 'You must add an Image';
+
+        if (empty($this->imagePath))
+            $errors[] = 'You must add an Image';
 
         if (empty($errors))
             return true;
