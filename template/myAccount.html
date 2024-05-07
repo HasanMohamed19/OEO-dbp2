@@ -263,7 +263,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="">
+                                    <form action="myAccount.php" method="post">
                                         <div class="row">
                                             <div class="col">
                                                 <label for="paymentType" class="form-label">Payment Type</label>
@@ -275,7 +275,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                             </div>
                                             <div class="col">
                                                 <label for="cardNumber" class="form-label">Card Number</label>
-                                                <input type="number" maxlength="16" class="form-control">
+                                                <input type="number" maxlength="16" class="form-control" name="cardNumber">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -304,6 +304,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                                         <div class="row mt-3">
                                             <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                            <input hidden type="submit" name="submitted" value="1">
                                         </div>
 
                                     </form>
@@ -336,7 +337,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
 
                     </div>
-                    <!-- end of Walletr & Royalty Points -->
+                    <!-- end of Wallet & Royalty Points -->
 
                     <!--Profile -->
                     <div class="card col shadow-sm ms-4 px-0 inactive">

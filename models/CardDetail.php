@@ -36,6 +36,50 @@ class CardDetail {
         $this->expiryDate = null;
         $this->clientId = null;
     }
+
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->cardholderName))
+            $errors = false;
+        
+        if (empty($this->cardNumber))
+            $errors = false;
+        
+        if (empty($this->CVV))
+            $errors = false;
+
+        if (empty($this->expiryDate))
+            $errors = false;
+
+        return $errors;
+    }
+
+    // add parameter for id later
+    function getAllCards() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_Card_Detail");
+        return $data;
+    }
+
+    function addCard() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                // TODO: get client_id from cookie
+                $q = 'INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
+                 VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',' . $this->expiryDate . '\',' . $this->clientId . ')';
+                $data = $db->querySql($q);
+                var_dump($q);
+                 return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     
     public function getCardId() {
         return $this->cardId;
