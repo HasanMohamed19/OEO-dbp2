@@ -21,8 +21,6 @@ function uploadImg() {
         //above moves uploaded file from temp to web directory
 
         if ($_FILES['HallImage']['error'] > 0) {
-            echo "<p>There was an error</p>";
-            echo $_FILES['HallImage']['error'];
             return "";
         } else {
             // echo "<p>Uploaded image '$name'</p><br /><img src='$name' />";
@@ -41,23 +39,20 @@ if (isset($_POST['submitted'])) {
     $hall->setRentalCharge(trim($_POST['RntlCharge']));
     $hall->setCapacity(trim($_POST['capacity']));
     // check the uploading of the image and assigning the image path
-    $imgFileName=uploadImg();
+    $imgFileName = uploadImg();
     //check if file name != //images
-    if ($imgFileName != ""){
+    if ($imgFileName != "") {
         $hall->setImagePath($imgFileName);
     }
     //check if Hall is valid and added it to the database
     if ($hall->isValid()) {
-        echo "<h1>Valid Inputs</h1>";
         $db = Database::getInstance();
         if ($hall->addHall()) {
             //display book image and successful message
-            echo "<h1>Thank you the hall has been added to the database</h1>";
-        } else {
-            echo "<h1>the hall has not been added :( </h1>";
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Hall has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
     } else {
-        echo "<h1>InValid Inputs</h1>";
+        echo '<br><div class="container"><div class="alert alert-danger alert-dismissible fade show" role="alert">The form has not been added :(<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
 
@@ -65,9 +60,9 @@ if (isset($_POST['deleteSubmitted'])) {
     $hallID = trim($_POST['hallId']);
     $deletedHall = new Hall();
     $deletedHall->initWithHallid($hallID);
-    if ($deletedHall->deleteHall()){
+    if ($deletedHall->deleteHall()) {
         echo 'Hall with this ID has been deleted : ' . $hallID;
-    }  
+    }
 }
 
 include './template/admin/DisplayHalls.php';
