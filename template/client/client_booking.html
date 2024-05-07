@@ -716,8 +716,8 @@
                                     <input class="form-control" type="text" id="paymentCardNumber">
                                 </div>
                                 <div class="col">
-                                    <label class="form-label" for="paymentCardCVV">CVV</label>
-                                    <input class="form-control" type="text" id="paymentCardCVV">
+                                    <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
+                                    <input class="form-control" type="text" id="paymentCardholderName">
                                 </div>
                             </div>
                             <div class="row mb-4">
@@ -729,12 +729,17 @@
                                         <!-- Programmatically create values 1-12 -->
                                     </select>
                                 </div>
-                                <div class="col d-flex align-items-end">
+                                <div class="col">
+                                    <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
                                     <select class="form-select" id="paymentCardExpiryMonth">
                                         <option selected>Month</option>
                                         <option value="1">1</option>
                                         <!-- Programmatically create values 1-31 -->
                                     </select>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardCVV">CVV</label>
+                                    <input class="form-control" type="text" id="paymentCardCVV">
                                 </div>
                             </div>
                             <hr>
