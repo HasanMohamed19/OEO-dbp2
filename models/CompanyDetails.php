@@ -45,7 +45,7 @@ class CompanyDetails {
                 $q = "INSERT INTO dbProj_CompanyDetails (company_id, name, company_size, city, website, client_id)
                  VALUES (NULL,' $this->name','$this->comapnySize','$this->city','$this->website','$this->clientId')"; 
                 $data = $db->querySql($q);
-                var_dump($q);
+//                var_dump($q);
                  return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
@@ -54,6 +54,17 @@ class CompanyDetails {
         } else {
             return false;
         }
+    }
+    
+    function initWithClientId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT * FROM dbProj_CompanyDetails WHERE client_id = '$this->clientId'");
+        $this->initWith($data->company_id, $data->name, $data->company_size, $data->city, $data->website, $data->client_id);
+//        var_dump($data);
+        if ($data != null) {
+            return false;
+        }
+        return true;
     }
     
     function getAllCompanyDetails() {

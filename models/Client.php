@@ -11,12 +11,10 @@
  * @author Hassan
  */
 
-enum ClientStatus: int {
-    // clientStatus with its discount rate
-    case golden = 0.2;
-    case silver = 0.1;
-    case bronze = 0.05;
-}
+const Gold = 0.2;
+const Silver = 0.1;
+const Bronze = 0.05;
+const None = 0;
 
 class Client extends User {
     
@@ -24,7 +22,7 @@ class Client extends User {
 //    private $firstName;
 //    private $lastName;
     private $balance;
-    private ClientStatus $clientStatus;
+    private $clientStatus;
     private $userId;
     
     public function __construct() {
@@ -38,7 +36,7 @@ class Client extends User {
     }
 
     
-    public function initClientWith($clientId, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $balance, $clientStatus, $userId, $username, $password, $email, UserRole $userRole) {
         $this->clientId = $clientId;
         $this->balance = $balance;
         $this->clientStatus = $clientStatus;
@@ -78,5 +76,14 @@ class Client extends User {
     public function setUserId($userId) {
         $this->userId = $userId;
     }
+    
+//    function getClientStatusName($client_id) {
+//        $db = Database::getInstance();
+//        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
+//        if ($data != null) {
+//            return false;
+//        }
+//        return true;
+//    }
     
 }
