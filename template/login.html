@@ -39,9 +39,9 @@
                                     <div class="text-center">
                                         <h1 class="h1 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form class="user account-form">
-                                        <input type="text" class="form-control form-control-user" id="username" placeholder="@Username">
-                                        <input type="password" class="form-control form-control-user" id="pass" placeholder="Password">
+                                    <form class="user account-form" action="login.php" method="post">
+                                        <input type="text" class="form-control form-control-user" id="username" placeholder="Username" name="username">
+                                        <input type="password" class="form-control form-control-user" id="password" placeholder="Password" name="password">
                                         <div class="row">
                                                 <div class="col-md-6">
                                                     <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -52,7 +52,9 @@
                                                 </div>
                                             </div>
                                         <div class="text-center">
+                                            <!-- <button type="submit" class="btn btn-primary" id="loginBtn">Login</button> -->
                                             <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
+                                            <input type="hidden" name="submitted" value="1" />
                                         </div>
                                     </form>
                                     <div class="text-center">

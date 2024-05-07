@@ -38,6 +38,12 @@ class User {
         $this->roleId = $roleId;
     }
 
+    function initWithUserid($userid) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE user_id = ' . $userId);
+        $this->initWith($data->userId, $data->username, $data->password, $data->email, $data->roleId);
+    }
+
     public function isValid() {
         $errors = true;
 
@@ -78,6 +84,14 @@ class User {
         }
     }
 
+    function checkUser($username, $password) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $username . '\' AND password = \'' . $password . '\'');
+        echo "Username: $username, Password: $password\n";
+        $this->initWith($data->userId, $data->username, $data->password, $data->email, $data->roleId);
+        echo "after initating: Username: $this->username, Password: $this->password\n";
+    }
+
     function initWithUsername() {
 
         $db = Database::getInstance();
@@ -91,11 +105,17 @@ class User {
     function initWithEmail() {
 
         $db = Database::getInstance();
-        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $this->email . '\'');
+        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE email = \'' . $this->email . '\'');
         if ($data != null) {
             return false;
         }
         return true;
+    }
+
+    function getAllUsers() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("Select * from dbProj_User");
+        return $data;
     }
     
     public function getUserId() {
