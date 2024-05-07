@@ -1,6 +1,6 @@
 <?php
 
-include './helpers/Database.php';
+include_once './helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -36,6 +36,45 @@ class CardDetail {
         $this->CVV = null;
         $this->expiryDate = null;
         $this->clientId = null;
+    }
+    
+    public function addCardDetail() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $q = 'INSERT INTO `dbProj_Card_Detail`(`card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id`)
+                 VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',\''. $this->expiryDate.'\','.$this->clientId.')';
+                $data = $db->querySql($q);
+                var_dump($q);
+                return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->cardholderName))
+            $errors = false;
+        
+        if (empty($this->cardNumber))
+            $errors = false;
+        
+        if (empty($this->CVV))
+            $errors = false;
+
+        if (empty($this->expiryDate))
+            $errors = false;
+
+        if (empty($this->clientId) || $this->clientId <= 0)
+            $errors = false;
+
+        return $errors;
     }
     
     public function getCardId() {

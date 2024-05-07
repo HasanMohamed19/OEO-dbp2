@@ -1,7 +1,6 @@
 <?php
 
-include './helpers/Database.php';
-
+include_once './helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -40,6 +39,48 @@ class Event {
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->audienceNumber = $audience;
+    }
+    
+    public function addEvent() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $q = 'INSERT INTO `dbProj_Event`(`event_id`, `event_name`, `start_date`, `end_date`, `start_time`, `end_time`, `audience_number`)
+                 VALUES (NULL, \'' . $this->name . '\',\'' . $this->startDate . '\',\'' . $this->endDate . '\',\'' . $this->startTime . '\',\''. $this->endTime.'\','.$this->audienceNumber.')';
+                $data = $db->querySql($q);
+                var_dump($q);
+                return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->name))
+            $errors = false;
+        
+        if (empty($this->startDate))
+            $errors = false;
+        
+        if (empty($this->endDate))
+            $errors = false;
+
+        if (empty($this->startTime))
+            $errors = false;
+
+        if (empty($this->endTime))
+            $errors = false;
+
+        if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
+            $errors = false;
+
+        return $errors;
     }
     
     public function getEventId() {

@@ -1,6 +1,6 @@
 <?php
 
-include './helpers/Database.php';
+include_once './helpers/Database.php';
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

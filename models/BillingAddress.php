@@ -1,6 +1,6 @@
 <?php
 
-include './helpers/Database.php';
+include_once './helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -42,6 +42,51 @@ class BillingAddress {
         $this->blockNumber = null;
         $this->country = null;
         $this->clientId = null;
+    }
+    
+    public function addBillingAddress() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $q = 'INSERT INTO `dbProj_Billing_Address`(`address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id`)
+                 VALUES (NULL, \'' . $this->phoneNumber . '\',\'' . $this->roadNumber . '\',\'' . $this->buildingNumber . '\',\'' . $this->blockNumber . '\',\''. $this->city.'\',\''.$this->country.'\','.$this->clientId.')';
+                $data = $db->querySql($q);
+                var_dump($q);
+                return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->phoneNumber))
+            $errors = false;
+        
+        if (empty($this->roadNumber))
+            $errors = false;
+        
+        if (empty($this->buildingNumber))
+            $errors = false;
+
+        if (empty($this->blockNumber))
+            $errors = false;
+
+        if (empty($this->city))
+            $errors = false;
+
+        if (empty($this->country))
+            $errors = false;
+
+        if (empty($this->clientId) || $this->clientId <= 0)
+            $errors = false;
+
+        return $errors;
     }
     
     public function getAddressId() {
