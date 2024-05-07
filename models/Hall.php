@@ -1,5 +1,7 @@
 <?php
 
+include '../helpers/Database.php';
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -35,6 +37,12 @@ class Hall {
         $this->rentalCharge = $rentalCharge;
         $this->capacity = $capacity;
         $this->imagePath = $imagePath;
+    }
+    
+    public function initWithId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $this->hallId );
+        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
     }
     
     public function getHallId() {
