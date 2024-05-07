@@ -82,6 +82,29 @@ class PersonalDetails {
         return $data;
     }
     
+    function updatePersonalDetails() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $data = "UPDATE dbProj_PersonalDetails
+                        SET first_name = '$this->firstName',
+                            last_name = '$this->lastName',
+                            dob = '2025-5-5',
+                            gender = 'M',
+                            nationality = '$this->nationality'
+                        WHERE client_id = '$this->clientId';   ";
+                $db->querySql($data);
+                return true;
+            } catch (Exception $ex) {
+                echo 'Exception: ' . $ex;
+                return false;
+            }
+        } 
+//        else {
+//            return false;
+//        }
+    }
+    
     public function isValid() {
         $errors = true;
 

@@ -48,32 +48,46 @@
         echo $company->getCity() . ' city ';
         
         // personal fields
-//        $personal->setFirstName($_POST['firstname']);
-//        $personal->setLastName($_POST['lastname']);
-//        $personal->setNationality($_POST['nationality']);
-//        $personal->setAge('2022-5-3');
-//        $personal->setGender('M');
+        $personal->setFirstName($_POST['firstname']);
+        $personal->setLastName($_POST['lastname']);
+        $personal->setNationality($_POST['nationality']);
+        $personal->setAge('2022-5-3');
+        $personal->setGender('M');
 //        $personal->setClientId('1');
         
         // company details
-//        $company->setName($_POST['companyname']);
-//        $company->setComapnySize($_POST['companysize']);
-//        $company->setCity($_POST['city']);
-//        $company->setWebsite($_POST['website']);
+        $company->setName($_POST['companyname']);
+        $company->setComapnySize($_POST['companysize']);
+        $company->setCity($_POST['city']);
+        $company->setWebsite($_POST['website']);
 //        $company->setClientId('1');
         
-        // upload company details
-        if ($company->addCompanyDetails()) {
-            echo 'added details successfully';
+        if ($company->updateCompanyDetails()) {
+             echo 'updated company details successfully';
         } else {
-            echo 'didnt add details';
+            echo 'not updated company';
         }
         
-        if ($personal->addPersonalDetails()) {
-            echo 'added personal details successfully';
+        if ($personal->updatePersonalDetails()) {
+             echo 'updated personal details successfully';
         } else {
-            echo 'didnt add details';
+            echo 'not updated personal';
         }
+        
+        // upload company details this will be for registration
+//        if ($company->addCompanyDetails()) {
+//            echo 'added details successfully';
+//        } else {
+//            echo 'didnt add details';
+//        }
+//        
+//        if ($personal->addPersonalDetails()) {
+//            echo 'added personal details successfully';
+//        } else {
+//            echo 'didnt add details';
+//        }
+        
+        
         
     }
 

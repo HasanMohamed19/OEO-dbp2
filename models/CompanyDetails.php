@@ -67,6 +67,28 @@ class CompanyDetails {
         return true;
     }
     
+    function updateCompanyDetails() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $data = "UPDATE dbProj_CompanyDetails
+                        SET name = '$this->name',
+                            company_size = '$this->comapnySize',
+                            city = '$this->city',
+                            website = '$this->website'
+                        WHERE client_id = '$this->clientId'";
+                $db->querySql($data);
+                return true;
+            } catch (Exception $ex) {
+                echo 'Exception: ' . $ex;
+                return false;
+            }
+        } 
+//        else {
+//            return false;
+//        }
+    }
+    
     function getAllCompanyDetails() {
         $db = Database::getInstance();
         $data = $db->multiFetch("SELECT * FROM dbProj_CompanyDetails");
