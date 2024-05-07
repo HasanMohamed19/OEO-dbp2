@@ -67,8 +67,8 @@ class CardDetail {
             try {
                 $db = Database::getInstance();
                 // TODO: get client_id from cookie
-                $q = 'INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
-                 VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',' . $this->expiryDate . '\',' . $this->clientId . ')';
+                $q = "INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
+                 VALUES (NULL,' $this->cardholderName','$this->cardNumber','$this->CVV','$this->expiryDate','$this->clientId')"; 
                 $data = $db->querySql($q);
                 var_dump($q);
                  return true;

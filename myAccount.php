@@ -10,14 +10,17 @@
     include './helpers/Database.php';
     include './models/CardDetail.php';
 
+    
+    
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
         $card->setCardholderName('hasan');
-        $card->setCardNumber('1234 5678 9012 3456');
-        $card->setCVV('333');
+        $card->setCardNumber($_POST['cardNumber']);
+        $card->setCVV($_POST['CVV']);
         $card->setExpiryDate('5-5-2025');
-        $card->setClientId('1000');
-
+        // get from the cookie
+        $card->setClientId('1');
+        
         if ($card->addCard()) {
             echo 'added card successfully';
             echo 'console.log("added card")';
