@@ -19,10 +19,10 @@
 //    case ColdBeverages = 4;
 //}
 
-const BREAKFAST = 1;
-const LUNCH = 2;
-const HotBeverages = 3;
-const ColdBeverages = 4;
+const MENU_BREAKFAST = 1;
+const MENU_LUNCH = 2;
+const MENU_HOT_BEVERAGES = 3;
+const MENU_COLD_BEVERAGES = 4;
 
 class MenuItem {
     

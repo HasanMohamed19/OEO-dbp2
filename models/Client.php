@@ -42,12 +42,12 @@ class Client extends User {
     }
 
     
-    public function initClientWith($clientId, $balance, $clientStatusId, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $balance, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;
         $this->balance = $balance;
         $this->clientStatusId = $clientStatusId;
         $this->userId = $userId;
-        parent::initWith($userId, $username, $password, $email, $userRole);
+        parent::initWith($userId, $username, $password, $email, $roleId);
     }
 
     
