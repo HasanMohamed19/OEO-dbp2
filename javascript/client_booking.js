@@ -194,21 +194,21 @@ const updateCateringMenus = () => {
         }
     };
     
-    const addMenuItem = (index, menuId, itemName, itemPrice, itemImagePath) => {
+    const addMenuItem = (item_id, menuId, itemName, itemPrice, itemImagePath) => {
         let menuName = getMenuName(parseInt(menuId));
         $('#pagination-items-'+menuName).append(
                 `
-        <div id="catering-item-${menuName}-${index}" class="card p-0 cateringItem">
+        <div id="catering-item-${menuName}-${item_id}" class="card p-0 cateringItem">
             <img class="card-img-top img-fluid" src="${itemImagePath}">
             <div class="card-body">
                 <h3 class="card-title text-center fs-5">${itemName}</h3>
                 <p class="card-text text-center"><strong>${itemPrice} BHD</strong></p>
                 <div class="row">
                     <div class="col-2 offset-1">
-                        <input id="catering-item-${menuName}-${index}-check" class="cateringItemCheck" type="checkbox">
+                        <input id="catering-item-${menuName}-${item_id}-check" class="cateringItemCheck" type="checkbox">
                     </div>
                     <div class="col-8">
-                        <input id="catering-item-${menuName}-${index}-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
+                        <input id="catering-item-${menuName}-${item_id}-quantity" name="catering-item-${item_id}-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
                     </div>
                 </div>
             </div>
@@ -235,7 +235,7 @@ const updateCateringMenus = () => {
         let data = JSON.parse(res);
         let menuCounts = [0,0,0,0];
         $.each(data, function(index, obj) {
-            addMenuItem(index, obj.service_id, obj.name, obj.price, obj.image_path);
+            addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
             menuCounts[parseInt(obj.service_id)-1] += 1;
         });
         $.each(menuCounts, function(index, value) {

@@ -87,7 +87,7 @@
             </div>
             <!-- Forms -->
             <div class="clientBookingForm px-4">
-                <form id="bookingForm" method="POST">
+                <form id="bookingForm" method="POST" action="client_booking.php">
                     <!-- Event Details -->
                     <fieldset class="active">
                         <div class="row mb-4">
@@ -123,7 +123,7 @@
                         <div class="row mb-4">
                             <div class="form-group col">
                                 <label for="bookingNotes" class="form-label">Notes</label>
-                                <textarea id="bookingNotes" name="bookingEventName"  class="form-control" placeholder="Type here"></textarea>
+                                <textarea id="bookingNotes" name="bookingEventNotes"  class="form-control" placeholder="Type here"></textarea>
                             </div>
                         </div>
 <!--                        <div class="row mb-4">
@@ -464,29 +464,29 @@
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingBuilding">
+                                        <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding">
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingStreet">
+                                        <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet">
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBlock">Block</label>
-                                        <input class="form-control" type="text" id="paymentBillingBlock">
+                                        <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock">
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingArea">Area</label>
-                                        <input class="form-control" type="text" id="paymentBillingArea">
+                                        <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea">
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingCountry">Country</label>
-                                        <input class="form-control" type="text" id="paymentBillingCountry">
+                                        <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry">
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingPhone">Phone Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingPhone">
+                                        <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone">
                                     </div>
                                 </div>
                             </div>
@@ -524,17 +524,17 @@
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentCardNumber">Card Number</label>
-                                        <input class="form-control" type="text" id="paymentCardNumber">
+                                        <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber">
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
-                                        <input class="form-control" type="text" id="paymentCardholderName">
+                                        <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName">
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
-                                        <select class="form-select" id="paymentCardExpiryYear">
+                                        <select class="form-select" id="paymentCardExpiryYear" name="paymentCardExpiryYear">
                                             <option selected>Year</option>
                                             <option value="1">1</option>
                                             <!-- Programmatically create values 1-12 -->
@@ -542,7 +542,7 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
-                                        <select class="form-select" id="paymentCardExpiryMonth">
+                                        <select class="form-select" id="paymentCardExpiryMonth" name="paymentCardExpiryMonth">
                                             <option selected>Month</option>
                                             <option value="1">1</option>
                                             <!-- Programmatically create values 1-31 -->
@@ -550,7 +550,7 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardCVV">CVV</label>
-                                        <input class="form-control" type="text" id="paymentCardCVV">
+                                        <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV">
                                     </div>
                                 </div>
                             </div>
@@ -577,7 +577,7 @@
                             <input type="button" class="previous btn btn-secondary me-4 hide" value="Previous">
                             <input type="button" class="next btn btn-primary" value="Next">
                             <!-- This button only shows up at the last screen -->
-                            <input type="button" class="save btn btn-primary hide" value="Complete Booking">
+                            <input type="submit" class="save btn btn-primary hide" value="Complete Booking">
                         </div>
                     </div>
                 </form>
