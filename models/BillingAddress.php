@@ -52,6 +52,7 @@ class BillingAddress {
                  VALUES (NULL, \'' . $this->phoneNumber . '\',\'' . $this->roadNumber . '\',\'' . $this->buildingNumber . '\',\'' . $this->blockNumber . '\',\''. $this->city.'\',\''.$this->country.'\','.$this->clientId.')';
                 $data = $db->querySql($q);
                 var_dump($q);
+                $this->addressId = mysqli_insert_id($db->dblink);
                 return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;

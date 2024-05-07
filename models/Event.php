@@ -49,6 +49,7 @@ class Event {
                  VALUES (NULL, \'' . $this->name . '\',\'' . $this->startDate . '\',\'' . $this->endDate . '\',\'' . $this->startTime . '\',\''. $this->endTime.'\','.$this->audienceNumber.')';
                 $data = $db->querySql($q);
                 var_dump($q);
+                $this->eventId = mysqli_insert_id($db->dblink);
                 return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;

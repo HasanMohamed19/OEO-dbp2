@@ -45,6 +45,7 @@ class CardDetail {
                 $q = 'INSERT INTO `dbProj_Card_Detail`(`card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id`)
                  VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',\''. $this->expiryDate.'\','.$this->clientId.')';
                 $data = $db->querySql($q);
+                $this->cardId = mysqli_insert_id($db->dblink);
                 var_dump($q);
                 return true;
             } catch (Exception $e) {

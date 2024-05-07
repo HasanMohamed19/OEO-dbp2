@@ -44,19 +44,34 @@ if (isset($_POST['submitted'])) {
     $expiryDate = trim($_POST['paymentCardExpiryYear']).'-'.trim($_POST['paymentCardExpiryMonth']).'-28';
     $card->setExpiryDate($expiryDate);
     $card->setClientId(1);
-    if (!card->isValid()) {
+    if (!$card->isValid()) {
         die('Card not valid!');
     } 
     
-    if ($event->addEvent() && $card->addCardDetail()
-            && $billing->addBillingAddress()) {
-        echo "Success!";
-    } else {
-        echo "FAILURE";
-    }
+    // get id for the event
+    if ($event->addEvent() ) {
+        
+        $eventId = $event->getEventId();
 
-//    $reservation = new Reservation();
-//    $reservation->setNotes($_POST['bookingEventNotes']);
+//        echo "IDS: $eventId";
+        
+        // use ids for reservation
+        $reservation = new Reservation();
+        $reservation->setNotes($_POST['bookingEventNotes']);
+        $reservation->setHallId(1000);
+        $reservation->setClientId(1);
+        $reservation->setEventId($eventId);
+        $reservation->setStatusId(RESERVATION_RESERVED);
+        $reservation->setPrice($_POST['bookingPrice']);
+        
+        if ($billing->addBillingAddress() && $card->addCardDetail()) {
+
+        }
+    } 
+    
+
+    
+
 //    
 //    $menuItems = $_POST['menuItems'];
     //$menuItem = new ReservationMenuItem();
