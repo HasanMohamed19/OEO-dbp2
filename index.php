@@ -2,7 +2,7 @@
 
 include './template/header.html';
     
-include './template/home.html';
+include './template/home2.html';
 
 include './template/footer.html';
 ?>
