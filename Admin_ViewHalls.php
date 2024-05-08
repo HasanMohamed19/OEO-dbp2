@@ -61,7 +61,7 @@ if (isset($_POST['deleteSubmitted'])) {
     $deletedHall = new Hall();
     $deletedHall->initWithHallid($hallID);
     if ($deletedHall->deleteHall()) {
-        echo 'Hall with this ID has been deleted : ' . $hallID;
+         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Hall has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
 

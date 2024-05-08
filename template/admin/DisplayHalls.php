@@ -68,28 +68,28 @@
                     <!-- Modal body -->
                     <div class="modal-body">
 
-                        <form id ="add-form" action="Admin_ViewHalls.php" method="POST"  enctype="multipart/form-data" onsubmit="return validateForm()">
-                            <div class="text-center">
-                                <img class="img-fluid form-img img-thumbnail" src="./images/upload-image.png" id="imagePreview">
-                                <input type="file" id="imageUpload" name="HallImage">
+                        <form id="add-form" action="Admin_ViewHalls.php" novalidate method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+                            <div class="mb-3">
+                                <label class="form-label">Hall Image</label>
+                                <input type="file" class="form-control" id="imageUpload" name="HallImage" required >
                             </div>  
                             <div class="mb-3">
                                 <label class="form-label">Hall Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Hall Name" name="HallName" value="" id="hallNameInput">
+                                <input type="text" class="form-control" placeholder="Enter Hall Name" name="HallName" value="" id="hallNameInput" required >
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Rental Charge</label>
-                                <input type="number" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput">
+                                <input type="number" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Hall Capacity</label>
-                                <input type="number" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput">
+                                <input type="number" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput" required >
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" >Hall Description</label>
-                                <textarea class="form-control" rows="5" placeholder="Enter Hall's Description" name="description" ></textarea>
+                                <label class="form-label">Hall Description</label>
+                                <textarea class="form-control" rows="5" placeholder="Enter Hall's Description" name="description"></textarea>
                             </div>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="formAlert"  hidden>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="formAlert" hidden="">
                                 <span id="formAlertMsg"></span>
                             </div>
                             <div class="row">
@@ -97,12 +97,13 @@
                                     <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
                                 </div>
                                 <div class="col text-end">
-                                    <input class="btn btn-primary" type="submit" value="Save"/>
-                                    <input type="hidden" name="submitted"/>
+                                    <input class="btn btn-primary" type="submit" value="Save">
+                                    <input type="hidden" name="submitted">
 <!--                                    <input type="hidden" id="hallIdInput" name="hallId">-->
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -152,7 +153,6 @@
 </div>
 <script src="./helpers/pagination.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script>
 
                             window.addEventListener("load", () => {
@@ -175,32 +175,12 @@
                                 var rntlCharge = document.getElementById('RntlchargeInput').value;
                                 var capacity = document.getElementById('CapacityInput').value;
                                 var imageUpload = document.getElementById('imageUpload');
-                                var formAlert = document.getElementById('formAlert');
-                                formAlert.setAttribute('hidden', '');
-                                var formAlertmsg = document.getElementById('formAlertMsg');
+                                var form = document.getElementById('add-form');
                                 // Check if name is empty
-                                if (imageUpload.files.length === 0) {
-                                    formAlert.removeAttribute('hidden');
-                                    formAlertmsg.innerHTML = 'Hall Image Cannot be Empty';
+                                if (imageUpload.files.length === 0 || Hallname === '' || rntlCharge == '' || capacity == '') {
+                                    form.classList.add('was-validated');
                                     return false; // Prevent form submission
                                 }
-
-                                // Check if email is empty or invalid
-                                else if (Hallname === '') {
-                                    formAlert.removeAttribute('hidden');
-                                    formAlertmsg.innerHTML = 'Hall Name cannot be Empty';
-                                    return false; // Prevent form submission
-
-                                } else if (rntlCharge == '') {
-                                    formAlert.removeAttribute('hidden');
-                                    formAlertmsg.innerHTML = 'Rental Charge cannot be Empty';
-                                    return false; // Prevent form submission
-                                } else if (capacity == '') {
-                                    formAlert.removeAttribute('hidden');
-                                    formAlertmsg.innerHTML = 'Capacity cannot be Empty';
-                                    return false; // Prevent form submission
-                                }
-
                                 // If all checks pass, allow form submission
                                 return true;
                             }
