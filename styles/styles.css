@@ -85,7 +85,7 @@
 .my-status {
     width: 355px;
     height: 358px;
-    
+
     background: linear-gradient(180deg, #C8C8C8 28%, #626262 83.5%);
     border: 1px solid #CDCDCD;
     border-radius: 12px;
@@ -173,7 +173,7 @@
     background-color: var(--primary) !important;
     border-color: var(--primary) !important;
 }
-    
+
 /* Admin Form with list Temp Code Might be removed */
 .admin-form-card {
     background-color: #F7F7F7; /* Custom background color */
@@ -206,6 +206,10 @@
     max-height: calc(100vh - 100px);
     overflow-y: auto;
 
+}
+.form-group.required .form-label:after {
+  content:"*";
+  color:red !important;;
 }
 
 

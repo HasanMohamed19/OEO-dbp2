@@ -69,23 +69,23 @@
                     <div class="modal-body">
 
                         <form id="add-form" action="Admin_ViewHalls.php" novalidate method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="HallImage" required >
                             </div>  
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Name</label>
                                 <input type="text" class="form-control" placeholder="Enter Hall Name" name="HallName" value="" id="hallNameInput" required >
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label class="form-label">Rental Charge</label>
                                 <input type="number" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Capacity</label>
                                 <input type="number" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput" required >
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 form-group">
                                 <label class="form-label">Hall Description</label>
                                 <textarea class="form-control" rows="5" placeholder="Enter Hall's Description" name="description"></textarea>
                             </div>
@@ -176,7 +176,6 @@
                                 var capacity = document.getElementById('CapacityInput').value;
                                 var imageUpload = document.getElementById('imageUpload');
                                 var form = document.getElementById('add-form');
-                                // Check if name is empty
                                 if (imageUpload.files.length === 0 || Hallname === '' || rntlCharge == '' || capacity == '') {
                                     form.classList.add('was-validated');
                                     return false; // Prevent form submission
