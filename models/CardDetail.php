@@ -62,9 +62,9 @@ class CardDetail {
         return $data;
     }
     
-    function getAllCardsForUser($client_id) {
+    function getAllCardsForUser() {
         $db = Database::getInstance();
-        $data = $db->multiFetch("SELECT * FROM dbProj_Card_Detail where client_id = " . $clientId);
+        $data = $db->multiFetch("SELECT * FROM dbProj_Card_Detail where client_id = " . $this->clientId);
         return $data;
     }
 
@@ -84,6 +84,34 @@ class CardDetail {
             }
         } else {
             return false;
+        }
+    }
+    
+    function initWithCardId($cardId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Card_Detail WHERE card_id = ' . $cardId);
+        $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
+    }
+    
+    function displayCards($dataSet) {
+        
+        if (!empty($dataSet)) {
+            for ($i = 0; $i < count($dataSet); $i++) {
+                $card = new CardDetail();
+                // todo: get this from the login
+                $card->setClientId('1');
+                $cardId = $dataSet[$i]->card_id;
+                $card->initWithCardId($cardId);
+                echo '<div class="card my-3 mx-3">
+                        <div class="card-body vstack gap-2">';
+                
+                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
+                echo '<div class="row justify-content-between">'
+                .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
+                echo '<button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
+                        </div>
+                    </div>';
+            }
         }
     }
     

@@ -236,34 +236,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Card</h1>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add/Edit Card</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="myAccount.php" method="post">
                                         <div class="row">
-                                            <div class="col">
-                                                <label for="paymentType" class="form-label">Payment Type</label>
-                                                <select name="paymentType" id="paymentType" class="form-select">
-                                                    <option value="" disabled>Payment Type</option>
-                                                    <option value="credit">Credit Card</option>
-                                                    <option value="debit">Debit Card</option>
-                                                </select>
+                                            <div class="col form-group required">
+                                                <label for="cardholdername" class="form-label" >Cardholder name</label>
+                                                <input type="text" name="cardholdername" id="cardholdername" class="form-control"/>
                                             </div>
-                                            <div class="col">
+                                            <div class="col form-group required">
                                                 <label for="cardNumber" class="form-label">Card Number</label>
-                                                <input type="number" maxlength="16" class="form-control" name="cardNumber">
+                                                <input type="text" maxlength="16" class="form-control" name="cardNumber">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col">
-                                                <label for="CVV" class="form-label">CSV</label>
+                                            <div class="col form-group required">
+                                                <label for="CVV" class="form-label">CVV</label>
                                                 <input type="number" class="form-control" name="CVV" value="">
                                             </div>
 
                                             <!-- year and month can be datepicker formatted with js -->
 
-                                            <div class="col">
+                                            <div class="col form-group required">
                                                 <label for="year" class="form-label">Card Expiry</label>
                                                 <select name="year" id="year" class="form-select">
                                                     <option value="" disabled>Year</option>
@@ -271,7 +267,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 </select>
                                             </div>
 
-                                            <div class="col d-flex align-items-end">
+                                            <div class="col d-flex align-items-end form-group required">
                                                 <select name="month" id="month" class="form-select">
                                                     <option value="" disabled>Month</option>
                                                     <option value="1">January</option>

@@ -14,10 +14,10 @@
     
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
-        $card->setCardholderName('hasan');
+        $card->setCardholderName($_POST['cardholdername']);
         $card->setCardNumber($_POST['cardNumber']);
         $card->setCVV($_POST['CVV']);
-        $card->setExpiryDate('5-5-2025');
+        $card->setExpiryDate('0001-01-28');
         // get from the cookie
         $card->setClientId('1');
         
@@ -28,6 +28,9 @@
             echo ' card disapperaed';
             echo 'console.log("disapperaed card")';
         }
+        
+        echo count($card->getAllCardsForUser()) . " were found";
+        $card->displayCards($card->getAllCardsForUser());
 
     }
     
