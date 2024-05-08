@@ -21,6 +21,10 @@ class Database {
     // singleton
     public static $instance = null;
     public $dblink = null;
+
+    public function getDatabase() {
+        return $this->dblink;
+    }
     
     public static function getInstance() {
         if (is_null(self::$instance)) {
