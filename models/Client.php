@@ -16,6 +16,8 @@ const Silver = 0.1;
 const Bronze = 0.05;
 const None = 0;
 
+include 'User.php';
+
 class Client extends User {
     
     private $clientId;
@@ -77,13 +79,12 @@ class Client extends User {
         $this->userId = $userId;
     }
     
-//    function getClientStatusName($client_id) {
-//        $db = Database::getInstance();
-//        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
-//        if ($data != null) {
-//            return false;
-//        }
-//        return true;
-//    }
+    function getClientStatusName($client_id) {
+       $db = Database::getInstance();
+       $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
+//       var_dump($data);
+       return $data;
+
+    }
     
 }

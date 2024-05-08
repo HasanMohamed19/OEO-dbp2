@@ -11,6 +11,8 @@
     include './models/CardDetail.php';
     include './models/PersonalDetails.php';
     include './models/CompanyDetails.php';
+    include './models/Client.php';
+//    include './models/User.php';
     
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
@@ -20,7 +22,9 @@
         $card->setExpiryDate('0001-01-28');
         // get from the cookie
         $card->setClientId('1');
-        
+        $client = new Client();
+        $client->setClientId('1');
+        echo $client->getClientStatusName('1')->status_name . ' status name';
         if ($card->addCard()) {
             echo 'added card successfully';
 //            echo 'console.log("added card")';
