@@ -17,6 +17,8 @@ class Event {
     private $startDate;
     private $endDate;
     private $audienceNumber;
+    private $startTime;
+    private $endTime;
     
     public function __construct() {
         $this->eventId = null;
@@ -24,14 +26,24 @@ class Event {
         $this->startDate = null;
         $this->endDate = null;
         $this->audienceNumber = null;
+        $this->startTime = null;
+        $this->endTime = null;
     }
     
-    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber) {
+    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber, $startTime, $endTime) {
         $this->eventId = $eventId;
         $this->name = $name;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->audienceNumber = $audience;
+        $this->audienceNumber = $audienceNumber;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+    }
+    
+    public function initWithEventId($eventId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
+        $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
     }
     
     public function getEventId() {
@@ -73,6 +85,24 @@ class Event {
     public function setAudienceNumber($audienceNumber) {
         $this->audienceNumber = $audienceNumber;
     }
+    
+    public function getStartTime() {
+        return $this->startTime;
+    }
+
+    public function getEndTime() {
+        return $this->endTime;
+    }
+
+    public function setStartTime($startTime) {
+        $this->startTime = $startTime;
+    }
+
+    public function setEndTime($endTime){
+        $this->endTime = $endTime;
+    }
+
+
 
 
 }

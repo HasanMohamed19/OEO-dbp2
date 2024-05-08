@@ -10,6 +10,12 @@
  *
  * @author Hassan
  */
+
+//include 'Client.php';
+include 'Hall.php';
+include 'Event.php';
+
+
 class Reservation {
     
     private $reservationId;
@@ -24,13 +30,136 @@ class Reservation {
         $this->eventId = $eventId;
     }
 
-    public function __construct($reservationId, $hallId, $clientId, $eventId) {
+    public function __construct() {
         $this->reservationId = null;
         $this->hallId = null;
         $this->clientId = null;
         $this->eventId = null;
     }
     
+    public function initReservationWithId($reservationId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
+        $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id);
+    }
+    
+    function getReservationsForClient() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT r.reservation_id,
+            r.reservation_status_id,
+            r.notes,
+            h.hall_name,
+            h.capacity,
+            h.image_path,
+            e.event_name,
+            e.start_date,
+            e.end_date,
+            e.start_time,
+            e.end_time,
+            c.phone_number
+            FROM dbProj_Reservation r
+            JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+            JOIN dbProj_Event e ON r.event_id = e.event_id
+            JOIN dbProj_Client c ON r.client_id = c.client_id
+            WHERE r.client_id = " . $this->clientId);
+        return $data;
+    }
+    
+    public function displayUserReservations($dataSet) {
+        if (empty($dataSet)) {
+            return;
+        }
+        
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $reservation = new Reservation();
+            $hall = new Hall();
+            $event = new Event();
+            $client = new Client();
+            
+             // todo: get this from the login
+            $reservation->setClientId('1');
+            $reservationId = $dataSet[$i]->reservation_id;
+            $reservation->initReservationWithId($reservationId);
+            $hall->setHallId($reservation->hallId);
+            $event->setEventId($reservation->eventId);
+            $client->setClientId($reservation->clientId);
+            
+            $client->iniwWithClientId($client->getClientId());
+            $hall->initWithHallId($hall->getHallId());
+            $event->initWithEventId($event->getEventId());
+            
+            echo 'image path was ' . $hall->getCapacity() . ' image path was';
+                // display the header
+            echo '<div class="row justify-content-between mx-3 mt-2">
+                                <div class="col">Booking#: ' . $reservation->getReservationId() . '</div>
+                                <div class="col text-secondary text-center">random date</div>
+                                <div class="col text-end">random price</div>
+                  </div>';
+
+            echo ' <hr>'
+            . '<div class="card mb-2 border-0 mx-3">'
+                    . '<div class="row g-0">';
+
+            // image
+            echo '<div class="col-xl-5 p-2">
+                    <img src="' . $hall->getImagePath() .' " alt="" class="img-fluid rounded">
+                  </div>';
+
+            echo '<div class="col-xl-5 p-2 flex-grow-1">
+                    <div class="row m-2">
+                        <div class="col text-start completed">' . $reservation->getReservationId() . '</div>
+                        <div class="col text-end"><button class="btn btn-danger">Cancel Booking</button></div>
+                  </div>';
+
+            echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">Hall Name: </span>
+                        <span class="col text-start">'. $hall->getHallName() .'</span>
+                  </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">Event Name: </span>
+                    <span class="col text-start">'. $event->getName() .'</span>
+                  </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">Start Date: </span>
+                    <span class="col text-start">' . $event->getStartDate() .'</span>
+                 </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">End Date: </span>
+                    <span class="col text-start">' . $event->getEndDate() .'</span>
+                 </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">Daily Start Time: </span>
+                    <span class="col text-start">' . $event->getStartTime() .'</span>
+                 </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">Daily End Time: </span>
+                    <span class="col text-start">' . $event->getEndTime() .'</span>
+                 </div>';
+
+            echo '<div class="row m-2">
+                    <span class="col text-start text-secondary">No. Audiences </span>
+                    <span class="col text-start">' . $event->getAudienceNumber() .'</span>
+                  </div>
+                </div>
+              </div>';
+
+            // notes section
+            echo '<div class="row mx-1">
+                    <span class="text-secondary">Notes: </span>
+                    <p class="justify">' . $hall->getDescription() . '</p>
+                  </div>';
+        }
+        
+        
+        
+    }
+
+
     public function getReservationId() {
         return $this->reservationId;
     }

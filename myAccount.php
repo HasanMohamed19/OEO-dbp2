@@ -12,7 +12,13 @@
     include './models/PersonalDetails.php';
     include './models/CompanyDetails.php';
     include './models/Client.php';
-//    include './models/User.php';
+    include './models/Reservation.php';
+    include './models/hall.php';
+    
+    $res = new Reservation();
+    $res->setClientId('1');
+    echo 'Number Reservations found: '. count($res->getReservationsForClient());
+    $res->displayUserReservations($res->getReservationsForClient());
     
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();

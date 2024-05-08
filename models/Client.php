@@ -21,29 +21,45 @@ include 'User.php';
 class Client extends User {
     
     private $clientId;
+    private $phoneNumber;
 //    private $firstName;
 //    private $lastName;
-    private $balance;
+//    private $balance;
     private $clientStatus;
     private $userId;
     
     public function __construct() {
         $this->clientId = null;
+        $this->phoneNumber = null;
 //        $this->firstName = null;
 //        $this->lastName = null;
-        $this->balance = null;
+//        $this->balance = null;
         $this->clientStatus = null;
         $this->userId = null;
         parent::__construct();
     }
 
     
-    public function initClientWith($clientId, $balance, $clientStatus, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $phoneNumber, $clientStatus, $userId, $username, $password, $email, $userRole) {
         $this->clientId = $clientId;
-        $this->balance = $balance;
+//        $this->balance = $balance;
+        $this->phoneNumber = $phoneNumber;
         $this->clientStatus = $clientStatus;
         $this->userId = $userId;
         parent::initWith($userId, $username, $password, $email, $userRole);
+    }
+    
+    public function initClientWithoutParent($clientId, $phoneNumber, $clientStatus, $userId) {
+        $this->clientId = $clientId;
+        $this->phoneNumber = $phoneNumber;
+        $this->clientStatus = $clientStatus;
+        $this->userId = $userId;
+    }
+    
+    public function iniwWithClientId($clientId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
     }
 
     
@@ -59,7 +75,7 @@ class Client extends User {
         return $this->clientId;
     }
 
-    public function getClientStatus(): ClientStatus {
+    public function getClientStatus() {
         return $this->clientStatus;
     }
 
@@ -71,7 +87,7 @@ class Client extends User {
         $this->balance = $balance;
     }
 
-    public function setClientStatus(ClientStatus $clientStatus) {
+    public function setClientStatus($clientStatus) {
         $this->clientStatus = $clientStatus;
     }
     
