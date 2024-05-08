@@ -219,7 +219,8 @@ function displayHalls($dataSet) {
                         </div>
                         <div class="col-xl-1">
                             <div class="d-flex flex-column h-100 justify-content-between">
-                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '"data-bs-toggle="modal" data-bs-target="#myModal" >Edit</button>
+                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '"data-bs-toggle="modal" data-bs-target="#myModal" onclick="location.href=&quot;Admin_ViewHalls.php?hallId='. $hall->getHallId().';">Edit</button>
+                                 <a href="Admin_ViewHalls.php?hallId='. $hall->getHallId().'">Edit</a> 
                                 <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="getHallID(this)" id="deleteHallBtn">Delete</button>
                             </div>
                         </div>
