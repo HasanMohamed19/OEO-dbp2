@@ -63,8 +63,10 @@ Class Login extends User {
                 $this->ok = true;
                 $_SESSION['userId'] = $this->getUserId();
                 $_SESSION['username'] = $this->getUsername();
+                $_SESSION['clientId'] = $this->getClientByUserId();
                 setcookie('userId', $_SESSION['userId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
                 setcookie('username', $_SESSION['username'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
+                setcookie('clientId', $_SESSION['clientId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
 
                 return true;
             } else {

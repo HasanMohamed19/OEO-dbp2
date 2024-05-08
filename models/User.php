@@ -86,8 +86,16 @@ class User {
 
     function checkUser($username, $password) {
         $db = Database::getInstance();
-        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $username . '\' AND password = \'' . $password . '\'');
+        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND password = '$password'");
+//        var_dump($data);
         $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
+    }
+    
+    function getClientByUserId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT client_id FROM dbProj_Client WHERE user_id = '$this->userId'");
+//        var_dump($data);
+        return $data;
     }
 
     function initWithUsername() {
