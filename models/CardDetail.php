@@ -108,10 +108,29 @@ class CardDetail {
                 echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
                 echo '<div class="row justify-content-between">'
                 .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
-                echo '<button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
+                echo '<button id="editCardBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal" onclick="setCardId(this)">Edit</button></div>
                         </div>
                     </div>';
             }
+        }
+    }
+    
+    function updateCard() {
+        try {
+            $db = Database::getInstance();
+            $data = 'UPDATE dbProj_CardDetail set
+			cardholder_name = \'' . $this->cardholderName . '\' ,
+			card_number = \'' . $this->cardNumber . '\'  ,
+                        CVV = \'' . $this->CVV . '\' ,
+                        expiry_date = \'' . $this->expiryDate . '\' ,
+                            WHERE card_id = ' . $this->cardId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
+            echo 'Exception: ' . $e;
+            return false;
         }
     }
     

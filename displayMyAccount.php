@@ -9,10 +9,11 @@
     include './template/header.html';    
     
     include 'debugging.php';
-    
+    echo 'what is happening';
     // if add/edit card form submitted
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
+        $card->setCardId($_POST['Add-CardID']);
         $card->setCardholderName($_POST['cardholdername']);
         $card->setCardNumber($_POST['cardNumber']);
         $card->setCVV($_POST['CVV']);
@@ -22,15 +23,26 @@
         $client = new Client();
         $client->setClientId('1');
         echo $client->getClientStatusName('1')->status_name . ' status name';
+        
+    if ($card->getCardId() == '') {
         if ($card->addCard()) {
-            echo 'added card successfully';
-//            echo 'console.log("added card")';
-        } else {
-            echo ' card disapperaed';
-            echo 'console.log("disapperaed card")';
+                //display successful message
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
+    } else if ($card->updateCard()) {
+        echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
-    
+        
+//        if ($card->addCard()) {
+//            echo 'added card successfully';
+////            echo 'console.log("added card")';
+//        } else {
+//            echo ' card disapperaed';
+//            echo 'console.log("disapperaed card")';
+//        }
+//    }
+}
+
     // for profile
     if (isset($_POST['profileSubmitted'])) {
         // create personal and comapny details object

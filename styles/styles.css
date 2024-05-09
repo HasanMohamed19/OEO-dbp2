@@ -207,7 +207,10 @@
     overflow-y: auto;
 
 }
-
+.form-group.required .form-label:after {
+  content:"*";
+  color:red !important;;
+}
 
 /* Register */
 .form-control {

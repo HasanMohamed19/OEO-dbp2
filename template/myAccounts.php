@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<body>
         <div class="container main">
             <div class="row mb-5 mt-3">
                 <h1>My Account</h1>
@@ -187,7 +188,6 @@
                         </div>
                         
                         <?php
-                            
                             $card = new CardDetail();
                             $card->setClientId('1');
                             $cards = $card->getAllCardsForUser();
@@ -197,7 +197,7 @@
 <!--                        
 
 -->                     <div class="row mx-auto mb-2" style="width: 15%;">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
+                            <button id="btnAddCard" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
                         </div>
 
                     </div>
@@ -212,21 +212,21 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="displayMyAccount.php" method="post">
+                                    <form id="card-add-form" novalidate action="displayMyAccount.php" method="post">
                                         <div class="row">
                                             <div class="col form-group required">
                                                 <label for="cardholdername" class="form-label" >Cardholder name</label>
-                                                <input type="text" name="cardholdername" id="cardholdername" class="form-control"/>
+                                                <input type="text" name="cardholdername" id="cardholdernameInput" class="form-control" required/>
                                             </div>
                                             <div class="col form-group required">
                                                 <label for="cardNumber" class="form-label">Card Number</label>
-                                                <input type="text" maxlength="16" class="form-control" name="cardNumber">
+                                                <input type="text" id="cardNumberInput" class="form-control" name="cardNumber" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col form-group required">
                                                 <label for="CVV" class="form-label">CVV</label>
-                                                <input type="number" class="form-control" name="CVV" value="">
+                                                <input type="number" id="CVVInput" class="form-control" name="CVV" value="" required>
                                             </div>
 
                                             <!-- year and month can be datepicker formatted with js -->
@@ -250,6 +250,7 @@
                                         <div class="row mt-3">
                                             <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
                                             <input type="hidden" name="submitted" value="1">
+                                            <input type="hidden" name="Add-CardID" id="Add-CardID">
                                         </div>
 
                                     </form>
@@ -292,12 +293,26 @@
                         <div class="row mx-3">
                             <h6>Personal Information</h6>
                         </div>
+                        
+                        <?php 
+                            
+                            $p = new PersonalDetails();
+                            $p->setClientId('1');
+                            $p->initWithClientId();
+                            
+                            $c = new CompanyDetails();
+                            $c->setClientId('1');
+                            $c->initWithClientId();
+//                            echo $p->getFirstName() . " sdds";
+                            
+                        ?>
+                        
                         <form action="displayMyAccount.php" method="post">
                             <div class="container">
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="text" name="username" class="form-control" placeholder="Username">
+                                        <input type="text" name="username" class="form-control" placeholder="Username" value="">
                                     </div>
                                     <div class="col">
                                         <label for="password" class="form-label">Password</label>
@@ -307,21 +322,21 @@
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="firstname" class="form-label">First Name</label>
-                                        <input type="text" name="firstname" class="form-control" placeholder="First Name">
+                                        <input type="text" name="firstname" class="form-control" value="<?php echo $p->getFirstName();?>" placeholder="First Name">
                                     </div>
                                     <div class="col">
                                         <label for="lastname" class="form-label">Last Name</label>
-                                        <input type="text" name="lastname" class="form-control" placeholder="Last Name">
+                                        <input type="text" name="lastname" class="form-control" value="<?php echo $p->getLastName();?>" placeholder="Last Name">
                                     </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" placeholder="Email">
+                                        <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
                                     </div>
                                     <div class="col">
                                         <label for="nationality" class="form-label">Nationality</label>
-                                        <input type="text" name="nationality" class="form-control" placeholder="Nationality">
+                                        <input type="text" name="nationality" class="form-control" placeholder="Nationality" value="<?php echo $p->getNationality();?>">
                                     </div>
                                 </div>
                                 <div class="row my-2">
@@ -330,11 +345,12 @@
                                         <input type="date" name="dob" class="form-control" placeholder="DOB">
                                     </div>
                                     <div class="col">
+                                        <?php echo 'is it null: ' . $p->getGender() == 'F' . ' dffd'; ?>
                                         <label for="gender" class="form-label">Gender</label>
                                         <select name="gender" class="form-select" id="n">
                                             <option value="" disabled>Gender</option>
-                                            <option value="M">Male</option>
-                                            <option value="F">Female</option>
+                                            <option value="M" <?php if ($p->getGender() == 'M') echo 'selected'; ?> >Male</option>
+                                            <option value="F" <?php if ($p->getGender() == 'F') echo 'selected'; ?> >Female</option>
                                         </select>
                                     </div>
                                 </div>
@@ -350,22 +366,22 @@
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="companyname" class="form-label">Company Name</label>
-                                        <input type="text" name="companyname" class="form-control" placeholder="Company Name">
+                                        <input type="text" name="companyname" class="form-control" placeholder="Company Name" value="<?php echo $c->getName();?>">
                                     </div>
                                     <div class="col">
                                         <label for="companysize" class="form-label">Company Size</label>
-                                        <input type="number" name="companysize" class="form-control" placeholder="Company Size">
+                                        <input type="number" name="companysize" class="form-control" placeholder="Company Size" value="<?php echo $c->getComapnySize();?>">
                                     </div>
                                 </div>
 
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="city" class="form-label">City</label>
-                                        <input type="text" name="city" class="form-control" placeholder="City">
+                                        <input type="text" name="city" class="form-control" placeholder="City" value="<?php echo $c->getCity();?>">
                                     </div>
                                     <div class="col">
                                         <label for="website" class="form-label">Website</label>
-                                        <input type="text" name="website" class="form-control" placeholder="Website">
+                                        <input type="text" name="website" class="form-control" placeholder="Website" value="<?php echo $c->getWebsite();?>">
                                     </div>
                                 </div>
                                 
@@ -387,3 +403,57 @@
         </div>
     
     <script src="./helpers/myAccount.js"></script>
+    <script src="./helpers/AdminForms.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        $(document).on('click', '#editCardBtn', function () {
+
+            var cardId = $(this).attr('data-id');
+            console.log('Card id is:', cardId);
+            // AJAX request
+            $.ajax({
+                url: './helpers/get_card_info.php', // URL of your PHP script to fetch hall info
+                method: 'GET',
+                data: {cardId: cardId},
+                dataType: 'json', // Expected data type from server
+                success: function (response) {
+                    // Handle successful response
+                    console.log('Card Info:', response);
+                    
+                    // Update form inputs with fetched data
+                    $('#cardholdernameInput').val(response.cardHolderName);
+                    $('#cardNumberInput').val(response.cardNumber);
+                    $('#CVVInput').val(response.CVV);
+//                    $('#expiryDate').val(response.description);
+                    $('#Add-CardID').val(response.cardId);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching card info:', error);
+                }
+            });
+        });
+    });
+    
+    $('#btnAddCard').click(function () {
+        // Clear form Input fields when closing the form
+        $('#Add-CardID').removeAttr('value');
+    });
+    
+    $('#card-add-form').submit(function(e) {
+        var cardNumber = $('#cardNumberInput').val();
+        var cardholderName = $('#cardholdernameInput').val();
+        var CVV = $('#CVVInput').val();
+//        var expirydate = $('#imageUpload');
+
+        if (cardNumber === '' || cardholderName === '' || CVV === '') {
+            $(this).addClass('was-validated');
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    });
+    </script>
+</body>

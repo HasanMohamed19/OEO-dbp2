@@ -67,7 +67,7 @@ class PersonalDetails {
     function initWithClientId() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
-        $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->age, $data->age, $data->nationality, $data->client_id);
+        $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->age, $data->gender, $data->nationality, $data->client_id);
 //        var_dump($data);
         if ($data != null) {
             return false;

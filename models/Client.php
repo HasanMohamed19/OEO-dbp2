@@ -61,6 +61,12 @@ class Client extends User {
         $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
         $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
     }
+    
+    public function getClientEmail() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT email FROM dbProj_User WHERE user_id = ' . $this->userId);
+        return $data;
+    }
 
     
     public function getClientId() {
