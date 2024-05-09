@@ -37,7 +37,7 @@ class Event {
         $this->endDate = $endDate;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
-        $this->audienceNumber = $audience;
+        $this->audienceNumber = $audienceNumber;
     }
     
     public function getEventId() {
