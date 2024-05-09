@@ -108,7 +108,7 @@ class CardDetail {
                 echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
                 echo '<div class="row justify-content-between">'
                 .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
-                echo '<button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
+                echo '<button class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button></div>
                         </div>
                     </div>';
             }
