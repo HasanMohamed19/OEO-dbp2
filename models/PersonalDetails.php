@@ -11,10 +11,13 @@
  * @author Hassan
  */
 
-enum Gender {
-    case M;
-    case F;
-}
+//enum Gender {
+//    case M;
+//    case F;
+//}
+
+const GENDER_MALE = 'M';
+const GENDER_FEMALE = 'F';
 
 class PersonalDetails {
     
@@ -22,8 +25,8 @@ class PersonalDetails {
     private $firstName;
     private $lastName;
 //    private $department;
-    private $age;
-    private Gender $gender;
+    private $dob;
+    private $gender;
     private $nationality;
     private $clientId;
     
@@ -31,17 +34,17 @@ class PersonalDetails {
         $this->personalDetialId = null;
         $this->firstName = null;
         $this->lastName = null;
-        $this->age = null;
+        $this->dob = null;
         $this->gender = null;
         $this->nationality = null;
         $this->clientId = null;
     }
 
-        public function initWith($personalDetialId, $firstName, $lastName, $age, Gender $gender, $nationality, $clientId) {
+        public function initWith($personalDetialId, $firstName, $lastName, $dob, $gender, $nationality, $clientId) {
         $this->personalDetialId = $personalDetialId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->age = $age;
+        $this->dob = $dob;
         $this->gender = $gender;
         $this->nationality = $nationality;
         $this->clientId = $clientId;
@@ -64,11 +67,15 @@ class PersonalDetails {
         return $this->department;
     }
     
+    public function getDob() {
+        return $this->dob;
+    }
+    
     public function getAge() {
-        return $this->age;
+        // calculate age
     }
 
-    public function getGender(): Gender {
+    public function getGender() {
         return $this->gender;
     }
 
@@ -96,11 +103,11 @@ class PersonalDetails {
         $this->department = $department;
     }
     
-    public function setAge($age) {
-        $this->age = $age;
+    public function setDob($dob) {
+        $this->dob = $dob;
     }
 
-    public function setGender(Gender $gender) {
+    public function setGender($gender) {
         $this->gender = $gender;
     }
 

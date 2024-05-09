@@ -23,7 +23,7 @@ class Payment {
         $this->invoiceId = $invoiceId;
     }
     
-    public function __construct($paymentId, $amount, $paymentDate, $invoiceId) {
+    public function __construct() {
         $this->paymentId = null;
         $this->amount = null;
         $this->paymentDate = null;
