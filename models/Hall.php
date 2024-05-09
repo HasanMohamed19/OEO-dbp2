@@ -138,21 +138,20 @@ class Hall {
         $errors = array();
 
         if (empty($this->hallName))
-            echo 'You must enter a Hall Name';
+            $errors[] = 'You must enter a Hall Name';
 
         if (empty($this->rentalCharge))
-            echo 'You must enter a Rental Charge';
+            $errors[] = 'You must enter a Rental Charge';
 
         if (empty($this->capacity))
-            echo'You must enter a Capacity';
+            $errors[] ='You must enter a Capacity';
 
         if (empty($this->imagePath))
-            echo 'You must add an Image';
+            $errors[] = 'You must add an Image';
 
         if (empty($errors))
             return true;
         else
-            echo $errors;
             return false;
     }
 }

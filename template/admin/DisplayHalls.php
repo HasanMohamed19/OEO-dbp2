@@ -89,9 +89,6 @@
                                 <label class="form-label">Hall Description</label>
                                 <textarea class="form-control" rows="5" placeholder="Enter Hall's Description" name="description"></textarea>
                             </div>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="formAlert" hidden="">
-                                <span id="formAlertMsg"></span>
-                            </div>
                             <div class="row">
                                 <div class="col text-start">
                                     <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
@@ -99,7 +96,6 @@
                                 <div class="col text-end">
                                     <input class="btn btn-primary" type="submit" value="Save">
                                     <input type="hidden" name="submitted">
-<!--                                    <input type="hidden" id="hallIdInput" name="hallId">-->
                                 </div>
                             </div>
                         </form>
@@ -131,30 +127,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="errorModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Invalid Input</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="errorMessage">This is an error message.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 </div>
 <script src="./helpers/pagination.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./helpers/AdminForms.js"></script>
 <script>
-
                             window.addEventListener("load", () => {
                                 enablePagination("halls", ".hallCard");
                             });
@@ -163,27 +142,11 @@
                             document.getElementById('imagePreview').addEventListener('click', function () {
                                 document.getElementById('imageUpload').click();
                             });
-                            function getHallID(button) {
-                                var hallID = button.getAttribute("data-id");
-                                var hallIDInput = document.getElementById('hallIdInput');
-                                hallIDInput.value = hallID; // Set the value directly, no need for setAttribute
-                            }
 
-                            function validateForm() {
-                                // Get form inputs
-                                var Hallname = document.getElementById('hallNameInput').value;
-                                var rntlCharge = document.getElementById('RntlchargeInput').value;
-                                var capacity = document.getElementById('CapacityInput').value;
-                                var imageUpload = document.getElementById('imageUpload');
-                                var form = document.getElementById('add-form');
-                                if (imageUpload.files.length === 0 || Hallname === '' || rntlCharge == '' || capacity == '') {
-                                    form.classList.add('was-validated');
-                                    return false; // Prevent form submission
-                                }
-                                // If all checks pass, allow form submission
-                                return true;
-                            }
 </script>
+
+
+
 </body>
 
 
@@ -194,6 +157,7 @@ function displayHalls($dataSet) {
         for ($i = 0; $i < count($dataSet); $i++) {
             $hall = new Hall();
             $id = $dataSet[$i]->hall_id;
+            echo 'ID is ' . $id;
             $hall->initWithHallid($id);
 
             echo'<div class="card hallCard mb-4">
@@ -219,8 +183,8 @@ function displayHalls($dataSet) {
                         </div>
                         <div class="col-xl-1">
                             <div class="d-flex flex-column h-100 justify-content-between">
-                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '"data-bs-toggle="modal" data-bs-target="#myModal" onclick="location.href=&quot;Admin_ViewHalls.php?hallId='. $hall->getHallId().';">Edit</button>
-                                 <a href="Admin_ViewHalls.php?hallId='. $hall->getHallId().'">Edit</a> 
+                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '"data-bs-toggle="modal" data-bs-target="#myModal" onclick="location.href=&quot;Admin_ViewHalls.php?hallId=' . $hall->getHallId() . ';">Edit</button>
+                                 <a href="Admin_ViewHalls.php?hallId=' . $hall->getHallId() . '">Edit</a> 
                                 <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="getHallID(this)" id="deleteHallBtn">Delete</button>
                             </div>
                         </div>
