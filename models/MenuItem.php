@@ -55,6 +55,22 @@ class MenuItem {
         $data = $db->multiFetch($q);
         return $data;
     }
+
+    public static function getItemPage($serviceId, $pageNum, $count) {
+        $pageNum -= 1;
+        $db = Database::getInstance();
+        $q = 'SELECT SQL_CALC_FOUND_ROWS * FROM dbProj_Menu_Item WHERE service_id = '.$serviceId
+                . ' LIMIT '.($pageNum*$count).','.$count;
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+    
+    public static function getItemCount($serviceId) {
+        $db = Database::getInstance();
+        $q = 'SELECT COUNT(*) AS total FROM dbProj_Menu_Item WHERE service_id = '.$serviceId;
+        $data = $db->singleFetch($q);
+        return $data->total;
+    }
     
     public function getItemId() {
         return $this->itemId;

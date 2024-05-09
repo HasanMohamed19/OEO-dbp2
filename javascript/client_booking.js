@@ -1,13 +1,19 @@
+const cateringItemDisplayCount = 10;
+
 $(document).ready(function() {
     updateSideMenu();
-    updateCateringMenus();
-    handleCateringCheckboxes('breakfast');
-});
-window.addEventListener("load", () => {
     // load pages for first menu
-   enablePagination("breakfast", ".cateringItem");
-    handleCateringCheckboxes("breakfast");
+   enablePagination(1, ".cateringItem", cateringItemDisplayCount);
 });
+
+
+const getServiceIdFromName = (serviceName) => {
+    if (serviceName === "breakfast") {return 1;}
+    else if (serviceName === "lunch") {return 2;}
+    else if (serviceName === "hot") {return 3;}
+    else if (serviceName === "cold") {return 4;}
+};
+
 // enable catering menu tabs
 const triggerTabList = document.querySelectorAll('#cateringTabBar button');
 triggerTabList.forEach(triggerEl => {
@@ -17,8 +23,8 @@ triggerTabList.forEach(triggerEl => {
 //      console.log("CLICKED ON TABBB");
     event.preventDefault();
     const menuType = triggerEl.id.split("-",1)[0];
-    enablePagination(menuType, ".cateringItem");
-    handleCateringCheckboxes(menuType);
+//    updateCateringMenu(getServiceIdFromName(menuType),1,10);
+    enablePagination(getServiceIdFromName(menuType), ".cateringItem", cateringItemDisplayCount);
     tabTrigger.show();
   });
 });
@@ -26,16 +32,19 @@ triggerTabList.forEach(triggerEl => {
 //      Catering Item Quantity and Checkbox 
 // disable quantity box based on checkbox for all menu items
 const handleCateringCheckboxes = (menuType) => {
+        console.log('handling checkboxes');
     const paginationList = document.getElementById("pagination-items-"+menuType);
     
     const SetQuantityActive = (index, state) => {
         const quantityElement = paginationList.querySelector("#catering-item-"+menuType+"-"+index+"-quantity");
         quantityElement.disabled = state;
+        console.log('Set quantity state');
     };
     
     // add event listeners to checkboxes
     paginationList.querySelectorAll(".cateringItemCheck").forEach(checkbox => {
         checkbox.addEventListener('click', () => {
+            console.log('clicked checkbox');
             const index = checkbox.id.split("-", 4)[3];
             const state = checkbox.checked;
             SetQuantityActive(index, !state);
@@ -176,22 +185,25 @@ const updateSideMenu = () => {
 
 
 //      AJAX for catering menu items
-
-const updateCateringMenus = () => {
+const getMenuName = (id) => {
+switch (id) {
+    case 1:
+        return 'breakfast';
+    case 2:
+        return 'lunch';
+    case 3:
+        return 'hot';
+    case 4:
+        return 'cold';
+    default:
+        return;
+}
+};
+const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     
-    const getMenuName = (id) => {
-        switch (id) {
-            case 1:
-                return 'breakfast';
-            case 2:
-                return 'lunch';
-            case 3:
-                return 'hot';
-            case 4:
-                return 'cold';
-            default:
-                return;
-        }
+    const resetMenuItems = (menuName) => {
+        console.log("Reset menu items for "+menuName);
+        $('#pagination-items-'+menuName).html("");
     };
     
     const addMenuItem = (item_id, menuId, itemName, itemPrice, itemImagePath) => {
@@ -226,25 +238,182 @@ const updateCateringMenus = () => {
         $('#pagination-none-'+menuName).toggleClass("hidden");
     };
     
-    console.log("about to send ajax request");
+    console.log("about to send ajax request for menu items");
     $.ajax({
         type: 'GET',
         url: 'ajaxQueries/booking_getMenuItems.php',
-        datatype: 'json'
+        datatype: 'json',
+        data: {
+            serviceId:menuId,
+            pageNum:pageNumber,
+            count:itemCount
+        }
     }).then(function(res) {
         let data = JSON.parse(res);
-        let menuCounts = [0,0,0,0];
+        console.log("Response for menu items: " + data);
+        let menuCount = 0;
+        let menuName = getMenuName(menuId);
+        resetMenuItems(menuName);
         $.each(data, function(index, obj) {
             addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
-            menuCounts[parseInt(obj.service_id)-1] += 1;
+            menuCount += 1;
         });
-        $.each(menuCounts, function(index, value) {
-            let menuName = getMenuName(parseInt(index)+1);
-            console.log('checking items for menu '+index+' : ' + menuName + ', there are '+value+' items.');
-            if (value <= 0) {
-                // used to display if no items are found
-                toggleMenu(menuName);
-            } 
-        });
+        console.log('checking items for menu '+menuId+' : ' + menuName + ', there are '+menuCount+' items.');
+        if (menuCount <= 0) {
+            // used to display if no items are found
+            toggleMenu(menuName);
+        }
+        handleCateringCheckboxes(menuName);
     });
+};
+
+//      Catering Menus Pagination
+const enablePagination = (menuId, dataListClass, itemCount) => {
+    console.log("Enabling pagination");
+    const menuType = getMenuName(menuId);
+    const paginationNumbersDivs = document.querySelectorAll(".pagination-numbers-"+menuType);
+    const paginationList = document.getElementById("pagination-items-"+menuType);
+    const listItems = paginationList.querySelectorAll(dataListClass);
+    const firstButtons = document.querySelectorAll(".pagination-first-"+menuType);
+    const lastButtons = document.querySelectorAll(".pagination-last-"+menuType);
+    let totalItems=0;
+    let pageCount=0;
+    let currentPage;
+
+    //  function declarations
+
+    const addPageNumberEventListeners = () => {
+        document.querySelectorAll(".pagination-number-button-"+menuType).forEach((button) => {
+           const pageIndex = Number(button.getAttribute("page-index")); 
+           if (pageIndex) {
+               button.addEventListener("click", () => {
+                  setCurrentPage(pageIndex); 
+               });
+           }
+        });
+    };
+    
+    const appendPageNumber = (index) => {
+        const pageButton = document.createElement("button");
+        pageButton.className = "page-link ms-2 rounded border-2 pagination-number-button-"+menuType;
+        pageButton.innerHTML = index;
+        pageButton.setAttribute("page-index", index);
+        pageButton.setAttribute("type", "button");
+        const pageNumber = document.createElement("li");
+        pageNumber.className = "page-item pagination-number-"+menuType;
+        pageNumber.appendChild(pageButton);
+        // since there can be multiple pagination bars, add numbers to each
+        // using cloneNode to create copies of each number element
+        paginationNumbersDivs.forEach((div) => {
+            div.appendChild(pageNumber.cloneNode(true));
+        });
+    };
+    const setPaginationNumbers = () => {
+        paginationNumbersDivs.forEach((div) => {
+            div.innerHTML = "";
+        });
+        $.ajax({
+            type: 'GET',
+            url: 'ajaxQueries/booking_getMenuItemCount.php',
+            datatype: 'text',
+            data: {
+                serviceId:menuId
+            }
+        }).then(function(res) {
+            let num = parseInt(res);
+            totalItems = num;
+            pageCount = Math.ceil(totalItems/itemCount);
+            for (let i = 1;i <= pageCount; i++) {
+                appendPageNumber(i);
+            }
+            refreshPaginationBars();
+            addPageNumberEventListeners();
+        });
+        
+    };
+
+    // will update the active page number
+    const handleActivePageNumber = () => {
+      document.querySelectorAll(".pagination-number-button-"+menuType).forEach((button) => {
+          button.classList.remove("active");
+
+          const pageIndex = Number(button.getAttribute("page-index")); 
+           if (pageIndex === currentPage) {
+               button.classList.add("active");
+           }
+      });  
+    };
+
+    const disableButton = (button) => {
+        button.classList.add("disabled");
+        button.setAttribute("disabled", true);
+    };
+    const enableButton = (button) => {
+        button.classList.remove("disabled");
+        button.removeAttribute("disabled");
+    };
+    // enables or disables first/last buttons based on current page
+    const handlePageButtonsStatus = () => {
+        if (currentPage === 1) {
+            firstButtons.forEach((button) => {
+                disableButton(button);
+            });
+        } else {
+            firstButtons.forEach((button) => {
+                enableButton(button);
+            });
+        }
+        if (currentPage === pageCount) {
+            lastButtons.forEach((button) => {
+                disableButton(button);
+            });
+        } else {
+            lastButtons.forEach((button) => {
+                enableButton(button);
+            });
+        }
+    };
+    
+
+    const setCurrentPage = (pageNum) => {
+      currentPage = pageNum;  
+
+      updateCateringMenu(menuId, pageNum, itemCount);
+      refreshPaginationBars();
+      const prevRange = (pageNum - 1) * itemCount;
+      const currRange = pageNum * itemCount;
+
+      listItems.forEach((item, index) => {
+         item.classList.add("hidden");
+         if (index >= prevRange && index < currRange) {
+             item.classList.remove("hidden");
+         }
+      });
+    };
+
+
+    const addFirstLastEventListeners = () => {
+        firstButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+               setCurrentPage(1); 
+            });
+        });
+        
+        lastButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+               setCurrentPage(pageCount); 
+            });
+        });
+
+    };
+
+    const refreshPaginationBars = () => {
+        handlePageButtonsStatus();
+        handleActivePageNumber();
+    };
+
+    setPaginationNumbers();
+    setCurrentPage(1);
+    addFirstLastEventListeners();
+
 };
