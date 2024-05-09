@@ -134,6 +134,30 @@ class Hall {
         }
     }
 
+    function updateHall() {
+        try {
+            $db = Database::getInstance();
+
+            if (is_null($this->imagePath) || $this->imagePath == '') {
+                $this->imagePath = $db->singleFetch('Select image_path from dbProj_Hall where hall_id =' . $this->hallId)->image_path;
+            }
+            $data = 'UPDATE dbProj_Hall set
+			hall_name = \'' . $this->hallName . '\' ,
+			description = \'' . $this->description . '\'  ,
+                        rental_charge = \'' . $this->rentalCharge . '\' ,
+                        capacity = \'' . $this->capacity . '\' ,
+                        image_path = \'' . $this->imagePath . '\'
+                            WHERE hall_id = ' . $this->hallId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
     public function isValid() {
         $errors = array();
 
@@ -144,7 +168,7 @@ class Hall {
             $errors[] = 'You must enter a Rental Charge';
 
         if (empty($this->capacity))
-            $errors[] ='You must enter a Capacity';
+            $errors[] = 'You must enter a Capacity';
 
         if (empty($this->imagePath))
             $errors[] = 'You must add an Image';

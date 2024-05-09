@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="col-xl-2 text-end">
-                <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Service</button>
+                <button id="addItemBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Service</button>
             </div>
         </div>
         <div class="row">
@@ -39,7 +39,6 @@
         <div id="pagination-items-services">
             <!-- display menu items -->
             <?php
-            echo'<h1>Testing Display</h1>';
             $newMenu = new MenuItem();
             $dataSet = $newMenu->getAllMenuItems();
             displayMenuItems($dataSet);
@@ -53,12 +52,12 @@
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Add/Edit Services</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close cancelBtn" data-bs-dismiss="modal"></button>
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="Admin_ViewServices.php" id="add-form" novalidate method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-                            <div class="mb-3 form-group required">
+                            <div class="mb-3 form-group required" id="ItemImg">
                                 <label class="form-label">Menu Item Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="MenuItemImg" required >
                             </div> 
@@ -72,12 +71,12 @@
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="serviceType" class="form-label">Service Type</label>
-                                <select name="serviceType" class="form-select" required>
+                                <select name="serviceType" class="form-select" required id="serviceid">
                                     <option value="" disabled>Select Service Type</option>
-                                    <option value="Type1">Breakfast</option>
-                                    <option value="Type2">Lunch</option>
-                                    <option value="Type3">Hot Beverages</option>
-                                    <option value="Type4">Cold Beverages</option>  
+                                    <option value="1">Breakfast</option>
+                                    <option value="2">Lunch</option>
+                                    <option value="3">Hot Beverages</option>
+                                    <option value="4">Cold Beverages</option>  
                                 </select>
                             </div>
                             <div class="mb-3" form-group>
@@ -86,11 +85,12 @@
                             </div>
                             <div class="row">
                                 <div class="col text-start">
-                                    <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                                    <button class="btn btn-secondary cancelBtn" data-bs-dismiss="modal" type="button">Cancel</button>
                                 </div>
                                 <div class="col text-end">
                                     <input class="btn btn-primary" data-bs-dismiss="modal" type="submit" value="Save">
                                     <input type="hidden" name="submitted">
+                                    <input type="hidden" name="Add-ItemID" id="Add-ItemID">
                                 </div>
                             </div>
                         </form>
@@ -107,14 +107,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Are You sure You want to delete this Hall?
+                        Are You sure You want to delete this Item?
                     </div>
                     <div class="modal-footer">
-                        <form action="Admin_ViewHalls.php" method="post">
+                        <form action="Admin_ViewServices.php" method="post">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
-                            <input type ="hidden" name="deleteSubmitted" value="TRUE">
-                            <input type="hidden" id="hallIdInput" name="hallId">
+                            <input type ="hidden" name="deleteItemSubmitted" value="TRUE">
+                            <input type="hidden" id="DeleteIdInput" name="ItemId">
                         </form>
                     </div>
                 </div>
@@ -123,14 +123,78 @@
     </div>
     <script src="./helpers/pagination.js"></script>
     <script src="./helpers/AdminForms.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
                             window.addEventListener("load", () => {
                                 enablePagination("services", ".serviceCard");
                             });
                             // JavaScript to toggle the visibility of image upload on image click
-                            document.getElementById('imagePreview').addEventListener('click', function () {
-                                document.getElementById('imageUpload').click();
+                            //                            document.getElementById('imagePreview').addEventListener('click', function () {
+                            //                                document.getElementById('imageUpload').click();
+                            //                            });
+                            //get Hall ID value 
+                            $(document).ready(function () {
+                                $(document).on('click', '#editItemBtn', function () {
+
+                                    var itemId = $(this).attr('data-id');
+                                    console.log('Item id is:', itemId);
+                                    // AJAX request
+                                    $.ajax({
+                                        url: './helpers/get_Item_info.php', // URL of your PHP script to fetch hall info
+                                        method: 'GET',
+                                        data: {itemId: itemId}, // Send hallId to server
+                                        dataType: 'json', // Expected data type from server
+                                        success: function (response) {
+                                            // Handle successful response
+                                            console.log('Item Info:', response);
+                                            //remove image upload validation
+                                            $('#ItemImg').removeAttr('required');
+                                            $('#imageUpload').removeAttr('required');
+                                            $('#imageUploadLabel:after').remove();
+                                            // Update form inputs with fetched data
+                                            $('#ItemName').val(response.name);
+                                            $('#Price').val(response.price);
+//                                            $('#serviceid').val(response.service_id);
+                                            $('#description').val(response.description);
+                                            $('#Add-ItemID').val(response.ItemId);
+                                        },
+                                        error: function (xhr, status, error) {
+                                            // Handle errors
+                                            console.error('Error fetching hall info:', error);
+                                        }
+                                    });
+                                });
+                            });
+                            $('.cancelBtn').click(function () {
+                                // Update form inputs with fetched data
+                                $('.form-control').val('');
+                                $('#add-form').removeClass('was-validated');
+                            });
+
+                            $('#addItemBtn').click(function () {
+                                // Clear form Input fields when closing the form
+                                $('#ItemImg').attr('required', '');
+                                $('#imageUpload').attr('required', '');
+                                $('#Add-ItemID').removeAttr('value');
+                                $('#imageUploadLabel:after').add();
+                            });
+
+                            $('#add-form').submit(function (e) {
+                                // Get form inputs
+                                var name = $('#ItemName').val();
+                                var price = $('#Price').val();
+                                var serviceId = $('#serviceid').val();
+                                var imageUpload = $('#imageUpload');
+
+                                // Check if any field is empty or image is not uploaded
+                                if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '') {
+                                    $(this).addClass('was-validated');
+                                    e.preventDefault(); // Prevent form submission
+                                    return false;
+                                }
+                                // If all checks pass, allow form submission
+                                return true;
                             });
     </script>
 </body>
@@ -161,14 +225,14 @@ function displayMenuItems($dataSet) {
                                     <h3>BD ' . $item->getPrice() . '</h3>
                                 </div>';
             echo'<div class="col text-end">
-                                    <h3>' . $item->getCateringType($item->getCateringService()) . '</h3>
+                                    <h3>' . '</h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-1">
                             <div class="d-flex flex-column h-100 justify-content-between">
-                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
-                                <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right data-bs-toggle="modal" data-bs-target="#deleteModal"">Delete</button>
+                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#addModal" id="editItemBtn" data-id="' . $item->getItemId() . '">Edit</button>
+                                <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $item->getItemId() . '"onclick="setDeleteID(this)">Delete</button>
                             </div>
                         </div>
                     </div>

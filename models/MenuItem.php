@@ -106,22 +106,22 @@ class MenuItem {
         return $data;
     }
 
-    function getCateringType($service_id) {
-        switch ($cateringService) {
-            case 1:
-                return "Breakfast";
-                break;
-            case 2:
-                return "Lunch";
-                break;
-            case 3:
-                return "HotBeverages";
-                break;
-            case 4:
-                return "ColdBeverages";
-                break;
-        }
-    }
+//    function getCateringType($service_id) {
+//        switch ($cateringService) {
+//            case 1:
+//                return "Breakfast";
+//                break;
+//            case 2:
+//                return "Lunch";
+//                break;
+//            case 3:
+//                return "HotBeverages";
+//                break;
+//            case 4:
+//                return "ColdBeverages";
+//                break;
+//        }
+//    }
 
     function addMenuItem() {
         try {
@@ -154,16 +154,16 @@ class MenuItem {
         $errors = array();
 
         if (empty($this->name))
-            $errors = 'You must enter a Name';
+            $errors[] = 'You must enter a Name';
 
         if (empty($this->price))
-            $errors = 'You must enter a price';
+            $errors[] = 'You must enter a price';
 
         if (empty($this->imagePath))
             $errors = 'You must add an Image Path';
 
         if (empty($this->service_id))
-            $errors = 'You must add a catering service type';
+            $errors[] = 'You must add a catering service type';
 
         if (empty($errors))
             return true;
