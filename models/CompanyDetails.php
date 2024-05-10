@@ -74,11 +74,11 @@ class CompanyDetails {
         $this->comapnySize = $comapnySize;
     }
     
-    public function setCity($city): void {
+    public function setCity($city) {
         $this->city = $city;
     }
 
-    public function setWebsite($website): void {
+    public function setWebsite($website) {
         $this->website = $website;
     }
 

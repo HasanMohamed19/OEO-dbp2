@@ -12,11 +12,14 @@ include './template/footer.html';
 
 include './helpers/Database.php';
 include './models/User.php';
+include './models/Client.php';
 if (isset($_POST['submitted'])) {
     $user = new User();
+    $client = new Client();
     $user->setEmail($_POST['email']);
     $user->setUsername($_POST['username']);
     $user->setPassword($_POST['password']); 
+    $client->setPhoneNumber($_POST['phoneNumber']);
     $user->setRoleId(ROLE_CLIENT);
 
     if ($user->initWithUsername()) {
