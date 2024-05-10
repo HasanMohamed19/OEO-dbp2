@@ -342,10 +342,9 @@
                                 <div class="row my-2">
                                     <div class="col">
                                         <label for="dob" class="form-label">DOB</label>
-                                        <input type="date" name="dob" class="form-control" placeholder="DOB">
+                                        <input type="date" name="dob" class="form-control" placeholder="DOB" value="<?php echo $p->getDob();?>">
                                     </div>
                                     <div class="col">
-                                        <?php echo 'is it null: ' . $p->getGender() == 'F' . ' dffd'; ?>
                                         <label for="gender" class="form-label">Gender</label>
                                         <select name="gender" class="form-select" id="n">
                                             <option value="" disabled>Gender</option>

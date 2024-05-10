@@ -20,7 +20,7 @@ class PersonalDetails {
     private $firstName;
     private $lastName;
 //    private $department;
-    private $age;
+    private $dob;
     private $gender;
     private $nationality;
     private $clientId;
@@ -29,17 +29,17 @@ class PersonalDetails {
         $this->personalDetialId = null;
         $this->firstName = null;
         $this->lastName = null;
-        $this->age = null;
+        $this->dob = null;
         $this->gender = null;
         $this->nationality = null;
         $this->clientId = null;
     }
 
-        public function initWith($personalDetialId, $firstName, $lastName, $age, $gender, $nationality, $clientId) {
+        public function initWith($personalDetialId, $firstName, $lastName, $dob, $gender, $nationality, $clientId) {
         $this->personalDetialId = $personalDetialId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->age = $age;
+        $this->dob = $dob;
         $this->gender = $gender;
         $this->nationality = $nationality;
         $this->clientId = $clientId;
@@ -51,7 +51,7 @@ class PersonalDetails {
                 $db = Database::getInstance();
                 // TODO: get client_id from cookie
                 $q = "INSERT INTO dbProj_PersonalDetails (personal_details_id, first_name, last_name, dob, gender, nationality, client_id)
-                 VALUES (NULL,' $this->firstName','$this->lastName','$this->age','$this->gender','$this->nationality','$this->clientId')"; 
+                 VALUES (NULL,' $this->firstName','$this->lastName','$this->dob','$this->gender','$this->nationality','$this->clientId')"; 
                 $data = $db->querySql($q);
                 var_dump($q);
                  return true;
@@ -67,7 +67,7 @@ class PersonalDetails {
     function initWithClientId() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
-        $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->age, $data->gender, $data->nationality, $data->client_id);
+        $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->dob, $data->gender, $data->nationality, $data->client_id);
 //        var_dump($data);
         if ($data != null) {
             return false;
@@ -90,7 +90,7 @@ class PersonalDetails {
                         SET first_name = '$this->firstName',
                             last_name = '$this->lastName',
                             dob = '2025-5-5',
-                            gender = 'M',
+                            gender = '$this->gender',
                             nationality = '$this->nationality'
                         WHERE client_id = '$this->clientId';   ";
                 $db->querySql($data);
@@ -114,7 +114,7 @@ class PersonalDetails {
         if (empty($this->lastName))
             $errors = false;
         
-        if (empty($this->age))
+        if (empty($this->dob))
             $errors = false;
 
         if (empty($this->gender))
@@ -143,8 +143,8 @@ class PersonalDetails {
         return $this->department;
     }
     
-    public function getAge() {
-        return $this->age;
+    public function getDob() {
+        return $this->dob;
     }
 
     public function getGender() {
@@ -175,8 +175,8 @@ class PersonalDetails {
         $this->department = $department;
     }
     
-    public function setAge($age) {
-        $this->age = $age;
+    public function setDob($dob) {
+        $this->dob = $dob;
     }
 
     public function setGender($gender) {

@@ -9,7 +9,7 @@
     include './template/header.html';    
     
     include 'debugging.php';
-    echo 'what is happening';
+//    echo 'what is happening';
     // if add/edit card form submitted
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
@@ -42,7 +42,7 @@
 //        }
 //    }
 }
-
+//    echo '   ' . $_POST['gender'] . 'gender';
     // for profile
     if (isset($_POST['profileSubmitted'])) {
         // create personal and comapny details object
@@ -61,8 +61,9 @@
         $personal->setFirstName($_POST['firstname']);
         $personal->setLastName($_POST['lastname']);
         $personal->setNationality($_POST['nationality']);
-        $personal->setAge('2022-5-3');
-        $personal->setGender('M');
+        $personal->setDob('2022-5-3');
+        
+        $personal->setGender($_POST['gender']);
 //        $personal->setClientId('1');
         
         // company details
