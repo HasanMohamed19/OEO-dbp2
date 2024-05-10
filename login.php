@@ -10,6 +10,7 @@ include './models/Login.php';
     }
 
     if (isset($_POST['submitted'])) {
+    $db = new Database();
     $login = new Login();
     $username = $_POST['username'];
     $password = $_POST['password'];

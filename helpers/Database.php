@@ -115,5 +115,11 @@ class Database {
        $var = stripslashes($var);
        return mysqli_real_escape_string($this->dblink, $var);
    }
+   
+   function displayError($q) {
+        echo 'Error occured: ';
+        var_dump($q);
+        echo 'error:'.mysqli_error($this->dblink);
+    }
     
 }

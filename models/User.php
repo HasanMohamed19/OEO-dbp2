@@ -101,11 +101,11 @@ class User {
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute failed';
-                    $this->displayError($q);
+                    $db->displayError($q);
                     return false;
                 }
             } else {
-                $this->displayError($q);
+                $db->displayError($q);
                 return false;
             }
             
@@ -121,11 +121,11 @@ class User {
                 if (!$clientStmt->execute()) {
                     var_dump($clientStmt);
                     echo 'Execute failed';
-//                    $this->displayError($q);
+                    $db->displayError($q);
                     return false;
                 }
             } else {
-//                $this->displayError($q);
+                $db->displayError($q);
                 return false;
             }
             
@@ -146,20 +146,55 @@ class User {
         return true;
     }
 
-    function sanitizeString($var) {
-        include_once  "./helpers/Database.php";
-        $db = new Database();
-       $var = strip_tags($var);
-       $var = htmlentities($var);
-       $var = stripslashes($var);
-       return mysqli_real_escape_string($db->getDatabase(), $var);
-   }
+//    function sanitizeString($var) {
+//        include_once  "./helpers/Database.php";
+//        $db = new Database();
+//       $var = strip_tags($var);
+//       $var = htmlentities($var);
+//       $var = stripslashes($var);
+//       return mysqli_real_escape_string($db->getDatabase(), $var);
+//   }
     
     function checkUser($username, $password) {
         $db = Database::getInstance();
-        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND AES_DECRYPT(password, 'B4baB00eY') = '$password'");
-//        var_dump($data);
-        $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
+        $u = $db->sanitizeString($username);
+        $p = $db->sanitizeString($password);
+        $q = "SELECT * FROM dbProj_User WHERE username = ? AND AES_DECRYPT(password, 'B4baB00eY') = ?";
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                // this works:
+//                var_dump($stmt);
+                $stmt->bind_param('ss', $u, $p);
+//                $stmt->execute();
+//                $result = $stmt->get_result();
+//                $data = $result->fetch_array(MYSQLI_ASSOC);
+//                var_dump($data);
+//                echo $data["username"]. 'my username is';
+//                $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
+                
+                if (!$stmt->execute()) {
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                } else {
+//                    echo 'Execute successed';
+                    $result = $stmt->get_result();
+                    $data = $result->fetch_array(MYSQLI_ASSOC);
+//                    var_dump($data);
+                    $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
+                }
+                
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+//        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND AES_DECRYPT(password, 'B4baB00eY') = '$password'");
+//        var_dump($stmt->fetch());
+//          $data = $stmt->get_result();
+//          var_dump($data);
+//        $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
+        return true;
     }
     
     function getClientByUserId() {
@@ -195,13 +230,13 @@ class User {
         return $data;
     }
     
-    function displayError($q) {
-        include_once  "./helpers/Database.php";
-        $db = new Database();
-        echo 'Error occured: ';
-        var_dump($q);
-        echo 'error:'.mysqli_error($db->getDatabase());
-    }
+//    function displayError($q) {
+//        include_once  "./helpers/Database.php";
+//        $db = new Database();
+//        echo 'Error occured: ';
+//        var_dump($q);
+//        echo 'error:'.mysqli_error($db->getDatabase());
+//    }
     
     public function getUserId() {
         return $this->userId;
