@@ -25,28 +25,24 @@ const BRONZE_STATUS = 0.05;
 class Client extends User {
     
     private $clientId;
-//    private $firstName;
-//    private $lastName;
-    private $balance;
+    private $phoneNumber;
     private $clientStatusId;
-    private $userId;
+//    private $userId;
     
     public function __construct() {
         $this->clientId = null;
-//        $this->firstName = null;
-//        $this->lastName = null;
-        $this->balance = null;
+        $this->phoneNumber = null;
         $this->clientStatusId = null;
-        $this->userId = null;
+//        $this->userId = null;
         parent::__construct();
     }
 
     
-    public function initClientWith($clientId, $balance, $clientStatusId, $userId, $username, $password, $email, $roleId) {
+    public function initClientWith($clientId, $phoneNumber, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;
-        $this->balance = $balance;
+        $this->phoneNumber = $phoneNumber;
         $this->clientStatusId = $clientStatusId;
-        $this->userId = $userId;
+//        $this->userId = $userId;
         parent::initWith($userId, $username, $password, $email, $roleId);
     }
 
@@ -54,14 +50,10 @@ class Client extends User {
     public function getClientId() {
         return $this->clientId;
     }
-
-    public function getBalance() {
-        return $this->balance;
-    }
     
-    public function getUserId() {
-        return $this->clientId;
-    }
+//    public function getUserId() {
+//        return $this->clientId;
+//    }
 
     public function getClientStatusId() {
         return $this->clientStatusId;
@@ -71,16 +63,22 @@ class Client extends User {
         $this->clientId = $clientId;
     }
 
-    public function setBalance($balance) {
-        $this->balance = $balance;
-    }
-
     public function setClientStatus($clientStatusId) {
         $this->clientStatusId = $clientStatusId;
     }
     
-    public function setUserId($userId) {
-        $this->userId = $userId;
+//    public function setUserId($userId) {
+//        $this->userId = $userId;
+//    }
+    
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
     }
+
+    public function setPhoneNumber($phoneNumber) {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+
     
 }

@@ -69,11 +69,14 @@ class User {
 
     function registerUser() {
         include_once  "./helpers/Database.php";
+        include_once 'Client.php';
         if ($this->isValid()) {
 //                    echo "username $this->username, password $this->password";
             $this->username = $this->sanitizeString($this->username);
             $this->password = $this->sanitizeString($this->password);
             $this->email    = $this->sanitizeString($this->email);
+            
+            
             
             if ($this->userId == null) {
                 $q = 'INSERT INTO dbProj_User (username, password, email, role_id) values'
@@ -104,6 +107,27 @@ class User {
                 $this->displayError($q);
                 return false;
             }
+            
+            $client = new Client();
+            $phoneNumber = $_POST['phoneNumber'];
+            $client->setPhoneNumber($phoneNumber);
+//            $client->setUserId(mysqli_insert_id($db->getDatabase()));
+            echo 'client user id: ' . $client->getUserId();
+            $clientStmt = mysqli_prepare($db->getDatabase(), "CALL InsertClient(?,?)");
+            $clientStmt->bind_param('is', mysqli_insert_id($db->getDatabase()), $phoneNumber);
+            
+            if ($clientStmt) {
+                if (!$clientStmt->execute()) {
+                    var_dump($clientStmt);
+                    echo 'Execute failed';
+//                    $this->displayError($q);
+                    return false;
+                }
+            } else {
+//                $this->displayError($q);
+                return false;
+            }
+            
 //            try {
 //                $db = Database::getInstance();
 //                $q = 'INSERT INTO dbProj_User (user_id, username, password, email, role_id)
