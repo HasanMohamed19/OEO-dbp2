@@ -402,36 +402,42 @@
                     <!-- book address -->
                     <div class="card col shadow-sm ms-4 px-0 inactive">
                         <div class="card-header">
-                            <h3>My Cards</h3>
+                            <h3>Address Book</h3>
                         </div>
                         
                         <?php
-                            echo 'book address section';
-//                            $card = new CardDetail();
-//                            $card->setClientId('1');
-//                            $cards = $card->getAllCardsForUser();
+//                            echo 'book address section';
+                            $address = new BillingAddress();
+                            $address->setClientId('1');
+                            $addresses = BillingAddress::getAddresses('1');
+                            $address->displayAddresses($addresses);
 //                            $card->displayCards($cards);
                         ?>
                         
-<!--                        
-
--->                     <div class="row mx-auto mb-2" style="width: 15%;">
+                        <div class="row mx-auto mb-2" style="width: 15%;">
                             <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
                         </div>
+                    </div>
+                        
+                        
+                        
+<!--                        
+
+-->                     
 
                     </div>
 
 
-                    <!-- My Cards Modal -->
+                    <!-- My Addresses Modal -->
                     <div class="modal fade" id="editAddressModal">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Address Detail</h1>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add/Edit Address</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="card-add-form" novalidate action="displayMyAccount.php" method="post">
+                                    <form id="address-add-form" novalidate action="displayMyAccount.php" method="post">
                                         <div class="row">
                                             <div class="col form-group required">
                                                 <label for="bldgNumber" class="form-label" >Building Number</label>
@@ -443,7 +449,7 @@
                                             </div>
                                             <div class="col form-group required">
                                                 <label for="block" class="form-label">Block</label>
-                                                <input type="number" id="blockInput" class="form-control" name="block" value="" required>
+                                                <input type="text" id="blockInput" class="form-control" name="block" value="" required>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -456,15 +462,15 @@
                                                 <input type="text" id="countryInput" class="form-control" name="country" value="" required>
                                             </div>
                                             <div class="col form-group required">
-                                                <label for="phoneNumber" class="form-label">Phone Nubmer</label>
-                                                <input type="number" id="phoneNumberInput" class="form-control" name="phoneNumber" value="" required>
+                                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                                <input type="text" id="phoneNumberInput" class="form-control" name="phoneNumber" value="" required>
                                             </div>
                                         </div>
 
                                         <div class="row mt-3">
                                             <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
-                                            <input type="hidden" name="submitted" value="1">
-                                            <input type="hidden" name="Add-CardID" id="Add-CardID">
+                                            <input type="hidden" name="addressSubmitted" value="1">
+                                            <input type="hidden" name="Add-AddressID" id="Add-AddressID">
                                         </div>
 
                                     </form>
@@ -516,9 +522,46 @@
         });
     });
     
+    $(document).ready(function () {
+        $(document).on('click', '#editAddressBtn', function () {
+
+            var addressId = $(this).attr('data-id');
+            console.log('Address id is:', addressId);
+            // AJAX request
+            $.ajax({
+                url: './helpers/get_address_info.php', // URL of your PHP script to fetch hall info
+                method: 'GET',
+                data: {addressId: addressId},
+                dataType: 'json', // Expected data type from server
+                success: function (response) {
+                    // Handle successful response
+                    console.log('address Info:', response);
+                    
+                    // Update form inputs with fetched data
+                    $('#bldgNumberInput').val(response.buildingNumber);
+                    $('#streetNumberInput').val(response.streetNumber);
+                    $('#blockInput').val(response.blockNumber);
+                    $('#areaInput').val(response.area);
+                    $('#countryInput').val(response.country);
+                    $('#phoneNumberInput').val(response.phoneNumber);
+                    $('#Add-AddressID').val(response.addressId);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching address info:', error);
+                }
+            });
+        });
+    });
+    
     $('#btnAddCard').click(function () {
         // Clear form Input fields when closing the form
         $('#Add-CardID').removeAttr('value');
+    });
+    
+    $('#btnAddAddress').click(function () {
+        // Clear form Input fields when closing the form
+        $('#Add-AddressID').removeAttr('value');
     });
     
     $('#card-add-form').submit(function(e) {
@@ -528,6 +571,23 @@
 //        var expirydate = $('#imageUpload');
 
         if (cardNumber === '' || cardholderName === '' || CVV === '') {
+            $(this).addClass('was-validated');
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    });
+    
+    $('#address-add-form').submit(function(e) {
+        var bldgNumber = $('#bldgNumberInput').val();
+        var streetNumber = $('#streetNumberInput').val();
+        var blockNumber = $('#blockInput').val();
+        var area = $('#areaInput').val();
+        var country = $('#countryInput').val();
+        var phoneNumber = $('#phoneNumberInput').val();
+//        var expirydate = $('#imageUpload');
+
+        if (bldgNumber === '' || streetNumber === '' || blockNumber === '' || area === '' || country === '' || phoneNumber === '') {
             $(this).addClass('was-validated');
             e.preventDefault();
             return false;

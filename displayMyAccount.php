@@ -6,7 +6,8 @@
     include './models/Client.php';
     include './models/Reservation.php';
     include './models/hall.php';
-    include './template/header.html';    
+    include './models/BillingAddress.php';
+    include './template/header.html';   
     
     include 'debugging.php';
 //    echo 'what is happening';
@@ -99,6 +100,33 @@
 //        }
         
     }
+    
+    if (isset($_POST['addressSubmitted'])) {
+        $address = new BillingAddress();
+        
+        $address->setAddressId($_POST['Add-AddressID']);
+        $address->setBuildingNumber($_POST['bldgNumber']);
+        $address->setRoadNumber($_POST['streetNumber']);
+        $address->setBlockNumber($_POST['block']);
+        $address->setCity($_POST['area']);
+        $address->setCountry($_POST['country']);
+        $address->setPhoneNumber($_POST['phoneNumber']);
+        echo 'phoneNumber ' . $_POST['phoneNumber'];
+        // get from the cookie
+        $address->setClientId('1');
+//        echo $address->getCity() . ' city';
+        
+        if ($address->getAddressId() == '') {
+            if ($address->addBillingAddress()) {
+                echo 'as ' . $address->getPhoneNumber();
+                    //display successful message
+                echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+            }
+        } else if ($address->updateBillingAddress()) {
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+        }
+    }
+    
     include './template/myAccounts.php';
     
     include './template/footer.html';

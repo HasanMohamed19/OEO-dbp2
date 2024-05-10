@@ -1,5 +1,6 @@
 <?php
 
+include_once '../helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -41,6 +42,127 @@ class BillingAddress {
         $this->blockNumber = null;
         $this->country = null;
         $this->clientId = null;
+    }
+    
+    public function addBillingAddress() {
+       if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                // TODO: get client_id from cookie
+                $q = "INSERT INTO dbProj_Billing_Address (address_id, phone_number, road_number, building_number, block_number, city, country, client_id)
+                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country','$this->clientId')"; 
+                $data = $db->querySql($q);
+//                var_dump($q);
+                 return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    function displayAddresses($dataSet) {
+        
+        if (!empty($dataSet)) {
+            for ($i = 0; $i < count($dataSet); $i++) {
+                $address = new BillingAddress();
+                // todo: get this from the login
+                $address->setClientId('1');
+                $addressId = $dataSet[$i]->address_id;
+                $address->setAddressId($addressId);
+                $address->initWithId();
+                
+                
+                echo '<div class="card my-3 mx-3">
+                        <div class="card-body vstack gap-2 align-items-center">
+                            <div class="row fw-bold"><h2>Company Address</h2></div>';
+                                
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() .'</span>
+                     </div>';
+                
+                echo ' <div class="row m-2">
+                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() .', Street: ' . $address->getRoadNumber() .', Block: ' . $address->getBlockNumber() .'</span>
+                     </div>';
+                
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">' . $address->getCity() .', ' . $address->getCountry() .' </span>
+                      </div>';
+                
+                echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                            </div>
+                        </div>';
+                                
+            }
+        }
+    }
+    
+    function updateBillingAddress() {
+        try {
+            $db = Database::getInstance();
+            $data = 'UPDATE dbProj_Billing_Address set
+			phone_number = \'' . $this->phoneNumber . '\' ,
+			road_number = \'' . $this->roadNumber . '\'  ,
+                        building_number = \'' . $this->buildingNumber . '\' ,
+                        block_number = \'' . $this->blockNumber . '\' ,
+                        city = \'' . $this->city . '\' ,
+                        country = \'' . $this->country . '\' ,
+                            WHERE address_id = ' . $this->addressId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+    
+    public static function getAddresses($clientId) {
+        $db = Database::getInstance();
+        $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
+                . 'FROM `dbProj_Billing_Address` WHERE client_id = '.$clientId;
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+    
+    public function initWithId() {
+        $db = Database::getInstance();
+        $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
+                . 'FROM `dbProj_Billing_Address` WHERE address_id = '.$this->addressId;
+//        var_dump($q);
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->block_number, $data->city, $data->country, $data->client_id);
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->phoneNumber))
+            $errors = false;
+        
+        if (empty($this->roadNumber))
+            $errors = false;
+        
+        if (empty($this->buildingNumber))
+            $errors = false;
+
+        if (empty($this->blockNumber))
+            $errors = false;
+
+        if (empty($this->city))
+            $errors = false;
+
+        if (empty($this->country))
+            $errors = false;
+
+        if (empty($this->clientId))
+            $errors = false;
+
+        return $errors;
     }
     
     public function getAddressId() {
