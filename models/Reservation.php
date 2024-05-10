@@ -95,6 +95,9 @@ class Reservation {
 
                 </tr>';
             }
+        
+            echo '</tbody>'
+            . '</table>';
 
     }
     
