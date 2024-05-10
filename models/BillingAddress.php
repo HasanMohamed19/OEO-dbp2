@@ -1,6 +1,6 @@
 <?php
 
-include_once './helpers/Database.php';
+include_once '../helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -50,8 +50,8 @@ class BillingAddress {
                 $db = Database::getInstance();
                 $q = 'INSERT INTO `dbProj_Billing_Address`(`address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id`)
                  VALUES (NULL, \'' . $this->phoneNumber . '\',\'' . $this->roadNumber . '\',\'' . $this->buildingNumber . '\',\'' . $this->blockNumber . '\',\''. $this->city.'\',\''.$this->country.'\','.$this->clientId.')';
+//                var_dump($q);
                 $data = $db->querySql($q);
-                var_dump($q);
                 $this->addressId = mysqli_insert_id($db->dblink);
                 return true;
             } catch (Exception $e) {
@@ -61,6 +61,14 @@ class BillingAddress {
         } else {
             return false;
         }
+    }
+    
+    public static function getAddresses($clientId) {
+        $db = Database::getInstance();
+        $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
+                . 'FROM `dbProj_Billing_Address` WHERE client_id = '.$clientId;
+        $data = $db->multiFetch($q);
+        return $data;
     }
     
     public function isValid() {

@@ -1,10 +1,5 @@
 <?php
 
-include('./template/header.html');
-
-include('./template/client/client_booking.html');
-
-include('./template/footer.html');
 
 include('debugging.php');
 //include('./models/Reservation.php');
@@ -25,18 +20,7 @@ if (isset($_POST['submitted'])) {
         die('Event not valid!');
     } 
 
-    $billing = new BillingAddress();
-    $billing->setPhoneNumber($_POST['paymentBillingPhone']);
-    $billing->setBuildingNumber($_POST['paymentBillingBuilding']);
-    $billing->setRoadNumber($_POST['paymentBillingStreet']);
-    $billing->setBlockNumber($_POST['paymentBillingBlock']);
-    $billing->setCity($_POST['paymentBillingArea']);
-    $billing->setCountry($_POST['paymentBillingCountry']);
-    $billing->setClientId(1);
-    if (!$billing->isValid()) {
-        die('Billing not valid!');
-    } 
-
+    
     $card = new CardDetail();
     $card->setCVV($_POST['paymentCardCVV']);
     $card->setCardNumber($_POST['paymentCardNumber']);
@@ -68,12 +52,17 @@ if (isset($_POST['submitted'])) {
 
         }
     } 
+}
     
 
+include('./template/header.html');
+
+include('./template/client/client_booking.html');
+
+include('./template/footer.html');
     
 
 //    
 //    $menuItems = $_POST['menuItems'];
     //$menuItem = new ReservationMenuItem();
     //$menuItem->setQuantity($quantity);
-}

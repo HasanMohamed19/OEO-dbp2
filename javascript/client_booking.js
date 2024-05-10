@@ -202,12 +202,14 @@ switch (id) {
 const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     
     const resetMenuItems = (menuName) => {
-        console.log("Reset menu items for "+menuName);
-        $('#pagination-items-'+menuName).html("");
+//        console.log("Reset menu items for "+menuName);
+//        $('#pagination-items-'+menuName).html("");
     };
     
     const addMenuItem = (item_id, menuId, itemName, itemPrice, itemImagePath) => {
         let menuName = getMenuName(parseInt(menuId));
+        let menuItemAlreadyLoaded = $("#catering-item-"+menuName+"-"+item_id).length !== 0;
+        if (menuItemAlreadyLoaded) return;
         $('#pagination-items-'+menuName).append(
                 `
         <div id="catering-item-${menuName}-${item_id}" class="card p-0 cateringItem">
@@ -239,6 +241,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     };
     
     console.log("about to send ajax request for menu items");
+    // this will fetch menu items only for the current page
     $.ajax({
         type: 'GET',
         url: 'ajaxQueries/booking_getMenuItems.php',
@@ -273,7 +276,6 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
     const menuType = getMenuName(menuId);
     const paginationNumbersDivs = document.querySelectorAll(".pagination-numbers-"+menuType);
     const paginationList = document.getElementById("pagination-items-"+menuType);
-    const listItems = paginationList.querySelectorAll(dataListClass);
     const firstButtons = document.querySelectorAll(".pagination-first-"+menuType);
     const lastButtons = document.querySelectorAll(".pagination-last-"+menuType);
     let totalItems=0;
@@ -382,11 +384,11 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
       refreshPaginationBars();
       const prevRange = (pageNum - 1) * itemCount;
       const currRange = pageNum * itemCount;
-
-      listItems.forEach((item, index) => {
-         item.classList.add("hidden");
+      $('#pagination-items-'+menuType+' '+dataListClass).each(function(index) {
+          console.log("ITEM IS: "+$(this));
+         $(this).addClass("hidden");
          if (index >= prevRange && index < currRange) {
-             item.classList.remove("hidden");
+             $(this).removeClass("hidden");
          }
       });
     };
@@ -416,4 +418,62 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
     setCurrentPage(1);
     addFirstLastEventListeners();
 
+};
+
+//      Update address and card dropdowns
+
+const updateAddressDropdown = () => {
+    let _clientId = 1;
+    $.ajax({
+        type: 'GET',
+        url: 'ajaxQueries/getAddresses.php',
+        datatype: 'json',
+        data: {
+            clientId:_clientId
+        }
+    }).then(function(res) {
+        let data = JSON.parse(res);
+        $('#paymentBillingSelection').html("<option selected>Choose Saved Address</option>");
+        $.each(data, function(index, obj) {
+            $('#paymentBillingSelection').append(
+                    `<option value="${obj.address_id}">${obj.phone_number}, ${obj.city}</option>`
+                );
+        });
+    });
+};
+
+//      Save address and card details on button click
+
+const saveAddress = () => {
+    let _clientId = 1;
+    let _building = $('#paymentBillingBuilding').val();
+    let _street = $('#paymentBillingStreet').val();
+    let _block = $('#paymentBillingBlock').val();
+    let _area = $('#paymentBillingArea').val();
+    let _country = $('#paymentBillingCountry').val();
+    let _phone = $('#paymentBillingPhone').val();
+    
+//    console.log(`Adding Address: ${_clientId} ${_building} ${_street} ${_block} ${_area} ${_country} ${_phone}`);
+    
+    $.ajax({
+        type: 'POST',
+        url: 'ajaxQueries/saveAddress.php',
+        data: {
+            clientId:_clientId,
+            building:_building,
+            street:_street,
+            block:_block,
+            area:_area,
+            country:_country,
+            phone:_phone
+        }
+    }).then(function(res) {
+        if (res === true) {
+            updateAddressDropdown();
+            console.log("Address insert success!");
+        } else {
+            // address could not be saved, handle error
+            console.log("Address insert failed.");
+        }
+    });
 };
