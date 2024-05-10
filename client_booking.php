@@ -21,16 +21,7 @@ if (isset($_POST['submitted'])) {
     } 
 
     
-    $card = new CardDetail();
-    $card->setCVV($_POST['paymentCardCVV']);
-    $card->setCardNumber($_POST['paymentCardNumber']);
-    $card->setCardholderName($_POST['paymentCardholderName']);
-    $expiryDate = trim($_POST['paymentCardExpiryYear']).'-'.trim($_POST['paymentCardExpiryMonth']).'-28';
-    $card->setExpiryDate($expiryDate);
-    $card->setClientId(1);
-    if (!$card->isValid()) {
-        die('Card not valid!');
-    } 
+    
     
     // get id for the event
     if ($event->addEvent() ) {

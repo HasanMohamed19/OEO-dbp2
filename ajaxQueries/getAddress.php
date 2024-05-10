@@ -3,14 +3,15 @@
 include('../models/BillingAddress.php');
 
 $billing = new BillingAddress();
-$billing->setAddressId($_GET['addressId']);
+$billing->setAddressId($_GET['id']);
 $billing->initWithId();
+// the name of the keys must match the html element ids for input
 $arr = [
-    'building'=>$billing->getBuildingNumber(),
-    'street'=>$billing->getRoadNumber(),
-    'block'=>$billing->getBlockNumber(),
-    'city'=>$billing->getCity(),
-    'country'=>$billing->getCountry(),
-    'phone'=>$billing->getPhoneNumber(),
+    'Building'=>$billing->getBuildingNumber(),
+    'Street'=>$billing->getRoadNumber(),
+    'Block'=>$billing->getBlockNumber(),
+    'Area'=>$billing->getCity(),
+    'Country'=>$billing->getCountry(),
+    'Phone'=>$billing->getPhoneNumber(),
 ];
 echo json_encode($arr);

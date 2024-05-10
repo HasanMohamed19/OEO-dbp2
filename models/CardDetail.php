@@ -1,6 +1,6 @@
 <?php
 
-include_once './helpers/Database.php';
+include_once '../helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -46,7 +46,7 @@ class CardDetail {
                  VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',\''. $this->expiryDate.'\','.$this->clientId.')';
                 $data = $db->querySql($q);
                 $this->cardId = mysqli_insert_id($db->dblink);
-                var_dump($q);
+//                var_dump($q);
                 return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
@@ -55,6 +55,21 @@ class CardDetail {
         } else {
             return false;
         }
+    }
+    
+    public static function getCards($clientId) {
+        $db = Database::getInstance();
+        $q = 'SELECT `card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id` '
+                . 'FROM `dbProj_Card_Detail` WHERE client_id = '.$clientId;
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+    public function initWithId() {
+        $db = Database::getInstance();
+        $q = 'SELECT `card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id` '
+                . 'FROM `dbProj_Card_Detail` WHERE card_id = '.$this->cardId;
+        $data = $db->singleFetch($q);
+        $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
     }
     
     public function isValid() {

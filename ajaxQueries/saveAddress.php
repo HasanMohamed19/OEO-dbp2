@@ -10,6 +10,7 @@ $billing->setBlockNumber($_POST['block']);
 $billing->setCity($_POST['area']);
 $billing->setCountry($_POST['country']);
 $billing->setClientId($_POST['clientId']);
+$billing->addBillingAddress();
 
-echo $billing->addBillingAddress();
+echo $billing->getAddressId();
 
