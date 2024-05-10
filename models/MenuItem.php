@@ -101,8 +101,8 @@ class MenuItem {
         $this->cateringServiceId = $cateringServiceId;
     }
     
-        public function getCateringSerivceName() {
-        switch ($service_id) {
+    public function getCateringSerivceName() {
+        switch ($this->cateringServiceId) {
             case 1:
                 return "Breakfast";
                 break;
