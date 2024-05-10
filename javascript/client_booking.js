@@ -35,19 +35,19 @@ triggerTabList.forEach(triggerEl => {
 //      Catering Item Quantity and Checkbox 
 // disable quantity box based on checkbox for all menu items
 const handleCateringCheckboxes = (menuType) => {
-        console.log('handling checkboxes');
+//        console.log('handling checkboxes');
     const paginationList = document.getElementById("pagination-items-"+menuType);
     
     const SetQuantityActive = (index, state) => {
         const quantityElement = paginationList.querySelector("#catering-item-"+menuType+"-"+index+"-quantity");
         quantityElement.disabled = state;
-        console.log('Set quantity state');
+//        console.log('Set quantity state');
     };
     
     // add event listeners to checkboxes
     paginationList.querySelectorAll(".cateringItemCheck").forEach(checkbox => {
         checkbox.addEventListener('click', () => {
-            console.log('clicked checkbox');
+//            console.log('clicked checkbox');
             const index = checkbox.id.split("-", 4)[3];
             const state = checkbox.checked;
             SetQuantityActive(index, !state);
@@ -165,6 +165,10 @@ const updateSideMenu = () => {
         $('#sideMenu-endDate').html(endDate);
         $('#sideMenu-noAudiences').html(noAudiences);
     };
+    const updateCateringDetails = (selectedMenus, cost) => {
+        $('#sideMenu-selectedMenus').html(selectedMenus);
+        $('#sideMenu-cost').html(Math.round(cost*1000)/1000+' BHD');
+    };
     
     // use ajax to acquire the hall and use it to update side menu
     $.ajax({
@@ -188,6 +192,22 @@ const updateSideMenu = () => {
             $('#bookingEndDate').val(),
             $('#bookingNoAudiences').val()
         );
+        
+    let selectedMenuItems = getMenuItemSelections();
+    
+    let menuNamesArray = getCateringSelectedMenus(selectedMenuItems);
+    let menuNamesRenamedArray = [];
+    if (menuNamesArray['breakfast'] > 0) menuNamesRenamedArray.push("Breakfast");
+    if (menuNamesArray['lunch'] > 0) menuNamesRenamedArray.push("Lunch");
+    if (menuNamesArray['hot'] > 0) menuNamesRenamedArray.push("Hot Beverages");
+    if (menuNamesArray['cold'] > 0) menuNamesRenamedArray.push("Cold Beverages");
+    
+    let menuNames = Array.isArray(menuNamesRenamedArray) && menuNamesRenamedArray.length !== 0 
+        ? menuNamesRenamedArray.join(', ') : 'None';
+    
+    let cost = calculateCateringCost(selectedMenuItems);
+    
+    updateCateringDetails(menuNames, cost);
 };
 
 
@@ -239,7 +259,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     };
     
     const toggleMenu = (menuName) => {
-        console.log($('#pagination-none-'+menuName).attr("class").split(/\s+/));
+//        console.log($('#pagination-none-'+menuName).attr("class").split(/\s+/));
         $('#pagination-items-'+menuName).toggleClass("hidden");
         $('#pagination-items-'+menuName).toggleClass("d-flex");
         $('#'+menuName+'-tab-pane nav').toggleClass("hidden");
@@ -247,7 +267,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
         $('#pagination-none-'+menuName).toggleClass("hidden");
     };
     
-    console.log("about to send ajax request for menu items");
+//    console.log("about to send ajax request for menu items");
     // this will fetch menu items only for the current page
     $.ajax({
         type: 'GET',
@@ -260,7 +280,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
         }
     }).then(function(res) {
         let data = JSON.parse(res);
-        console.log("Response for menu items: " + data);
+//        console.log("Response for menu items: " + data);
         let menuCount = 0;
         let menuName = getMenuName(menuId);
         resetMenuItems(menuName);
@@ -268,7 +288,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
             addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
             menuCount += 1;
         });
-        console.log('checking items for menu '+menuId+' : ' + menuName + ', there are '+menuCount+' items.');
+//        console.log('checking items for menu '+menuId+' : ' + menuName + ', there are '+menuCount+' items.');
         if (menuCount <= 0) {
             // used to display if no items are found
             toggleMenu(menuName);
@@ -279,7 +299,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
 
 //      Catering Menus Pagination
 const enablePagination = (menuId, dataListClass, itemCount) => {
-    console.log("Enabling pagination");
+//    console.log("Enabling pagination");
     const menuType = getMenuName(menuId);
     const paginationNumbersDivs = document.querySelectorAll(".pagination-numbers-"+menuType);
     const paginationList = document.getElementById("pagination-items-"+menuType);
@@ -392,7 +412,7 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
       const prevRange = (pageNum - 1) * itemCount;
       const currRange = pageNum * itemCount;
       $('#pagination-items-'+menuType+' '+dataListClass).each(function(index) {
-          console.log("ITEM IS: "+$(this));
+//          console.log("ITEM IS: "+$(this));
          $(this).addClass("hidden");
          if (index >= prevRange && index < currRange) {
              $(this).removeClass("hidden");
@@ -562,7 +582,7 @@ const saveAddress = () => {
     }).then(function(res) {
         if (res > 0) {
             updateDropdown('Address', res);
-            console.log("Address insert success! ID: " + res);
+//            console.log("Address insert success! ID: " + res);
         } else {
             // address could not be saved, handle error
             console.log("Address insert failed.");
@@ -591,10 +611,63 @@ const saveCard = () => {
     }).then(function(res) {
         if (res > 0) {
             updateDropdown('Card', res);
-            console.log("Card insert success! ID: " + res);
+//            console.log("Card insert success! ID: " + res);
         } else {
             // address could not be saved, handle error
             console.log("Card insert failed.");
         }
     });
+};
+
+const getCateringSelectedMenus = (menuItems) => {
+    let menus = {
+        'breakfast':0,
+        'lunch':0,
+        'hot':0,
+        'cold':0
+    };
+    $.each(menuItems, function(index, obj) {
+        console.log(obj.menu);
+        if (menus.hasOwnProperty(obj.menu)) {
+            menus[obj.menu] += 1;
+        }
+    });
+    console.log(menus);
+    return menus;
+};
+
+const calculateCateringCost = (menuItems) => {
+    // read selected catering items and calculate price using db procedure
+    let totalCost = 0.0;
+    $.each(menuItems, function(index, obj) {
+        totalCost += obj.price * obj.quantity;
+    });
+    return totalCost;
+};
+
+const getMenuItemSelections = () => {
+    // loop through all quantity input elements (for catering)
+    //  and add active ones to array
+    let menuItems = [];
+    $('.cateringItemQuantity').each(function(index) {
+        if ($(this).prop('disabled')) return;
+        let quantity = $(this).val();
+        if (quantity <= 0) return;
+        let elementId = $(this).attr('id');
+        let menuName = elementId.split('-')[2];
+        let menuItemId = elementId.split('-')[3];
+        // read price from html element
+        let price = parseFloat($('#catering-item-'+menuName+'-'+menuItemId+' strong')
+                .html()
+                .split(' ')[0]);
+        console.log(`getting item, Price: ${price}`);
+        let menuItem = {
+            id:menuItemId,
+            menu:menuName,
+            quantity:quantity,
+            price:price
+        };
+        menuItems.push(menuItem);
+    });
+    return menuItems;
 };
