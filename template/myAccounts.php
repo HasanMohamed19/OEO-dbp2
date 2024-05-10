@@ -28,6 +28,10 @@
                                     <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                                 <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <strong>Address Book</strong>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     <strong>Logout</strong>
                                 </button>
                             </div>
@@ -394,6 +398,82 @@
 
                     </div>
                     <!-- end of profile -->
+                    
+                    <!-- book address -->
+                    <div class="card col shadow-sm ms-4 px-0 inactive">
+                        <div class="card-header">
+                            <h3>My Cards</h3>
+                        </div>
+                        
+                        <?php
+                            echo 'book address section';
+//                            $card = new CardDetail();
+//                            $card->setClientId('1');
+//                            $cards = $card->getAllCardsForUser();
+//                            $card->displayCards($cards);
+                        ?>
+                        
+<!--                        
+
+-->                     <div class="row mx-auto mb-2" style="width: 15%;">
+                            <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
+                        </div>
+
+                    </div>
+
+
+                    <!-- My Cards Modal -->
+                    <div class="modal fade" id="editAddressModal">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Address Detail</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="card-add-form" novalidate action="displayMyAccount.php" method="post">
+                                        <div class="row">
+                                            <div class="col form-group required">
+                                                <label for="bldgNumber" class="form-label" >Building Number</label>
+                                                <input type="text" name="bldgNumber" id="bldgNumberInput" class="form-control" required/>
+                                            </div>
+                                            <div class="col form-group required">
+                                                <label for="streetNumber" class="form-label">Street Number</label>
+                                                <input type="text" id="streetNumberInput" class="form-control" name="streetNumber" required>
+                                            </div>
+                                            <div class="col form-group required">
+                                                <label for="block" class="form-label">Block</label>
+                                                <input type="number" id="blockInput" class="form-control" name="block" value="" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group required">
+                                                <label for="area" class="form-label">Area</label>
+                                                <input type="text" id="areaInput" class="form-control" name="area" value="" required>
+                                            </div>
+                                            <div class="col form-group required">
+                                                <label for="country" class="form-label">Country</label>
+                                                <input type="text" id="countryInput" class="form-control" name="country" value="" required>
+                                            </div>
+                                            <div class="col form-group required">
+                                                <label for="phoneNumber" class="form-label">Phone Nubmer</label>
+                                                <input type="number" id="phoneNumberInput" class="form-control" name="phoneNumber" value="" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                            <input type="hidden" name="submitted" value="1">
+                                            <input type="hidden" name="Add-CardID" id="Add-CardID">
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of book address -->
 
                 </div>
 
