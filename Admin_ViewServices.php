@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
@@ -34,25 +34,26 @@ if (isset($_POST['submitted'])) {
     //initialze a new MenuItem object
     $item = new MenuItem();
     //assign object values using set methods of MenuItem class
+    $item->setItemId(trim($_POST['Add-ItemID']));
     $item->setName(trim($_POST['ItemName']));
     $item->setDescription(trim($_POST['description']));
     $item->setCateringService(trim($_POST['serviceType']));
     $item->setPrice(trim($_POST['Price']));
-    
+
     // check the uploading of the image and assigning the image path
     $imgFileName = uploadImg();
     //check if file name is not empty
     $item->setImagePath($imgFileName);
 
-    //check if Hall is valid and added it to the database
-    if ($item->isValid()) {
-        $db = Database::getInstance();
+    //check if Item is valid and added it to the database
+    $db = Database::getInstance();
+    if ($item->getCateringService() == '') {
         if ($item->addMenuItem()) {
             //display book image and successful message
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
-    } else {
-        echo '<br><div class="container"><div class="alert alert-danger alert-dismissible fade show" role="alert">The Item has not been added :(<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+    } else if ($item->updateMenuItem()){
+        echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
 
@@ -62,7 +63,7 @@ if (isset($_POST['deleteItemSubmitted'])) {
     $deletedItem->initWithMenuItemid($ItemID);
     echo $ItemID;
     if ($deletedItem->deleteMenuItem()) {
-         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+        echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     } else {
         echo'Error: not deleted';
     }

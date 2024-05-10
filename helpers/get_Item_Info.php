@@ -3,17 +3,18 @@
 include '../debugging.php';
 include '../models/MenuItem.php'; // Include the Hall class definition
 
-// Check if hallId parameter is provided
+// Check if itemId parameter is provided
 if (isset($_GET['itemId'])) {
-    // Get hallId from the request
+    // Get itemId from the request
     $itemId = $_GET['itemId'];
 
     try {
         // Create a new instance of the Hall class
         $Item = new MenuItem();
         
-        // Initialize the hall object with data based on hallId
+        // Initialize the Item object with data based on item id
         $Item->initWithMenuItemid($itemId);
+
         // Prepare the response data
         $responseData = array(
             'ItemId' => $Item->getItemId(),
@@ -21,7 +22,7 @@ if (isset($_GET['itemId'])) {
             'description' => $Item->getDescription(),
             'price' => $Item->getPrice(),
             'image_path' => $Item->getImagePath(),
-//            'service_id' => $Item->getCateringService()
+            'service_id' => $Item->getCateringService()
         );
 
         // Send JSON response
@@ -36,5 +37,6 @@ if (isset($_GET['itemId'])) {
     // Return error if hallId parameter is missing
     header('HTTP/1.1 400 Bad Request');
     echo json_encode(array('error' => 'Item ID is required'));
+    
 }
 ?>

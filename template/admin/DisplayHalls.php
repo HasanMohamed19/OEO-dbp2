@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="col-xl-2 text-end">
-                <button id="addHallBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">+ New Hall</button>
+                <button id="addHallBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Hall</button>
             </div>
         </div>
         <div class="row">
@@ -57,7 +57,7 @@
         </nav>
 
         <!-- Add/Update Modal -->
-        <div class="modal" id="myModal">
+        <div class="modal" id="addModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal Header -->
@@ -72,7 +72,7 @@
                             <div class="mb-3 form-group required" id="hallImg">
                                 <label class="form-label" id="imageUploadLabel">Hall Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="HallImage" required >
-                                
+
                             </div>  
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Name</label>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Rental Charge</label>
-                                <input type="number" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
+                                <input type="number" step="any" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
                             </div>
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Capacity</label>
@@ -179,16 +179,16 @@
             });
         });
     });
-
-    $('.cancelBtn').click(function () {
+    
+    $('#addModal').on('hidden.bs.modal', function (e) {
         // Clear form Input fields when closing the form
         $('.form-control').val('');
         $('#add-form').removeClass('was-validated');
+        console.log('Modal dismissed');
     });
     $('#addHallBtn').click(function () {
-        // Clear form Input fields when closing the form
-        $('#hallImg').attr('required','');
-        $('#imageUpload').attr('required','');
+        $('#hallImg').attr('required', '');
+        $('#imageUpload').attr('required', '');
         $('#Add-HallID').removeAttr('value');
         $('#imageUploadLabel:after').add();
     });
@@ -249,7 +249,7 @@ function displayHalls($dataSet) {
                         </div>
                         <div class="col-xl-1">
                             <div class="d-flex flex-column h-100 justify-content-between">
-                                <button id="editHallBtn" class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
+                                <button id="editHallBtn" class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal">Edit</button>
                                 <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)" id="deleteHallBtn">Delete</button>
                             </div>
                         </div>

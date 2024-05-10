@@ -56,7 +56,7 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <form action="Admin_ViewServices.php" id="add-form" novalidate method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+                        <form action="Admin_ViewServices.php" id="add-form" novalidate method="POST" enctype="multipart/form-data">
                             <div class="mb-3 form-group required" id="ItemImg">
                                 <label class="form-label">Menu Item Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="MenuItemImg" required >
@@ -67,16 +67,16 @@
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="Price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="Price" placeholder="Enter Price" name="Price" required>
+                                <input type="number" step="any" class="form-control" id="Price" placeholder="Enter Price" name="Price" required>
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="serviceType" class="form-label">Service Type</label>
-                                <select name="serviceType" class="form-select" required id="serviceid">
-                                    <option value="" disabled>Select Service Type</option>
-                                    <option value="1">Breakfast</option>
-                                    <option value="2">Lunch</option>
-                                    <option value="3">Hot Beverages</option>
-                                    <option value="4">Cold Beverages</option>  
+                                <select name="serviceType" class="form-select" id="serviceidSelect" required>
+                                    <option value="" disabled selected>Select Service Type</option>
+                                    <option value="1" >Breakfast</option>
+                                    <option value="2" >Lunch</option>
+                                    <option value="3" >Hot Beverages</option>
+                                    <option value="4" >Cold Beverages</option>  
                                 </select>
                             </div>
                             <div class="mb-3" form-group>
@@ -88,7 +88,7 @@
                                     <button class="btn btn-secondary cancelBtn" data-bs-dismiss="modal" type="button">Cancel</button>
                                 </div>
                                 <div class="col text-end">
-                                    <input class="btn btn-primary" data-bs-dismiss="modal" type="submit" value="Save">
+                                    <input class="btn btn-primary" type="submit" value="Save">
                                     <input type="hidden" name="submitted">
                                     <input type="hidden" name="Add-ItemID" id="Add-ItemID">
                                 </div>
@@ -123,6 +123,7 @@
     </div>
     <script src="./helpers/pagination.js"></script>
     <script src="./helpers/AdminForms.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
@@ -141,7 +142,7 @@
                                     console.log('Item id is:', itemId);
                                     // AJAX request
                                     $.ajax({
-                                        url: './helpers/get_Item_info.php', // URL of your PHP script to fetch hall info
+                                        url: './helpers/get_Item_Info.php', // URL of your PHP script to fetch hall info
                                         method: 'GET',
                                         data: {itemId: itemId}, // Send hallId to server
                                         dataType: 'json', // Expected data type from server
@@ -155,7 +156,8 @@
                                             // Update form inputs with fetched data
                                             $('#ItemName').val(response.name);
                                             $('#Price').val(response.price);
-//                                            $('#serviceid').val(response.service_id);
+                                            console.log('Service id Info:', response.service_id);
+                                            $('#serviceidSelect').val(response.service_id).change();
                                             $('#description').val(response.description);
                                             $('#Add-ItemID').val(response.ItemId);
                                         },
@@ -166,12 +168,13 @@
                                     });
                                 });
                             });
-                            $('.cancelBtn').click(function () {
-                                // Update form inputs with fetched data
+                            $('#addModal').on('hidden.bs.modal', function (e) {
+                                // Do something when the modal is dismissed
                                 $('.form-control').val('');
+                                $('.form-select').val('');
                                 $('#add-form').removeClass('was-validated');
+                                console.log('Modal dismissed');
                             });
-
                             $('#addItemBtn').click(function () {
                                 // Clear form Input fields when closing the form
                                 $('#ItemImg').attr('required', '');

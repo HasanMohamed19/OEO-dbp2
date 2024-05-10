@@ -34,7 +34,7 @@ class MenuItem {
         $this->description = $description;
         $this->price = $price;
         $this->imagePath = $imagePath;
-        $this->$service_id = $service_id;
+        $this->service_id = $service_id;
     }
 
     public function initWithMenuItemid($id) {
@@ -49,7 +49,7 @@ class MenuItem {
         $this->description = null;
         $this->price = null;
         $this->imagePath = null;
-        $this->$service_id = null;
+        $this->service_id = null;
     }
 
     public function getItemId() {
@@ -73,7 +73,7 @@ class MenuItem {
     }
 
     public function getCateringService() {
-        return $this->$service_id;
+        return $this->service_id;
     }
 
     public function setItemId($itemId) {
@@ -106,23 +106,6 @@ class MenuItem {
         return $data;
     }
 
-//    function getCateringType($service_id) {
-//        switch ($cateringService) {
-//            case 1:
-//                return "Breakfast";
-//                break;
-//            case 2:
-//                return "Lunch";
-//                break;
-//            case 3:
-//                return "HotBeverages";
-//                break;
-//            case 4:
-//                return "ColdBeverages";
-//                break;
-//        }
-//    }
-
     function addMenuItem() {
         try {
             $db = Database::getInstance();
@@ -145,6 +128,30 @@ class MenuItem {
 //            unlink($this->imagePath);
             return true;
         } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
+    function updateMenuItem() {
+        try {
+            $db = Database::getInstance();
+
+            if (is_null($this->imagePath) || $this->imagePath == '') {
+                $this->imagePath = $db->singleFetch('Select image_path from dbProj_Menu_Item where item_id =' . $this->itemId)->image_path;
+            }
+            $data = 'UPDATE dbProj_Menu_Item set
+			name = \'' . $this->name . '\'  ,
+                        description = \'' . $this->description . '\' ,
+                        price = \'' . $this->price . '\' ,
+                        image_path = \'' . $this->imagePath . '\',
+                        service_id = \'' . $this->service_id . '\'
+                            WHERE item_id = ' . $this->itemId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
             echo 'Exception: ' . $e;
             return false;
         }
