@@ -10,7 +10,6 @@
  *
  * @author Hassan
  */
-
 // if required this can be changed to class as before
 //enum CateringService: int {
 //    case Breakfast = 1;
@@ -25,7 +24,7 @@ const MENU_HOT_BEVERAGES = 3;
 const MENU_COLD_BEVERAGES = 4;
 
 class MenuItem {
-    
+
     private $itemId;
     private $name;
     private $description;
@@ -33,7 +32,7 @@ class MenuItem {
     private $imagePath;
     // service_id
     private $cateringServiceId;
-    
+
     public function initWith($itemId, $name, $description, $price, $imagePath, $cateringServiceId) {
         $this->itemId = $itemId;
         $this->name = $name;
@@ -42,7 +41,7 @@ class MenuItem {
         $this->imagePath = $imagePath;
         $this->cateringServiceId = $cateringServiceId;
     }
-    
+
     public function __construct() {
         $this->itemId = null;
         $this->name = null;
@@ -52,7 +51,6 @@ class MenuItem {
         $this->cateringServiceId = null;
     }
 
-    
     public function getItemId() {
         return $this->itemId;
     }
@@ -72,7 +70,7 @@ class MenuItem {
     public function getImagePath() {
         return $this->imagePath;
     }
-    
+
     public function getCateringServiceId() {
         return $this->cateringServiceId;
     }
@@ -96,9 +94,25 @@ class MenuItem {
     public function setImagePath($imagePath) {
         $this->imagePath = $imagePath;
     }
-    
+
     public function setCateringService($cateringServiceId) {
         $this->cateringServiceId = $cateringServiceId;
     }
 
+    public function getCateringSerivceName() {
+        switch ($service_id) {
+            case 1:
+                return "Breakfast";
+                break;
+            case 2:
+                return "Lunch";
+                break;
+            case 3:
+                return "Hot Beverages";
+                break;
+            case 4:
+                return "Cold Beverages";
+                break;
+        }
+    }
 }
