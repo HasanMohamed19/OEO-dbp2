@@ -5,26 +5,33 @@ include 'header.php';
 include './models/User.php';
 include './models/Login.php';
 
-if (isset($_POST['submitted'])) {
+    if (!empty($_COOKIE['userId'])) {
+        header('Location: myAccount.php');
+    }
+
+    if (isset($_POST['submitted'])) {
     $login = new Login();
     $username = $_POST['username'];
     $password = $_POST['password'];
-     echo 'manually: ' . $login->login($username, $password) . ' is';
-    if ($login->login($username, $password)) {
-//        header('Location: index.php');
-        echo "Success";
-    } else {
-        echo $error = "Wrong Credintals";
-    }
+//     echo 'manually: ' . $login->login($username, $password) . ' is';
+//    if ($login->login($username, $password)) {
+////        header('Location: index.php');
+//        echo "Success";
+//    } else {
+//        echo $error = "Wrong Credintals";
+//    }
 
      if ($login->login($username, $password)) {
          header("Location: myAccount.php");
          echo 'Logged in successfully';
      } else {
-         header("Location: viewBookings.php");
+//         header("Location: viewBookings.php");
          echo '<p class="error"> Wrong Login Values </p>';
      }
 }
+
+
+
 include './template/header.html';
 // start_session();
 

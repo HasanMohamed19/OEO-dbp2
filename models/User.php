@@ -70,11 +70,12 @@ class User {
     function registerUser() {
         include_once  "./helpers/Database.php";
         include_once 'Client.php';
+        $db = new Database();
         if ($this->isValid()) {
 //                    echo "username $this->username, password $this->password";
-            $this->username = $this->sanitizeString($this->username);
-            $this->password = $this->sanitizeString($this->password);
-            $this->email    = $this->sanitizeString($this->email);
+            $this->username = $db->sanitizeString($this->username);
+            $this->password = $db->sanitizeString($this->password);
+            $this->email    = $db->sanitizeString($this->email);
             
             
             
@@ -88,7 +89,7 @@ class User {
                         . "WHERE user_id=?";
             }
             
-            $db = new Database();
+            
             
             $stmt = mysqli_prepare($db->getDatabase(),$q);
             if ($stmt) {
@@ -109,7 +110,7 @@ class User {
             }
             
             $client = new Client();
-            $phoneNumber = $_POST['phoneNumber'];
+            $phoneNumber = $db->sanitizeString($_POST['phoneNumber']);
             $client->setPhoneNumber($phoneNumber);
 //            $client->setUserId(mysqli_insert_id($db->getDatabase()));
             echo 'client user id: ' . $client->getUserId();
@@ -156,7 +157,7 @@ class User {
     
     function checkUser($username, $password) {
         $db = Database::getInstance();
-        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND password = '$password'");
+        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND AES_DECRYPT(password, 'B4baB00eY') = '$password'");
 //        var_dump($data);
         $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
     }
