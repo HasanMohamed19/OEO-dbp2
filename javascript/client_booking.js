@@ -4,6 +4,7 @@ $(document).ready(function() {
     updateSideMenu();
     // load pages for first menu
    enablePagination(1, ".cateringItem", cateringItemDisplayCount);
+    updateAddressDropdown();
 });
 
 
@@ -422,6 +423,27 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
 
 //      Update address and card dropdowns
 
+
+const fillAddressForm = (addressId) => {
+    $.ajax({
+        type: 'GET',
+        url: 'ajaxQueries/getAddress.php',
+        datatype: 'json',
+        data: {
+            addressId:addressId
+        }
+    }).then(function(res) {
+        let data = JSON.parse(res);
+        if (!data) return;
+        $('#paymentBillingBuilding').val(data.building);
+        $('#paymentBillingStreet').val(data.street);
+        $('#paymentBillingBlock').val(data.block);
+        $('#paymentBillingArea').val(data.city);
+        $('#paymentBillingCountry').val(data.country);
+        $('#paymentBillingPhone').val(data.phone);
+    });
+};
+
 const updateAddressDropdown = () => {
     let _clientId = 1;
     $.ajax({
@@ -468,7 +490,7 @@ const saveAddress = () => {
             phone:_phone
         }
     }).then(function(res) {
-        if (res === true) {
+        if (res > 0) {
             updateAddressDropdown();
             console.log("Address insert success!");
         } else {

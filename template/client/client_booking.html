@@ -440,7 +440,7 @@
                                 <div class="col-4">
                                     <label class="form-label" for="paymentBillingSelection">Choose Saved Address</label>
                                     <!-- If there is already a saved address, immediately fill the form with it -->
-                                    <select class="form-select" id="paymentBillingSelection">
+                                    <select class="form-select" id="paymentBillingSelection" onChange="fillAddressForm(this.value)">
                                         <option selected>Choose Saved Address</option>
                                         <option value="1">Second Address</option>
                                         <option value="2">Max limit should be 4</option>

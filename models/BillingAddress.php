@@ -71,6 +71,16 @@ class BillingAddress {
         return $data;
     }
     
+    public function initWithId() {
+        $db = Database::getInstance();
+        $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
+                . 'FROM `dbProj_Billing_Address` WHERE address_id = '.$this->addressId;
+//        var_dump($q);
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->block_number, $data->city, $data->country, $data->client_id);
+    }
+    
     public function isValid() {
         $errors = true;
 
