@@ -42,11 +42,14 @@ class Reservation {
         e.end_date,
         e.start_time,
         e.end_time,
-        c.phone_number
+        c.phone_number,
+        p.first_name,
+        p.last_name
         FROM dbProj_Reservation r
         INNER JOIN dbProj_Hall h ON r.hall_id = h.hall_id
         INNER JOIN dbProj_Event e ON r.event_id = e.event_id
-        INNER JOIN dbProj_Client c ON r.client_id = c.client_id;
+        INNER JOIN dbProj_Client c ON r.client_id = c.client_id
+        INNER JOIN dbProj_PersonalDetails p ON r.client_id = p.client_id;
         ");
         return $data;
     }
@@ -71,6 +74,7 @@ class Reservation {
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Hall Name</th>
+                    <th>Event Name</th>
                     <th>Client Name</th>
                     <th>Status</th>
                     <th>Total</th>
@@ -84,12 +88,13 @@ class Reservation {
             for ($i=0; $i < count($dataset); $i++) { 
                 echo '<tr class="booking">
                     <td scope="row">'. $dataset[$i]->reservation_id .'</td>
-                    <td>'. $dataset[$i]->event_name .'</td>
                     <td>'. $dataset[$i]->start_date .'</td>
                     <td>'. $dataset[$i]->end_date .'</td>
                     <td>'. $dataset[$i]->start_time .'</td>
                     <td>'. $dataset[$i]->end_time .'</td>
-                    <td>'. $dataset[$i]->phone_number .'</td>
+                    <td>'. $dataset[$i]->hall_name .'</td>
+                    <td>'. $dataset[$i]->event_name .'</td>
+                    <td>'. $dataset[$i]->first_name . ' ' . $dataset[$i]->last_name .'</td>
                     <td>'. $dataset[$i]->reservation_status_id .'</td>
                     <td>'. 100 .'</td>
 
