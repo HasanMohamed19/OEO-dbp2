@@ -87,13 +87,17 @@ for (let i = 0; i < sectionButtons.length; i++) {
         sectionButtons[currentSection].classList.remove("active");
         // if going to previous section, make current card inactive
         if (currentSection > i && currentSection < cards.length) {
-            cards[currentSection].classList.add("inactive");
+            for (j = currentSection; j>i; j--) {
+                cards[j].classList.add("inactive");
+            }
         }
         
         sections[currentSection = i].classList.add("active");
         sectionButtons[currentSection].classList.add("active");
         if (currentSection < cards.length) {
-            cards[currentSection].classList.remove("inactive");
+            for (j = 0; j<=currentSection; j++) {
+                cards[j].classList.remove("inactive");
+            }
         }
         
         if (i === 0) {
