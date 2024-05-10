@@ -1,4 +1,7 @@
 const cateringItemDisplayCount = 10;
+const hallId = (new URL(location.href)).searchParams.get('hallId');
+const clientId = 1;
+var hallRentalCharge;
 
 $(document).ready(function() {
     updateSideMenu();
@@ -110,6 +113,10 @@ for (let i = 0; i < sectionButtons.length; i++) {
             }
         }
         if (i === sectionButtons.length - 1) {
+            console.log("setting total cost now");
+            setTotalCost(); // display cost at the bottom if this is last page
+            
+            // for last page, show save button instead of next
             if (nextButton.className.split(" ").indexOf("hide") < 0) {
                 nextButton.classList.add("hide");
             }
@@ -156,7 +163,7 @@ const updateSideMenu = () => {
         $('#sideMenu-hallName').html(name);
         $('#sideMenu-hallDescription').html(description);
         $('#sideMenu-hallType').html(type);
-        $('#sideMenu-rentalCharge').html(charge);
+        $('#sideMenu-rentalCharge').html(charge + " BHD/hr");
         $('#sideMenu-capacity').html(capacity);
     };
     const updateEventDetails = (name, startDate, endDate, noAudiences) => {
@@ -169,15 +176,20 @@ const updateSideMenu = () => {
         $('#sideMenu-selectedMenus').html(selectedMenus);
         $('#sideMenu-cost').html(Math.round(cost*1000)/1000+' BHD');
     };
-    
+    // get hall id from GET parameter
+    console.log("Read hallId from url is: "+hallId);
     // use ajax to acquire the hall and use it to update side menu
     $.ajax({
         type: 'GET',
         url: 'ajaxQueries/booking_getHall.php',
-        datatype: 'json'
+        datatype: 'json',
+        data: {
+            hallId:hallId
+        }
     }).then(function(res) {
         let data = JSON.parse(res);
 //        if (data.error)
+        hallRentalCharge = data.rentalCharge;
         updateHallDetails(
                 data.hallName,
                 data.hallDescription,
@@ -510,13 +522,12 @@ const updateCardExpiryYearDropdown = () => {
 const updateDropdown = (type, selectId = -1) => {
     const inputElementName = type === 'Address' ? '#paymentBillingSelection' : '#paymentCardSelection';
     const phpURLName = type === 'Address' ? 'getAddresses.php' : 'getCards.php';
-    let _clientId = 1;
     $.ajax({
         type: 'GET',
         url: 'ajaxQueries/'+phpURLName,
         datatype: 'json',
         data: {
-            clientId:_clientId
+            clientId:clientId
         }
     }).then(function(res) {
         let data = JSON.parse(res);
@@ -531,13 +542,12 @@ const updateDropdown = (type, selectId = -1) => {
     });
 };
 //const updateAddressDropdown = (selectId = -1) => {
-//    let _clientId = 1;
 //    $.ajax({
 //        type: 'GET',
 //        url: 'ajaxQueries/getAddresses.php',
 //        datatype: 'json',
 //        data: {
-//            clientId:_clientId
+//            clientId:clientId
 //        }
 //    }).then(function(res) {
 //        let data = JSON.parse(res);
@@ -557,7 +567,6 @@ const updateDropdown = (type, selectId = -1) => {
 //      Save address and card details on button click
 
 const saveAddress = () => {
-    let clientId = 1;
     let building = $('#paymentBillingBuilding').val();
     let street = $('#paymentBillingStreet').val();
     let block = $('#paymentBillingBlock').val();
@@ -590,7 +599,6 @@ const saveAddress = () => {
     });
 };
 const saveCard = () => {
-    let clientId = 1;
     let cardNumber = $('#paymentCardNumber').val();
     let cardholderName = $('#paymentCardholderName').val();
     let expiryYear = $('#paymentCardExpiryYear').val();
@@ -670,4 +678,61 @@ const getMenuItemSelections = () => {
         menuItems.push(menuItem);
     });
     return menuItems;
+};
+
+
+const setTotalCost = () => {
+    $.ajax({
+        type: 'GET',
+        url: 'ajaxQueries/getClientDiscount.php',
+        data: {
+            clientId:clientId
+        }
+    }).then(function(res) {
+        let total = calculateTotalPrice(res);
+        total = Math.round(total*1000)/1000;
+        $('#paymentTotalCost').html('Total: '+total+' BHD');
+    });
+};
+
+const getDaysBetween = (date1, date2) => {
+    let msDelta = new Date(date2).getTime() - new Date(date1).getTime();
+    let dayDelta = Math.round(msDelta / (1000 * 3600 * 24));
+    return dayDelta;
+};
+
+const getHoursBetween = (time1, time2) => {
+    let date1 = new Date();
+    date1.setHours(parseInt(time1.split(':')[0]));
+    date1.setMinutes(parseInt(time1.split(':')[1]));
+    let date2 = new Date();
+    date2.setHours(parseInt(time2.split(':')[0]));
+    date2.setMinutes(parseInt(time2.split(':')[1]));
+    
+    let msDelta = Math.abs(date2.getTime() - date1.getTime());
+    let hourDelta = Math.round(msDelta/(1000 * 3600));
+    return hourDelta;
+};
+
+const calculateTotalPrice = (discount) => {
+    if (hallRentalCharge === null) return;
+    let total = 0.0;
+    let rentalCharge = hallRentalCharge;
+    
+    let rentalDurationDays = getDaysBetween(
+            $('#bookingStartDate').val(), 
+            $('#bookingEndDate').val()
+                    );
+    let rentalDurationHourDelta = getHoursBetween(
+            $('#bookingStartTime').val(),
+            $('#bookingEndTime').val()
+                    );
+    console.log("DayDifference: "+rentalDurationDays+", Hours: "+rentalDurationHourDelta);
+    let rentalDurationHours = rentalDurationDays * rentalDurationHourDelta;
+    
+    let rentalCost = rentalCharge * rentalDurationHours;
+    let cateringCost = calculateCateringCost(getMenuItemSelections());
+    
+    total = (rentalCost + cateringCost) * discount;
+    return total;
 };

@@ -14,6 +14,7 @@
 const ROLE_ADMIN = 1;
 const ROLE_CLIENT = 2;
 const ROLE_EMPLOYEE = 3;
+include_once 'helpers/Database.php';
 
 class User {
     private $userId;

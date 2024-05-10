@@ -3,8 +3,8 @@
 include "../models/Hall.php";
 
 // set id appropriately
-//$id = $_GET['hall_id'];
-$id = 1000;
+$id = $_GET['hallId'];
+//$id = 1000;
 
 $hall = new Hall();
 $hall->setHallId($id);

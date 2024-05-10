@@ -17,6 +17,8 @@
 //    case silver = 0.1;
 //    case bronze = 0.05;
 //}
+include_once 'helpers/Database.php';
+include_once 'models/User.php';
 
 const GOLDEN_STATUS = 0.2;
 const SILVER_STATUS = 0.1;
@@ -50,6 +52,18 @@ class Client extends User {
         parent::initWith($userId, $username, $password, $email, $roleId);
     }
 
+    public function getDiscountRate() {
+        $db = Database::getInstance();
+        $q = 'SELECT `client_status_id` '
+                . 'FROM `dbProj_Client` WHERE client_id = '.$this->clientId;
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        $discountRate = 0;
+        if ($data == 3) $discountRate = BRONZE_STATUS;
+        if ($data == 2) $discountRate = SILVER_STATUS;
+        if ($data == 1) $discountRate = GOLDEN_STATUS;
+        return (1 - $discountRate);
+    }
     
     public function getClientId() {
         return $this->clientId;
