@@ -22,7 +22,7 @@ if (isset($_GET['itemId'])) {
             'description' => $Item->getDescription(),
             'price' => $Item->getPrice(),
             'image_path' => $Item->getImagePath(),
-            'service_id' => $Item->getCateringService()
+            'service_id' => $Item->getCateringServiceId()
         );
 
         // Send JSON response

@@ -47,7 +47,7 @@ if (isset($_POST['submitted'])) {
 
     //check if Item is valid and added it to the database
     $db = Database::getInstance();
-    if ($item->getCateringService() == '') {
+    if ($item->getItemId() == '') {
         if ($item->addMenuItem()) {
             //display book image and successful message
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';

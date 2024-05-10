@@ -10,15 +10,25 @@
  *
  * @author Hassan
  */
+include '../helpers/Database.php';
+
 class Hall {
-    
+
     private $hallId;
     private $hallName;
     private $description;
     private $rentalCharge;
     private $capacity;
     private $imagePath;
-    
+
+//    public function __construct($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
+//        $this->hallId = $hallId;
+//        $this->hallName = $hallName;
+//        $this->description = $description;
+//        $this->rentalCharge = $rentalCharge;
+//        $this->capacity = $capacity;
+//        $this->imagePath = $imagePath;
+//    }
     public function __construct() {
         $this->hallId = null;
         $this->hallName = null;
@@ -27,7 +37,7 @@ class Hall {
         $this->capacity = null;
         $this->imagePath = null;
     }
-    
+
     public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
         $this->hallId = $hallId;
         $this->hallName = $hallName;
@@ -36,7 +46,13 @@ class Hall {
         $this->capacity = $capacity;
         $this->imagePath = $imagePath;
     }
-    
+
+    public function initWithHallid($id) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $id);
+        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
+    }
+
     public function getHallId() {
         return $this->hallId;
     }
@@ -85,5 +101,81 @@ class Hall {
         $this->imagePath = $imagePath;
     }
 
+    function getAllHalls() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch('Select * from dbProj_Hall');
+        return $data;
+    }
 
+    function addHall() {
+        try {
+            $db = Database::getInstance();
+            $insertQry = "INSERT INTO dbProj_Hall(hall_id,hall_name,description,rental_charge,capacity,image_path) VALUES( NULL,'$this->hallName','$this->description', '$this->rentalCharge','$this->capacity','$this->imagePath')";
+            if (!($db->querySQL($insertQry))) {
+                echo'insert failed  :(';
+                return false;
+            }
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
+    function deleteHall() {
+        try {
+            $db = Database::getInstance();
+            $deleteQry = $db->querySQL("Delete from dbProj_Hall where hall_id=" . $this->hallId);
+//            unlink($this->imagePath);
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
+    function updateHall() {
+        try {
+            $db = Database::getInstance();
+
+            if (is_null($this->imagePath) || $this->imagePath == '') {
+                $this->imagePath = $db->singleFetch('Select image_path from dbProj_Hall where hall_id =' . $this->hallId)->image_path;
+            }
+            $data = 'UPDATE dbProj_Hall set
+			hall_name = \'' . $this->hallName . '\' ,
+			description = \'' . $this->description . '\'  ,
+                        rental_charge = \'' . $this->rentalCharge . '\' ,
+                        capacity = \'' . $this->capacity . '\' ,
+                        image_path = \'' . $this->imagePath . '\'
+                            WHERE hall_id = ' . $this->hallId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+
+    public function isValid() {
+        $errors = array();
+
+        if (empty($this->hallName))
+            $errors[] = 'You must enter a Hall Name';
+
+        if (empty($this->rentalCharge))
+            $errors[] = 'You must enter a Rental Charge';
+
+        if (empty($this->capacity))
+            $errors[] = 'You must enter a Capacity';
+
+        if (empty($this->imagePath))
+            $errors[] = 'You must add an Image';
+
+        if (empty($errors))
+            return true;
+        else
+            return false;
+    }
 }

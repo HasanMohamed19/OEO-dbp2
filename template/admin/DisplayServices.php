@@ -228,7 +228,7 @@ function displayMenuItems($dataSet) {
                                     <h3>BD ' . $item->getPrice() . '</h3>
                                 </div>';
             echo'<div class="col text-end">
-                                    <h3>' . '</h3>
+                                    <h3>' .$item->getCateringSerivceName(). '</h3>
                                 </div>
                             </div>
                         </div>
