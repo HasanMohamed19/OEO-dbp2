@@ -44,7 +44,7 @@ class ReservationMenuItem {
         if (!$this->isValid()) {
             return false;
         }
-        echo "quant $this->quantity, resid $this->reservationId";
+//        echo "quant $this->quantity, resid $this->reservationId";
         $this->quantity = $db->sanitizeString($this->quantity);
 
         if ($this->reservationMenuItemId == null) {

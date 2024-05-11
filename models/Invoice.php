@@ -1,10 +1,7 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
 
+include_once '../helpers/Database.php';
 /**
  * Description of Invoice
  *
@@ -31,6 +28,33 @@ class Invoice {
         $this->reservationId = null;
     }
     
+    public static function addWithReservationId($resId) {
+        $db = new Database();
+        
+        // this procedure will automatically calculate
+        // rental and catering costs too
+        $q = 'CALL insertInvoice(?)';
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+//        var_dump($stmt);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        
+        $stmt->bind_param('i',
+            $resId
+        );
+        
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
+    
     public function getInvoiceId() {
         return $this->invoiceId;
     }
@@ -42,7 +66,16 @@ class Invoice {
     public function getCateringCost() {
         return $this->cateringCost;
     }
+    
+    public function getReservationId() {
+        return $this->reservationId;
+    }
 
+    public function setReservationId($reservationId): void {
+        $this->reservationId = $reservationId;
+    }
+
+    
     public function setInvoiceId($invoiceId) {
         $this->invoiceId = $invoiceId;
     }
