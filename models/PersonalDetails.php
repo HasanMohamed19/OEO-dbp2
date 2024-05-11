@@ -11,8 +11,8 @@
  * @author Hassan
  */
 
-const M = 'M';
-const F = 'F';
+const GENDER_MALE = 'M';
+const GENDER_FEMALE = 'F';
 
 class PersonalDetails {
     
@@ -145,6 +145,11 @@ class PersonalDetails {
     
     public function getDob() {
         return $this->dob;
+
+    }
+    
+    public function getAge() {
+        // calculate age
     }
 
     public function getGender() {

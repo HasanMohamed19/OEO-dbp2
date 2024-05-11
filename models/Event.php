@@ -16,28 +16,28 @@ class Event {
     private $name;
     private $startDate;
     private $endDate;
-    private $audienceNumber;
     private $startTime;
     private $endTime;
+    private $audienceNumber;
     
     public function __construct() {
         $this->eventId = null;
         $this->name = null;
         $this->startDate = null;
         $this->endDate = null;
-        $this->audienceNumber = null;
         $this->startTime = null;
         $this->endTime = null;
+        $this->audienceNumber = null;
     }
     
-    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber, $startTime, $endTime) {
+    public function initWith($eventId, $name, $startDate, $endDate, $startTime, $endTime, $audienceNumber) {
         $this->eventId = $eventId;
         $this->name = $name;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->audienceNumber = $audienceNumber;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
+        $this->audienceNumber = $audienceNumber;
     }
     
     public function initWithEventId($eventId) {
@@ -61,6 +61,14 @@ class Event {
     public function getEndDate() {
         return $this->endDate;
     }
+    
+    public function getStartTime() {
+        return $this->startTime;
+    }
+    
+    public function getEndTime() {
+        return $this->endTime;
+    }
 
     public function getAudienceNumber() {
         return $this->audienceNumber;
@@ -77,6 +85,14 @@ class Event {
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
     }
+    
+    public function setStartTime($startTime) {
+        $this->startTime = $startTime;
+    }
+    
+    public function setEndTime($endTime) {
+        $this->endTime = $endTime;
+    }
 
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -85,24 +101,5 @@ class Event {
     public function setAudienceNumber($audienceNumber) {
         $this->audienceNumber = $audienceNumber;
     }
-    
-    public function getStartTime() {
-        return $this->startTime;
-    }
-
-    public function getEndTime() {
-        return $this->endTime;
-    }
-
-    public function setStartTime($startTime) {
-        $this->startTime = $startTime;
-    }
-
-    public function setEndTime($endTime){
-        $this->endTime = $endTime;
-    }
-
-
-
 
 }
