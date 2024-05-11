@@ -1,7 +1,42 @@
 const cateringItemDisplayCount = 10;
 const hallId = (new URL(location.href)).searchParams.get('hallId');
 const clientId = 1;
-var hallRentalCharge;
+var hallRentalCharge; // will be set after side menu loads
+
+$('#bookingForm').on('submit', function(event) {
+    // post request must be made with js to allow sending
+    // list of selected menu items as JSON
+    event.preventDefault();
+    // validate form and get menu items to send with ajax
+    let eventName = $('#bookingEventName').val();
+    let startDate = $('#bookingStartDate').val();
+    let endDate = $('#bookingEndDate').val();
+    let startTime = $('#bookingStartTime').val();
+    let endTime = $('#bookingEndTime').val();
+    let audience = $('#bookingNoAudiences').val();
+    let notes = $('#bookingNotes').val();
+    // get menu items and convert to JSON
+    let items = JSON.stringify(getMenuItemSelections());
+//    alert("prevented");
+    // submit form
+    $.ajax({
+        type: 'POST',
+        url:'client_booking.php',
+        data: {
+            submitted: true,
+            bookingEventName:eventName,
+            bookingStartDate:startDate,
+            bookingEndDate:endDate,
+            bookingStartTime:startTime,
+            bookingEndTime:endTime,
+            bookingNoAudiences:audience,
+            bookingEventNotes:notes,
+            bookingHallId:hallId,
+            bookingClientId:clientId,
+            menuItems:items
+        }
+    }); // form will redirect to next page in php
+});
 
 $(document).ready(function() {
     updateSideMenu();
@@ -152,7 +187,7 @@ previousButton.addEventListener("click", function() {
 //  add function for complete booking button
 saveButton.addEventListener("click", function() {
     // take user to summary page
-    window.location.href = "booking_summary.php";
+//    window.location.href = "booking_summary.php";
 });
 
 

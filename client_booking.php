@@ -1,10 +1,10 @@
 <?php
 
 
-include('debugging.php');
-//include('./models/Reservation.php');
-//include('./models/ReservationMenuItem.php');
-//include('./models/Event.php');
+include_once('debugging.php');
+include_once('./models/Event.php');
+include_once('./models/Reservation.php');
+include_once('./models/ReservationMenuItem.php');
 //include('./models/BillingAddress.php');
 //include('./models/CardDetail.php');
 
@@ -20,29 +20,21 @@ if (isset($_POST['submitted'])) {
         die('Event not valid!');
     } 
 
-    
-    
-    
-    // get id for the event
-    if ($event->addEvent() ) {
-        
-        $eventId = $event->getEventId();
+    // use ids for reservation
+    $reservation = new Reservation();
+    $reservation->setNotes($_POST['bookingEventNotes']);
+    $reservation->setHallId($_POST['bookingHallId']);
+    $reservation->setClientId($_POST['bookingClientId']);
+    $reservation->setStatusId(RESERVATION_RESERVED);
+    if (!$reservation->saveReservation($event)) {
+        die('Reservation not saved!');
+    }
 
-//        echo "IDS: $eventId";
-        
-        // use ids for reservation
-        $reservation = new Reservation();
-        $reservation->setNotes($_POST['bookingEventNotes']);
-        $reservation->setHallId(1000);
-        $reservation->setClientId(1);
-        $reservation->setEventId($eventId);
-        $reservation->setStatusId(RESERVATION_RESERVED);
-        $reservation->setPrice($_POST['bookingPrice']);
-        
-        if ($billing->addBillingAddress() && $card->addCardDetail()) {
-
-        }
-    } 
+    $resId = $reservation->getReservationId();
+    echo "ID: $resId";
+    
+    
+//    header('booking_summary.php');
 }
     
 
