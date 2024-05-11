@@ -17,7 +17,7 @@
 //    case HotBeverages = 3;
 //    case ColdBeverages = 4;
 //}
-
+include '../helpers/Database.php';
 const MENU_BREAKFAST = 1;
 const MENU_LUNCH = 2;
 const MENU_HOT_BEVERAGES = 3;
@@ -129,54 +129,89 @@ class MenuItem {
     }
 
     function addMenuItem() {
-        try {
-            $db = Database::getInstance();
-            $insertQry = "INSERT INTO dbProj_Menu_Item(item_id,name,description,price,image_path,service_id) VALUES( NULL,'$this->name','$this->description', '$this->price','$this->imagePath','$this->service_id')";
-            if (!($db->querySQL($insertQry))) {
-                echo'insert failed  :(';
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->name = $db->sanitizeString($this->name);
+            $this->description = $db->sanitizeString($this->description);
+            $this->price = $db->sanitizeString($this->price);
+            $this->imagePath = $db->sanitizeString($this->imagePath);
+            $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
+
+            $q = "INSERT INTO dbProj_Menu_Item(name,description,price,image_path,service_id) VALUES(?,?,?,?,?)";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdsi', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
                 return false;
             }
             return true;
-        } catch (Exception $e) {
-            echo 'Exception: ' . $e;
-            return false;
+        } else{
+            echo'invalid inputs';
         }
     }
 
     function deleteMenuItem() {
-        try {
-            $db = Database::getInstance();
-            $deleteQry = $db->querySQL("Delete from dbProj_Menu_Item where item_id=" . $this->itemId);
-//            unlink($this->imagePath);
-            return true;
-        } catch (Exception $e) {
-            echo 'Exception: ' . $e;
-            return false;
-        }
-    }
-        function updateMenuItem() {
-        try {
-            $db = Database::getInstance();
+        $db = new Database();
+        $this->itemId = $db->sanitizeString($this->itemId);
+        $q = "Delete from dbProj_Menu_Item where item_id=?";
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
 
-            if (is_null($this->imagePath) || $this->imagePath == '') {
-                $this->imagePath = $db->singleFetch('Select image_path from dbProj_Menu_Item where item_id =' . $this->itemId)->image_path;
+        if ($stmt) {
+            $stmt->bind_param('i', $this->itemId);
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute failed';
+                $db->displayError($q);
+                return false;
             }
-            $data = 'UPDATE dbProj_Menu_Item set
-			name = \'' . $this->name . '\'  ,
-                        description = \'' . $this->description . '\' ,
-                        price = \'' . $this->price . '\' ,
-                        image_path = \'' . $this->imagePath . '\',
-                        service_id = \'' . $this->service_id . '\'
-                            WHERE item_id = ' . $this->itemId;
-
-            $db->querySQL($data);
-            return true;
-        } catch (Exception $e) {
-
-            echo 'Exception: ' . $e;
+        } else {
+            $db->displayError($q);
             return false;
         }
+        return true;
     }
+    
+    function updateMenuItem() {
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->itemId = $db->sanitizeString($this->itemId);
+            $this->name = $db->sanitizeString($this->name);
+            $this->description = $db->sanitizeString($this->description);
+            $this->price = $db->sanitizeString($this->price);
+            $this->imagePath = $db->sanitizeString($this->imagePath);
+            $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
+
+            $q = "UPDATE dbProj_Menu_Item set name = ? ,description = ?  ,price = ? ,image_path = ? ,service_id = ? WHERE item_id = ? ";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdsii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->itemId);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            return true;
+        } else {
+            echo'invalid values :(';
+        }
+    }
+
     public function isValid() {
         $errors = array();
 
@@ -186,11 +221,16 @@ class MenuItem {
         if (empty($this->price))
             $errors[] = 'You must enter a price';
 
-        if (empty($this->imagePath))
-            $errors = 'You must add an Image Path';
-
-        if (empty($this->service_id))
+        if (empty($this->imagePath)) {
+            echo'no image';
+            $errors[] = 'You must add an Image Path';
+        }
+            
+        if (empty($this->cateringServiceId)) {
+            echo'no service';
             $errors[] = 'You must add a catering service type';
+        }
+            
 
         if (empty($errors))
             return true;

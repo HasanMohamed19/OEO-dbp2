@@ -21,14 +21,6 @@ class Hall {
     private $capacity;
     private $imagePath;
 
-//    public function __construct($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
-//        $this->hallId = $hallId;
-//        $this->hallName = $hallName;
-//        $this->description = $description;
-//        $this->rentalCharge = $rentalCharge;
-//        $this->capacity = $capacity;
-//        $this->imagePath = $imagePath;
-//    }
     public function __construct() {
         $this->hallId = null;
         $this->hallName = null;
@@ -108,53 +100,84 @@ class Hall {
     }
 
     function addHall() {
-        try {
-            $db = Database::getInstance();
-            $insertQry = "INSERT INTO dbProj_Hall(hall_id,hall_name,description,rental_charge,capacity,image_path) VALUES( NULL,'$this->hallName','$this->description', '$this->rentalCharge','$this->capacity','$this->imagePath')";
-            if (!($db->querySQL($insertQry))) {
-                echo'insert failed  :(';
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->hallName = $db->sanitizeString($this->hallName);
+            $this->description = $db->sanitizeString($this->description);
+            $this->rentalCharge = $db->sanitizeString($this->rentalCharge);
+            $this->capacity = $db->sanitizeString($this->capacity);
+            $this->imagePath = $db->sanitizeString($this->imagePath);
+
+            $q = "INSERT INTO dbProj_Hall(hall_name,description,rental_charge,capacity,image_path) VALUES(?,?,?,?,?)";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdis', $this->hallName, $this->description, $this->rentalCharge, $this->capacity, $this->imagePath);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
                 return false;
             }
             return true;
-        } catch (Exception $e) {
-            echo 'Exception: ' . $e;
-            return false;
         }
     }
 
     function deleteHall() {
-        try {
-            $db = Database::getInstance();
-            $deleteQry = $db->querySQL("Delete from dbProj_Hall where hall_id=" . $this->hallId);
-//            unlink($this->imagePath);
-            return true;
-        } catch (Exception $e) {
-            echo 'Exception: ' . $e;
+        $db = new Database();
+        $this->hallId = $db->sanitizeString($this->hallId);
+        $q = "Delete from dbProj_Hall where hall_id=?";
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if ($stmt) {
+            $stmt->bind_param('i', $this->hallId);
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute failed';
+                $db->displayError($q);
+                return false;
+            }
+        } else {
+            $db->displayError($q);
             return false;
         }
+        return true;
     }
 
     function updateHall() {
-        try {
-            $db = Database::getInstance();
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->hallId = $db->sanitizeString($this->hallId);
+            $this->hallName = $db->sanitizeString($this->hallName);
+            $this->description = $db->sanitizeString($this->description);
+            $this->rentalCharge = $db->sanitizeString($this->rentalCharge);
+            $this->capacity = $db->sanitizeString($this->capacity);
+            $this->imagePath = $db->sanitizeString($this->imagePath);
 
-            if (is_null($this->imagePath) || $this->imagePath == '') {
-                $this->imagePath = $db->singleFetch('Select image_path from dbProj_Hall where hall_id =' . $this->hallId)->image_path;
+            $q = "UPDATE dbProj_Hall set hall_name = ? ,description = ?  ,rental_charge = ? ,capacity = ? ,image_path = ? WHERE hall_id = ? ";
+                      
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdisi', $this->hallName, $this->description, $this->rentalCharge, $this->capacity, $this->imagePath, $this->hallId);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
             }
-            $data = 'UPDATE dbProj_Hall set
-			hall_name = \'' . $this->hallName . '\' ,
-			description = \'' . $this->description . '\'  ,
-                        rental_charge = \'' . $this->rentalCharge . '\' ,
-                        capacity = \'' . $this->capacity . '\' ,
-                        image_path = \'' . $this->imagePath . '\'
-                            WHERE hall_id = ' . $this->hallId;
-
-            $db->querySQL($data);
             return true;
-        } catch (Exception $e) {
-
-            echo 'Exception: ' . $e;
-            return false;
+        } else {
+            echo'invalid values :(';
         }
     }
 

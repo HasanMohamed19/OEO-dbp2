@@ -42,8 +42,13 @@ if (isset($_POST['submitted'])) {
 
     // check the uploading of the image and assigning the image path
     $imgFileName = uploadImg();
-    //check if file name is not empty
-    $item->setImagePath($imgFileName);
+    //if no image uploaded (only in update) then set the image to the old one
+    if ($imgFileName == '') {
+        $item->setImagePath(trim($_POST['imagePath']));
+    } else {
+         //else if new image uploaded set it to the new one
+        $item->setImagePath($imgFileName);
+    }
 
     //check if Item is valid and added it to the database
     $db = Database::getInstance();
@@ -51,6 +56,8 @@ if (isset($_POST['submitted'])) {
         if ($item->addMenuItem()) {
             //display book image and successful message
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+        }else {
+            echo'error: cannot add';
         }
     } else if ($item->updateMenuItem()){
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
@@ -61,7 +68,7 @@ if (isset($_POST['deleteItemSubmitted'])) {
     $ItemID = trim($_POST['ItemId']);
     $deletedItem = new MenuItem();
     $deletedItem->initWithMenuItemid($ItemID);
-    echo $ItemID;
+
     if ($deletedItem->deleteMenuItem()) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     } else {

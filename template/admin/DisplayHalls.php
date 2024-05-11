@@ -72,7 +72,7 @@
                             <div class="mb-3 form-group required" id="hallImg">
                                 <label class="form-label" id="imageUploadLabel">Hall Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="HallImage" required >
-
+                                <input value="" type="hidden" name="imagePath" id="imagePath" >
                             </div>  
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Name</label>
@@ -170,6 +170,7 @@
                     $('#RntlchargeInput').val(response.rentalCharge);
                     $('#CapacityInput').val(response.capacity);
                     $('#descriptionInput').val(response.description);
+                    $('#imagePath').val(response.imagePath);
                     $('#Add-HallID').val(response.hallId);
                 },
                 error: function (xhr, status, error) {

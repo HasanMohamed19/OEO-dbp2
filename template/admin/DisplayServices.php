@@ -60,6 +60,7 @@
                             <div class="mb-3 form-group required" id="ItemImg">
                                 <label class="form-label">Menu Item Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="MenuItemImg" required >
+                                 <input value="" type="hidden" name="imagePath" id="imagePath" >
                             </div> 
                             <div class="mb-3 form-group required">
                                 <label for="ItemName" class="form-label">Item Name</label>
@@ -159,6 +160,7 @@
                                             console.log('Service id Info:', response.service_id);
                                             $('#serviceidSelect').val(response.service_id).change();
                                             $('#description').val(response.description);
+                                             $('#imagePath').val(response.image_path);
                                             $('#Add-ItemID').val(response.ItemId);
                                         },
                                         error: function (xhr, status, error) {
@@ -187,11 +189,12 @@
                                 // Get form inputs
                                 var name = $('#ItemName').val();
                                 var price = $('#Price').val();
-                                var serviceId = $('#serviceid').val();
+                                var serviceId = $('#serviceidSelect').val();
+                                console.log("service id value is:",serviceId);
                                 var imageUpload = $('#imageUpload');
 
                                 // Check if any field is empty or image is not uploaded
-                                if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '') {
+                                if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId===null) {
                                     $(this).addClass('was-validated');
                                     e.preventDefault(); // Prevent form submission
                                     return false;
