@@ -69,22 +69,50 @@ class CardDetail {
     }
 
     function addCard() {
+//        if ($this->isValid()) {
+//            try {
+//                $db = Database::getInstance();
+//                // TODO: get client_id from cookie
+//                $q = "INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
+//                 VALUES (NULL,' $this->cardholderName','$this->cardNumber','$this->CVV','$this->expiryDate','$this->clientId')"; 
+//                $data = $db->querySql($q);
+////                var_dump($q);
+//                 return true;
+//            } catch (Exception $e) {
+//                echo 'Exception: ' . $e;
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+        $db = new Database();
+        
         if ($this->isValid()) {
-            try {
-                $db = Database::getInstance();
-                // TODO: get client_id from cookie
-                $q = "INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
-                 VALUES (NULL,' $this->cardholderName','$this->cardNumber','$this->CVV','$this->expiryDate','$this->clientId')"; 
-                $data = $db->querySql($q);
-//                var_dump($q);
-                 return true;
-            } catch (Exception $e) {
-                echo 'Exception: ' . $e;
+            $this->cardholderName = $db->sanitizeString($this->cardholderName);
+            $this->cardNumber = $db->sanitizeString($this->cardNumber);
+            $this->CVV = $db->sanitizeString($this->CVV);
+            $this->expiryDate = $db->sanitizeString($this->expiryDate);
+            
+            $q = "INSERT INTO dbProj_Card_Detail (cardholder_name, card_number, CVV, expiry_date, client_id) VALUES (?,?,?,?,?)";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            
+            if ($stmt) {
+                $stmt->bind_param('ssssi', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate, $this->clientId);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
                 return false;
             }
-        } else {
-            return false;
+            return true;
         }
+        
     }
     
     function initWithCardId($cardId) {
@@ -116,22 +144,53 @@ class CardDetail {
     }
     
     function updateCard() {
-        try {
-            $db = Database::getInstance();
-            $data = 'UPDATE dbProj_Card_Detail set
-			cardholder_name = \'' . $this->cardholderName . '\' ,
-			card_number = \'' . $this->cardNumber . '\'  ,
-                        CVV = \'' . $this->CVV . '\' ,
-                        expiry_date = \'' . $this->expiryDate . '\'
-                            WHERE card_id = ' . $this->cardId;
-//            var_dump($data);
-            $db->querySQL($data);
+        
+        
+        $db = new Database();
+        
+        if ($this->isValid()) {
+            $this->cardholderName = $db->sanitizeString($this->cardholderName);
+            $this->cardNumber = $db->sanitizeString($this->cardNumber);
+            $this->CVV = $db->sanitizeString($this->CVV);
+            $this->expiryDate = $db->sanitizeString($this->expiryDate);
+            
+            $q = "UPDATE dbProj_Card_Detail set
+			cardholder_name = ?, card_number = ?, CVV = ?, expiry_date = ? WHERE card_id = '$this->cardId';";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            
+            if ($stmt) {
+                $stmt->bind_param('ssss', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
             return true;
-        } catch (Exception $e) {
-
-            echo 'Exception: ' . $e;
-            return false;
         }
+
+//        try {
+//            $db = Database::getInstance();
+//            $data = 'UPDATE dbProj_Card_Detail set
+//			cardholder_name = \'' . $this->cardholderName . '\' ,
+//			card_number = \'' . $this->cardNumber . '\'  ,
+//                        CVV = \'' . $this->CVV . '\' ,
+//                        expiry_date = \'' . $this->expiryDate . '\'
+//                            WHERE card_id = ' . $this->cardId;
+////            var_dump($data);
+//            $db->querySQL($data);
+//            return true;
+//        } catch (Exception $e) {
+//
+//            echo 'Exception: ' . $e;
+//            return false;
+//        }
     }
     
     public function getCardId() {
