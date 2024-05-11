@@ -69,7 +69,7 @@ class BillingAddress {
             for ($i = 0; $i < count($dataSet); $i++) {
                 $address = new BillingAddress();
                 // todo: get this from the login
-                $address->setClientId('1');
+                $address->setClientId('13');
                 $addressId = $dataSet[$i]->address_id;
                 $address->setAddressId($addressId);
                 $address->initWithId();
@@ -135,7 +135,7 @@ class BillingAddress {
 //        var_dump($q);
         $data = $db->singleFetch($q);
 //        var_dump($data);
-        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->block_number, $data->city, $data->country, $data->client_id);
+        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->city, $data->block_number, $data->country, $data->client_id);
     }
     
     public function isValid() {

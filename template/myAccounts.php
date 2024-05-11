@@ -416,8 +416,8 @@
                         <?php
 //                            echo 'book address section';
                             $address = new BillingAddress();
-                            $address->setClientId('1');
-                            $addresses = BillingAddress::getAddresses('1');
+                            $address->setClientId('13');
+                            $addresses = BillingAddress::getAddresses('13');
                             $address->displayAddresses($addresses);
 //                            $card->displayCards($cards);
                         ?>

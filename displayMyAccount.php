@@ -21,9 +21,9 @@
         $expiryDate = trim($_POST['cardExpiryYear']).'-'.trim($_POST['cardExpiryMonth']).'-28';
         $card->setExpiryDate($expiryDate);
         // get from the cookie
-        $card->setClientId('1');
+        $card->setClientId('13');
         $client = new Client();
-        $client->setClientId('1');
+        $client->setClientId('13');
         echo $client->getClientStatusName('1')->status_name . ' status name';
         
     if ($card->getCardId() == '') {
@@ -53,8 +53,8 @@
         $company = new CompanyDetails();
         
         // set current client id
-        $personal->setClientId('1');
-        $company->setClientId('1');
+        $personal->setClientId('13');
+        $company->setClientId('13');
         
         $personal->initWithClientId();
         $company->initWithClientId();
@@ -115,7 +115,7 @@
         $address->setPhoneNumber($_POST['phoneNumber']);
         echo 'phoneNumber ' . $_POST['phoneNumber'];
         // get from the cookie
-        $address->setClientId('1');
+        $address->setClientId('13');
 //        echo $address->getCity() . ' city';
         
         if ($address->getAddressId() == '') {

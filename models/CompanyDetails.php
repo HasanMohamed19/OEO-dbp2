@@ -38,22 +38,51 @@ class CompanyDetails {
     }
     
     function addCompanyDetails() {
+//        if ($this->isValid()) {
+//            try {
+//                $db = Database::getInstance();
+//                // TODO: get client_id from cookie
+//                $q = "INSERT INTO dbProj_CompanyDetails (company_id, name, company_size, city, website, client_id)
+//                 VALUES (NULL,' $this->name','$this->comapnySize','$this->city','$this->website','$this->clientId')"; 
+//                $data = $db->querySql($q);
+////                var_dump($q);
+//                 return true;
+//            } catch (Exception $e) {
+//                echo 'Exception: ' . $e;
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+        
+        $db = new Database();
         if ($this->isValid()) {
-            try {
-                $db = Database::getInstance();
-                // TODO: get client_id from cookie
-                $q = "INSERT INTO dbProj_CompanyDetails (company_id, name, company_size, city, website, client_id)
-                 VALUES (NULL,' $this->name','$this->comapnySize','$this->city','$this->website','$this->clientId')"; 
-                $data = $db->querySql($q);
-//                var_dump($q);
-                 return true;
-            } catch (Exception $e) {
-                echo 'Exception: ' . $e;
+            $this->name = $db->sanitizeString($this->name);
+            $this->comapnySize = $db->sanitizeString($this->comapnySize);
+            $this->city = $db->sanitizeString($this->city);
+            $this->website = $db->sanitizeString($this->website);
+            
+            $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id)
+//                 VALUES (?,?,?,?,?)";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            if ($stmt) {
+                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
                 return false;
             }
-        } else {
-            return false;
+            return true;
+            
         }
+        
     }
     
     function initWithClientId() {
@@ -68,22 +97,51 @@ class CompanyDetails {
     }
     
     function updateCompanyDetails() {
+        
+        
+        $db = new Database();
         if ($this->isValid()) {
-            try {
-                $db = Database::getInstance();
-                $data = "UPDATE dbProj_CompanyDetails
-                        SET name = '$this->name',
-                            company_size = '$this->comapnySize',
-                            city = '$this->city',
-                            website = '$this->website'
-                        WHERE client_id = '$this->clientId'";
-                $db->querySql($data);
-                return true;
-            } catch (Exception $ex) {
-                echo 'Exception: ' . $ex;
+            $this->name = $db->sanitizeString($this->name);
+            $this->comapnySize = $db->sanitizeString($this->comapnySize);
+            $this->city = $db->sanitizeString($this->city);
+            $this->website = $db->sanitizeString($this->website);
+            
+            $q = "UPDATE dbProj_CompanyDetails set
+			name = ?, company_size = ?, city = ?, website = ? WHERE client_id = '$this->clientId';";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            if ($stmt) {
+                $stmt->bind_param('siss', $this->name, $this->comapnySize, $this->city, $this->website);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
                 return false;
             }
-        } 
+            return true;
+        }
+        
+//        if ($this->isValid()) {
+//            try {
+//                $db = Database::getInstance();
+//                $data = "UPDATE dbProj_CompanyDetails
+//                        SET name = '$this->name',
+//                            company_size = '$this->comapnySize',
+//                            city = '$this->city',
+//                            website = '$this->website'
+//                        WHERE client_id = '$this->clientId'";
+//                $db->querySql($data);
+//                return true;
+//            } catch (Exception $ex) {
+//                echo 'Exception: ' . $ex;
+//                return false;
+//            }
+//        } 
 //        else {
 //            return false;
 //        }
