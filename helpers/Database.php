@@ -21,6 +21,10 @@ class Database {
     // singleton
     public static $instance = null;
     public $dblink = null;
+
+    public function getDatabase() {
+        return $this->dblink;
+    }
     
     public static function getInstance() {
         if (is_null(self::$instance)) {
@@ -103,6 +107,19 @@ class Database {
             $rows = mysqli_num_rows($result);
         }
         return $rows;
+    }
+    
+    function sanitizeString($var) {
+       $var = strip_tags($var);
+       $var = htmlentities($var);
+       $var = stripslashes($var);
+       return mysqli_real_escape_string($this->dblink, $var);
+   }
+   
+   function displayError($q) {
+        echo 'Error occured: ';
+        var_dump($q);
+        echo 'error:'.mysqli_error($this->dblink);
     }
     
 }

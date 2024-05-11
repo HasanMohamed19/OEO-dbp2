@@ -119,5 +119,21 @@ class MenuItem {
     public function setCateringService($cateringServiceId) {
         $this->cateringServiceId = $cateringServiceId;
     }
-
+    
+    public function getCateringSerivceName() {
+        switch ($this->cateringServiceId) {
+            case 1:
+                return "Breakfast";
+                break;
+            case 2:
+                return "Lunch";
+                break;
+            case 3:
+                return "Hot Beverages";
+                break;
+            case 4:
+                return "Cold Beverages";
+                break;
+        }
+    }
 }
