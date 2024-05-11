@@ -63,6 +63,19 @@ class BillingAddress {
         }
     }
     
+    public function deleteAddress() {
+        try {
+            $db = Database::getInstance();
+            $deleteQry = $db->querySQL("Delete from dbProj_Billing_Address where address_id=" . $this->addressId);
+            var_dump($deleteQry);
+//            unlink($this->imagePath);
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+    
     function displayAddresses($dataSet) {
         
         if (!empty($dataSet)) {
@@ -92,6 +105,7 @@ class BillingAddress {
                       </div>';
                 
                 echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setCardId(this)" id="deleteAddressBtn">Delete</button>
                             </div>
                         </div>';
                                 
@@ -132,9 +146,9 @@ class BillingAddress {
         $db = Database::getInstance();
         $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
                 . 'FROM `dbProj_Billing_Address` WHERE address_id = '.$this->addressId;
-//        var_dump($q);
+        var_dump($q);
         $data = $db->singleFetch($q);
-//        var_dump($data);
+        var_dump($data);
         $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->city, $data->block_number, $data->country, $data->client_id);
     }
     

@@ -145,18 +145,16 @@
     
     // check for deletes:
     if (isset($_POST['deleteAddressSubmitted'])) {
-        $addressId = trim($_POST['ada']);
-        echo 'address id is: ' . $_POST['ada'];
+        $addressId = trim($_POST['addressId']);
+        echo '$addressIdis: ' . $addressId;
         $deletedAddress = new BillingAddress();
         $deletedAddress->setAddressId($addressId);
-        echo ' id: ' . $deletedAddress->getAddressId();
         $deletedAddress->initWithId();
     //    var_dump($deletedCard);
+        echo ' id: ' . $deletedAddress->getAddressId();
         if ($deletedAddress->deleteAddress()) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
-    } else {
-        echo 'not set@!';
     }
     
     include './template/myAccounts.php';
