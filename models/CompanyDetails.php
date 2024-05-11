@@ -62,8 +62,7 @@ class CompanyDetails {
             $this->city = $db->sanitizeString($this->city);
             $this->website = $db->sanitizeString($this->website);
             
-            $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id)
-//                 VALUES (?,?,?,?,?)";
+            $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
             
             $stmt = mysqli_prepare($db->getDatabase(), $q);
             if ($stmt) {

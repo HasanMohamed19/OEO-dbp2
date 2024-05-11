@@ -32,7 +32,7 @@
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
     } else if ($card->updateCard()) {
-        echo 'expiryDate ' . $card->getExpiryDate() ;
+//        echo 'expiryDate ' . $card->getExpiryDate() ;
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
         
@@ -64,7 +64,7 @@
         $personal->setFirstName($_POST['firstname']);
         $personal->setLastName($_POST['lastname']);
         $personal->setNationality($_POST['nationality']);
-        $personal->setDob('2022-5-3');
+        $personal->setDob($_POST['dob']);
         
         $personal->setGender($_POST['gender']);
 //        $personal->setClientId('1');
@@ -77,15 +77,15 @@
 //        $company->setClientId('1');
         
         if ($company->updateCompanyDetails()) {
-             echo 'updated company details successfully';
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> Company Details has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         } else {
-            echo 'not updated company';
+            echo '<br><div class="container"><div class="alert alert-error alert-dismissible fade show" role="alert"> An error occured: Company Details has not been Updated. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
         
         if ($personal->updatePersonalDetails()) {
-             echo 'updated personal details successfully';
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> Personal Details has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         } else {
-            echo 'not updated personal';
+            echo '<br><div class="container"><div class="alert alert-error alert-dismissible fade show" role="alert"> An error occured: Personal Details has not been Updated. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
         
         // upload company details this will be for registration

@@ -193,7 +193,7 @@
                         
                         <?php
                             $card = new CardDetail();
-                            $card->setClientId('1');
+                            $card->setClientId('13');
                             $cards = $card->getAllCardsForUser();
                             $card->displayCards($cards);
                         ?>
@@ -309,11 +309,11 @@
                         <?php 
                             
                             $p = new PersonalDetails();
-                            $p->setClientId('1');
+                            $p->setClientId('13');
                             $p->initWithClientId();
                             
                             $c = new CompanyDetails();
-                            $c->setClientId('1');
+                            $c->setClientId('13');
                             $c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
                             
