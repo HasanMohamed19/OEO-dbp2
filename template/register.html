@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <style>
+            .form-control {
+                margin-bottom: 1rem;
+            }
 
-<head>
+            #regBtn {
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+            }
 
-    <style>
-       .form-control {
-        margin-bottom: 1rem;
-    }
-    #regBtn {
-        margin-bottom: 1rem;
-        margin-top: 1rem;
-    }
-    .bg-login-image {
-        background-color: gray;
-    }
-    </style>
-</head>
-
+            .bg-login-image {
+                background-color: gray;
+            }
+        </style>
+    </head>
 <body>
 
     <div class="container">
@@ -37,6 +36,30 @@
                                         <input type="text" class="form-control form-control-user" id="username" placeholder="Username">
                                         <input type="password" class="form-control form-control-user" id="pass" placeholder="Password">
                                         <input type="email" class="form-control form-control-user" id="email" placeholder="Email">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-user" id="building" placeholder="Building Name/Number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-user" id="street" placeholder="Street Name/Number">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-user" id="block" placeholder="Block">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-user" id="area" placeholder="Area">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-user" id="country" placeholder="Country">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="tel" class="form-control form-control-user" id="phone" placeholder="Phone Number">
+                                            </div>
+                                        </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary" id="regBtn">Register</button>
                                         </div>
