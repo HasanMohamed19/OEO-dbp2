@@ -31,7 +31,23 @@ if (isset($_POST['submitted'])) {
     }
 
     $resId = $reservation->getReservationId();
-    echo "ID: $resId";
+//    echo "ID: $resId";
+    // now save selected menu items
+    $menuItems = json_decode($_POST['menuItems'], true);
+//    var_dump($menuItems);
+    foreach ($menuItems as $i=>$menuItem) {
+        $item = new ReservationMenuItem();
+        $item->setItemId($menuItem['id']);
+        $item->setQuantity($menuItem['quantity']);
+        $item->setReservationId($resId);
+        if (!$item->addReservationMenuItem()) {
+            die('Reservation menu item not saved!');
+        }
+    }
+//    echo "all items added";
+    // now add invoice
+    
+    
     
     
 //    header('booking_summary.php');
