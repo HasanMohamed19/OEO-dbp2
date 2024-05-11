@@ -753,8 +753,9 @@ const calculateTotalPrice = (discount) => {
     if (hallRentalCharge === null) return;
     let total = 0.0;
     let rentalCharge = hallRentalCharge;
-    
-    let rentalDurationDays = getDaysBetween(
+    // must add 1 because daysBetween will return 0 if both
+    // dates are the same
+    let rentalDurationDays = 1 + getDaysBetween(
             $('#bookingStartDate').val(), 
             $('#bookingEndDate').val()
                     );
