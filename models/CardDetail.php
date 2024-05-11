@@ -136,10 +136,25 @@ class CardDetail {
                 echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
                 echo '<div class="row justify-content-between">'
                 .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
-                echo '<button id="editCardBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal" onclick="setCardId(this)">Edit</button></div>
+                echo '<button id="editCardBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>
+                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>
+                    </div>
                         </div>
                     </div>';
             }
+        }
+    }
+    
+    public function deleteCard() {
+        try {
+            $db = Database::getInstance();
+            $deleteQry = $db->querySQL("Delete from dbProj_Card_Detail where card_id=" . $this->cardId);
+//            var_dump($deleteQry);
+//            unlink($this->imagePath);
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
         }
     }
     

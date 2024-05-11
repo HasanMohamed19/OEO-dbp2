@@ -129,6 +129,36 @@
         }
     }
     
+    // check for deletes:
+    // card deletion:
+    if (isset($_POST['deleteCardSubmitted'])) {
+        $cardId = trim($_POST['cardId']);
+        echo 'card id is: ' . $cardId;
+        $deletedCard = new CardDetail();
+        $deletedCard->initWithCardId($cardId);
+    //    var_dump($deletedCard);
+        echo ' id: ' . $deletedCard->getCardId();
+        if ($deletedCard->deleteCard()) {
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+        }
+    }
+    
+    // check for deletes:
+    if (isset($_POST['deleteAddressSubmitted'])) {
+        $addressId = trim($_POST['ada']);
+        echo 'address id is: ' . $_POST['ada'];
+        $deletedAddress = new BillingAddress();
+        $deletedAddress->setAddressId($addressId);
+        echo ' id: ' . $deletedAddress->getAddressId();
+        $deletedAddress->initWithId();
+    //    var_dump($deletedCard);
+        if ($deletedAddress->deleteAddress()) {
+            echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+        }
+    } else {
+        echo 'not set@!';
+    }
+    
     include './template/myAccounts.php';
     
     include './template/footer.html';

@@ -271,6 +271,30 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--delete card modal -->
+                    <div class="modal fade" id="deleteModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to delete this Card?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="displayMyAccount.php" method="post">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <input type ="hidden" name="deleteCardSubmitted" value="TRUE">
+                                        <input type="hidden" id="DeleteIdInput" name="cardId">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- end of my cards -->
 
                     <!-- Wallet & Royalty Points -->
@@ -426,12 +450,6 @@
                             <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
                         </div>
                     </div>
-                        
-                        
-                        
-<!--                        
-
--->                     
 
                     </div>
 
@@ -487,6 +505,31 @@
                             </div>
                         </div>
                     </div>
+                    <!--end of add/edit modal-->
+                    
+                    <!--delete address modal -->
+                    <div class="modal fade" id="deleteAddressModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to delete this Card?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="displayMyAccount.php" method="post">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <input type ="hidden" name="deleteAddressSubmitted" value="TRUE">
+                                        <input type="hidden" id="DeleteIdInput" name="ada">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- end of book address -->
 
                 </div>
@@ -496,7 +539,7 @@
         </div>
     
     <script src="./helpers/myAccount.js"></script>
-    <script src="./helpers/AdminForms.js"></script>
+    <script src="./helpers/CardForm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -553,7 +596,7 @@
             console.log('Address id is:', addressId);
             // AJAX request
             $.ajax({
-                url: './helpers/get_address_info.php', // URL of your PHP script to fetch hall info
+                url: './helpers/get_address_info.php', 
                 method: 'GET',
                 data: {addressId: addressId},
                 dataType: 'json', // Expected data type from server
