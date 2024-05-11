@@ -233,20 +233,28 @@
                                                 <input type="number" id="CVVInput" class="form-control" name="CVV" value="" required>
                                             </div>
 
-                                            <!-- year and month can be datepicker formatted with js -->
-
                                             <div class="col form-group required">
-                                                <label for="year" class="form-label">Card Expiry</label>
-                                                <select name="year" id="year" class="form-select">
-                                                    <option value="" disabled>Year</option>
-                                                    <option value="1">1</option>
+                                                <label for="cardExpiryYear" class="form-label">Card Expiry</label>
+                                                <select name="cardExpiryYear" id="cardExpiryYear" class="form-select">
+                                                    <option disabled selected>Year</option>
                                                 </select>
                                             </div>
 
                                             <div class="col d-flex align-items-end form-group required">
-                                                <select name="month" id="month" class="form-select">
-                                                    <option value="" disabled>Month</option>
-                                                    <option value="1">January</option>
+                                                <select name="cardExpiryMonth" id="cardExpiryMonth" class="form-select">
+                                                    <option selected disabled>Month</option>
+                                                    <option value="1">January (1)</option>
+                                                    <option value="2">February (2)</option>
+                                                    <option value="3">March (3)</option>
+                                                    <option value="4">April (4)</option>
+                                                    <option value="5">May (5)</option>
+                                                    <option value="6">June(6)</option>
+                                                    <option value="7">July(7)</option>
+                                                    <option value="8">August(8)</option>
+                                                    <option value="9">September (9)</option>
+                                                    <option value="10">October (10)</option>
+                                                    <option value="11">November (11)</option>
+                                                    <option value="12">December (12)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -492,6 +500,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        
+        const updateCardExpiryYearDropdown = () => {
+        // updates expiry year dropdown to the current year + next 10 years.
+        let currentYear = new Date().getFullYear();
+        for (i = currentYear; i <= currentYear+10; i++) {
+            $('#cardExpiryYear').append(
+                    `<option value="${i}">${i}</option>`);
+            }
+        };
+        
+        updateCardExpiryYearDropdown();
+        
         $(document).ready(function () {
         $(document).on('click', '#editCardBtn', function () {
 
@@ -508,10 +528,14 @@
                     console.log('Card Info:', response);
                     
                     // Update form inputs with fetched data
-                    $('#cardholdernameInput').val(response.cardHolderName);
+                    $('#cardholdernameInput').val(response.cardholderName);
                     $('#cardNumberInput').val(response.cardNumber);
                     $('#CVVInput').val(response.CVV);
-//                    $('#expiryDate').val(response.description);
+                    const expiryDate = response.expiryDate.split("-");
+                    console.log(expiryDate[1]);
+                    $('#cardExpiryYear').val(expiryDate[0]);
+                    $('#cardExpiryMonth').val(expiryDate[1]);
+//                    $('#cardExpiryMonth').val(expiryDate[1]);
                     $('#Add-CardID').val(response.cardId);
                 },
                 error: function (xhr, status, error) {

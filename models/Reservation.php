@@ -28,16 +28,16 @@ class Reservation {
     private $clientId;
     private $eventId;
     private $notes;
-    private $price;
+//    private $price;
     private $statusId;
     
-    public function initWith($reservationId, $hallId, $clientId, $eventId, $notes, $price, $statusId) {
+    public function initWith($reservationId, $hallId, $clientId, $eventId, $notes, $statusId) {
         $this->reservationId = $reservationId;
         $this->hallId = $hallId;
         $this->clientId = $clientId;
         $this->eventId = $eventId;
         $this->notes = $notes;
-        $this->price = $price;
+//        $this->price = $price;
         $this->statusId = $statusId;
     }
 
@@ -54,7 +54,7 @@ class Reservation {
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
-        $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id);
+        $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id);
     }
     
     function getReservationsForClient() {

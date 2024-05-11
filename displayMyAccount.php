@@ -18,7 +18,8 @@
         $card->setCardholderName($_POST['cardholdername']);
         $card->setCardNumber($_POST['cardNumber']);
         $card->setCVV($_POST['CVV']);
-        $card->setExpiryDate('0001-01-28');
+        $expiryDate = trim($_POST['cardExpiryYear']).'-'.trim($_POST['cardExpiryMonth']).'-28';
+        $card->setExpiryDate($expiryDate);
         // get from the cookie
         $card->setClientId('1');
         $client = new Client();
@@ -31,6 +32,7 @@
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
     } else if ($card->updateCard()) {
+        echo 'expiryDate ' . $card->getExpiryDate() ;
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
         

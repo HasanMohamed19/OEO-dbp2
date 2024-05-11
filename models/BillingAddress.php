@@ -108,7 +108,7 @@ class BillingAddress {
                         building_number = \'' . $this->buildingNumber . '\' ,
                         block_number = \'' . $this->blockNumber . '\' ,
                         city = \'' . $this->city . '\' ,
-                        country = \'' . $this->country . '\' ,
+                        country = \'' . $this->country . '\' 
                             WHERE address_id = ' . $this->addressId;
 
             $db->querySQL($data);

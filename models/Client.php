@@ -11,7 +11,7 @@
  * @author Hassan
  */
 
-include 'User.php';
+include_once 'models/User.php';
 
 //enum ClientStatus: int {
 //    // clientStatus with its discount rate

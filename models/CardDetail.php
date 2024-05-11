@@ -118,13 +118,13 @@ class CardDetail {
     function updateCard() {
         try {
             $db = Database::getInstance();
-            $data = 'UPDATE dbProj_CardDetail set
+            $data = 'UPDATE dbProj_Card_Detail set
 			cardholder_name = \'' . $this->cardholderName . '\' ,
 			card_number = \'' . $this->cardNumber . '\'  ,
                         CVV = \'' . $this->CVV . '\' ,
-                        expiry_date = \'' . $this->expiryDate . '\' ,
+                        expiry_date = \'' . $this->expiryDate . '\'
                             WHERE card_id = ' . $this->cardId;
-
+//            var_dump($data);
             $db->querySQL($data);
             return true;
         } catch (Exception $e) {
