@@ -276,7 +276,7 @@ function displayHalls($dataSet) {
                                 </div>
                                 <div class="row">
                                     <div class="d-flex col w-100">
-                                        <button class="btn btn-primary rounded-0 flex-fill" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill"></i> Edit</button>
+                                        <button id ="editHallBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill"></i> Edit</button>
                                         <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill"></i> Delete</button>
                                     </div>
                                 </div>

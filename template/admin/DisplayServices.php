@@ -6,11 +6,11 @@
             <h1>Browse Services</h1>
         </div>
         <div class="row">
-            <div class="col-xl-10">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search For a Service" id="search">
-                    <button class="btn btn-outline-secondary" type="button" id="searchBtn">
-                        <i>Search</i>
+            <div class="col-xl-10 mb-4">
+                <div class="input-group">
+                    <input type="text" class="form-control mb-0" placeholder="Search For a Hall" id="search">
+                    <button class="btn btn-outline-secondary" id="searchBtn">
+                        <i class="bi bi-search"> Search</i>
                     </button>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                             <div class="mb-3 form-group required" id="ItemImg">
                                 <label class="form-label">Menu Item Image</label>
                                 <input type="file" class="form-control" id="imageUpload" name="MenuItemImg" required >
-                                 <input value="" type="hidden" name="imagePath" id="imagePath" >
+                                <input value="" type="hidden" name="imagePath" id="imagePath" >
                             </div> 
                             <div class="mb-3 form-group required">
                                 <label for="ItemName" class="form-label">Item Name</label>
@@ -128,80 +128,80 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-                            window.addEventListener("load", () => {
-                                enablePagination("services", ".serviceCard");
-                            });
-                            // JavaScript to toggle the visibility of image upload on image click
-                            //                            document.getElementById('imagePreview').addEventListener('click', function () {
-                            //                                document.getElementById('imageUpload').click();
-                            //                            });
-                            //get Hall ID value 
-                            $(document).ready(function () {
-                                $(document).on('click', '#editItemBtn', function () {
+        window.addEventListener("load", () => {
+            enablePagination("services", ".serviceCard");
+        });
+        // JavaScript to toggle the visibility of image upload on image click
+        //                            document.getElementById('imagePreview').addEventListener('click', function () {
+        //                                document.getElementById('imageUpload').click();
+        //                            });
+        //get Hall ID value 
+        $(document).ready(function () {
+            $(document).on('click', '#editItemBtn', function () {
 
-                                    var itemId = $(this).attr('data-id');
-                                    console.log('Item id is:', itemId);
-                                    // AJAX request
-                                    $.ajax({
-                                        url: './helpers/get_Item_Info.php', // URL of your PHP script to fetch hall info
-                                        method: 'GET',
-                                        data: {itemId: itemId}, // Send hallId to server
-                                        dataType: 'json', // Expected data type from server
-                                        success: function (response) {
-                                            // Handle successful response
-                                            console.log('Item Info:', response);
-                                            //remove image upload validation
-                                            $('#ItemImg').removeAttr('required');
-                                            $('#imageUpload').removeAttr('required');
-                                            $('#imageUploadLabel:after').remove();
-                                            // Update form inputs with fetched data
-                                            $('#ItemName').val(response.name);
-                                            $('#Price').val(response.price);
-                                            console.log('Service id Info:', response.service_id);
-                                            $('#serviceidSelect').val(response.service_id).change();
-                                            $('#description').val(response.description);
-                                             $('#imagePath').val(response.image_path);
-                                            $('#Add-ItemID').val(response.ItemId);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            // Handle errors
-                                            console.error('Error fetching hall info:', error);
-                                        }
-                                    });
-                                });
-                            });
-                            $('#addModal').on('hidden.bs.modal', function (e) {
-                                // Do something when the modal is dismissed
-                                $('.form-control').val('');
-                                $('.form-select').val('');
-                                $('#add-form').removeClass('was-validated');
-                                console.log('Modal dismissed');
-                            });
-                            $('#addItemBtn').click(function () {
-                                // Clear form Input fields when closing the form
-                                $('#ItemImg').attr('required', '');
-                                $('#imageUpload').attr('required', '');
-                                $('#Add-ItemID').removeAttr('value');
-                                $('#imageUploadLabel:after').add();
-                            });
+                var itemId = $(this).attr('data-id');
+                console.log('Item id is:', itemId);
+                // AJAX request
+                $.ajax({
+                    url: './helpers/get_Item_Info.php', // URL of your PHP script to fetch hall info
+                    method: 'GET',
+                    data: {itemId: itemId}, // Send hallId to server
+                    dataType: 'json', // Expected data type from server
+                    success: function (response) {
+                        // Handle successful response
+                        console.log('Item Info:', response);
+                        //remove image upload validation
+                        $('#ItemImg').removeAttr('required');
+                        $('#imageUpload').removeAttr('required');
+                        $('#imageUploadLabel:after').remove();
+                        // Update form inputs with fetched data
+                        $('#ItemName').val(response.name);
+                        $('#Price').val(response.price);
+                        console.log('Service id Info:', response.service_id);
+                        $('#serviceidSelect').val(response.service_id).change();
+                        $('#description').val(response.description);
+                        $('#imagePath').val(response.image_path);
+                        $('#Add-ItemID').val(response.ItemId);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors
+                        console.error('Error fetching hall info:', error);
+                    }
+                });
+            });
+        });
+        $('#addModal').on('hidden.bs.modal', function (e) {
+            // Do something when the modal is dismissed
+            $('.form-control').val('');
+            $('.form-select').val('');
+            $('#add-form').removeClass('was-validated');
+            console.log('Modal dismissed');
+        });
+        $('#addItemBtn').click(function () {
+            // Clear form Input fields when closing the form
+            $('#ItemImg').attr('required', '');
+            $('#imageUpload').attr('required', '');
+            $('#Add-ItemID').removeAttr('value');
+            $('#imageUploadLabel:after').add();
+        });
 
-                            $('#add-form').submit(function (e) {
-                                // Get form inputs
-                                var name = $('#ItemName').val();
-                                var price = $('#Price').val();
-                                var serviceId = $('#serviceidSelect').val();
-                                console.log("service id value is:",serviceId);
-                                var imageUpload = $('#imageUpload');
+        $('#add-form').submit(function (e) {
+            // Get form inputs
+            var name = $('#ItemName').val();
+            var price = $('#Price').val();
+            var serviceId = $('#serviceidSelect').val();
+            console.log("service id value is:", serviceId);
+            var imageUpload = $('#imageUpload');
 
-                                // Check if any field is empty or image is not uploaded
-                                if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId===null) {
-                                    $(this).addClass('was-validated');
-                                    e.preventDefault(); // Prevent form submission
-                                    return false;
-                                }
-                                // If all checks pass, allow form submission
-                                return true;
-                            });
+            // Check if any field is empty or image is not uploaded
+            if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId === null) {
+                $(this).addClass('was-validated');
+                e.preventDefault(); // Prevent form submission
+                return false;
+            }
+            // If all checks pass, allow form submission
+            return true;
+        });
     </script>
 </body>
 
@@ -214,33 +214,37 @@ function displayMenuItems($dataSet) {
             $item = new MenuItem();
             $id = $dataSet[$i]->item_id;
             $item->initWithMenuItemid($id);
-            echo '<div class="card serviceCard mb-4">
+            echo '<div class="card serviceCard mb-4 ">
                 <div class="card-body p-0">
-                    <div class="row ">';
-            echo'<div class="col-xl-5 text-center">
-                            <img class="img-fluid" src="' . $item->getImagePath() . '">
+                    <div class="row m-0">
+                        <div class="col-xl-6 p-0">
+                        <img src="' . $item->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
                         </div>
-                        <div class="col-xl-6 text-center p-3">
-                            <br>';
-            echo'<h3>' . $item->getName() . '</h3>
-                            <br>';
-            echo'<p>' . $item->getDescription() . '</p>
-                            <br><br>';
-            echo'<div class="row">
-                                <div class="col text-start">
-                                    <h3>BD ' . $item->getPrice() . '</h3>
-                                </div>';
-            echo'<div class="col text-end">
-                                    <h3>' .$item->getCateringSerivceName(). '</h3>
+                        <div class="col-xl-6 p-0">
+                            <div class="d-flex flex-column h-100 justify-content-between text-center ">
+                                <div class="row pt-5">
+                                    <h3>' . $item->getName() . '</h3>
+                                </div>
+                                <div class="row ps-5 pe-5">
+                                    <p>' . $item->getDescription() . '</p>
+                                </div>
+                                <div class="row ps-5 pe-5">
+                                    <div class="col text-start">
+                                        <h3>' . $item->getPrice() . '/Hr</h3>
+                                    </div>
+                                    <div class="col text-end">
+                                        <h3>' . $item->getCateringSerivceName() . ' seats</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex col w-100">
+                                        <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill"></i> Edit</button>
+                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill"></i> Delete</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-1">
-                            <div class="d-flex flex-column h-100 justify-content-between">
-                                <button class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#addModal" id="editItemBtn" data-id="' . $item->getItemId() . '">Edit</button>
-                                <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $item->getItemId() . '"onclick="setDeleteID(this)">Delete</button>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>';
