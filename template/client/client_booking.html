@@ -89,46 +89,53 @@
                 <form id="bookingForm" method="POST" action="client_booking.php" novalidate>
                     <!-- Event Details -->
                     <fieldset id="eventFieldSet" class="active needs-validation">
-                        <div class="row mb-4">
-                            <div class="form-group col required">
-                                <label for="bookingEventName" class="form-label">Event Name</label>
-                                <input id="bookingEventName" maxlength="100" name="bookingEventName" type="text" class="form-control" required>
-                                <div class="invalid-feedback">Enter valid event name.</div>
-                            </div>
-                            <div class="form-group col required">
-                                <label for="bookingNoAudiences" class="form-label">Number of Audiences</label>
-                                <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" required>
-                                <div class="invalid-feedback">Enter valid audience number.</div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Event Details</h3>
                             </div>
                         </div>
-                        <div class="row mb-4">
-                            <div class="form-group col required">
-                                <label for="bookingStartDate" class="form-label">Start Date</label>
-                                <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control" required>
-                                <div class="invalid-feedback">Enter valid start date.</div>
+                        <div class="card p-4 mb-4">
+                            <div class="row mb-4">
+                                <div class="form-group col required">
+                                    <label for="bookingEventName" class="form-label">Event Name</label>
+                                    <input id="bookingEventName" maxlength="100" name="bookingEventName" type="text" class="form-control" required>
+                                    <div class="invalid-feedback">Enter valid event name.</div>
+                                </div>
+                                <div class="form-group col required">
+                                    <label for="bookingNoAudiences" class="form-label">Number of Audiences</label>
+                                    <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" required>
+                                    <div class="invalid-feedback">Enter valid audience number.</div>
+                                </div>
                             </div>
-                            <div class="form-group col required">
-                                <label for="bookingEndDate" class="form-label">End Date</label>
-                                <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control" required >
-                                <div class="invalid-feedback">Enter valid end date.</div>
+                            <div class="row mb-4">
+                                <div class="form-group col required">
+                                    <label for="bookingStartDate" class="form-label">Start Date</label>
+                                    <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control" required>
+                                    <div class="invalid-feedback">Enter valid start date.</div>
+                                </div>
+                                <div class="form-group col required">
+                                    <label for="bookingEndDate" class="form-label">End Date</label>
+                                    <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control" required >
+                                    <div class="invalid-feedback">Enter valid end date.</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="form-group col required">
-                                <label for="bookingStartTime" class="form-label">Start Time</label>
-                                <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control" required>
-                                <div class="invalid-feedback">Enter valid start time.</div>
+                            <div class="row mb-4">
+                                <div class="form-group col required">
+                                    <label for="bookingStartTime" class="form-label">Start Time</label>
+                                    <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control" required>
+                                    <div class="invalid-feedback">Enter valid start time.</div>
+                                </div>
+                                <div class="form-group col required">
+                                    <label for="bookingEndTime" class="form-label">End Time</label>
+                                    <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control" required>
+                                    <div class="invalid-feedback">Enter valid end time.</div>
+                                </div>
                             </div>
-                            <div class="form-group col required">
-                                <label for="bookingEndTime" class="form-label">End Time</label>
-                                <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control" required>
-                                <div class="invalid-feedback">Enter valid end time.</div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="form-group col">
-                                <label for="bookingNotes" class="form-label">Notes</label>
-                                <textarea id="bookingNotes" name="bookingEventNotes"  class="form-control" placeholder="Type here"></textarea>
+                            <div class="row mb-4">
+                                <div class="form-group col">
+                                    <label for="bookingNotes" class="form-label">Notes</label>
+                                    <textarea id="bookingNotes" name="bookingEventNotes"  class="form-control" placeholder="Type here"></textarea>
+                                </div>
                             </div>
                         </div>
 <!--                        <div class="row mb-4">
@@ -141,6 +148,11 @@
                     
                     <!-- Additional Services -->
                     <fieldset>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Additional Services (optional)</h3>
+                            </div>
+                        </div>
                         <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="cateringTabBar" role="tablist">
                             <li class="nav-item" role="presentation">
