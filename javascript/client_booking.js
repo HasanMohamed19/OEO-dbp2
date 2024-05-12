@@ -116,9 +116,18 @@ let nextButton = document.querySelector(".next");
 let saveButton = document.querySelector(".save");
 let previousButton = document.querySelector(".previous");
 
+const checkValidity = (element) => {
+    return false;
+};
+
 for (let i = 0; i < sectionButtons.length; i++) {
 //    console.log("Added listener to " + sectionButtons[i]);
     sectionButtons[i].addEventListener("click", function() {
+        $("#eventFieldSet").addClass('was-validated');
+        console.log(checkValidity($("#eventFieldSet")));
+        if (!checkValidity($("#eventFieldSet"))) {
+            return;
+        }
         updateSideMenu();
 //        console.log("Clicked on me!!");
         sections[currentSection].classList.remove("active");

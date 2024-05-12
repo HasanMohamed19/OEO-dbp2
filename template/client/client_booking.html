@@ -86,37 +86,39 @@
             </div>
             <!-- Forms -->
             <div class="clientBookingForm px-4">
-                <form id="bookingForm" method="POST" action="client_booking.php">
+                <form id="bookingForm" method="POST" action="client_booking.php" novalidate>
                     <!-- Event Details -->
-                    <fieldset class="active">
+                    <fieldset id="eventFieldSet" class="active needs-validation">
                         <div class="row mb-4">
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingEventName" class="form-label">Event Name</label>
-                                <input id="bookingEventName" name="bookingEventName" type="text" class="form-control">
+                                <input id="bookingEventName" name="bookingEventName" type="text" class="form-control" required>
+                                <div class="invalid-feedback">Enter event name</div>
                             </div>
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingNoAudiences" class="form-label">Number of Audiences</label>
-                                <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control">
+                                <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" required>
+                                <div class="invalid-feedback">Enter audience number</div>
                             </div>
                         </div>
                         <div class="row mb-4">
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingStartDate" class="form-label">Start Date</label>
-                                <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control">
+                                <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control" required>
                             </div>
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingEndDate" class="form-label">End Date</label>
-                                <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control">
+                                <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control" required >
                             </div>
                         </div>
                         <div class="row mb-4">
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingStartTime" class="form-label">Start Time</label>
-                                <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control">
+                                <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control" required>
                             </div>
-                            <div class="form-group col">
+                            <div class="form-group col required">
                                 <label for="bookingEndTime" class="form-label">End Time</label>
-                                <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control">
+                                <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control" required>
                             </div>
                         </div>
                         <div class="row mb-4">
@@ -463,29 +465,29 @@
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding">
+                                        <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet">
+                                        <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBlock">Block</label>
-                                        <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock">
+                                        <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock" required>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingArea">Area</label>
-                                        <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea">
+                                        <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingCountry">Country</label>
-                                        <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry">
+                                        <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingPhone">Phone Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone">
+                                        <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone" required>
                                     </div>
                                 </div>
                             </div>
@@ -523,23 +525,23 @@
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentCardNumber">Card Number</label>
-                                        <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber">
+                                        <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
-                                        <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName">
+                                        <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName" required>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
-                                        <select class="form-select" id="paymentCardExpiryYear" name="paymentCardExpiryYear">
+                                        <select class="form-select" id="paymentCardExpiryYear" name="paymentCardExpiryYear" required>
                                             <option selected>Year</option>
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
-                                        <select class="form-select" id="paymentCardExpiryMonth" name="paymentCardExpiryMonth">
+                                        <select class="form-select" id="paymentCardExpiryMonth" name="paymentCardExpiryMonth" required>
                                             <option selected>Month</option>
                                             <option value="1">January (1)</option>
                                             <option value="2">February (2)</option>
@@ -557,7 +559,7 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardCVV">CVV</label>
-                                        <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV">
+                                        <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV" required>
                                     </div>
                                 </div>
                             </div>
