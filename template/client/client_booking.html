@@ -92,33 +92,37 @@
                         <div class="row mb-4">
                             <div class="form-group col required">
                                 <label for="bookingEventName" class="form-label">Event Name</label>
-                                <input id="bookingEventName" name="bookingEventName" type="text" class="form-control" required>
-                                <div class="invalid-feedback">Enter event name</div>
+                                <input id="bookingEventName" maxlength="100" name="bookingEventName" type="text" class="form-control" required>
+                                <div class="invalid-feedback">Enter valid event name.</div>
                             </div>
                             <div class="form-group col required">
                                 <label for="bookingNoAudiences" class="form-label">Number of Audiences</label>
                                 <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" required>
-                                <div class="invalid-feedback">Enter audience number</div>
+                                <div class="invalid-feedback">Enter valid audience number.</div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="form-group col required">
                                 <label for="bookingStartDate" class="form-label">Start Date</label>
                                 <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control" required>
+                                <div class="invalid-feedback">Enter valid start date.</div>
                             </div>
                             <div class="form-group col required">
                                 <label for="bookingEndDate" class="form-label">End Date</label>
                                 <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control" required >
+                                <div class="invalid-feedback">Enter valid end date.</div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="form-group col required">
                                 <label for="bookingStartTime" class="form-label">Start Time</label>
                                 <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control" required>
+                                <div class="invalid-feedback">Enter valid start time.</div>
                             </div>
                             <div class="form-group col required">
                                 <label for="bookingEndTime" class="form-label">End Time</label>
                                 <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control" required>
+                                <div class="invalid-feedback">Enter valid end time.</div>
                             </div>
                         </div>
                         <div class="row mb-4">
@@ -431,7 +435,7 @@
                     
                     
                     <!-- Checkout -->
-                    <fieldset class="form-group">
+                    <fieldset id="paymentFieldSet" class="form-group">
                         <div class="row mt-4">
                             <div class="col">
                                 <h3>Billing Address</h3>
@@ -466,28 +470,34 @@
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
                                         <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding" required>
+                                        <div class="invalid-feedback">Enter building number.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
                                         <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet" required>
+                                <div class="invalid-feedback">Enter street number.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingBlock">Block</label>
                                         <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock" required>
+                                        <div class="invalid-feedback">Enter block number.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingArea">Area</label>
                                         <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea" required>
+                                        <div class="invalid-feedback">Enter area.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingCountry">Country</label>
                                         <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry" required>
+                                        <div class="invalid-feedback">Enter country.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentBillingPhone">Phone Number</label>
                                         <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone" required>
+                                        <div class="invalid-feedback">Enter phone number.</div>
                                     </div>
                                 </div>
                             </div>
@@ -526,10 +536,12 @@
                                     <div class="col">
                                         <label class="form-label" for="paymentCardNumber">Card Number</label>
                                         <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber" required>
+                                        <div class="invalid-feedback">Enter valid card number.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
                                         <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName" required>
+                                        <div class="invalid-feedback">Enter valid cardholder name.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
@@ -538,6 +550,7 @@
                                         <select class="form-select" id="paymentCardExpiryYear" name="paymentCardExpiryYear" required>
                                             <option selected>Year</option>
                                         </select>
+                                        <div class="invalid-feedback">Enter expiry year.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label invisible" for="paymentCardExpiryMonth">Card Expiry</label>
@@ -556,10 +569,12 @@
                                             <option value="11">November (11)</option>
                                             <option value="12">December (12)</option>
                                         </select>
+                                <div class="invalid-feedback">Enter expiry month.</div>
                                     </div>
                                     <div class="col">
                                         <label class="form-label" for="paymentCardCVV">CVV</label>
                                         <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV" required>
+                                        <div class="invalid-feedback">Enter CVV.</div>
                                     </div>
                                 </div>
                             </div>
