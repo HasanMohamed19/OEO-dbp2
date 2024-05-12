@@ -48,13 +48,7 @@
                     </div>
 
                     
-                    <?php 
                     
-                        $reservation = new Reservation();
-                        $reservation->setClientId('1');
-                        $reservations = $reservation->getReservationsForClient();
-                    
-                    ?>
                     
                     <div class="table-responsive mx-4 px-0 mt-3">
                         <table class="table table-striped border">

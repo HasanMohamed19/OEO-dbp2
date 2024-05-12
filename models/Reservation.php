@@ -14,6 +14,8 @@
 //include 'Client.php';
 include 'Hall.php';
 include 'Event.php';
+include 'MenuItem.php';
+include 'ReservationMenuItem.php';
 
 
 const RESERVATION_RESERVED = 0;
@@ -111,7 +113,7 @@ class Reservation {
     
     public function displayClientReservations($dataSet) {
         if (empty($dataSet)) {
-            return;
+            echo 'nothing found';
         }
         
         for ($i = 0; $i < count($dataSet); $i++) {
@@ -129,7 +131,7 @@ class Reservation {
             $event->initWithEventId($event->getEventId());
             
             echo '<tr class="text-center">';
-            echo '<th scope="row" class="text-center"><a class="text-decoration-none" href="./template/booking_detail.php?reservationId=' . $reservation->getReservationId() . '">' . $reservation->getReservationId() . ' </a>';
+            echo '<th scope="row" class="text-center"><a class="text-decoration-none" href="booking_detail.php?reservationId=' . $reservation->getReservationId() . '">' . $reservation->getReservationId() . ' </a>';
             
             echo '<td>' . Reservation::getStatusName($reservation->getStatusId()) . '</td>';
             echo '<td>' . $reservation->getReservationDate() . '</td>';
@@ -138,6 +140,30 @@ class Reservation {
             echo '<td>' . 101010 . '</td>';
             
             echo '</tr>';
+        }
+        
+    }
+    
+    public function displayReservationMenuItems($dataSet) {
+        if (empty($dataSet)) {
+            echo 'nothing found';
+        }
+        
+        
+                    // additional services section
+        for ($i = 0; $i <count($dataSet); $i++) {
+            $menuItem = new MenuItem();
+            $menuItemId = $dataSet[$i]->item_id;
+            $menuItem->setItemId($menuItemId);
+            $menuItem->initMenuItemWithId();
+            echo '
+                    <div class="card p-0 m-2 cateringItem">
+                                    <img class="card-img-top img-fluid" src="'. $menuItem->getImagePath() .'">
+                                    <div class="card-body">
+                                        <h3 class="card-title text-center fs-5">'. $menuItem->getName() .'</h3>
+                                        <p class="card-text text-center"><strong>'. $menuItem->getPrice() .' BHD x ' . $dataSet[$i]->quantity .'</strong></p>
+                                    </div>
+                   </div>';
         }
         
     }
@@ -236,6 +262,23 @@ class Reservation {
         
     }
 
+        public function getAdditionalServicesForReservation($reservationId) { 
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT 
+             m.item_id,
+            m.name,
+            m.image_path,
+            m.price,
+            rm.reservation_id,
+            rm.quantity
+            FROM dbProj_Menu_Item m
+            JOIN dbProj_Reservation_Menu_Item rm ON rm.item_id = m.item_id
+            JOIN dbProj_Reservation r ON rm.reservation_id = r.reservation_id
+            WHERE r.reservation_id =" . $reservationId);
+//        var_dump($data);
+        return $data;
+    }
+
 
     public function getReservationId() {
         return $this->reservationId;
@@ -305,19 +348,19 @@ class Reservation {
     static function getStatusName($statusId) {
         switch ($statusId) {
             case 1:
-                return 'Reserved';
+                return 'Completed';
                 break;
 
             case 2:
-                return 'Completed';
+                return 'Canceled';
                 break;
             
             case 3:
-                return 'Pending Payment';
+                return 'In Progress';
                 break;
             
             case 4:
-                return 'Cancelled';
+                return 'Booked';
                 break;
         }
     }
