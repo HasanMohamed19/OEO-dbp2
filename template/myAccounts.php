@@ -575,9 +575,9 @@
                     $('#cardNumberInput').val(response.cardNumber);
                     $('#CVVInput').val(response.CVV);
                     const expiryDate = response.expiryDate.split("-");
-                    console.log(expiryDate[1]);
+                    console.log(parseInt(expiryDate[1]));
                     $('#cardExpiryYear').val(expiryDate[0]);
-                    $('#cardExpiryMonth').val(expiryDate[1]);
+                    $('#cardExpiryMonth').val(parseInt(expiryDate[1]));
 //                    $('#cardExpiryMonth').val(expiryDate[1]);
                     $('#Add-CardID').val(response.cardId);
                 },
