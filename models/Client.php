@@ -55,9 +55,10 @@ class Client extends User {
         $data = $db->singleFetch($q);
 //        var_dump($data);
         $discountRate = 0;
-        if ($data == 3) $discountRate = BRONZE_STATUS;
-        if ($data == 2) $discountRate = SILVER_STATUS;
-        if ($data == 1) $discountRate = GOLDEN_STATUS;
+        if ($data->client_status_id == 1) {$discountRate = GOLDEN_STATUS;}
+        if ($data->client_status_id == 2) {$discountRate = SILVER_STATUS;}
+        if ($data->client_status_id == 3) {$discountRate = BRONZE_STATUS;}
+        if ($data->client_status_id == 4) {$discountRate = 0;}
         return (1 - $discountRate);
     }
     
