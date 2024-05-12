@@ -523,7 +523,7 @@
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                         <input type ="hidden" name="deleteAddressSubmitted" value="TRUE">
-                                        <input type="hidden" id="DeleteIdInput" name="addressId">
+                                        <input type="hidden" id="DeleteAddressInput" name="addressId">
                                     </form>
                                 </div>
                             </div>

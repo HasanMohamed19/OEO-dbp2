@@ -105,7 +105,7 @@ class BillingAddress {
                       </div>';
                 
                 echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
-                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setCardId(this)" id="deleteAddressBtn">Delete</button>
+                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
                             </div>
                         </div>';
                                 
