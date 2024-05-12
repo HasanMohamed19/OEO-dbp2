@@ -30,8 +30,9 @@ class Reservation {
     private $notes;
 //    private $price;
     private $statusId;
+    private $reservationDate;
     
-    public function initWith($reservationId, $hallId, $clientId, $eventId, $notes, $statusId) {
+    public function initWith($reservationId, $hallId, $clientId, $eventId, $notes, $statusId, $reservationDate) {
         $this->reservationId = $reservationId;
         $this->hallId = $hallId;
         $this->clientId = $clientId;
@@ -39,6 +40,7 @@ class Reservation {
         $this->notes = $notes;
 //        $this->price = $price;
         $this->statusId = $statusId;
+        $this->reservationDate = $reservationDate;
     }
 
     public function __construct() {
@@ -49,12 +51,13 @@ class Reservation {
         $this->notes = null;
         $this->price = null;
         $this->statusId = null;
+        $this->$reservationDate = null;
     }
     
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
-        $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id);
+        $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id, $data->reservation_date);
     }
     
     function getReservationsForClient() {
@@ -62,6 +65,7 @@ class Reservation {
         $data = $db->multiFetch("SELECT r.reservation_id,
             r.reservation_status_id,
             r.notes,
+            r.reservation_date
             h.hall_name,
             h.capacity,
             h.image_path,
@@ -229,4 +233,14 @@ class Reservation {
     public function setStatusId($statusId): void {
         $this->statusId = $statusId;
     }
+    
+    public function getReservationDate() {
+        return $this->reservationDate;
+    }
+
+    public function setReservationDate($reservationDate): void {
+        $this->reservationDate = $reservationDate;
+    }
+
+
 }
