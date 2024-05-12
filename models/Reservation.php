@@ -51,12 +51,13 @@ class Reservation {
         $this->notes = null;
         $this->price = null;
         $this->statusId = null;
-        $this->$reservationDate = null;
+        $this->reservationDate = null;
     }
     
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
+//        var_dump($data);
         $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id, $data->reservation_date);
     }
     
@@ -65,7 +66,7 @@ class Reservation {
         $data = $db->multiFetch("SELECT r.reservation_id,
             r.reservation_status_id,
             r.notes,
-            r.reservation_date
+            r.reservation_date,
             h.hall_name,
             h.capacity,
             h.image_path,
@@ -81,6 +82,64 @@ class Reservation {
             JOIN dbProj_Client c ON r.client_id = c.client_id
             WHERE r.client_id = " . $this->clientId);
         return $data;
+    }
+    
+    function getReservationDetails() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT r.reservation_id,
+            r.reservation_status_id,
+            r.notes,
+            r.reservation_date,
+            h.hall_name,
+            h.capacity,
+            h.image_path,
+            e.event_name,
+            e.start_date,
+            e.end_date,
+            e.start_time,
+            e.end_time,
+            e.audience_number,
+            c.phone_number
+            FROM dbProj_Reservation r
+            JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+            JOIN dbProj_Event e ON r.event_id = e.event_id
+            JOIN dbProj_Client c ON r.client_id = c.client_id
+            WHERE r.reservation_id = " . $this->reservationId);
+//        var_dump($data);
+        return $data;
+    }
+    
+    public function displayClientReservations($dataSet) {
+        if (empty($dataSet)) {
+            return;
+        }
+        
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $reservation = new Reservation();
+            $hall = new Hall();
+            $event = new Event();
+            
+            $reservation->setClientId('1');
+            $reservationId = $dataSet[$i]->reservation_id;
+            $reservation->initReservationWithId($reservationId);
+            $hall->setHallId($reservation->hallId);
+            $event->setEventId($reservation->eventId);
+            
+            $hall->initWithHallId($hall->getHallId());
+            $event->initWithEventId($event->getEventId());
+            
+            echo '<tr class="text-center">';
+            echo '<th scope="row" class="text-center"><a class="text-decoration-none" href="./template/booking_detail.php?reservationId=' . $reservation->getReservationId() . '">' . $reservation->getReservationId() . ' </a>';
+            
+            echo '<td>' . Reservation::getStatusName($reservation->getStatusId()) . '</td>';
+            echo '<td>' . $reservation->getReservationDate() . '</td>';
+            echo '<td>' . $event->getName() . '</td>';
+            echo '<td>' . $hall->getHallName() . '</td>';
+            echo '<td>' . 101010 . '</td>';
+            
+            echo '</tr>';
+        }
+        
     }
     
     public function displayUserReservations($dataSet) {
@@ -241,6 +300,26 @@ class Reservation {
     public function setReservationDate($reservationDate): void {
         $this->reservationDate = $reservationDate;
     }
+    
+    
+    static function getStatusName($statusId) {
+        switch ($statusId) {
+            case 1:
+                return 'Reserved';
+                break;
 
+            case 2:
+                return 'Completed';
+                break;
+            
+            case 3:
+                return 'Pending Payment';
+                break;
+            
+            case 4:
+                return 'Cancelled';
+                break;
+        }
+    }
 
 }
