@@ -48,7 +48,7 @@ $reservationDetails = $reservation->getReservationDetails();
                         <!-- condition needs to be changed -->
                         <?php 
                             if ($reservationDetails->reservation_status_id != 2) {
-                                echo '<div class="col text-end"><button class="btn btn-danger">Cancel Booking</button></div>';
+                                echo '<div class="col text-end"><button class="btn btn-danger" data-id="' . $reservationDetails->reservation_id . '"data-bs-toggle="modal" data-bs-target="#cancelModal" onclick="setAddressId(this)" id="cancelReservationBtn">Cancel Booking</button></div>';
                             }
                         ?>
                         
@@ -116,7 +116,43 @@ $reservationDetails = $reservation->getReservationDetails();
 
         </div>
     </div>
+    
+     <!--cancel reservation moda;-->
+                <div class="modal fade" id="cancelModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Cancel Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are You sure You want to Cancel this Booking?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="booking_detail.php" method="post">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop</button>
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                    <input type ="hidden" name="cancelReservationSubmitted" value="TRUE">
+                                    <input type="hidden" id="cancelReservation" name="reservationId">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+<script src="./helpers/CardForm.js">
 </div>
+
+<?php
+
+    if (isset($_POST['cancelReservationSubmitted'])) {
+        $reservationId = $_POST['reservationId'];
+        echo "reservation id is: " . $reservationId;
+    } else {
+        echo 'nothing is submitted yet';
+    }
+    
+?>
 
 <?php
 include './footer.html';

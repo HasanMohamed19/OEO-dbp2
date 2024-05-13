@@ -47,9 +47,6 @@
                         <h3>My Bookings</h3>
                     </div>
 
-                    
-                    
-                    
                     <div class="table-responsive mx-4 px-0 mt-3">
                         <table class="table table-striped border">
                             <thead>
@@ -75,7 +72,7 @@
                     </div>
 
 
-                </div>
+                </div> 
                 <!-- end of  my bookings-->
 
                 <!-- mycards -->
