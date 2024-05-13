@@ -20,13 +20,7 @@ $('#bookingForm').on('submit', function(event) {
     // list of selected menu items as JSON
     event.preventDefault();
     // validate form and get menu items to send with ajax
-    let eventName = $('#bookingEventName').val();
-    let startDate = $('#bookingStartDate').val();
-    let endDate = $('#bookingEndDate').val();
-    let startTime = $('#bookingStartTime').val();
-    let endTime = $('#bookingEndTime').val();
-    let audience = $('#bookingNoAudiences').val();
-    let notes = $('#bookingNotes').val();
+    let eventInput = getEventInput();
     // get menu items and convert to JSON
     let items = JSON.stringify(getMenuItemSelections());
 //    alert("prevented");
@@ -36,13 +30,13 @@ $('#bookingForm').on('submit', function(event) {
         url:'client_booking.php',
         data: {
             submitted: true,
-            bookingEventName:eventName,
-            bookingStartDate:startDate,
-            bookingEndDate:endDate,
-            bookingStartTime:startTime,
-            bookingEndTime:endTime,
-            bookingNoAudiences:audience,
-            bookingEventNotes:notes,
+            bookingEventName:eventInput['eventName'],
+            bookingStartDate:eventInput['startDate'],
+            bookingEndDate:eventInput['endDate'],
+            bookingStartTime:eventInput['startTime'],
+            bookingEndTime:eventInput['endTime'],
+            bookingNoAudiences:eventInput['audience'],
+            bookingEventNotes:eventInput['notes'],
             bookingHallId:hallId,
             bookingClientId:clientId,
             menuItems:items
@@ -90,42 +84,32 @@ const addPageButtonListeners = () => {
     //    console.log("Added listener to " + sectionButtons[i]);
         sectionButtons[i].addEventListener("click", function() {
             console.log('trying to change page. clicked on num: '+i+'. coming from: '+currentSection);
-            if (i === 0) {
-                if (previousButton.className.split(" ").indexOf("hide") < 0) {
-                    previousButton.classList.add("hide");
-                }
+            // if trying to leave first page (event form)
+            // send ajax request to validate input and allow 
+            // user to continue or not
+            if (currentSection === 0 && i !== 0) {
+                let event = getEventInput();
+                $.ajax({
+                    type: 'POST',
+                    url: 'ajaxQueries/validate_event.php',
+                    data: {
+                        event:JSON.stringify(event)
+                    }
+                }).then(function(res) {
+                    console.log("result from validation: "+res);
+                    if (res > 0) {
+                        checkFirstPageClicked(i);
+                        checkLastPageClicked(i);
+                        currentSection = changePage(currentSection, i);
+                    } else {
+                        console.log("Event form invalid");
+                    }
+                });
             } else {
-                // validate event if leaving first page
-                $("#eventFieldSet").addClass('was-validated');
-                console.log(checkEventValidity());
-                if (!checkEventValidity()) {
-                    return;
-                }
-
-                if (previousButton.className.split(" ").indexOf("hide") >= 0) {
-                    previousButton.classList.remove("hide");
-                }
+                checkFirstPageClicked(i);
+                checkLastPageClicked(i);
+                currentSection = changePage(currentSection, i);
             }
-            if (i === sectionButtons.length - 1) {
-                console.log("setting total cost now");
-                setTotalCost(); // display cost at the bottom if this is last page
-
-                // for last page, show save button instead of next
-                if (nextButton.className.split(" ").indexOf("hide") < 0) {
-                    nextButton.classList.add("hide");
-                }
-                if (saveButton.className.split(" ").indexOf("hide") >= 0) {
-                    saveButton.classList.remove("hide");
-                }
-            } else {
-                if (nextButton.className.split(" ").indexOf("hide") >= 0) {
-                    nextButton.classList.remove("hide");
-                }
-                if (saveButton.className.split(" ").indexOf("hide") < 0) {
-                    saveButton.classList.add("hide");
-                }
-            }
-            currentSection = changePage(currentSection, i);
         });
     }
     nextButton.addEventListener("click", function() {
@@ -136,6 +120,46 @@ const addPageButtonListeners = () => {
         }
     });
 
+    const checkFirstPageClicked = (nextSection) => {
+        if (nextSection === 0) {
+            // if clicked on first page, hide previous button
+            if (previousButton.className.split(" ").indexOf("hide") < 0) {
+                previousButton.classList.add("hide");
+            }
+        } else {
+            // validate event if leaving first page
+//            $("#eventFieldSet").addClass('was-validated');
+//            console.log(checkEventValidity());
+//            if (!checkEventValidity()) {
+//                return;
+//            }
+            // show previous button if leaving first page
+            if (previousButton.className.split(" ").indexOf("hide") >= 0) {
+                previousButton.classList.remove("hide");
+            }
+        }
+    };
+    const checkLastPageClicked = (nextSection) => {
+        if (nextSection === sectionButtons.length - 1) {
+            console.log("setting total cost now");
+            setTotalCost(); // display cost at the bottom if this is last page
+
+            // for last page, show save button instead of next
+            if (nextButton.className.split(" ").indexOf("hide") < 0) {
+                nextButton.classList.add("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") >= 0) {
+                saveButton.classList.remove("hide");
+            }
+        } else {
+            if (nextButton.className.split(" ").indexOf("hide") >= 0) {
+                nextButton.classList.remove("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") < 0) {
+                saveButton.classList.add("hide");
+            }
+        }
+    };
     previousButton.addEventListener("click", function() {
         if (currentSection > 0) {
             sectionButtons[currentSection - 1].click();
@@ -148,6 +172,7 @@ const addPageButtonListeners = () => {
     //    window.location.href = "booking_summary.php";
     });
 };
+
 const changePage = (currentSection, nextSection) => {
     let sections = document.querySelectorAll("#bookingForm > fieldset");
     let sectionButtons = document.querySelectorAll("#bookingProgress > li");
@@ -174,5 +199,22 @@ const changePage = (currentSection, nextSection) => {
 };
 
 
-
+const getEventInput = () => {
+    let eventName = $('#bookingEventName').val();
+    let startDate = $('#bookingStartDate').val();
+    let endDate = $('#bookingEndDate').val();
+    let startTime = $('#bookingStartTime').val();
+    let endTime = $('#bookingEndTime').val();
+    let audience = $('#bookingNoAudiences').val();
+    let notes = $('#bookingNotes').val();
+    return {
+        eventName:eventName,
+        startDate:startDate,
+        endDate:endDate,
+        startTime:startTime,
+        endTime:endTime,
+        audience:audience,
+        notes:notes
+    };
+};
 

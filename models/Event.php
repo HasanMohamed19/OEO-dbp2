@@ -61,27 +61,27 @@ class Event {
     }
     
     public function isValid() {
-        $errors = true;
+        $valid = true;
 
         if (empty($this->name))
-            $errors = false;
+            $valid = false;
         
         if (empty($this->startDate))
-            $errors = false;
+            $valid = false;
         
         if (empty($this->endDate))
-            $errors = false;
+            $valid = false;
 
         if (empty($this->startTime))
-            $errors = false;
+            $valid = false;
 
         if (empty($this->endTime))
-            $errors = false;
+            $valid = false;
 
         if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
-            $errors = false;
+            $valid = false;
 
-        return $errors;
+        return $valid;
     }
     
     public function getEventId() {
