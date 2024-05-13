@@ -1,6 +1,6 @@
 <?php
 
-include_once './helpers/Database.php';
+include_once '../helpers/Database.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -61,40 +61,84 @@ class Event {
     }
     
     public function isValid($hallId) {
-        $valid = 1;
 
         if (empty($this->name))
-            $valid = 'Please enter a name for your event.';
+            return 'Please enter a name for your event.';
         
         if (empty($this->startDate))
-            $valid = 'Please enter the date your event starts.';
+            return 'Please enter the date your event starts.';
         
         if (empty($this->endDate))
-            $valid = 'Please enter the date your event ends.';
+            return 'Please enter the date your event ends.';
+        
+        if ($this->endDate < $this->startDate)
+            return 'Your event cannot end before it starts. Please enter a valid date range.';
         
         // check if hall is already booked
-        if ($this->isHallBooked($hallId))
-            $valid = 'There is a hall already booked at the selected date. Please enter a different date.';
+        if (!$this->isHallAvailable($hallId))
+            return 'There is a hall already booked at the selected date. Please enter a different date.';
         
         if (empty($this->startTime))
-            $valid = 'Please enter the time your event starts.';
+            return 'Please enter the time your event starts.';
 
         if (empty($this->endTime))
-            $valid = 'Please enter the time your event ends.';
-
+            return 'Please enter the time your event ends.';
+        
         if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
-            $valid = 'Please enter a valid audience number.';
+            return 'Please enter a valid audience number.';
 
         // check if audience number exceeds hall capacity
         if (!$this->checkHallCapacity($hallId))
-            $valid = 'The selected hall is too small to fit your expected audience number. Please choose a bigger hall.';
+            return 'The selected hall is too small to fit your expected audience number. Please choose a bigger hall.';
         
         // returns 1 if all checks passed, error message otherwise
-        return $valid;
+        return 1;
     }
     
-    public function isHallBooked($hallId) {
-        return false;
+    public function isHallAvailable($hallId) {
+        // checks current start_date and end_date with hall to 
+        // see if it is available at that time
+        $db = Database::getInstance();
+        $hallIdSanitized = $db->sanitizeString($hallId);
+        $q = "SELECT e.start_date, e.end_date "
+                . "FROM dbProj_Hall h "
+                . "JOIN dbProj_Reservation r ON h.hall_id = r.hall_id "
+                . "JOIN dbProj_Event e ON r.event_id = e.event_id "
+                . "WHERE h.hall_id = ? "
+                . "AND r.reservation_status_id IN (3,4)";
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+//      var_dump($stmt);
+        $stmt->bind_param('s', $hallIdSanitized);
+        if (!$stmt->execute()) {
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();
+        $valid = true;
+        while ($row = $result->fetch_assoc()) {
+            $startDate = $row['start_date'];
+            $endDate = $row['end_date'];
+            // if current startdate or enddate are in the checked reservation's
+            // date range, its invalid
+            
+            if ($this->startDate >= $startDate && $this->startDate <= $endDate) {
+                $valid = false;
+            }
+            if ($this->endDate >= $startDate && $this->endDate <= $endDate) {
+                $valid = false;
+            }
+            // if the checked reservation's startdate is in the current date 
+            // range, also invalid
+            if ($startDate >= $this->startDate && $startDate <= $this->endDate) {
+                $valid = false;
+            }
+        }
+        return $valid;
     }
     
     public function checkHallCapacity($hallId) {
