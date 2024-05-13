@@ -85,6 +85,9 @@ class Event {
         if (empty($this->endTime))
             return 'Please enter the time your event ends.';
         
+        if ($this->endTime <= $this->startTime && $this->startDate === $this->endDate)
+            return 'The event must be at least 1 day longer.';
+        
         if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
             return 'Please enter a valid audience number.';
 

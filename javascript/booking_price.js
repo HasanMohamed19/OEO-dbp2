@@ -29,11 +29,7 @@ const getHoursBetween = (time1, time2) => {
     
     let msDelta = date2.getTime() - date1.getTime();
     let hourDelta = Math.round(msDelta/(1000 * 3600));
-    // if start and end time are the same (delta = 0)
-    // or if start time is ahead of end time (delta is negative)
-    // add 24 hours
-    if (hourDelta <= 0)
-        hourDelta += 24;
+    
     return hourDelta;
 };
 
@@ -51,6 +47,14 @@ const calculateTotalPrice = (discount) => {
             $('#bookingStartTime').val(),
             $('#bookingEndTime').val()
                     );
+    
+    // if start and end time are the same (delta = 0)
+    // or if start time is ahead of end time (delta is negative)
+    // add 24 hours and remove 1 day
+    if (rentalDurationHourDelta <= 0) {
+        rentalDurationHourDelta += 24;
+        rentalDurationDays--;
+    }
     console.log("DayDifference: "+rentalDurationDays+", Hours: "+rentalDurationHourDelta);
     let rentalDurationHours = rentalDurationDays * rentalDurationHourDelta;
     
