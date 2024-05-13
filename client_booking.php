@@ -2,6 +2,7 @@
 
 
 include_once('debugging.php');
+include_once('./helpers/Database.php');
 include_once('./models/Event.php');
 include_once('./models/Reservation.php');
 include_once('./models/ReservationMenuItem.php');
@@ -16,7 +17,7 @@ if (isset($_POST['submitted'])) {
     $event->setStartTime($_POST['bookingStartTime']);
     $event->setEndTime($_POST['bookingEndTime']);
     $event->setAudienceNumber($_POST['bookingNoAudiences']);
-    if (!$event->isValid()) {
+    if (!$event->isValid($_POST['bookingHallId']) > 1) {
         die('Event not valid!');
     } 
 

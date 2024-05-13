@@ -42,8 +42,8 @@ class Event {
         $this->audienceNumber = $audienceNumber;
     }
     
-    public function addEvent() {
-        if ($this->isValid()) {
+    public function addEvent($hallId) {
+        if ($this->isValid($hallId) > 1) {
             try {
                 $db = Database::getInstance();
                 $q = 'INSERT INTO `dbProj_Event`(`event_id`, `event_name`, `start_date`, `end_date`, `start_time`, `end_time`, `audience_number`)
