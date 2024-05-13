@@ -19,6 +19,7 @@ $('#bookingForm').on('submit', function(event) {
     // post request must be made with js to allow sending
     // list of selected menu items as JSON
     event.preventDefault();
+    if (!validateAddressAndCard()) return;
     // validate form and get menu items to send with ajax
     let eventInput = getEventInput();
     // get menu items and convert to JSON
@@ -46,33 +47,7 @@ $('#bookingForm').on('submit', function(event) {
 
 
 
-
-const checkEventValidity = () => {
-    
-    
-    let audienceNumber = parseInt($("#bookingNoAudiences").val());
-    if (audienceNumber === null 
-            || audienceNumber > hallCapacity 
-            || audienceNumber <= 0) {
-        $("#bookingNoAudiences").addClass('is-invalid');
-        return false;
-    }
-    
-    let startDate = $("#bookingStartDate").val();
-    if (startDate === null) {
-        $("#bookingStartDate").addClass('is-invalid');
-        return false;
-    }
-    if (new Date(startDate).getDate() <= new Date().getDate()) {
-        $("#bookingStartDate").addClass('is-invalid');
-        return false;
-    }
-    // validate if hall is already booked at this time
-    
-    return true;
-};
-
-const showInvalidEventError = (message) => {
+const showInvalidError = (message) => {
     $('#bookingError').html(message);
     $('#bookingError').removeClass('invisible');
 };
@@ -109,7 +84,7 @@ const addPageButtonListeners = () => {
                         currentSection = changePage(currentSection, i);
                         $('#bookingError').addClass('invisible');
                     } else {
-                        showInvalidEventError(res);
+                        showInvalidError(res);
                     }
                 });
             } else {
@@ -134,12 +109,6 @@ const addPageButtonListeners = () => {
                 previousButton.classList.add("hide");
             }
         } else {
-            // validate event if leaving first page
-//            $("#eventFieldSet").addClass('was-validated');
-//            console.log(checkEventValidity());
-//            if (!checkEventValidity()) {
-//                return;
-//            }
             // show previous button if leaving first page
             if (previousButton.className.split(" ").indexOf("hide") >= 0) {
                 previousButton.classList.remove("hide");

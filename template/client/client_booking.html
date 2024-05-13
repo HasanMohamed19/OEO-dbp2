@@ -447,7 +447,7 @@
                     
                     
                     <!-- Checkout -->
-                    <fieldset id="paymentFieldSet" class="form-group">
+                    <fieldset id="paymentFieldSet" class="form-group needs-validation">
                         <div class="row mt-4">
                             <div class="col">
                                 <h3>Billing Address</h3>
@@ -475,38 +475,43 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-4 d-flex flex-column-reverse">
+                                    <div id="bookingAddressError" class="form-group rounded-2 text-center text-bg-danger p-2 invisible">
+                                        Error Message
+                                    </div>
+                                </div>
                             </div>
                             <hr>
                             <div id="billingForm">
                                 <div class="row mb-4">
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
                                         <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding" required>
                                         <div class="invalid-feedback">Enter building number.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
                                         <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet" required>
                                 <div class="invalid-feedback">Enter street number.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingBlock">Block</label>
                                         <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock" required>
                                         <div class="invalid-feedback">Enter block number.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingArea">Area</label>
                                         <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea" required>
                                         <div class="invalid-feedback">Enter area.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingCountry">Country</label>
                                         <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry" required>
                                         <div class="invalid-feedback">Enter country.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentBillingPhone">Phone Number</label>
                                         <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone" required>
                                         <div class="invalid-feedback">Enter phone number.</div>
@@ -541,23 +546,28 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-4 d-flex flex-column-reverse">
+                                    <div id="bookingCardError" class="form-group rounded-2 text-center text-bg-danger p-2 invisible">
+                                        Error Message
+                                    </div>
+                                </div>
                             </div>
                             <hr>
                             <div id="cardForm">
                                 <div class="row mb-4">
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentCardNumber">Card Number</label>
                                         <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber" required>
                                         <div class="invalid-feedback">Enter valid card number.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
                                         <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName" required>
                                         <div class="invalid-feedback">Enter valid cardholder name.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
                                         <select class="form-select" id="paymentCardExpiryYear" name="paymentCardExpiryYear" required>
                                             <option selected>Year</option>
@@ -583,7 +593,7 @@
                                         </select>
                                 <div class="invalid-feedback">Enter expiry month.</div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col required">
                                         <label class="form-label" for="paymentCardCVV">CVV</label>
                                         <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV" required>
                                         <div class="invalid-feedback">Enter CVV.</div>
