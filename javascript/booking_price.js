@@ -6,10 +6,12 @@ const setTotalCost = () => {
         data: {
             clientId:clientId
         }
-    }).then(function(res) {
-        let total = calculateTotalPrice(res);
+    }).then(function(discount) {
+        let discountText = '';
+        let total = calculateTotalPrice(discount);
         total = Math.round(total*1000)/1000;
-        $('#paymentTotalCost').html('Total: '+total+' BHD');
+        if (discount < 1) discountText = ' (' + (1-discount)*100 + '% discount)';
+        $('#paymentTotalCost').html('Total: '+total+' BHD' + discountText);
     });
 };
 
