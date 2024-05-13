@@ -92,6 +92,7 @@ class Reservation {
             r.reservation_status_id,
             r.notes,
             r.reservation_date,
+            h.hall_id,
             h.hall_name,
             h.capacity,
             h.image_path,

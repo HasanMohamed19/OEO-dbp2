@@ -8,7 +8,7 @@ function setAddressId(button) {
         $('#DeleteAddressInput').val(ID);
 }
 
-function setAddressId(button) {
+function setCancel(button) {
         var ID = $(button).data("id");
         $('#cancelReservation').val(ID);
 } 
