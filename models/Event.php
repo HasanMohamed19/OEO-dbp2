@@ -60,28 +60,45 @@ class Event {
         }
     }
     
-    public function isValid() {
-        $valid = true;
+    public function isValid($hallId) {
+        $valid = 1;
 
         if (empty($this->name))
-            $valid = false;
+            $valid = 'Please enter a name for your event.';
         
         if (empty($this->startDate))
-            $valid = false;
+            $valid = 'Please enter the date your event starts.';
         
         if (empty($this->endDate))
-            $valid = false;
-
+            $valid = 'Please enter the date your event ends.';
+        
+        // check if hall is already booked
+        if ($this->isHallBooked($hallId))
+            $valid = 'There is a hall already booked at the selected date. Please enter a different date.';
+        
         if (empty($this->startTime))
-            $valid = false;
+            $valid = 'Please enter the time your event starts.';
 
         if (empty($this->endTime))
-            $valid = false;
+            $valid = 'Please enter the time your event ends.';
 
         if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
-            $valid = false;
+            $valid = 'Please enter a valid audience number.';
 
+        // check if audience number exceeds hall capacity
+        if (!$this->checkHallCapacity($hallId))
+            $valid = 'The selected hall is too small to fit your expected audience number. Please choose a bigger hall.';
+        
+        // returns 1 if all checks passed, error message otherwise
         return $valid;
+    }
+    
+    public function isHallBooked($hallId) {
+        return false;
+    }
+    
+    public function checkHallCapacity($hallId) {
+        return true;
     }
     
     public function getEventId() {

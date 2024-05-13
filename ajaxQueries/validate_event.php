@@ -3,6 +3,7 @@
 include '../debugging.php';
 include_once '../models/Event.php';
 
+$hallId = $_POST['hallId'];
 $eventJSON = json_decode($_POST['event']);
 $event = new Event();
 $event->setName($eventJSON->eventName);
@@ -12,4 +13,4 @@ $event->setStartTime($eventJSON->startTime);
 $event->setEndTime($eventJSON->endTime);
 $event->setAudienceNumber($eventJSON->audience);
 
-echo $event->isValid();
+echo $event->isValid($hallId);

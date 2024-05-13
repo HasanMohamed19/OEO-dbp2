@@ -94,7 +94,7 @@
                                 <h3>Event Details</h3>
                             </div>
                         </div>
-                        <div class="card p-4 mb-4">
+                        <div class="card p-4">
                             <div class="row mb-4">
                                 <div class="form-group col required">
                                     <label for="bookingEventName" class="form-label">Event Name</label>
@@ -608,8 +608,11 @@
                     </fieldset>
                     
                     <!-- Previous/Next Buttons -->
-                    <div class="row my-4">
-                        <div class="form-group col submitBar d-flex justify-content-end">
+                    <div class="row my-4 mx-0">
+                        <div id="bookingError" class="form-group col-8 rounded-2 text-bg-danger py-2 invisible">
+                            Error Message
+                        </div>
+                        <div class="form-group col-4 submitBar d-flex justify-content-end px-0">
                             <input type="button" class="previous btn btn-secondary me-4 hide" value="Previous">
                             <input type="button" class="next btn btn-primary" value="Next">
                             <!-- This button only shows up at the last screen -->

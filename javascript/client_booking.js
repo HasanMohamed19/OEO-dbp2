@@ -72,6 +72,11 @@ const checkEventValidity = () => {
     return true;
 };
 
+const showInvalidEventError = (message) => {
+    $('#bookingError').html(message);
+    $('#bookingError').removeClass('invisible');
+};
+
 //      Previous/Next buttons functionality
 const addPageButtonListeners = () => {
     let currentSection = 0;
@@ -93,6 +98,7 @@ const addPageButtonListeners = () => {
                     type: 'POST',
                     url: 'ajaxQueries/validate_event.php',
                     data: {
+                        hallId:hallId,
                         event:JSON.stringify(event)
                     }
                 }).then(function(res) {
@@ -101,8 +107,9 @@ const addPageButtonListeners = () => {
                         checkFirstPageClicked(i);
                         checkLastPageClicked(i);
                         currentSection = changePage(currentSection, i);
+                        $('#bookingError').addClass('invisible');
                     } else {
-                        console.log("Event form invalid");
+                        showInvalidEventError(res);
                     }
                 });
             } else {
