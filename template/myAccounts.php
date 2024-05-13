@@ -188,16 +188,32 @@
                 <!-- end of my cards -->
 
                 <!-- Wallet & Royalty Points -->
+                
+                <?php
+//                            include 'debugging.php';
+//                        include './models/Client.php';
+                            $cc = new Client();
+//                            $client->setClientId('1');
+                            $s = $cc->getClientStatusName('1');
+                            $db = Database::getInstance();
+                            $n = $db->querySQL('SELECT getNumberOfBookings(1)');
+                            var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
+                            echo $n . ' is what??';
+//                            var_dump($s);
+//                            echo $s->status_name . ' is the status';
+                ?>
+                
                 <div class="card mb-2 ms-4 px-0 inactive">
                     <div class="card-header">
                         <h3>Wallet & Royalty Points</h3>
                     </div>
 
                     <div class="row my-status align-self-center my-2">
-                        <h1 class="text-uppercase text-center text-white align-self-center">Silver</h1>
+                        
+                        <h1 class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
                         <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                     </div>
-
+                    
                     <div class="card rounded shadow-sm mb-2 mx-3">
 
                         <ul class="list-group list-group-flush border-0">
