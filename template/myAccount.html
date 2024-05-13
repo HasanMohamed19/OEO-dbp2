@@ -19,29 +19,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="my-account-sidebar align-self-center">
                     <div class="row">
                         <div class="card col shadow-sm">
-                            <!-- old approach to remove later -->
-
-                            <!-- <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <strong>My Bookings</strong>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <strong>Payment Cards</strong>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <strong>Wallet</strong>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <strong>Profile</strong>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </li>
-                                <li class="list-group-item">
-                                    <strong>Logout</strong>
-                                </li>
-                            </ul> -->
 
                             <div class="list-group list-group-flush">
                                 <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active-side-btn">
@@ -259,34 +236,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Card</h1>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add/Edit Card</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="">
+                                    <form action="myAccount.php" method="post">
                                         <div class="row">
-                                            <div class="col">
-                                                <label for="paymentType" class="form-label">Payment Type</label>
-                                                <select name="paymentType" id="paymentType" class="form-select">
-                                                    <option value="" disabled>Payment Type</option>
-                                                    <option value="credit">Credit Card</option>
-                                                    <option value="debit">Debit Card</option>
-                                                </select>
+                                            <div class="col form-group required">
+                                                <label for="cardholdername" class="form-label" >Cardholder name</label>
+                                                <input type="text" name="cardholdername" id="cardholdername" class="form-control"/>
                                             </div>
-                                            <div class="col">
+                                            <div class="col form-group required">
                                                 <label for="cardNumber" class="form-label">Card Number</label>
-                                                <input type="number" maxlength="16" class="form-control">
+                                                <input type="text" maxlength="16" class="form-control" name="cardNumber">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col">
-                                                <label for="CVV" class="form-label">CSV</label>
+                                            <div class="col form-group required">
+                                                <label for="CVV" class="form-label">CVV</label>
                                                 <input type="number" class="form-control" name="CVV" value="">
                                             </div>
 
                                             <!-- year and month can be datepicker formatted with js -->
 
-                                            <div class="col">
+                                            <div class="col form-group required">
                                                 <label for="year" class="form-label">Card Expiry</label>
                                                 <select name="year" id="year" class="form-select">
                                                     <option value="" disabled>Year</option>
@@ -294,7 +267,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 </select>
                                             </div>
 
-                                            <div class="col d-flex align-items-end">
+                                            <div class="col d-flex align-items-end form-group required">
                                                 <select name="month" id="month" class="form-select">
                                                     <option value="" disabled>Month</option>
                                                     <option value="1">January</option>
@@ -304,6 +277,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                                         <div class="row mt-3">
                                             <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                            <input type="hidden" name="submitted" value="1">
                                         </div>
 
                                     </form>
@@ -336,7 +310,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
 
                     </div>
-                    <!-- end of Walletr & Royalty Points -->
+                    <!-- end of Wallet & Royalty Points -->
 
                     <!--Profile -->
                     <div class="card col shadow-sm ms-4 px-0 inactive">
@@ -346,7 +320,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="row mx-3">
                             <h6>Personal Information</h6>
                         </div>
-                        <form action="">
+                        <form action="myAccount.php" method="post">
                             <div class="container">
                                 <div class="row my-2">
                                     <div class="col">
@@ -385,7 +359,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     </div>
                                     <div class="col">
                                         <label for="gender" class="form-label">Gender</label>
-                                        <select name="gender" class="form-select" id="">
+                                        <select name="gender" class="form-select" id="n">
                                             <option value="" disabled>Gender</option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
@@ -421,6 +395,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <label for="website" class="form-label">Website</label>
                                         <input type="text" name="website" class="form-control" placeholder="Website">
                                     </div>
+                                </div>
+                                
+                                <div class="row my-2">
+                                    <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                    <input type="hidden" name="profileSubmitted" value="1">
                                 </div>
 
                             </div>

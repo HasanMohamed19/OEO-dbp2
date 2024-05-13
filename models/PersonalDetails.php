@@ -11,11 +11,6 @@
  * @author Hassan
  */
 
-//enum Gender {
-//    case M;
-//    case F;
-//}
-
 const GENDER_MALE = 'M';
 const GENDER_FEMALE = 'F';
 
@@ -49,6 +44,146 @@ class PersonalDetails {
         $this->nationality = $nationality;
         $this->clientId = $clientId;
     }
+    
+    function addPersonalDetails() {
+//        if ($this->isValid()) {
+//            try {
+//                $db = Database::getInstance();
+//                // TODO: get client_id from cookie
+//                $q = "INSERT INTO dbProj_PersonalDetails (personal_details_id, first_name, last_name, dob, gender, nationality, client_id)
+//                 VALUES (NULL,' $this->firstName','$this->lastName','$this->dob','$this->gender','$this->nationality','$this->clientId')"; 
+//                $data = $db->querySql($q);
+//                var_dump($q);
+//                 return true;
+//            } catch (Exception $e) {
+//                echo 'Exception: ' . $e;
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+        
+        
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->firstName = $db->sanitizeString($this->firstName);
+            $this->lastName = $db->sanitizeString($this->lastName);
+            $this->dob = $db->sanitizeString($this->dob);
+            $this->gender = $db->sanitizeString($this->gender);
+            $this->nationality = $db->sanitizeString($this->nationality);
+            
+            $q = "INSERT INTO dbProj_PersonalDetails (first_name, last_name, dob, gender, nationality, client_id) VALUES (?,?,?,?,?,?)";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            if ($stmt) {
+                $stmt->bind_param('sssssi', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality, $this->clientId);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            return true;
+            
+        }
+        
+    }
+    
+    function initWithClientId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
+        $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->dob, $data->gender, $data->nationality, $data->client_id);
+//        var_dump($data);
+        if ($data != null) {
+            return false;
+        }
+        return true;
+    }
+
+
+    function getAllPersonalDetails() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_PersonalDetails");
+        return $data;
+    }
+    
+    function updatePersonalDetails() {
+        $db = new Database();
+        
+        if ($this->isValid()) {
+            $this->firstName = $db->sanitizeString($this->firstName);
+            $this->lastName = $db->sanitizeString($this->lastName);
+            $this->dob = $db->sanitizeString($this->dob);
+            $this->gender = $db->sanitizeString($this->gender);
+            $this->nationality = $db->sanitizeString($this->nationality);
+            
+            $q = "UPDATE dbProj_PersonalDetails set
+			first_name = ?, last_name = ?, dob = ?, gender = ?, nationality = ? WHERE client_id = '$this->clientId';";
+            
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+            if ($stmt) {
+                $stmt->bind_param('sssss', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality);
+                
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute Failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            return true;
+        }
+        
+//        if ($this->isValid()) {
+//            try {
+//                $db = Database::getInstance();
+//                $data = "UPDATE dbProj_PersonalDetails
+//                        SET first_name = '$this->firstName',
+//                            last_name = '$this->lastName',
+//                            dob = '2025-5-5',
+//                            gender = '$this->gender',
+//                            nationality = '$this->nationality'
+//                        WHERE client_id = '$this->clientId';   ";
+//                $db->querySql($data);
+//                return true;
+//            } catch (Exception $ex) {
+//                echo 'Exception: ' . $ex;
+//                return false;
+//            }
+//        } 
+//        else {
+//            return false;
+//        }
+    }
+    
+    public function isValid() {
+        $errors = true;
+
+        if (empty($this->firstName))
+            $errors = false;
+        
+        if (empty($this->lastName))
+            $errors = false;
+        
+        if (empty($this->dob))
+            $errors = false;
+
+        if (empty($this->gender))
+            $errors = false;
+        
+        if (empty($this->nationality))
+            $errors = false;
+
+        return $errors;
+    }
 
     
     public function getPersonalDetialId() {
@@ -69,6 +204,7 @@ class PersonalDetails {
     
     public function getDob() {
         return $this->dob;
+
     }
     
     public function getAge() {

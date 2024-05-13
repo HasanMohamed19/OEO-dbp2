@@ -40,6 +40,12 @@ class Event {
         $this->audienceNumber = $audienceNumber;
     }
     
+    public function initWithEventId($eventId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
+        $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
+    }
+    
     public function getEventId() {
         return $this->eventId;
     }
@@ -95,6 +101,5 @@ class Event {
     public function setAudienceNumber($audienceNumber) {
         $this->audienceNumber = $audienceNumber;
     }
-
 
 }
