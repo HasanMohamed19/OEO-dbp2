@@ -1,6 +1,6 @@
 <?php
 
-include '../helpers/Database.php';
+include_once '../helpers/Database.php';
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -43,6 +43,29 @@ class Hall {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $this->hallId );
         $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
+    }
+    
+    public static function queryHallCapacity($hallId) {
+        $db = Database::getInstance();
+        $hallIdSanitized = $db->sanitizeString($hallId);
+        $q = "SELECT capacity "
+                . "FROM dbProj_Hall h "
+                . "WHERE h.hall_id = ? ";
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+//      var_dump($stmt);
+        $stmt->bind_param('s', $hallIdSanitized);
+        if (!$stmt->execute()) {
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        return $data['capacity'];
     }
     
     public function getHallId() {

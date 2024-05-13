@@ -1,6 +1,7 @@
 <?php
 
 include_once '../helpers/Database.php';
+include_once 'Hall.php';
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
@@ -142,7 +143,8 @@ class Event {
     }
     
     public function checkHallCapacity($hallId) {
-        return true;
+        $capacity = Hall::queryHallCapacity($hallId);
+         return ($this->audienceNumber <= $capacity);
     }
     
     public function getEventId() {
