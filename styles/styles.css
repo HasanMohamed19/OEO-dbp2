@@ -192,8 +192,8 @@
 }
 
 /* Admin Forms */
-.rounded-top-right {
-    border-top-right-radius: 0.25rem!important;
+.rounded-bottom-left {
+    border-bottom-left-radius: 0.25rem!important;
 }
 .rounded-bottom-right {
     border-bottom-right-radius: 0.25rem!important;

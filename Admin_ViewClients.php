@@ -35,7 +35,7 @@ if (isset($_POST['submitted'])) {
     }
 }
 
-include './template/admin/Admin_DisplayClients.html';
+include './template/admin/DisplayClients.php';
 
 if (isset($_POST['deleteHallSubmitted'])) {
     $hallID = trim($_POST['hallId']);
