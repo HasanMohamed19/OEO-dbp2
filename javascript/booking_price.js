@@ -10,7 +10,8 @@ const setTotalCost = () => {
         let discountText = '';
         let total = calculateTotalPrice(discount);
         total = Math.round(total*1000)/1000;
-        if (discount < 1) discountText = ' (' + (1-discount)*100 + '% discount)';
+        // show discount % only if there is discount
+        if (discount < 1) discountText = ' (' + Math.round((1-discount)*100) + '% discount)';
         $('#paymentTotalCost').html('Total: '+total+' BHD' + discountText);
     });
 };
