@@ -32,12 +32,12 @@ class Invoice {
         $this->issueDate = null;
     }
     
-    public static function addWithReservationId($resId) {
+    public static function addWithReservationId($resId, $isAmending) {
         $db = new Database();
         
         // this procedure will automatically calculate
         // rental and catering costs too
-        $q = 'CALL insertInvoice(?)';
+        $q = 'CALL insertInvoice(?,?)';
         
         $stmt = mysqli_prepare($db->getDatabase(),$q);
 //        var_dump($stmt);
@@ -46,8 +46,9 @@ class Invoice {
             return false;
         }
         
-        $stmt->bind_param('i',
-            $resId
+        $stmt->bind_param('ii',
+            $resId,
+            $isAmending
         );
         
         if (!$stmt->execute()) {

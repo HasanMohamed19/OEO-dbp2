@@ -9,6 +9,10 @@ include_once('./models/ReservationMenuItem.php');
 include_once('./models/Invoice.php');
 
 if (isset($_POST['submitted'])) {
+    $isAmending = ($_POST['reservationId'] != null || $_POST['reservationId'] <= 0) 
+            ? 1 : 0;
+    
+    
     // create event
     $event = new Event();
     $event->setName($_POST['bookingEventName']);
@@ -54,7 +58,7 @@ if (isset($_POST['submitted'])) {
 //    echo "all items added";
 
     // now add invoice
-    Invoice::addWithReservationId($resId);
+    Invoice::addWithReservationId($resId, $isAmending);
     
 //    header('booking_summary.php');
 }
