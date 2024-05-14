@@ -8,11 +8,15 @@ const setTotalCost = () => {
         }
     }).then(function(discount) {
         let discountText = '';
+        let amendmentText = '';
         let total = calculateTotalPrice(discount);
         total = Math.round(total*1000)/1000;
         // show discount % only if there is discount
-        if (discount < 1) discountText = ' (' + Math.round((1-discount)*100) + '% discount)';
-        $('#paymentTotalCost').html('Total: '+total+' BHD' + discountText);
+        if (discount < 1) 
+            discountText = ' (' + Math.round((1-discount)*100) + '% discount)';
+        if (reservationId !== null && reservationId > 0) 
+            amendmentText = ' (+'+amendmentFee*100+'% amendment fee)';
+        $('#paymentTotalCost').html('Total: '+total+' BHD' + discountText + amendmentText);
     });
 };
 
@@ -66,5 +70,8 @@ const calculateTotalPrice = (discount) => {
     let cateringCost = calculateCateringCost(selectedMenuItems);
     
     total = (rentalCost + cateringCost) * discount;
+    // add amendment fee if editing
+    if (reservationId !== null && reservationId > 0) 
+        total = total + (total * amendmentFee);
     return total;
 };

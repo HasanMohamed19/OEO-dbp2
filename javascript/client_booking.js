@@ -17,6 +17,7 @@ const getCookie = (cname) => {
 
 //      declarations
 const cateringItemDisplayCount = 10;
+const amendmentFee = 0.05;
 // get hallId from GET
 const hallId = (new URL(location.href)).searchParams.get('hallId');
 const reservationId = (new URL(location.href)).searchParams.get('reservationId');
