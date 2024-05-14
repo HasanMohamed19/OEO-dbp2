@@ -1,8 +1,76 @@
+<?php
+    include './models/Hall.php';
+    include './helpers/Database.php';
+    include './debugging.php';
+    $hall = new Hall();
+    $halls = $hall->getAllHalls();
+    
+    echo " there are " . count($hall);
+    
+    
+    function displayHalls($dataSet) {
+        
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $hall = $dataSet[$i];
+            echo '<div class="card mb-5">
+                            <div id="hall-3" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
+                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
+                                                                                    <button class="btn btn-primary">Book Now</button>
+                                                                                </div>-->
+
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-3" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#hall-3" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>';
+            echo '<div class="row text-center">';
+            echo '<h1>' . $hall->hall_name .'</h1></div>';
+            echo '<div class="row mt-3 justify-content-center">' . $hall->description . '</div>';
+            echo '<div class="row mt-5">';
+            echo '<div class="col text-right"><h3>' . $hall->rental_charge . ' BHD/Hr</h3></div>'
+                    . '<div class="col text-center"><button class="btn btn-primary">Book Now</button></div>'
+                    . '<div class="col text-left"><h3>' . $hall->capacity . ' Seats</h3></div>'
+                    . '</div></div>';
+        }
+        
+        
+        
+                                
+//                            </div>
+//                            <div class="row mt-3">
+//                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
+//                                thats very long to show the length of the lthing is very long...
+//                            </div>
+//                            <div class="row mt-5">
+//                                <div class="col text-center"><h3>100.00 BHD/Hr</h3></div>
+//                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
+//                                <div class="col text-center"><h3>80 Seats</h3></div>
+//                            </div>
+    }
+?>
+
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html>
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -53,94 +121,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="container ">
                     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
 
-                        <div class="card mb-5">
-                            <div id="hall-1" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#hall-1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#hall-1" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#hall-1" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
-                                                                                    <button class="btn btn-primary">Book Now</button>
-                                                                                </div>-->
-
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-1" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#hall-1" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                            <div class="row text-center">
-                                <h1>Hall Name and Stuff</h1>
-                            </div>
-                            <div class="row mt-3">
-                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
-                                thats very long to show the length of the lthing is very long...
-                            </div>
-                            <div class="row mt-5">
-                                <div class="col text-start"><h2>100.00 BHD/Hr</h2></div>
-                                <div class="col text-end"><h2>80 Seats</h2></div>
-                            </div>
-                        </div>
-
-
-                        <div class="card mb-5">
-                            <div id="hall-2" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#hall-2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#hall-2" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#hall-2" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
-                                                                                    <button class="btn btn-primary">Book Now</button>
-                                                                                </div>-->
-
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-2" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#hall-2" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                            <div class="row text-center">
-                                <h1>Hall Name and Stuff</h1>
-                            </div>
-                            <div class="row mt-3">
-                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
-                                thats very long to show the length of the lthing is very long...
-                            </div>
-                            <div class="row mt-5">
-                                <div class="col text-start"><h2>100.00 BHD/Hr</h2></div>
-                                <div class="col text-end"><h2>80 Seats</h2></div>
-                            </div>
-                        </div>
+                       <?php
+                            displayHalls($halls);
+                       ?>
 
                         <div class="card mb-5">
                             <div id="hall-3" class="carousel slide" data-bs-ride="carousel">
@@ -181,8 +164,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 thats very long to show the length of the lthing is very long...
                             </div>
                             <div class="row mt-5">
-                                <div class="col text-start"><h2>100.00 BHD/Hr</h2></div>
-                                <div class="col text-end"><h2>80 Seats</h2></div>
+                                <div class="col text-center"><h3>100.00 BHD/Hr</h3></div>
+                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
+                                <div class="col text-center"><h3>80 Seats</h3></div>
                             </div>
                         </div>
                         
@@ -225,13 +209,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 thats very long to show the length of the lthing is very long...
                             </div>
                             <div class="row mt-5">
-                                <div class="col text-start"><h2>100.00 BHD/Hr</h2></div>
-                                <div class="col text-end"><h2>80 Seats</h2></div>
+                                <div class="col text-right"><h3>100.00 BHD/Hr</h3></div>
+                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
+                                <div class="col text-left"><h3>80 Seats</h3></div>
                             </div>
                         </div>
 
 
                     </div>
-
+                    
     </body>
 </html>

@@ -19,13 +19,13 @@ class Hall {
     private $capacity;
     private $imagePath;
     
-    public function __construct($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
-        $this->hallId = $hallId;
-        $this->hallName = $hallName;
-        $this->description = $description;
-        $this->rentalCharge = $rentalCharge;
-        $this->capacity = $capacity;
-        $this->imagePath = $imagePath;
+    public function __construct() {
+        $this->hallId = null;
+        $this->hallName = null;
+        $this->description = null;
+        $this->rentalCharge = null;
+        $this->capacity = null;
+        $this->imagePath = null;
     }
     
     public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
@@ -83,6 +83,12 @@ class Hall {
 
     public function setImagePath($imagePath) {
         $this->imagePath = $imagePath;
+    }
+    
+    function getAllHalls() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch('Select * from dbProj_Hall');
+        return $data;
     }
 
 

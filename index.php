@@ -4,6 +4,6 @@ include './template/header.html';
     
     echo '<div class="main"> </div>';
     
-include './template/halls.html';
+include './template/halls.php';
 include './template/footer.html';
 ?>
