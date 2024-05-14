@@ -9,7 +9,7 @@ include_once('./models/ReservationMenuItem.php');
 include_once('./models/Invoice.php');
 
 if (isset($_POST['submitted'])) {
-    $isAmending = ($_POST['reservationId'] != null || $_POST['reservationId'] <= 0) 
+    $isAmending = ($_POST['reservationId'] != null && $_POST['reservationId'] > 0) 
             ? 1 : 0;
     
     
