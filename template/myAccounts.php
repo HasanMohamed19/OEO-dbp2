@@ -28,7 +28,11 @@
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <strong>Profile</strong>
+                                <strong>Profile (Details)</strong>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <strong>Account </strong>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -200,9 +204,9 @@
 //                            $client->setClientId('1');
                             $s = $cc->getClientStatusName($loggedInClientId);
                             $db = Database::getInstance();
-                            $n = $db->querySQL('SELECT getNumberOfBookings(1)');
-                            var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
-                            echo $n . ' is what??';
+//                            $n = $db->querySQL('SELECT getNumberOfBookings(1)');
+//                            var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
+//                            echo $n . ' is what??';
 //                            var_dump($s);
 //                            echo $s->status_name . ' is the status';
                 ?>
@@ -338,6 +342,40 @@
 
                 </div>
                 <!-- end of profile -->
+                
+                <div class="card col shadow-sm ms-4 px-0 inactive">
+                    <div class="card-header">
+                        <h3>Edit Account</h3>
+                    </div>
+                    <div class="container">
+                        <form action="displayMyAccount.php" method="post">
+                            <div class="row my-2">
+                                <div class="col form-group required">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                                </div>
+                                <div class="col form-group required">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Email" value="">
+                                </div>
+                            </div>
+                            <div class="row my-2 form-group required">
+                                <div class="col">
+                                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                                    <input type="text" name="phoneNumber" class="form-control" placeholder="Phone Number" value="">
+                                </div>
+                                <div class="col form-group required">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                <input type="hidden" name="accountSubmitted" value="1">
+                            </div>
+                        </form>
+                    </div>    
+                </div>    
 
                 <!-- book address -->
                 <div class="card col shadow-sm ms-4 px-0 inactive">

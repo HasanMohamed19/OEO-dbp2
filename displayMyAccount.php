@@ -132,6 +132,41 @@
         }
     }
     
+    if (isset($_POST['accountSubmitted'])) {
+        $user = new User();
+        $userId = $_COOKIE['userId'];
+        echo $userId . ' is userid';
+        $clientId = $_COOKIE['clientId'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        echo $email . 'is  email';
+        $phoneNumber = $_POST['phoneNumber'];
+        $password = $_POST['password'];
+        
+        $user->setUserId($userId);
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $user->setRoleId(ROLE_CLIENT);
+        $client = new Client();
+        $client->setPhoneNumber($phoneNumber);
+        echo $user->getEmail() . ' is new email';
+        $updatedUser = $user->updateUser($userId);
+//        echo 'user id s . ' . $updatedUser;
+//        $updatedClient = $client->updateClient($clientId);
+        
+//        if ($updatedUser && $updatedClient) {
+//            echo 'updated profile successfully';
+//        } else if ($updatedUser){
+//            echo 'Updated User only';
+//        } else if ($updatedClient) {
+//            echo 'Updated client only';
+//        } else {
+//            echo 'an error occured';
+//        }
+        
+    }
+    
     // check for deletes:
     // card deletion:
     if (isset($_POST['deleteCardSubmitted'])) {

@@ -113,4 +113,32 @@ private $clientStatusId;
 
     }
     
+    function updateClient($clientId) {
+        include_once  "./helpers/Database.php";
+        
+        $db = new Database();
+        if ($this->isValid()) {
+//                    echo "username $this->username, password $this->password";
+            $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_Client SET "
+                . "phone_number='?' WHERE client_id='?'";
+            
+            $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                $stmt->bind_param('si', $this->phoneNumber, $clientId);
+            }
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            
+    }
+    
 }
