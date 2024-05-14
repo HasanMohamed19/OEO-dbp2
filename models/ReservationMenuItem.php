@@ -33,7 +33,7 @@ class ReservationMenuItem {
     }
     
     public function isValid() {
-        if ($this->quantity <= 0) {
+        if ($this->quantity < 0) {
             return false;
         }
         return true;

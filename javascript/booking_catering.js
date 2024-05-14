@@ -19,7 +19,9 @@ const handleCateringCheckboxes = (menuType) => {
             const state = checkbox.checked;
             SetQuantityActive(id, !state);
             if (!state) {
-                removeMenuItem(id);
+                // set quantity to zero instead of removing
+                // because removing will not update it in the DB
+                setItemQuantity(id, 0);
             }
         });
     });
