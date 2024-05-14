@@ -22,7 +22,7 @@ class BillingAddress {
     private $country;
     private $clientId;
     
-    public function initWith($addressId, $phoneNumber, $roadNumber, $buildingNumber, $city, $blockNumber, $country, $clientId) {
+    public function initWith($addressId, $phoneNumber, $roadNumber, $buildingNumber, $blockNumber, $city, $country, $clientId) {
         $this->addressId = $addressId;
         $this->phoneNumber = $phoneNumber;
         $this->roadNumber = $roadNumber;
@@ -50,8 +50,9 @@ class BillingAddress {
                 $db = Database::getInstance();
                 // TODO: get client_id from cookie
                 $q = "INSERT INTO dbProj_Billing_Address (address_id, phone_number, road_number, building_number, block_number, city, country, client_id)
-                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country','$this->clientId')"; 
+                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country',$this->clientId)"; 
                 $data = $db->querySql($q);
+                $this->addressId = mysqli_insert_id($db->dblink);
 //                var_dump($q);
                  return true;
             } catch (Exception $e) {

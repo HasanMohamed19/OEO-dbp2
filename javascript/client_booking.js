@@ -1,6 +1,28 @@
+// parse cookie and return value from document.cookie
+const getCookie = (cname) => {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+};
+
+//      declarations
 const cateringItemDisplayCount = 10;
+// get hallId from GET
 const hallId = (new URL(location.href)).searchParams.get('hallId');
-const clientId = 1;
+const clientCookie = getCookie('clientId'); // get clientid cookie
+// redirect to login if there is no client cookie
+if (getCookie('clientId') === "") window.location.href='login.php';
+const clientId = parseInt(clientCookie);
 var hallRentalCharge; // will be set after side menu loads
 var hallCapacity;
 
@@ -46,7 +68,7 @@ $('#bookingForm').on('submit', function(event) {
 });
 
 
-
+// shows error at the bottom of the page with provided message
 const showInvalidError = (message) => {
     $('#bookingError').html(message);
     $('#bookingError').removeClass('invisible');
