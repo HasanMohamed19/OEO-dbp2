@@ -47,7 +47,7 @@ class ReservationMenuItem {
 //        echo "quant $this->quantity, resid $this->reservationId";
         $this->quantity = $db->sanitizeString($this->quantity);
 
-        if ($this->reservationMenuItemId == null) {
+        if ($this->reservationMenuItemId == null || $this->reservationMenuItemId <= 0) {
             $q = 'INSERT INTO `dbProj_Reservation_Menu_Item`(`reservation_menu_item_id`, `quantity`, `reservation_id`, `item_id`) '
                     . 'VALUES (NULL,?,?,?) ';
         } else {
@@ -63,7 +63,7 @@ class ReservationMenuItem {
             return false;
         }
         
-        if ($this->reservationMenuItemId == null) {
+        if ($this->reservationMenuItemId == null || $this->reservationMenuItemId <= 0) {
             $stmt->bind_param('iii',
                 $this->quantity,
                 $this->reservationId,
