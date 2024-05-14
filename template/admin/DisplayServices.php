@@ -137,6 +137,7 @@
         //                            });
         //get Hall ID value 
         $(document).ready(function () {
+            $('#catering').addClass('active-page');
             $(document).on('click', '#editItemBtn', function () {
 
                 var itemId = $(this).attr('data-id');

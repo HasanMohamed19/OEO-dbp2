@@ -143,6 +143,7 @@
 
     //get Hall ID value 
     $(document).ready(function () {
+        $('#halls').addClass('active-page');
         $(document).on('click', '#editHallBtn', function () {
 
             var hallId = $(this).attr('data-id');

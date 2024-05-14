@@ -22,6 +22,19 @@
     background-color: turquoise;
     height: 50px;
 }
+.nav-item a {
+  font-size: 17px;
+}
+
+.nav-item a:hover {
+  color: var(--primary);
+  width: 100%;
+}
+.active-page {
+  text-decoration: underline var(--primary-400) 3px;
+  text-underline-offset: 7px;
+  color: black;
+}
 .logo {
     height: auto;
 }
