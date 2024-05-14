@@ -233,13 +233,13 @@ function displayMenuItems($dataSet) {
                                         <h3>' . $item->getPrice() . '/Hr</h3>
                                     </div>
                                     <div class="col text-end">
-                                        <h3>' . $item->getCateringSerivceName() . ' seats</h3>
+                                        <h3>' . $item->getCateringSerivceName() . '</h3>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="d-flex col w-100">
-                                        <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill"></i> Edit</button>
-                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill"></i> Delete</button>
+                                        <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
+                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i> </button>
                                     </div>
                                 </div>
                             </div>

@@ -1,27 +1,51 @@
 <?php
 // Include necessary files and classes
 include '../debugging.php';
-include '../models/Hall.php'; // Include the Hall class definition
+//include './helpers/Database.php';
+include '../models/User.php';
+include '../models/Client.php';
+include '../models/PersonalDetails.php';
+include '../models/CompanyDetails.php'; // Include the user class definition
 
-// Check if hallId parameter is provided
-if (isset($_GET['hallId'])) {
+// Check if userId parameter is provided
+if (isset($_GET['userId'])) {
     // Get hallId from the request
-    $hallId = $_GET['hallId'];
+    $userId = $_GET['userId'];
 
     try {
-        // Create a new instance of the Hall class
-        $hall = new Hall();
+        // Create a new instances of the user,client,personal/company details classes
+        $user = new User();
+        $client = new Client();
+        $pd = new PersonalDetails();
+        $cmp =  new CompanyDetails();
         
-        // Initialize the hall object with data based on hallId
-        $hall->initWithHallid($hallId);
+        // Initialize the objects with data based on userId
+        $user->initWithUserid($userId);
+        $client->iniwWithUsertId($userId);
+        
+        $pd->setClientId($client->getClientId());
+        $pd->initWithClientId();
+        
+        $cmp->setClientId($client->getClientId());
+        $cmp->initWithClientId();
+        
         // Prepare the response data
         $responseData = array(
-            'hallId' => $hall->getHallId(),
-            'hallName' => $hall->getHallName(),
-            'description' => $hall->getDescription(),
-            'rentalCharge' => $hall->getRentalCharge(),
-            'capacity' => $hall->getCapacity(),
-            'imagePath' => $hall->getImagePath()
+            'userId' => $user->getUserId(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'clientId' => $client->getClientId(),
+            'phoneNumber' => $client->getPhoneNumber(),
+            'clientStatus' => $client->getClientStatusName($client->getClientId()),
+            'firstName' => $pd->getFirstName(),
+            'lastName' => $pd->getLastName(),
+            'dob' => $pd->getDob(),
+            'gender' => $pd->getGender(),
+            'nationality' => $pd->getNationality(),
+            'companyName' => $cmp->getName(),
+            'companySize' => $cmp->getComapnySize(),
+            'city' => $cmp->getCity(),
+            'website' => $cmp->getWebsite()  
         );
 
         // Send JSON response
@@ -35,6 +59,6 @@ if (isset($_GET['hallId'])) {
 } else {
     // Return error if hallId parameter is missing
     header('HTTP/1.1 400 Bad Request');
-    echo json_encode(array('error' => 'Hall ID is required'));
+    echo json_encode(array('error' => 'User ID is required'));
 }
 ?>

@@ -14,9 +14,9 @@ class Database {
     
     // DB connection parameters
     private $host = "localhost";
-    private $dbName = "db202100523";
-    private $userName = "u202100523";
-    private $password = "u202100523";
+    private $dbName = "db202101277";
+    private $userName = "u202101277";
+    private $password = "u202101277";
     
     // singleton
     public static $instance = null;

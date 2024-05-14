@@ -71,7 +71,7 @@
                         <form id="add-form" action="Admin_ViewHalls.php" novalidate method="POST" enctype="multipart/form-data">
                             <div class="mb-3 form-group required" id="hallImg">
                                 <label class="form-label" id="imageUploadLabel">Hall Image</label>
-                                <input type="file" class="form-control" id="imageUpload" name="HallImage" required >
+                                <input type="file" class="form-control" id="imageUpload" name="HallImage" required multiple >
                                 <input value="" type="hidden" name="imagePath" id="imagePath" >
                             </div>  
                             <div class="mb-3 form-group required">
@@ -137,79 +137,74 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-                                                window.addEventListener("load", () => {
-                                                    enablePagination("halls", ".hallCard");
-                                                });
+    window.addEventListener("load", () => {
+        enablePagination("halls", ".hallCard");
+    });
 
-//                            // JavaScript to toggle the visibility of image upload on image click
-//                            document.getElementById('imagePreview').addEventListener('click', function () {
-//                                document.getElementById('imageUpload').click();
-//                            });
+    //get Hall ID value 
+    $(document).ready(function () {
+        $(document).on('click', '#editHallBtn', function () {
 
-                                                //get Hall ID value 
-                                                $(document).ready(function () {
-                                                    $(document).on('click', '#editHallBtn', function () {
+            var hallId = $(this).attr('data-id');
+            console.log('Hall id is:', hallId);
+            // AJAX request
+            $.ajax({
+                url: './helpers/get_hall_info.php', // URL of your PHP script to fetch hall info
+                method: 'GET',
+                data: {hallId: hallId}, // Send hallId to server
+                dataType: 'json', // Expected data type from server
+                success: function (response) {
+                    // Handle successful response
+                    console.log('Hall Info:', response);
+                    //remove image upload validation
+                    $('#hallImg').removeAttr('required');
+                    $('#imageUpload').removeAttr('required');
+                    $('#imageUploadLabel:after').remove();
+                    // Update form inputs with fetched data
+                    $('#hallNameInput').val(response.hallName);
+                    $('#RntlchargeInput').val(response.rentalCharge);
+                    $('#CapacityInput').val(response.capacity);
+                    $('#descriptionInput').val(response.description);
+                    $('#imagePath').val(response.imagePath);
+                    $('#Add-HallID').val(response.hallId);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching hall info:', error);
+                }
+            });
+        });
+    });
 
-                                                        var hallId = $(this).attr('data-id');
-                                                        console.log('Hall id is:', hallId);
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: './helpers/get_hall_info.php', // URL of your PHP script to fetch hall info
-                                                            method: 'GET',
-                                                            data: {hallId: hallId}, // Send hallId to server
-                                                            dataType: 'json', // Expected data type from server
-                                                            success: function (response) {
-                                                                // Handle successful response
-                                                                console.log('Hall Info:', response);
-                                                                //remove image upload validation
-                                                                $('#hallImg').removeAttr('required');
-                                                                $('#imageUpload').removeAttr('required');
-                                                                $('#imageUploadLabel:after').remove();
-                                                                // Update form inputs with fetched data
-                                                                $('#hallNameInput').val(response.hallName);
-                                                                $('#RntlchargeInput').val(response.rentalCharge);
-                                                                $('#CapacityInput').val(response.capacity);
-                                                                $('#descriptionInput').val(response.description);
-                                                                $('#imagePath').val(response.imagePath);
-                                                                $('#Add-HallID').val(response.hallId);
-                                                            },
-                                                            error: function (xhr, status, error) {
-                                                                // Handle errors
-                                                                console.error('Error fetching hall info:', error);
-                                                            }
-                                                        });
-                                                    });
-                                                });
+    $('#addModal').on('hidden.bs.modal', function (e) {
+        // Clear form Input fields when closing the form
+        $('.form-control').val('');
+        $('#add-form').removeClass('was-validated');
+        console.log('Modal dismissed');
+    });
+    $('#addHallBtn').click(function () {
+        $('#hallImg').attr('required', '');
+        $('#imageUpload').attr('required', '');
+        $('#Add-HallID').removeAttr('value');
+        $('#imageUploadLabel:after').add();
+    });
 
-                                                $('#addModal').on('hidden.bs.modal', function (e) {
-                                                    // Clear form Input fields when closing the form
-                                                    $('.form-control').val('');
-                                                    $('#add-form').removeClass('was-validated');
-                                                    console.log('Modal dismissed');
-                                                });
-                                                $('#addHallBtn').click(function () {
-                                                    $('#hallImg').attr('required', '');
-                                                    $('#imageUpload').attr('required', '');
-                                                    $('#Add-HallID').removeAttr('value');
-                                                    $('#imageUploadLabel:after').add();
-                                                });
+    $('#add-form').submit(function (e) {
+        // Get form inputs
+        var Hallname = $('#hallNameInput').val();
+        var rntlCharge = $('#RntlchargeInput').val();
+        var capacity = $('#CapacityInput').val();
+        var imageUpload = $('#imageUpload');
 
-                                                $('#add-form').submit(function (e) {
-                                                    // Get form inputs
-                                                    var Hallname = $('#hallNameInput').val();
-                                                    var rntlCharge = $('#RntlchargeInput').val();
-                                                    var capacity = $('#CapacityInput').val();
-                                                    var imageUpload = $('#imageUpload');
-
-                                                    // Check if any field is empty or image is not uploaded
-                                                    if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || Hallname === '' || rntlCharge == '' || capacity == '') {
-                                                        $(this).addClass('was-validated');
-                                                        e.preventDefault(); // Prevent form submission
-                                                        return false;
-                                                    }
-                                                    // If all checks pass, allow form submission
-                                                    return true;
-                                                });
+        // Check if any field is empty or image is not uploaded
+        if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || Hallname === '' || rntlCharge == '' || capacity == '') {
+            $(this).addClass('was-validated');
+            e.preventDefault(); // Prevent form submission
+            return false;
+        }
+        // If all checks pass, allow form submission
+        return true;
+    });
 
 
 
@@ -276,8 +271,8 @@ function displayHalls($dataSet) {
                                 </div>
                                 <div class="row">
                                     <div class="d-flex col w-100">
-                                        <button id ="editHallBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill"></i> Edit</button>
-                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill"></i> Delete</button>
+                                        <button id ="editHallBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
+                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i> </button>
                                     </div>
                                 </div>
                             </div>

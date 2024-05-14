@@ -13,6 +13,7 @@ include './template/footer.html';
 include './helpers/Database.php';
 include './models/User.php';
 include './models/Client.php';
+
 if (isset($_POST['submitted'])) {
     $user = new User();
     $client = new Client();
