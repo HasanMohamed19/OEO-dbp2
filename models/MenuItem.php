@@ -136,4 +136,10 @@ class MenuItem {
                 break;
         }
     }
+    
+        public function initMenuItemWithId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Menu_Item WHERE item_id = ' . $this->itemId);
+        $this->initWith($data->item_id, $data->name, $data->description, $data->price, $data->image_path, $data->service_id);
+    }
 }

@@ -214,7 +214,7 @@
 }
 
 /* Register */
-.form-control {
+.account-form .form-control {
     margin-bottom: 1rem;
 }
 #regBtn {

@@ -277,5 +277,5 @@ class User {
     public function setRoleId($roleId) {
         $this->roleId = $roleId;
     }
-
+    
 }

@@ -13,12 +13,15 @@ class Invoice {
     private $hallCost;
     private $cateringCost;
     private $reservationId;
-    
-    public function initWith($invoiceId, $hallCost, $cateringCost, $reservationId) {
+    private $issueDate;
+
+
+    public function initWith($invoiceId, $hallCost, $cateringCost, $reservationId, $issueDate) {
         $this->invoiceId = $invoiceId;
         $this->hallCost = $hallCost;
         $this->cateringCost = $cateringCost;
         $this->reservationId = $reservationId;
+        $this->issueDate = $issueDate;
     }
     
     public function __construct() {
@@ -26,6 +29,7 @@ class Invoice {
         $this->hallCost = null;
         $this->cateringCost = null;
         $this->reservationId = null;
+        $this->issueDate = null;
     }
     
     public static function addWithReservationId($resId) {
@@ -86,6 +90,22 @@ class Invoice {
 
     public function setCateringCost($cateringCost) {
         $this->cateringCost = $cateringCost;
+    }
+
+    public function getReservationId() {
+        return $this->reservationId;
+    }
+
+    public function getIssueDate() {
+        return $this->issueDate;
+    }
+
+    public function setReservationId($reservationId) {
+        $this->reservationId = $reservationId;
+    }
+
+    public function setIssueDate($issueDate) {
+        $this->issueDate = $issueDate;
     }
 
 

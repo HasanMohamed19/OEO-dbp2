@@ -45,7 +45,14 @@ Class Login extends User {
             $_SESSION['username'] = $this->getUsername();
             setcookie('userId', $_SESSION['userId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
             setcookie('username', $_SESSION['username'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
-
+             
+            $clientId = $this->checkClient($this->getUserId());
+            echo $clientId . " this is client id";
+            if ($clientId != null && $clientId > 0) {
+                $_SESSION['clientId'] = $clientId();
+                setcookie('clientId', $_SESSION['clientId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
+            }
+            
             return true;
         }
         else
@@ -53,6 +60,34 @@ Class Login extends User {
 
 
         return false;
+    }
+    
+    function checkClient($userId) {
+        $db = Database::getInstance();
+        $q = "SELECT client_id FROM dbProj_Client WHERE user_id = ?";
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                // this works:
+//                var_dump($stmt);
+                $stmt->bind_param('i', $userId);
+                
+                if (!$stmt->execute()) {
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return null;
+                } else {
+//                    echo 'Execute successed';
+                    $result = $stmt->get_result();
+                    $data = $result->fetch_array(MYSQLI_ASSOC);
+//                    var_dump($data);
+                    return $data["client_id"];
+                }
+                
+            } else {
+                $db->displayError($q);
+                return null;
+            }
     }
 
     function login($username, $password) {
@@ -63,7 +98,8 @@ Class Login extends User {
                 $this->ok = true;
                 $_SESSION['userId'] = $this->getUserId();
                 $_SESSION['username'] = $this->getUsername();
-                $_SESSION['clientId'] = $this->getClientByUserId();
+                $_SESSION['clientId'] = $this->checkClient($_SESSION['userId']);
+                echo 'client id from login: ' . $this->checkClient($_SESSION['userId']);
                 setcookie('userId', $_SESSION['userId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
                 setcookie('username', $_SESSION['username'], time() + 60 * 60 * 24 * 7, '/', $this->domain);
                 setcookie('clientId', $_SESSION['clientId'], time() + 60 * 60 * 24 * 7, '/', $this->domain);

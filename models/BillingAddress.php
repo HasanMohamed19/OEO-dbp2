@@ -45,20 +45,91 @@ class BillingAddress {
     }
     
     public function addBillingAddress() {
-        if ($this->isValid()) {
+       if ($this->isValid()) {
             try {
                 $db = Database::getInstance();
-                $q = 'INSERT INTO `dbProj_Billing_Address`(`address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id`)
-                 VALUES (NULL, \'' . $this->phoneNumber . '\',\'' . $this->roadNumber . '\',\'' . $this->buildingNumber . '\',\'' . $this->blockNumber . '\',\''. $this->city.'\',\''.$this->country.'\','.$this->clientId.')';
-//                var_dump($q);
+                // TODO: get client_id from cookie
+                $q = "INSERT INTO dbProj_Billing_Address (address_id, phone_number, road_number, building_number, block_number, city, country, client_id)
+                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country','$this->clientId')"; 
                 $data = $db->querySql($q);
-                $this->addressId = mysqli_insert_id($db->dblink);
-                return true;
+//                var_dump($q);
+                 return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
                 return false;
             }
         } else {
+            return false;
+        }
+    }
+    
+    public function deleteAddress() {
+        try {
+            $db = Database::getInstance();
+            $deleteQry = $db->querySQL("Delete from dbProj_Billing_Address where address_id=" . $this->addressId);
+            var_dump($deleteQry);
+//            unlink($this->imagePath);
+            return true;
+        } catch (Exception $e) {
+            echo 'Exception: ' . $e;
+            return false;
+        }
+    }
+    
+    function displayAddresses($dataSet) {
+        
+        if (!empty($dataSet)) {
+            for ($i = 0; $i < count($dataSet); $i++) {
+                $address = new BillingAddress();
+                // todo: get this from the login
+                $address->setClientId('13');
+                $addressId = $dataSet[$i]->address_id;
+                $address->setAddressId($addressId);
+                $address->initWithId();
+                
+                
+                echo '<div class="card my-3 mx-3">
+                        <div class="card-body vstack gap-2 align-items-center">
+                            <div class="row fw-bold"><h2>Company Address</h2></div>';
+                                
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() .'</span>
+                     </div>';
+                
+                echo ' <div class="row m-2">
+                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() .', Street: ' . $address->getRoadNumber() .', Block: ' . $address->getBlockNumber() .'</span>
+                     </div>';
+                
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">' . $address->getCity() .', ' . $address->getCountry() .' </span>
+                      </div>';
+                
+                echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
+                            </div>
+                        </div>';
+                                
+            }
+        }
+    }
+    
+    function updateBillingAddress() {
+        try {
+            $db = Database::getInstance();
+            $data = 'UPDATE dbProj_Billing_Address set
+			phone_number = \'' . $this->phoneNumber . '\' ,
+			road_number = \'' . $this->roadNumber . '\'  ,
+                        building_number = \'' . $this->buildingNumber . '\' ,
+                        block_number = \'' . $this->blockNumber . '\' ,
+                        city = \'' . $this->city . '\' ,
+                        country = \'' . $this->country . '\' 
+                            WHERE address_id = ' . $this->addressId;
+
+            $db->querySQL($data);
+            return true;
+        } catch (Exception $e) {
+
+            echo 'Exception: ' . $e;
             return false;
         }
     }
