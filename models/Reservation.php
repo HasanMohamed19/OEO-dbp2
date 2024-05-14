@@ -296,11 +296,10 @@ class Reservation {
         $event->setEndTime($db->sanitizeString($event->getEndTime()));
         $this->notes = $db->sanitizeString($this->notes);
 
-        if ($this->reservationId == null) {
+        if ($this->reservationId == null || $this->reservationId <=0) {
             $q = 'CALL InsertReservation(?,?,?,?,?,?,?,?,?,@res_id)';
         } else {
-            // update query
-//                $q = 
+            $q = 'CALL updateReservation(?,?,?,?,?,?,?,?)';
         }
 
         $stmt = mysqli_prepare($db->getDatabase(),$q);
@@ -310,7 +309,7 @@ class Reservation {
             return false;
         }
         
-        if ($this->reservationId == null) {
+        if ($this->reservationId == null || $this->reservationId <=0) {
             $stmt->bind_param('iisssssis',
                 $this->clientId,
                 $this->hallId,
@@ -323,8 +322,16 @@ class Reservation {
                 $this->notes
             );
         } else {
-            // update query bindings
-//                    $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $this->userId);
+            $stmt->bind_param('isssssis',
+                $this->reservationId,
+                $event->getName(),
+                $event->getStartDate(),
+                $event->getEndDate(),
+                $event->getStartTime(),
+                $event->getEndTime(),
+                $event->getAudienceNumber(),
+                $this->notes
+            );
         }
         if (!$stmt->execute()) {
             var_dump($stmt);
@@ -332,10 +339,12 @@ class Reservation {
             $db->displayError($q);
             return false;
         }
-        // get reservation id from OUT parameter
-        $res = $db->singleFetch("SELECT @res_id as res_id");
-//        var_dump($res);
-        $this->reservationId = $res->res_id;
+        if ($this->reservationId == null || $this->reservationId <=0) {
+            // get reservation id from OUT parameter
+            $res = $db->singleFetch("SELECT @res_id as res_id");
+    //        var_dump($res);
+            $this->reservationId = $res->res_id;
+        }
         
         return true;
     }

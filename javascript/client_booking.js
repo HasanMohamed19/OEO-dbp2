@@ -19,14 +19,17 @@ const getCookie = (cname) => {
 const cateringItemDisplayCount = 10;
 // get hallId from GET
 const hallId = (new URL(location.href)).searchParams.get('hallId');
+const reservationId = (new URL(location.href)).searchParams.get('reservationId');
 const clientCookie = getCookie('clientId'); // get clientid cookie
 // redirect to login if there is no client cookie
 if (getCookie('clientId') === "") window.location.href='login.php';
 const clientId = parseInt(clientCookie);
 var hallRentalCharge; // will be set after side menu loads
 var hallCapacity;
+var selectedMenuItems = [];
 
 $(document).ready(function() {
+    checkIfEditing();
     enableCateringMenuTabs();
     addPageButtonListeners();
     updateSideMenu();
@@ -45,7 +48,8 @@ $('#bookingForm').on('submit', function(event) {
     // validate form and get menu items to send with ajax
     let eventInput = getEventInput();
     // get menu items and convert to JSON
-    let items = JSON.stringify(getMenuItemSelections());
+    getMenuItemSelections();
+    let items = JSON.stringify(selectedMenuItems);
 //    alert("prevented");
     // submit form
     $.ajax({
@@ -53,6 +57,7 @@ $('#bookingForm').on('submit', function(event) {
         url:'client_booking.php',
         data: {
             submitted: true,
+            reservationId:reservationId,
             bookingEventName:eventInput['eventName'],
             bookingStartDate:eventInput['startDate'],
             bookingEndDate:eventInput['endDate'],
@@ -96,6 +101,7 @@ const addPageButtonListeners = () => {
                     url: 'ajaxQueries/validate_event.php',
                     data: {
                         hallId:hallId,
+                        reservationId:reservationId,
                         event:JSON.stringify(event)
                     }
                 }).then(function(res) {
@@ -216,3 +222,33 @@ const getEventInput = () => {
     };
 };
 
+// adds input values if this is being edited
+const checkIfEditing = () => {
+    if (reservationId <= 0) {
+        //not editing
+        return;
+    }
+    $.ajax({
+        type: 'GET',
+        url: 'ajaxQueries/getReservation.php',
+        datatype: 'json',
+        data: {
+            reservationId:reservationId
+        }
+    }).then(function(res) {
+        let data = JSON.parse(res);
+        setEditInputs(data);
+        selectedMenuItems = data['menuItems'];
+    });
+};
+
+// fills the form when editing a preexisting reservation
+const setEditInputs = (data) => {
+    $('#bookingEventName').val(data['eventName']);
+    $('#bookingStartDate').val(data['eventStartDate']);
+    $('#bookingEndDate').val(data['eventEndDate']);
+    $('#bookingStartTime').val(data['eventStartTime']);
+    $('#bookingEndTime').val(data['eventEndTime']);
+    $('#bookingNoAudiences').val(data['eventAudience']);
+    $('#bookingNotes').val(data['eventNotes']);
+};

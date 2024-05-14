@@ -62,7 +62,8 @@ const calculateTotalPrice = (discount) => {
     let rentalDurationHours = rentalDurationDays * rentalDurationHourDelta;
     
     let rentalCost = rentalCharge * rentalDurationHours;
-    let cateringCost = calculateCateringCost(getMenuItemSelections());
+    getMenuItemSelections(); // this updates selectedMenuItems
+    let cateringCost = calculateCateringCost(selectedMenuItems);
     
     total = (rentalCost + cateringCost) * discount;
     return total;

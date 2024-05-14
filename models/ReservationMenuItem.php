@@ -49,10 +49,11 @@ class ReservationMenuItem {
 
         if ($this->reservationMenuItemId == null) {
             $q = 'INSERT INTO `dbProj_Reservation_Menu_Item`(`reservation_menu_item_id`, `quantity`, `reservation_id`, `item_id`) '
-                    . 'VALUES (NULL,?,?,?)';
+                    . 'VALUES (NULL,?,?,?) ';
         } else {
-            // update query
-//                $q = 
+            $q = 'UPDATE `dbProj_Reservation_Menu_Item` '
+                    . 'SET quantity=? '
+                    . 'WHERE reservation_menu_item_id=?';
         }
 
         $stmt = mysqli_prepare($db->getDatabase(),$q);
@@ -69,8 +70,11 @@ class ReservationMenuItem {
                 $this->itemId
             );
         } else {
-            // update query bindings
-//                    $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $this->userId);
+            // in case of update
+            $stmt->bind_param('ii', 
+                $this->quantity,
+                $this->reservationMenuItemId
+            );
         }
         if (!$stmt->execute()) {
             var_dump($stmt);
@@ -79,6 +83,15 @@ class ReservationMenuItem {
             return false;
         }
         return true;
+    }
+    
+    public static function getItemsForReservation($reservationId) {
+        $db = Database::getInstance();
+        $q = 'SELECT rmi.reservation_menu_item_id, mi.item_id, mi.service_id, rmi.quantity, mi.price FROM dbProj_Reservation_Menu_Item rmi '
+                . 'JOIN dbProj_Menu_Item mi ON rmi.item_id = mi.item_id '
+                . 'WHERE reservation_id = '.$reservationId;
+        $data = $db->multiFetch($q);
+        return $data;
     }
     
     public function getReservationMenuItemId() {

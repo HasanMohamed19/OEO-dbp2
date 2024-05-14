@@ -76,7 +76,7 @@ class Event {
             return 'Your event cannot end before it starts. Please enter a valid date range.';
         
         // check if hall is already booked
-        if (!$this->isHallAvailable($hallId))
+        if (!$this->isHallAvailable($hallId, $isEditing))
             return 'There is a hall already booked at the selected date. Please enter a different date.';
         
         if (empty($this->startTime))
@@ -104,7 +104,7 @@ class Event {
         // see if it is available at that time
         $db = Database::getInstance();
         $hallIdSanitized = $db->sanitizeString($hallId);
-        $q = "SELECT e.start_date, e.end_date "
+        $q = "SELECT e.start_date, e.end_date, e.event_id "
                 . "FROM dbProj_Hall h "
                 . "JOIN dbProj_Reservation r ON h.hall_id = r.hall_id "
                 . "JOIN dbProj_Event e ON r.event_id = e.event_id "
@@ -127,6 +127,11 @@ class Event {
         while ($row = $result->fetch_assoc()) {
             $startDate = $row['start_date'];
             $endDate = $row['end_date'];
+            $eventId = $row['event_id'];
+            
+            // ignore event if it is the same as this one
+            if ($eventId == $this->eventId) continue;
+            
             // if current startdate or enddate are in the checked reservation's
             // date range, its invalid
             
@@ -152,7 +157,7 @@ class Event {
     public function initWithEventId($eventId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
-        $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
+        $this->initWith($data->event_id, $data->event_name, $data->start_date, $data->end_date, $data->start_time, $data->end_time, $data->audience_number);
     }
     
     public function getEventId() {

@@ -23,6 +23,7 @@ if (isset($_POST['submitted'])) {
 
     // create reservation
     $reservation = new Reservation();
+    $reservation->setReservationId($_POST['reservationId']);
     $reservation->setNotes($_POST['bookingEventNotes']);
     $reservation->setHallId($_POST['bookingHallId']);
     $reservation->setClientId($_POST['bookingClientId']);
@@ -42,7 +43,8 @@ if (isset($_POST['submitted'])) {
 //    var_dump($menuItems);
     foreach ($menuItems as $i=>$menuItem) {
         $item = new ReservationMenuItem();
-        $item->setItemId($menuItem['id']);
+        $item->setReservationMenuItemId($menuItem['reservation_menu_item_id']);
+        $item->setItemId($menuItem['item_id']);
         $item->setQuantity($menuItem['quantity']);
         $item->setReservationId($resId);
         if (!$item->addReservationMenuItem()) {

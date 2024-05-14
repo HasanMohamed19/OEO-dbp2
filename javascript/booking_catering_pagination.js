@@ -1,18 +1,29 @@
 
 //      AJAX for catering menu items
 const getMenuName = (id) => {
-switch (id) {
-    case 1:
-        return 'breakfast';
-    case 2:
-        return 'lunch';
-    case 3:
-        return 'hot';
-    case 4:
-        return 'cold';
-    default:
-        return;
-}
+    switch (id) {
+        case 1:
+            return 'breakfast';
+        case 2:
+            return 'lunch';
+        case 3:
+            return 'hot';
+        case 4:
+            return 'cold';
+        default:
+            return;
+    }
+};
+const getMenuId = (name) => {
+    if (name === "breakfast" || name === "Breakfast") {
+        return 1;
+    } else if (name === "lunch" || name === "Lunch") {
+        return 2;
+    } else if (name === "hot" || name === "Hot Beverages") {
+        return 3;
+    } else if (name === "cold" || name === "Cold Beverages") {
+        return 4;
+    }
 };
 const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     
@@ -71,9 +82,13 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
 //        console.log("Response for menu items: " + data);
         let menuCount = 0;
         let menuName = getMenuName(menuId);
-        resetMenuItems(menuName);
+//        resetMenuItems(menuName);
         $.each(data, function(index, obj) {
             addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
+            if (isItemAlreadySelected(obj.item_id)) {
+                console.log("about to set quantity for "+obj.item_id);
+                setItemInput(obj.item_id, menuName);
+            }
             menuCount += 1;
         });
 //        console.log('checking items for menu '+menuId+' : ' + menuName + ', there are '+menuCount+' items.');
@@ -82,6 +97,8 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
             toggleMenu(menuName);
         }
         handleCateringCheckboxes(menuName);
+//        setCateringSelection();
+        console.log(selectedMenuItems);
     });
 };
 

@@ -1,6 +1,6 @@
 <?php
 
-include '../helpers/Database.php';
+include_once '../helpers/Database.php';
 
 /**
  * Description of MenuItem
