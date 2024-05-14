@@ -3,10 +3,9 @@
 //   Update values for side menu
 
 const updateSideMenu = () => {
-    const updateHallDetails = (name, description, type, charge, capacity) => {
+    const updateHallDetails = (name, description, charge, capacity) => {
         $('#sideMenu-hallName').html(name);
         $('#sideMenu-hallDescription').html(description);
-        $('#sideMenu-hallType').html(type);
         $('#sideMenu-rentalCharge').html(charge + " BHD/hr");
         $('#sideMenu-capacity').html(capacity);
     };
@@ -21,7 +20,7 @@ const updateSideMenu = () => {
         $('#sideMenu-cost').html(Math.round(cost*1000)/1000+' BHD');
     };
     // get hall id from GET parameter
-    console.log("Read hallId from url is: "+hallId);
+//    console.log("Read hallId from url is: "+hallId);
     // use ajax to acquire the hall and use it to update side menu
     $.ajax({
         type: 'GET',
@@ -38,7 +37,6 @@ const updateSideMenu = () => {
         updateHallDetails(
                 data.hallName,
                 data.hallDescription,
-                "Type",
                 data.rentalCharge,
                 data.capacity
             );

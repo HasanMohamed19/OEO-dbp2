@@ -90,7 +90,7 @@ const addPageButtonListeners = () => {
     for (let i = 0; i < sectionButtons.length; i++) {
     //    console.log("Added listener to " + sectionButtons[i]);
         sectionButtons[i].addEventListener("click", function() {
-            console.log('trying to change page. clicked on num: '+i+'. coming from: '+currentSection);
+//            console.log('trying to change page. clicked on num: '+i+'. coming from: '+currentSection);
             // if trying to leave first page (event form)
             // send ajax request to validate input and allow 
             // user to continue or not
@@ -105,7 +105,7 @@ const addPageButtonListeners = () => {
                         event:JSON.stringify(event)
                     }
                 }).then(function(res) {
-                    console.log("result from validation: "+res);
+//                    console.log("result from validation: "+res);
                     if (res > 0) {
                         checkFirstPageClicked(i);
                         checkLastPageClicked(i);
@@ -123,10 +123,10 @@ const addPageButtonListeners = () => {
         });
     }
     nextButton.addEventListener("click", function() {
-            console.log("Tried to click");
+//            console.log("Tried to click");
         if (currentSection < sectionButtons.length - 1) {
             sectionButtons[currentSection + 1].click();
-            console.log("clicked");
+//            console.log("clicked");
         }
     });
 
@@ -145,7 +145,7 @@ const addPageButtonListeners = () => {
     };
     const checkLastPageClicked = (nextSection) => {
         if (nextSection === sectionButtons.length - 1) {
-            console.log("setting total cost now");
+//            console.log("setting total cost now");
             setTotalCost(); // display cost at the bottom if this is last page
 
             // for last page, show save button instead of next

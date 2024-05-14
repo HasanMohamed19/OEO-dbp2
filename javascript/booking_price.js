@@ -58,7 +58,7 @@ const calculateTotalPrice = (discount) => {
         rentalDurationHourDelta += 24;
         rentalDurationDays--;
     }
-    console.log("DayDifference: "+rentalDurationDays+", Hours: "+rentalDurationHourDelta);
+//    console.log("DayDifference: "+rentalDurationDays+", Hours: "+rentalDurationHourDelta);
     let rentalDurationHours = rentalDurationDays * rentalDurationHourDelta;
     
     let rentalCost = rentalCharge * rentalDurationHours;

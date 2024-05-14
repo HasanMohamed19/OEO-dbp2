@@ -113,7 +113,7 @@ const isItemAlreadySelected = (item_id) => {
     for (let i = 0; i < selectedMenuItems.length;i++) {
 //        console.log("Checking: "+item_id+" === "+selectedMenuItems[i]['item_id']);
         if (item_id === selectedMenuItems[i]['item_id']) {
-            console.log("YES");
+//            console.log("YES");
             return true;
         }
     }

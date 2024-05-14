@@ -86,7 +86,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
         $.each(data, function(index, obj) {
             addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
             if (isItemAlreadySelected(obj.item_id)) {
-                console.log("about to set quantity for "+obj.item_id);
+//                console.log("about to set quantity for "+obj.item_id);
                 setItemInput(obj.item_id, menuName);
             }
             menuCount += 1;
@@ -98,7 +98,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
         }
         handleCateringCheckboxes(menuName);
 //        setCateringSelection();
-        console.log(selectedMenuItems);
+//        console.log(selectedMenuItems);
     });
 };
 
