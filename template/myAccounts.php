@@ -1,3 +1,7 @@
+<?php
+    $loggedInClientId = $_COOKIE['clientId'];
+?>
+
 <!DOCTYPE html>
 <body>
     <div class="container main">
@@ -62,7 +66,7 @@
                             <tbody>
                                 <?php
                                     $reservation = new Reservation();
-                                    $reservation->setClientId('1');
+                                    $reservation->setClientId($loggedInClientId);
                                     $reservations = $reservation->getReservationsForClient();
                                     $reservation->displayClientReservations($reservations);
                                 ?>
@@ -83,7 +87,7 @@
 
                     <?php
                     $card = new CardDetail();
-                    $card->setClientId('13');
+                    $card->setClientId($loggedInClientId);
                     $cards = $card->getAllCardsForUser();
                     $card->displayCards($cards);
                     ?>
@@ -194,7 +198,7 @@
 //                        include './models/Client.php';
                             $cc = new Client();
 //                            $client->setClientId('1');
-                            $s = $cc->getClientStatusName('1');
+                            $s = $cc->getClientStatusName($loggedInClientId);
                             $db = Database::getInstance();
                             $n = $db->querySQL('SELECT getNumberOfBookings(1)');
                             var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
@@ -238,11 +242,11 @@
 
                     <?php
                     $p = new PersonalDetails();
-                    $p->setClientId('13');
+                    $p->setClientId($loggedInClientId);
                     $p->initWithClientId();
 
                     $c = new CompanyDetails();
-                    $c->setClientId('13');
+                    $c->setClientId($loggedInClientId);
                     $c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
                     ?>
@@ -344,8 +348,8 @@
 <?php
 //                            echo 'book address section';
 $address = new BillingAddress();
-$address->setClientId('13');
-$addresses = BillingAddress::getAddresses('13');
+$address->setClientId($loggedInClientId);
+$addresses = BillingAddress::getAddresses($loggedInClientId);
 $address->displayAddresses($addresses);
 //                            $card->displayCards($cards);
 ?>
