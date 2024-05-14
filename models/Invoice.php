@@ -92,16 +92,8 @@ class Invoice {
         $this->cateringCost = $cateringCost;
     }
 
-    public function getReservationId() {
-        return $this->reservationId;
-    }
-
     public function getIssueDate() {
         return $this->issueDate;
-    }
-
-    public function setReservationId($reservationId) {
-        $this->reservationId = $reservationId;
     }
 
     public function setIssueDate($issueDate) {

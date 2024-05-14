@@ -53,6 +53,9 @@ class CardDetail {
         if (empty($this->expiryDate))
             $errors = false;
 
+        if (empty($this->clientId) || $this->clientId <= 0)
+            $errors = false;
+
         return $errors;
     }
 
@@ -243,26 +246,6 @@ class CardDetail {
         $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
     }
     
-    public function isValid() {
-        $errors = true;
-
-        if (empty($this->cardholderName))
-            $errors = false;
-        
-        if (empty($this->cardNumber))
-            $errors = false;
-        
-        if (empty($this->CVV))
-            $errors = false;
-
-        if (empty($this->expiryDate))
-            $errors = false;
-
-        if (empty($this->clientId) || $this->clientId <= 0)
-            $errors = false;
-
-        return $errors;
-    }
     
     public function getCardId() {
         return $this->cardId;

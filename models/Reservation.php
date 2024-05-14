@@ -2,6 +2,9 @@
 
 include_once '../helpers/Database.php';
 include_once './Event.php';
+include_once 'Hall.php';
+include_once 'MenuItem.php';
+include_once 'ReservationMenuItem.php';
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,10 +18,6 @@ include_once './Event.php';
  */
 
 //include 'Client.php';
-include 'Hall.php';
-include 'Event.php';
-include 'MenuItem.php';
-include 'ReservationMenuItem.php';
 
 
 const RESERVATION_RESERVED = 4;
