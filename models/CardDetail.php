@@ -130,17 +130,18 @@ class CardDetail {
                 $card->setClientId('1');
                 $cardId = $dataSet[$i]->card_id;
                 $card->initWithCardId($cardId);
-                echo '<div class="card my-3 mx-3">
+                echo '<div class="card my-3 mx-3 w-50 align-self-center">
                         <div class="card-body vstack gap-2">';
                 
                 echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
                 echo '<div class="row justify-content-between">'
-                .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
-                echo '<button id="editCardBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>
-                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>
-                    </div>
-                        </div>
-                    </div>';
+                .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>'
+                        . '<span class="col-3 justify-content-start fw-bold">' . $card->getCardholderName() .'</span></div>';
+                echo '<div class="row my-2 gap-2">';
+                echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
+                echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
+                echo '</div></div></div>';
+
             }
         }
     }

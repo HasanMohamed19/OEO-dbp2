@@ -96,9 +96,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     $card->displayCards($cards);
                     ?>
 
-                    <!--                        
-                    
-                    -->                     <div class="row mx-auto mb-2" style="width: 15%;">
+                    <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddCard" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
                     </div>
 
@@ -204,7 +202,6 @@ $loggedInClientId = $_COOKIE['clientId'];
                 $cc = new Client();
 //                            $client->setClientId('1');
                 $s = $cc->getClientStatusName($loggedInClientId);
-
                 ?>
 
                 <div class="card mb-2 ms-4 px-0 inactive">
@@ -573,19 +570,19 @@ $loggedInClientId = $_COOKIE['clientId'];
 
 
     function getCookie(cname) {
-      let name = cname + "=";
-      let decodedCookie = decodeURIComponent(document.cookie);
-      let ca = decodedCookie.split(';');
-      for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
         }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
+        return "";
     }
 
     $(function () {
@@ -597,7 +594,7 @@ $loggedInClientId = $_COOKIE['clientId'];
             success: function (response) {
                 // Handle successful response
                 console.log('status Info:', response);
-                
+
                 // Update class list
                 const statusDiv = $(".my-status");
                 switch (response) {
@@ -613,7 +610,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     default:
                         statusDiv.addClass('nothing');
                 }
-                
+
             },
             error: function (xhr, status, error) {
                 // Handle errors

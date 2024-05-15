@@ -88,7 +88,7 @@ class BillingAddress {
                 $address->initWithId();
                 
                 
-                echo '<div class="card my-3 mx-3">
+                echo '<div class="card my-3 mx-3 w-50 align-self-center">
                         <div class="card-body vstack gap-2 align-items-center">
                             <div class="row fw-bold"><h2>Company Address</h2></div>';
                                 
@@ -104,8 +104,9 @@ class BillingAddress {
                         <span class="col text-start text-secondary">' . $address->getCity() .', ' . $address->getCountry() .' </span>
                       </div>';
                 
-                echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
-                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
+                echo '</div><div class="row m-2 gap-1">';
+                echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                    <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
                             </div>
                         </div>';
                                 
