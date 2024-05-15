@@ -463,7 +463,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Are You sure You want to delete this Card?
+                            Are You sure You want to delete this Address?
                         </div>
                         <div class="modal-footer">
                             <form action="displayMyAccount.php" method="post">
@@ -478,6 +478,47 @@ $loggedInClientId = $_COOKIE['clientId'];
             </div>
 
             <!-- end of book address -->
+
+            <!--extra card modal-->
+            <div class="modal fade" id="noMoreCardModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Limit Reached</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Sorry, you cannot add more cards, you have reached maximum card limit (4).
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--extra card modal-->
+            <div class="modal fade" id="noMoreAddressModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Limit Reached</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Sorry, you cannot add more addresses, you have reached maximum card limit (4).
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!--END OF EXTRA MODALS-->
 
         </div>
 
@@ -615,6 +656,52 @@ $loggedInClientId = $_COOKIE['clientId'];
             error: function (xhr, status, error) {
                 // Handle errors
                 console.error('Error fetching address info:', error);
+            }
+        });
+    });
+
+    $(function () {
+        $.ajax({
+            url: './helpers/get_card_count.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('cardCount Info:', response);
+
+                // if there is 4 cards don't allow them to add more cards
+                if (response >= 4) {
+                    $("#btnAddCard").attr("data-bs-target", "#noMoreCardModal");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching card info:', error);
+            }
+        });
+    });
+    
+    $(function () {
+        $.ajax({
+            url: './helpers/get_address_count.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('address Info:', response);
+
+                // if there is 4 cards don't allow them to add more cards
+                if (response >= 4) {
+                    $("#btnAddAddress").attr("data-bs-target", "#noMoreAddressModal");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching Address info:', error);
             }
         });
     });

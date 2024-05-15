@@ -244,7 +244,32 @@ class BillingAddress {
         $this->clientId = $clientId;
     }
 
+    
+    public function getAddressCount($clientId) {
+        $db = new Database();
+        $q = "SELECT COUNT(*) AS addressCount FROM dbProj_Billing_Address WHERE client_id = ?";
 
+        $this->clientId = $db->sanitizeString($clientId);
 
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if ($stmt) {
+            $stmt->bind_param('i', $this->clientId);
+
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute Failed';
+                $db->displayError($q);
+//                    return false;
+            } else {
+                $result = $stmt->get_result();
+                $data = $result->fetch_array(MYSQLI_ASSOC);
+//                var_dump($data);
+                return $data["addressCount"];
+            }
+        } else {
+            echo 'Execute Failed';
+            $db->displayError($q);
+        }
+    }
     
 }
