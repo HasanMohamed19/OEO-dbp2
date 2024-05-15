@@ -151,7 +151,13 @@ var_dump($reservations);
 
     if (isset($_POST['cancelReservationSubmitted'])) {
         $reservationId = $_POST['reservationId'];
-        echo "reservation id is: " . $reservationId;
+//        echo "reservation id is: " . $reservationId;
+        echo 'cancelling booking with id: ' . $reservationId;
+//        $db = Database::getInstance();
+//        $data = $db->querySQL('CALL cancelBooking(' . $reservationId .')');
+//        var_dump($data);'
+        $reservation = new Reservation();
+        $reservation->cancelReservation($reservationId);
     } else {
         echo 'nothing is submitted yet';
     }

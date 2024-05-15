@@ -12,6 +12,9 @@
     include 'debugging.php';
 //    echo 'what is happening';
     // if add/edit card form submitted
+    
+    $loggedInClientId = $_COOKIE['clientId'];
+    
     if (isset($_POST['submitted'])) {
         $card = new CardDetail();
         $card->setCardId($_POST['Add-CardID']);
@@ -21,10 +24,10 @@
         $expiryDate = trim($_POST['cardExpiryYear']).'-'.trim($_POST['cardExpiryMonth']).'-28';
         $card->setExpiryDate($expiryDate);
         // get from the cookie
-        $card->setClientId('13');
+        $card->setClientId($loggedInClientId);
         $client = new Client();
-        $client->setClientId('13');
-        echo $client->getClientStatusName('1')->status_name . ' status name';
+        $client->setClientId($loggedInClientId);
+//        echo $client->getClientStatusName('1')->status_name . ' status name';
         
     if ($card->getCardId() == '') {
         if ($card->addCard()) {
@@ -53,8 +56,8 @@
         $company = new CompanyDetails();
         
         // set current client id
-        $personal->setClientId('13');
-        $company->setClientId('13');
+        $personal->setClientId($loggedInClientId);
+        $company->setClientId($loggedInClientId);
         
         $personal->initWithClientId();
         $company->initWithClientId();
@@ -115,7 +118,7 @@
         $address->setPhoneNumber($_POST['phoneNumber']);
         echo 'phoneNumber ' . $_POST['phoneNumber'];
         // get from the cookie
-        $address->setClientId('13');
+        $address->setClientId($loggedInClientId);
 //        echo $address->getCity() . ' city';
         
         if ($address->getAddressId() == '') {
@@ -127,6 +130,41 @@
         } else if ($address->updateBillingAddress()) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
+    }
+    
+    if (isset($_POST['accountSubmitted'])) {
+        $user = new User();
+        $userId = $_COOKIE['userId'];
+        echo $userId . ' is userid';
+        $clientId = $_COOKIE['clientId'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        echo $email . 'is  email';
+        $phoneNumber = $_POST['phoneNumber'];
+        $password = $_POST['password'];
+        
+        $user->setUserId($userId);
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $user->setRoleId(ROLE_CLIENT);
+        $client = new Client();
+        $client->setPhoneNumber($phoneNumber);
+        echo $user->getEmail() . ' is new email';
+        $updatedUser = $user->updateUser($userId);
+//        echo 'user id s . ' . $updatedUser;
+//        $updatedClient = $client->updateClient($clientId);
+        
+//        if ($updatedUser && $updatedClient) {
+//            echo 'updated profile successfully';
+//        } else if ($updatedUser){
+//            echo 'Updated User only';
+//        } else if ($updatedClient) {
+//            echo 'Updated client only';
+//        } else {
+//            echo 'an error occured';
+//        }
+        
     }
     
     // check for deletes:

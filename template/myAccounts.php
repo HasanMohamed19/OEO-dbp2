@@ -1,3 +1,7 @@
+<?php
+    $loggedInClientId = $_COOKIE['clientId'];
+?>
+
 <!DOCTYPE html>
 <body>
     <div class="container main">
@@ -24,7 +28,11 @@
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <strong>Profile</strong>
+                                <strong>Profile (Details)</strong>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <strong>Account </strong>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -62,7 +70,7 @@
                             <tbody>
                                 <?php
                                     $reservation = new Reservation();
-                                    $reservation->setClientId('1');
+                                    $reservation->setClientId($loggedInClientId);
                                     $reservations = $reservation->getReservationsForClient();
                                     $reservation->displayClientReservations($reservations);
                                 ?>
@@ -83,7 +91,7 @@
 
                     <?php
                     $card = new CardDetail();
-                    $card->setClientId('13');
+                    $card->setClientId($loggedInClientId);
                     $cards = $card->getAllCardsForUser();
                     $card->displayCards($cards);
                     ?>
@@ -188,16 +196,32 @@
                 <!-- end of my cards -->
 
                 <!-- Wallet & Royalty Points -->
+                
+                <?php
+//                            include 'debugging.php';
+//                        include './models/Client.php';
+                            $cc = new Client();
+//                            $client->setClientId('1');
+                            $s = $cc->getClientStatusName($loggedInClientId);
+                            $db = Database::getInstance();
+//                            $n = $db->querySQL('SELECT getNumberOfBookings(1)');
+//                            var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
+//                            echo $n . ' is what??';
+//                            var_dump($s);
+//                            echo $s->status_name . ' is the status';
+                ?>
+                
                 <div class="card mb-2 ms-4 px-0 inactive">
                     <div class="card-header">
                         <h3>Wallet & Royalty Points</h3>
                     </div>
 
                     <div class="row my-status align-self-center my-2">
-                        <h1 class="text-uppercase text-center text-white align-self-center">Silver</h1>
+                        
+                        <h1 class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
                         <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                     </div>
-
+                    
                     <div class="card rounded shadow-sm mb-2 mx-3">
 
                         <ul class="list-group list-group-flush border-0">
@@ -222,11 +246,11 @@
 
                     <?php
                     $p = new PersonalDetails();
-                    $p->setClientId('13');
+                    $p->setClientId($loggedInClientId);
                     $p->initWithClientId();
 
                     $c = new CompanyDetails();
-                    $c->setClientId('13');
+                    $c->setClientId($loggedInClientId);
                     $c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
                     ?>
@@ -318,6 +342,40 @@
 
                 </div>
                 <!-- end of profile -->
+                
+                <div class="card col shadow-sm ms-4 px-0 inactive">
+                    <div class="card-header">
+                        <h3>Edit Account</h3>
+                    </div>
+                    <div class="container">
+                        <form action="displayMyAccount.php" method="post">
+                            <div class="row my-2">
+                                <div class="col form-group required">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                                </div>
+                                <div class="col form-group required">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Email" value="">
+                                </div>
+                            </div>
+                            <div class="row my-2 form-group required">
+                                <div class="col">
+                                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                                    <input type="text" name="phoneNumber" class="form-control" placeholder="Phone Number" value="">
+                                </div>
+                                <div class="col form-group required">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <button type="submit" class="btn btn-primary mx-auto" style="width: 40%;">Save</button>
+                                <input type="hidden" name="accountSubmitted" value="1">
+                            </div>
+                        </form>
+                    </div>    
+                </div>    
 
                 <!-- book address -->
                 <div class="card col shadow-sm ms-4 px-0 inactive">
@@ -328,8 +386,8 @@
 <?php
 //                            echo 'book address section';
 $address = new BillingAddress();
-$address->setClientId('13');
-$addresses = BillingAddress::getAddresses('13');
+$address->setClientId($loggedInClientId);
+$addresses = BillingAddress::getAddresses($loggedInClientId);
 $address->displayAddresses($addresses);
 //                            $card->displayCards($cards);
 ?>

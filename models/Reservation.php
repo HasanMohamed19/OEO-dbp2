@@ -365,5 +365,12 @@ class Reservation {
                 break;
         }
     }
+    
+    function cancelReservation($reservationId) {
+        $db = new Database();
+        $q = "UPDATE dbProj_Reservation r SET r.reservation_status_id = 2 WHERE r.reservation_id = " . $reservationId;
+        $data = $db->querySQL($q);
+        
+    }
 
 }
