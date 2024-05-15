@@ -1,4 +1,13 @@
+<?php
 
+    include './helpers/Database.php';
+    include './models/Hall.php';
+    include './debugging.php';
+    $hall = new Hall();
+    $halls = $hall->getPopularHalls();
+    echo 'number of halls found ' . count($halls);
+
+?>
         <style>
             .hero {
                 background: url(./images/hero.png) no-repeat;

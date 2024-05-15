@@ -11,14 +11,14 @@
  * @author Hassan
  */
 class Hall {
-    
+
     private $hallId;
     private $hallName;
     private $description;
     private $rentalCharge;
     private $capacity;
     private $imagePath;
-    
+
     public function __construct() {
         $this->hallId = null;
         $this->hallName = null;
@@ -27,7 +27,7 @@ class Hall {
         $this->capacity = null;
         $this->imagePath = null;
     }
-    
+
     public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
         $this->hallId = $hallId;
         $this->hallName = $hallName;
@@ -36,13 +36,13 @@ class Hall {
         $this->capacity = $capacity;
         $this->imagePath = $imagePath;
     }
-    
+
     public function initWithHallId($hallId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $hallId);
         $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
     }
-    
+
     public function getHallId() {
         return $this->hallId;
     }
@@ -91,5 +91,13 @@ class Hall {
         $this->imagePath = $imagePath;
     }
 
+    function getPopularHalls() {
+        $db = new Database();
+        $q = "SELECT hall_id, count(*) FROM dbProj_Reservation"
+                . " WHERE reservation_status_id = 1 or reservation_status_id != 2 "
+                . "GROUP BY hall_id ORDER BY COUNT(*) DESC LIMIT 3";
+        $data = $db->multiFetch($q);
+        return $data;
+    }
 
 }
