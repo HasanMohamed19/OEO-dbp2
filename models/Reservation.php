@@ -96,6 +96,7 @@ class Reservation {
             h.hall_name,
             h.capacity,
             h.image_path,
+            e.event_id,
             e.event_name,
             e.start_date,
             e.end_date,

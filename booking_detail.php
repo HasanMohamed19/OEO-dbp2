@@ -1,11 +1,11 @@
 <?php
+include 'debugging.php';
 include './helpers/Database.php';
 include './models/Reservation.php';
-//include './models/Event.php';
+include_once ''; './models/Event.php';
 //include './models/Hall.php';
 //include './models/MenuItem.php';
 //include './models/ReservationMenuItem.php';
-include 'debugging.php';
 
 include './template/header.html';
 
@@ -17,13 +17,13 @@ $reservation->setReservationId($reservationId);
 
 $reservation->initReservationWithId($reservationId);
 
-$reservation->setClientId('1');
+$reservation->setClientId($_COOKIE['clientId']);
 
 //    var_dump($reservation);
 $reservationDetails = $reservation->getReservationDetails();
 //echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
 //    echo '  reservation details are: ' . count($reservations);
-var_dump($reservations);
+
 ?>
 
 
@@ -46,8 +46,10 @@ var_dump($reservations);
                     <div class="row m-2">
                         <div class="col text-start completed"> <?php echo Reservation::getStatusName($reservationDetails->reservation_status_id) ?> </div>
                         <!-- condition needs to be changed -->
-                        <?php 
-                            if ($reservationDetails->reservation_status_id != 2) {
+                        <?php
+                            $event = new Event();
+                            $dayDifferences = $event->checkDaysDifference($reservationDetails->event_id, $reservationDetails->start_date);
+                            if ($reservationDetails->reservation_status_id != 2 && $dayDifferences >= 2) {
                                 echo '<div class="col text-end"><button class="btn btn-danger" data-id="' . $reservationDetails->reservation_id . '"data-bs-toggle="modal" data-bs-target="#cancelModal" onclick="setCancel(this)" id="cancelReservationBtn">Cancel Booking</button></div>';
                             echo '<div class="col text-end">'
                             . '<a href="client_booking.php?hallId=' . $reservationDetails->hall_id .'&reservationId=' . $reservationDetails->reservation_id .'" role="button" class="btn btn-primary" id="editReservationBtn">Edit Reservation</a>'
