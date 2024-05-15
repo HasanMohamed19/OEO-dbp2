@@ -4,9 +4,12 @@
 
 const updateSideMenu = () => {
     const updateImages = (images) => {
+        $('#hallImages').html('');
         $.each(images, function(index, image) {
+            // used to make first image active on the carousel
+            let activeFlag = (index === 0) ? 'active' : '';
             $('#hallImages').append(`
-               <div class="carousel-item active">
+               <div class="carousel-item ${activeFlag}">
                     <img src="${image['hall_image_path']}" class="d-block w-100 rounded-top" alt="...">
                 </div> 
             `);
