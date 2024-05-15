@@ -3,6 +3,16 @@
 //   Update values for side menu
 
 const updateSideMenu = () => {
+    const updateImages = (images) => {
+        $.each(images, function(index, image) {
+            $('#hallImages').append(`
+               <div class="carousel-item active">
+                    <img src="${image['hall_image_path']}" class="d-block w-100 rounded-top" alt="...">
+                </div> 
+            `);
+        });
+    };
+    
     const updateHallDetails = (name, description, charge, capacity) => {
         $('#sideMenu-hallName').html(name);
         $('#sideMenu-hallDescription').html(description);
@@ -40,6 +50,7 @@ const updateSideMenu = () => {
                 data.rentalCharge,
                 data.capacity
             );
+        updateImages(data.hallImages);
     });
     updateEventDetails(
             $('#bookingEventName').val(),
