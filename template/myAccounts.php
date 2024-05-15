@@ -39,9 +39,9 @@
                                 <strong>Address Book</strong>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
-                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <a role="button" type="button" href="logout.php" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <strong>Logout</strong>
-                            </button>
+                            </a>
                         </div>
 
                     </div>

@@ -312,4 +312,15 @@ class User {
         $this->roleId = $roleId;
     }
     
+    function logout() {
+        $this->ok = false;
+        $_SESSION['userId'] = '';
+        $_SESSION['username'] = '';
+        $_SESSION['clientId'] = '';
+        setcookie('userId', '', time() - 3600, '/', $this->domain);
+        setcookie('username', '', time() - 3600, '/', $this->domain);
+        setcookie('clientId', '', time() - 3600, '/', $this->domain);
+        session_destroy();
+    }
+    
 }
