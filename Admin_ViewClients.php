@@ -25,34 +25,36 @@ if (isset($_POST['clientFormSubmitted'])) {
     $user->setEmail(trim($_POST['email']));
 
     //get personal details
+    $pd = new PersonalDetails();
     $pd->setFirstName(trim($_POST['fName']));
     $pd->setLastName(trim($_POST['lName']));
     $pd->setGender(trim($_POST['gender']));
     $pd->setNationality(trim($_POST['nation']));
     $pd->setDob(trim($_POST['dob']));
-    $pd->setClientId($user->getClientByUserId());
     
+    
+    echo 'client id is' .$user->getClientByUserId();
     //get company details
+    $cmp = new CompanyDetails();
     $cmp->setName(trim($_POST['cmpName']));
     $cmp->setComapnySize(trim($_POST['cmpSize']));
     $cmp->setWebsite(trim($_POST['cmpWeb']));
     $cmp->setCity(trim($_POST['cmpcity']));
-    $cmp->setClientId($user->getClientByUserId());
     $db = Database::getInstance();
 
     //if user id is empty (New user) add the user
     if ($userid == '') {
         if ($user->initWithUsername()) {
             if ($user->registerUser()) {
+                echo'user after register is' .$user->getUserId();
                 if (isset($_POST['pdCheckBx'])) {
-
-                    $pd = new PersonalDetails();
-
+                    $pd->setClientId($user->getClientByUserId());
                     $pd->addPersonalDetails();
                 }
                 if (isset($_POST['cmpCheckBx'])) {
-                    $cmp = new CompanyDetails();
+                    $cmp->setClientId($user->getClientByUserId());
                     $cmp->addCompanyDetails();
+                    
                 }
                 echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Client has been Added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
             } else {
@@ -63,8 +65,30 @@ if (isset($_POST['clientFormSubmitted'])) {
         }
     } else {
         //update user when user id is not empty
+        $user->updateUser($userid);
+        $clientId = $user->getClientByUserId();
+        $client = new Client();
+        $client->setClientId($clientId);
+        $client->setPhoneNumber($_POST['phoneNumber']);
+        echo 'phone number is:'.$client->getPhoneNumber();
+        $client->updateClient($clientId);
         
-        
+        if (isset($_POST['pdCheckBx'])) {
+            $pd->setClientId($clientId);
+            if ($pd->getPersonalDetail()){
+                $pd->updatePersonalDetails();
+            } else {
+                $pd->addPersonalDetails();
+            }
+        }
+        if (isset($_POST['cmpCheckBx'])) {
+            $cmp->setClientId($clientId);
+            if ($cmp->getCompanyDetail()){
+                $cmp->updateCompanyDetails();
+            } else {
+                $cmp->addCompanyDetails();
+            } 
+        }
     }
 }
 if (isset($_POST['deleteClientSubmitted'])) {

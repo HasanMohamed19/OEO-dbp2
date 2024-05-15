@@ -10,7 +10,6 @@
  *
  * @author Hassan
  */
-
 include_once 'models/User.php';
 
 //enum ClientStatus: int {
@@ -25,12 +24,13 @@ const SILVER_STATUS = 0.1;
 const BRONZE_STATUS = 0.05;
 
 class Client extends User {
-    
-private $clientId;
-private $phoneNumber;
-private $clientStatusId;
+
+    private $clientId;
+    private $phoneNumber;
+    private $clientStatusId;
+
 //    private $userId;
-    
+
     public function __construct() {
         $this->clientId = null;
         $this->phoneNumber = null;
@@ -39,8 +39,6 @@ private $clientStatusId;
         parent::__construct();
     }
 
-    
-
     public function initClientWith($clientId, $phoneNumber, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;
         $this->phoneNumber = $phoneNumber;
@@ -48,31 +46,30 @@ private $clientStatusId;
 //        $this->userId = $userId;
         parent::initWith($userId, $username, $password, $email, $roleId);
     }
-    
-    public function initClientWithoutParent($clientId, $phoneNumber, $clientStatus, $userId) {
+
+    public function initClientWithoutParent($clientId, $phoneNumber, $clientStatusId, $userId) {
         $this->clientId = $clientId;
         $this->phoneNumber = $phoneNumber;
-        $this->clientStatus = $clientStatus;
-        $this->userId = $userId;
+        $this->$clientStatusId = $clientStatusId;
+//        $this->userId = $userId;
     }
-    
+
     public function iniwWithClientId($clientId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
-        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->client_status_id, $data->user_id);
     }
-    
+
     public function getClientEmail() {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT email FROM dbProj_User WHERE user_id = ' . $this->userId);
         return $data;
     }
 
-    
     public function getClientId() {
         return $this->clientId;
     }
-    
+
 //    public function getUserId() {
 //        return $this->clientId;
 //    }
@@ -89,41 +86,43 @@ private $clientStatusId;
     public function setClientStatus($clientStatusId) {
         $this->clientStatusId = $clientStatusId;
     }
-    
+
 //    public function setUserId($userId) {
 //        $this->userId = $userId;
 //    }
-    
+
     public function getPhoneNumber() {
         return $this->phoneNumber;
     }
-
 
     public function setPhoneNumber($phoneNumber) {
         $this->phoneNumber = $phoneNumber;
     }
 
-
-    
-    function getClientStatusName($client_id) {
-       $db = Database::getInstance();
-       $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
-//       var_dump($data);
-       return $data;
-
+    function getAllClients() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch('Select * from dbProj_Client');
+        return $data;
     }
-    
-    function updateClient($clientId) {
+
+    function getClientStatusName($client_id) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
+//       var_dump($data);
+        return $data;
+    }
+
+        function updateClient($clientId) {
         include_once  "./helpers/Database.php";
-        
+
         $db = new Database();
-        if ($this->isValid()) {
+//        if ($this->isValid()) {
 //                    echo "username $this->username, password $this->password";
             $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
             // assuming role_id never changes
             $q = "UPDATE dbProj_Client SET "
-                . "phone_number='?' WHERE client_id='?'";
-            
+                . "phone_number=? WHERE client_id=?";
+
             $stmt = mysqli_prepare($db->getDatabase(),$q);
             if ($stmt) {
                 $stmt->bind_param('si', $this->phoneNumber, $clientId);
@@ -134,11 +133,10 @@ private $clientStatusId;
                     $db->displayError($q);
                     return false;
                 }
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-            
+//            } else {
+//                $db->displayError($q);
+//                return false;
+//            }
+
     }
-    
 }

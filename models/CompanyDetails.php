@@ -95,6 +95,16 @@ class CompanyDetails {
         return true;
     }
     
+    
+    function getCompanyDetail() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT * FROM dbProj_CompanyDetails WHERE client_id = '$this->clientId'");
+        if ($data == null) {
+            return false;
+        }
+        return true;
+    }
+    
     function updateCompanyDetails() {
         
         

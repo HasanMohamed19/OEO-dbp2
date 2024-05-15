@@ -82,7 +82,7 @@ class User {
             } else {
                 // assuming role_id never changes
                 $q = "UPDATE dbProj_User SET "
-                        . "username='?', password=AES_ENCRYPT(?, '" . SALT . "'), email='?'"
+                        . "username=?, password=AES_ENCRYPT(?, '" . SALT . "'), email=?"
                         . "WHERE user_id=?";
             }
             $stmt = mysqli_prepare($db->getDatabase(), $q);
@@ -141,25 +141,30 @@ class User {
         return true;
     }
     
-    function updateUser($userId) {
+        function updateUser($userId) {
         include_once  "./helpers/Database.php";
         $db = new Database();
+        //set the old password if password is empty
+        if ($this->password == ''){
+            $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE user_id = ' . $userId);
+            $this->setPassword($data->password);
+        }
         if ($this->isValid()) {
             $this->username = $db->sanitizeString($this->username);
             $this->password = $db->sanitizeString($this->password);
             $this->email    = $db->sanitizeString($this->email);
             // assuming role_id never changes
             $q = "UPDATE dbProj_User SET "
-                . "username='?', password=AES_ENCRYPT(?, '".SALT."'), email='?' "
-                . "WHERE user_id='?'";
-            
-            
+                . "username=?, password=AES_ENCRYPT(?, '".SALT."'), email=? "
+                . "WHERE user_id=?";
+
+
             $stmt = mysqli_prepare($db->getDatabase(),$q);
             var_dump($stmt);
             if ($stmt) {
                 $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
 //                    echo "username" . $this->username ." password ". $this->password;
-                
+
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute failed';
@@ -167,12 +172,12 @@ class User {
                     return false;
                 }
             }
-                
+
             } else {
                 $db->displayError($q);
                 return false;
             }
-            
+
     }
 
 //    function sanitizeString($var) {

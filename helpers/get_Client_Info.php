@@ -8,10 +8,10 @@ include '../models/PersonalDetails.php';
 include '../models/CompanyDetails.php'; // Include the user class definition
 
 // Check if userId parameter is provided
-if (isset($_GET['userId'])) {
+if (isset($_GET['userId'])&& isset($_GET['clientId'])) {
     // Get hallId from the request
     $userId = $_GET['userId'];
-
+    $clientId = $_GET['clientId'];
     try {
         // Create a new instances of the user,client,personal/company details classes
         $user = new User();
@@ -21,22 +21,21 @@ if (isset($_GET['userId'])) {
         
         // Initialize the objects with data based on userId
         $user->initWithUserid($userId);
-        $client->iniwWithUsertId($userId);
+        $client->iniwWithClientId($clientId);
         
-        $pd->setClientId($client->getClientId());
+        $pd->setClientId($clientId);
         $pd->initWithClientId();
         
-        $cmp->setClientId($client->getClientId());
+        $cmp->setClientId($clientId);
         $cmp->initWithClientId();
         
         // Prepare the response data
         $responseData = array(
-            'userId' => $user->getUserId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
-            'clientId' => $client->getClientId(),
+//            'password' => $user->getPassword(),
             'phoneNumber' => $client->getPhoneNumber(),
-            'clientStatus' => $client->getClientStatusName($client->getClientId()),
+            'clientStatus' => $client->getClientStatusName($clientId)->status_name,
             'firstName' => $pd->getFirstName(),
             'lastName' => $pd->getLastName(),
             'dob' => $pd->getDob(),
@@ -45,7 +44,7 @@ if (isset($_GET['userId'])) {
             'companyName' => $cmp->getName(),
             'companySize' => $cmp->getComapnySize(),
             'city' => $cmp->getCity(),
-            'website' => $cmp->getWebsite()  
+            'website' => $cmp->getWebsite(),  
         );
 
         // Send JSON response

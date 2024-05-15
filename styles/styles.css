@@ -236,3 +236,17 @@
 .bg-login-image {
     background-color: gray;
 }
+
+
+/*manage clients badges*/
+
+.bg-Gold {
+    background-color: #DAC717;
+}
+.bg-Silver {
+    background-color: #D9D9D9;
+    color:black;
+}
+.bg-Bronze {
+    background-color: #B3967C;
+}

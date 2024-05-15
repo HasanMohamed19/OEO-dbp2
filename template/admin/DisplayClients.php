@@ -169,12 +169,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </div>
         </div>
-        <script src="./helpers/pagination.js"></script>
-        <script src="./helpers/AdminForms.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</body>
 
+</body>
+<script src="./helpers/pagination.js"></script>
+<script src="./helpers/AdminForms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
     window.addEventListener("load", () => {
@@ -183,12 +183,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
     $(document).ready(function () {
         $("#addClientBtn").click(function () {
+            $('.form-control').val('');
+            $('.form-select').val('');
             $("#passwordDiv").removeAttr('hidden');
             $('#Add-UserID').removeAttr('value');
-        });
-
-        $("#editClientBtn").click(function () {
-            $("#passwordDiv").attr('hidden', '');
         });
     });
     $('#addModal').on('hidden.bs.modal', function (e) {
@@ -206,7 +204,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             $('.cmpInputs').prop('required', true);
         } else {
             // Do something when the input is unchecked
-            $('.cmpInputs').prop('disabled', false);
+            $('.cmpInputs').prop('required', false);
         }
     });
 
@@ -216,7 +214,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             $('.pdInputs').prop('required', true);
         } else {
             // Do something when the input is unchecked
-            $('.pdInputs').prop('disabled', false);
+            $('.pdInputs').prop('required', false);
         }
     });
 
@@ -225,7 +223,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         $('.cmpInputs, .pdInputs,.userInputs').each(function () {
             // Check if company details checkbox is checked
             if ($(this).val() == '' && $(this).attr('required') !== undefined) {
-                console.log("we are iterating")
                 $('#add-form').addClass('was-validated');
                 e.preventDefault(); // Prevent form submission
                 return false;
@@ -236,14 +233,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     //get Hall ID value 
     $(document).ready(function () {
         $(document).on('click', '#editClientBtn', function () {
-
+            $('#pwd').removeAttr('required');
+            $("#passwordDiv").attr('hidden', '');
             var userId = $(this).attr('data-id');
+            var clientId = $('#' + userId).val();
             console.log('user id is:', userId);
+            console.log('client id is:', clientId);
             // AJAX request
             $.ajax({
-                url: './helpers/get_client_Info.php', // URL of your PHP script to fetch hall info
+                url: './helpers/get_Client_Info.php', // URL of your PHP script to fetch hall info
                 method: 'GET',
-                data: {userId: userId}, // Send userId to server
+                data: {userId: userId, clientId: clientId}, // Send userId to server
                 dataType: 'json', // Expected data type from server
                 success: function (response) {
                     // Handle successful response
@@ -252,6 +252,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     $('#usrName').val(response.username);
                     $('#email').val(response.email);
                     $('#phoneNum').val(response.phoneNumber);
+                    $('#pwd').val(response.password);
                     $('#fName').val(response.firstName);
                     $('#lName').val(response.lastName);
                     $('#gender').val(response.gender);
@@ -261,7 +262,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     $('#cmpSize').val(response.companySize);
                     $('#cmpWeb').val(response.website);
                     $('#cmpcity').val(response.city);
-                    $('#Add-UserID').val(response.userId);
+                    $('#Add-UserID').val(userId);
                 },
                 error: function (xhr, status, error) {
                     // Handle errors
@@ -302,10 +303,9 @@ function displayClients($dataSet) {
                             <div class="row">
                                 <div class="col text-center " >
                                     <span class="fw-bold display-6">@' . $user->getUsername() . '</span>
-                                    <span class="badge bg-warning">' . $client->getClientStatusName($clientId) . '</span>
+                                    <span class="badge bg-' . $client->getClientStatusName($clientId)->status_name . '">' . $client->getClientStatusName($clientId)->status_name . '</span>
                                     <br>
                                     <span class="fw-bold">#' . $user->getUserId() . '</span>
-                                    <br><br>
                                 </div>
                             </div>
 
@@ -351,6 +351,7 @@ function displayClients($dataSet) {
                             <div class="d-flex flex-column h-100 justify-content-between">
                                 <button id="editClientBtn" class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#addModal" data-id="' . $user->getUserId() . '"><i class="bi bi-pen-fill">Edit</i></button>
                                 <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $user->getUserId() . '" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i></button>
+                                <input type="hidden" id="' . $userId . '" name="clientId" value ="' . $clientId . '">   
                             </div>
                         </div>
                     </div>
