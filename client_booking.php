@@ -60,7 +60,9 @@ if (isset($_POST['submitted'])) {
     // now add invoice
     Invoice::addWithReservationId($resId, $isAmending);
     
-//    header('booking_summary.php');
+    // this will flag completed reservation and js will redirect to summary page
+    echo $resId;
+    exit();
 }
     
 

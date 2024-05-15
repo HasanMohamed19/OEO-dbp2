@@ -70,7 +70,12 @@ $('#bookingForm').on('submit', function(event) {
             bookingClientId:clientId,
             menuItems:items
         }
-    }); // form will redirect to next page in php
+    }).then(function(resId) {
+        // redirect to summary if complete
+        if (resId !== null && resId > 0) {
+            window.location.href = 'booking_summary.php?reservationId='+resId;
+        }
+    });
 });
 
 
