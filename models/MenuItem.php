@@ -12,12 +12,17 @@
  */
 
 // if required this can be changed to class as before
-enum CateringService: int {
-    case Breakfast = 1;
-    case Lunch = 2;
-    case HotBeverages = 3;
-    case ColdBeverages = 4;
-}
+//enum CateringService: int {
+//    case Breakfast = 1;
+//    case Lunch = 2;
+//    case HotBeverages = 3;
+//    case ColdBeverages = 4;
+//}
+
+const MENU_BREAKFAST = 1;
+const MENU_LUNCH = 2;
+const MENU_HOT_BEVERAGES = 3;
+const MENU_COLD_BEVERAGES = 4;
 
 class MenuItem {
     
@@ -27,15 +32,15 @@ class MenuItem {
     private $price;
     private $imagePath;
     // service_id
-    private CateringService $cateringService;
+    private $cateringServiceId;
     
-    public function initWith($itemId, $name, $description, $price, $imagePath, CateringService $cateringService) {
+    public function initWith($itemId, $name, $description, $price, $imagePath, $cateringServiceId) {
         $this->itemId = $itemId;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
         $this->imagePath = $imagePath;
-        $this->cateringService = $cateringService;
+        $this->cateringServiceId = $cateringServiceId;
     }
     
     public function __construct() {
@@ -44,7 +49,7 @@ class MenuItem {
         $this->description = null;
         $this->price = null;
         $this->imagePath = null;
-        $this->cateringService = null;
+        $this->cateringServiceId = null;
     }
 
     
@@ -68,8 +73,8 @@ class MenuItem {
         return $this->imagePath;
     }
     
-    public function getCateringService(): CateringService {
-        return $this->cateringService;
+    public function getCateringServiceId() {
+        return $this->cateringServiceId;
     }
 
     public function setItemId($itemId) {
@@ -92,8 +97,32 @@ class MenuItem {
         $this->imagePath = $imagePath;
     }
     
-    public function setCateringService(CateringService $cateringService) {
-        $this->cateringService = $cateringService;
+    public function setCateringService($cateringServiceId) {
+        $this->cateringServiceId = $cateringServiceId;
     }
-
+    
+    public function getCateringSerivceName() {
+        switch ($this->cateringServiceId) {
+            case 1:
+                return "Breakfast";
+                break;
+            case 2:
+                return "Lunch";
+                break;
+            case 3:
+                return "Hot Beverages";
+                break;
+            case 4:
+                return "Cold Beverages";
+                break;
+        }
+    }
+    
+        public function initMenuItemWithId() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Menu_Item WHERE item_id = ' . $this->itemId);
+        $this->initWith($data->item_id, $data->name, $data->description, $data->price, $data->image_path, $data->service_id);
+    }
 }
+
+

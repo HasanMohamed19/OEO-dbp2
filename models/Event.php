@@ -11,29 +11,41 @@
  * @author Hassan
  */
 class Event {
-    
+
     private $eventId;
     private $name;
     private $startDate;
     private $endDate;
+    private $startTime;
+    private $endTime;
     private $audienceNumber;
-    
+
     public function __construct() {
         $this->eventId = null;
         $this->name = null;
         $this->startDate = null;
         $this->endDate = null;
+        $this->startTime = null;
+        $this->endTime = null;
         $this->audienceNumber = null;
     }
-    
-    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber) {
+
+    public function initWith($eventId, $name, $startDate, $endDate, $startTime, $endTime, $audienceNumber) {
         $this->eventId = $eventId;
         $this->name = $name;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->audienceNumber = $audience;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+        $this->audienceNumber = $audienceNumber;
     }
-    
+
+    public function initWithEventId($eventId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
+        $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
+    }
+
     public function getEventId() {
         return $this->eventId;
     }
@@ -48,6 +60,14 @@ class Event {
 
     public function getEndDate() {
         return $this->endDate;
+    }
+
+    public function getStartTime() {
+        return $this->startTime;
+    }
+
+    public function getEndTime() {
+        return $this->endTime;
     }
 
     public function getAudienceNumber() {
@@ -66,6 +86,14 @@ class Event {
         $this->startDate = $startDate;
     }
 
+    public function setStartTime($startTime) {
+        $this->startTime = $startTime;
+    }
+
+    public function setEndTime($endTime) {
+        $this->endTime = $endTime;
+    }
+
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
     }
@@ -74,5 +102,33 @@ class Event {
         $this->audienceNumber = $audienceNumber;
     }
 
+    public function checkDaysDifference($eventId, $startDate) {
+//        include '../debugging.php';
+        $db = new Database();
+        $q = "SELECT DATEDIFF(?, NOW()) AS dayDiff FROM dbProj_Event WHERE event_id = ?";
+
+        $this->startDate = $db->sanitizeString($startDate);
+        $this->eventId = $db->sanitizeString($eventId);
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if ($stmt) {
+            $stmt->bind_param('si', $this->startDate, $this->eventId);
+
+            if (!$stmt->execute()) {
+//                var_dump($stmt);
+                echo 'Execute Failed';
+                $db->displayError($q);
+//                    return false;
+            } else {
+                $result = $stmt->get_result();
+                $data = $result->fetch_array(MYSQLI_ASSOC);
+//                var_dump($data);
+                return $data["dayDiff"];
+            }
+        } else {
+            echo 'Execute Failed';
+            $db->displayError($q);
+        }
+    }
 
 }

@@ -19,13 +19,13 @@ class Hall {
     private $capacity;
     private $imagePath;
     
-    public function __construct($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
-        $this->hallId = $hallId;
-        $this->hallName = $hallName;
-        $this->description = $description;
-        $this->rentalCharge = $rentalCharge;
-        $this->capacity = $capacity;
-        $this->imagePath = $imagePath;
+    public function __construct() {
+        $this->hallId = null;
+        $this->hallName = null;
+        $this->description = null;
+        $this->rentalCharge = null;
+        $this->capacity = null;
+        $this->imagePath = null;
     }
     
     public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
@@ -35,6 +35,12 @@ class Hall {
         $this->rentalCharge = $rentalCharge;
         $this->capacity = $capacity;
         $this->imagePath = $imagePath;
+    }
+    
+    public function initWithHallId($hallId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $hallId);
+        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->image_path);
     }
     
     public function getHallId() {

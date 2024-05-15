@@ -14,7 +14,7 @@
 /* minimum height on the container to ensure footer is always at the bottom */
 /* temporary code */
 .main {
-    min-height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -28,4 +28,217 @@
 
 .footer {
     margin-top: auto;
+}
+
+
+
+.cateringItem {
+    max-width: 250px;
+    max-height: 350px;
+}
+
+/* myAccount */
+.my-account-container {
+    display: flex;
+}
+
+.my-account-sidebar {
+    flex: 4;
+}
+
+.my-account-body {
+    flex: 10;
+}
+
+.active-side-btn {
+    color: var(--primary) !important;
+}
+
+.active-side-btn:focus {
+    background-color: inherit;
+}
+
+.inactive {
+    display: none;
+}
+
+.completed {
+    color: var(--success);
+}
+
+.justify {
+    text-align: justify;
+}
+
+.gold {
+    color: #DAC717;
+}
+
+.silver {
+    color: #D9D9D9;
+}
+
+.bronze {
+    color: #B3967C;
+}
+
+.my-status {
+    width: 355px;
+    height: 358px;
+    
+    
+    border: 1px solid #CDCDCD;
+    border-radius: 12px;
+}
+
+.my-status.silver {
+    background: linear-gradient(180deg, #C8C8C8 28%, #626262 83.5%);
+}
+
+.my-status.gold {
+    background: linear-gradient(180deg, #ffe699 28%, #dcab3c 83.5%);
+}
+
+.my-status.bronze {
+    background: linear-gradient(180deg, #e09e6e 28%, #b27c48 83.5%);
+}
+
+.my-status.nothing {
+/*    background: linear-gradient(180deg, #cccccc 28%, #808080 83.5%);*/
+ /*temporary*/
+    background-color: black;
+}
+
+
+/* email template */
+.email-header {
+    background-color: var(--primary);
+    color: white;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+/* Client Booking */
+
+/*Hide all except first fieldset*/
+#bookingForm fieldset.active {
+    display: inherit;
+}
+
+#bookingForm fieldset:not(.active) {
+    display: none;
+}
+
+.clientBookingContainer {
+    display: flex;
+}
+
+#bookingProgress .active{
+    color: var(--bs-primary);
+    border-bottom: 1px solid var(--bs-primary);
+}
+
+#bookingProgress li {
+    float: left;
+    margin-right: 4em;
+}
+
+.clientBookingSidebar {
+    min-width: 14em;
+    max-width: 20em;
+    flex: 2;
+}
+
+.clientBookingSidebar img {
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.clientBookingSidebar .inactive {
+    display: none;
+}
+
+
+.clientBookingForm {
+    flex: 10;
+}
+
+/*.cateringItem {
+    max-width: 265px;
+    max-height: 350px;
+}*/
+
+.cateringItem img {
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.submitBar .hide {
+    display: none;
+}
+
+/* Booking Summary */
+
+
+.summaryImage {
+    height: 300px;
+}
+
+.page-link.active {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+    
+/* Admin Form with list Temp Code Might be removed */
+.admin-form-card {
+    background-color: #F7F7F7; /* Custom background color */
+    padding: 5px 20px;
+}
+.admin-form-card-title{
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0.25rem;
+}
+.admin-form-card-subtitle{
+    font-size: 10px;
+    color: #8D8D8D;
+    display: block;
+}
+
+/* Admin Forms */
+.rounded-top-right {
+    border-top-right-radius: 0.25rem!important;
+}
+.rounded-bottom-right {
+    border-bottom-right-radius: 0.25rem!important;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+
+}
+.form-group.required .form-label:after {
+  content:"*";
+  color:red !important;;
+}
+
+/* Register */
+.form-control {
+    margin-bottom: 1rem;
+}
+#regBtn {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+.bg-login-image {
+    background-color: gray;
 }

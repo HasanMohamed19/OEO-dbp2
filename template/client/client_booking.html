@@ -1,0 +1,904 @@
+<div class="main">
+    <h1 class="m-4">Complete Your Booking</h1>
+    <div>
+        <!-- Progress Bar -->
+        <div class="d-flex flex-column mx-4">
+            <div class="clientBookingProgress d-flex justify-content-center">
+                <ol class="mb-0" id="bookingProgress">
+                    <li id="event" class="active">Event Details</li>
+                    <li id="services">Additional Services</li>
+                    <!--<li id="clientDetails">Personal/Company Details</li>-->
+                    <li id="checkout">Checkout</li>
+                </ol>
+            </div>
+            <hr class="my-2">
+        </div>
+        
+        <div class="clientBookingContainer">
+            <!-- Sidebar Cards -->
+            <div class="clientBookingSidebar px-4">
+                <!-- Hall Info -->
+                <div class="row mb-4 clientCard">
+                    <div class="card col p-0">
+                        <img class="card-img-top img-fluid" src="./images/hall_example1.jpg">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Hall Name</h3>
+                            <p class="card-text">
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                                Hall Description. Hall Description. Hall Description. Hall Description. 
+                            </p>
+                            <div class="row">
+                                <div class="col text-secondary">Hall Type</div>
+                                <div class="col">Type</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Rental Charge</div>
+                                <div class="col">96.50 BHD/hr</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Capacity</div>
+                                <div class="col">60</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Event Info -->
+                <div class="row mb-4 clientCard inactive">
+                    <div class="card col p-0">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Event Details</h3>
+                            <div class="row">
+                                <div class="col text-secondary">Event Name</div>
+                                <div class="col">Name</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Start Date</div>
+                                <div class="col">7/5/2024</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">End Date</div>
+                                <div class="col">11/5/2024</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">No. Audiences</div>
+                                <div class="col">60</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Services Info -->
+                <div class="row mb-4 clientCard inactive">
+                    <script src="./helpers/pagination.js"></script>
+                    <div class="card col p-0">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Additional Services</h3>
+                            <div class="row">
+                                <div class="col text-secondary">Menu Choices</div>
+                                <div class="col">Breakfast, Hot Beverages</div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-secondary">Catering Cost</div>
+                                <div class="col">55.25 BHD</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Forms -->
+            <div class="clientBookingForm px-4">
+                <form id="bookingForm">
+                    <!-- Event Details -->
+                    <fieldset class="active">
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Event Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>Number of Audiences</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>End Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Start Time</label>
+                                <input type="time" class="form-control">
+                            </div>
+                            <div class="form-group col">
+                                <label>End Time</label>
+                                <input type="time" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group col">
+                                <label>Notes</label>
+                                <textarea class="form-control" placeholder="Type here"></textarea>
+                            </div>
+                        </div>
+<!--                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <input type="button" class="next btn btn-primary" value="Next">
+                            </div>
+                        </div>-->
+                    </fieldset>
+                    
+                    
+                    <!-- Additional Services -->
+                    <fieldset>
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs nav-fill" id="cateringTabBar" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="breakfast-tab" data-bs-toggle="tab" data-bs-target="#breakfast-tab-pane" 
+                                        type="button" role="tab" aria-controls="breakfast-tab-pane" aria-selected="true">
+                                    Breakfast
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="lunch-tab" data-bs-toggle="tab" data-bs-target="#lunch-tab-pane" 
+                                        type="button" role="tab" aria-controls="lunch-tab-pane" aria-selected="false">
+                                    Lunch
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="hot-tab" data-bs-toggle="tab" data-bs-target="#hot-tab-pane" 
+                                        type="button" role="tab" aria-controls="hot-tab-pane" aria-selected="false">
+                                    Hot Beverages
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="cold-tab" data-bs-toggle="tab" data-bs-target="#cold-tab-pane" 
+                                        type="button" role="tab" aria-controls="cold-tab-pane" aria-selected="false">
+                                    Cold Beverages
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <!-- Item Window -->
+                        <div class="tab-content rounded-bottom border border-top-0" id="cateringContent">
+                            <div class="tab-pane fade show active" id="breakfast-tab-pane" aria-labelledby="breakfast-tab" role="tabpanel" tabindex="0">
+                                <!-- Pagination bar -->
+                                <nav class="pt-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
+                                    <span class="me-2">Page: </span>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
+                                    </ul>
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
+                                    </ul>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
+                                    </ul>
+                                </nav>
+                                <!-- Items List -->
+                                <div id="pagination-items-breakfast" class="d-flex justify-content-center flex-wrap gap-4 p-4">
+                                    
+                                    <!-- prototype for catering item card -->
+                                    <div id="catering-item-breakfast-1" class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 1</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input id="catering-item-breakfast-1-check" class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input id="catering-item-breakfast-1-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="catering-item-breakfast-2" class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 2</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input id="catering-item-breakfast-2-check" class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input id="catering-item-breakfast-2-quantity" class="form-control cateringItemQuantity" type="number" placeholder="Quantity" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 3</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 4</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 5</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 6</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 7</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 8</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 9</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 10</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 11</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 12</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 13</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 14</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 15</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 16</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 17</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 18</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 19</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 20</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 21</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card p-0 cateringItem">
+                                        <img class="card-img-top img-fluid" src="./images/food_example1.webp">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center fs-5">Menu Item 22</h3>
+                                            <p class="card-text text-center"><strong>0.6 BHD</strong></p>
+                                            <div class="row">
+                                                <div class="col-2 offset-1">
+                                                    <input class="cateringItemCheck" type="checkbox">
+                                                </div>
+                                                <div class="col-8">
+                                                    <input class="form-control cateringItemQuantity" type="number" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination bar -->
+                                <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
+                                    <span class="me-2">Page: </span>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-first-breakfast page-link mx-2 rounded border-2" value="First"></li>
+                                    </ul>
+                                    <ul class="pagination pagination-numbers-breakfast d-flex flex-row m-0">
+                                    </ul>
+                                    <ul class="pagination d-flex flex-row m-0">
+                                        <li class="page-item"><input type="button" class="pagination-last-breakfast page-link mx-2 rounded border-2" value="Last"></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="tab-pane fade" id="lunch-tab-pane" role="tabpanel" aria-labelledby="lunch-tab" tabindex="0">
+                                <!-- If there are no items -->
+                                <div id="pagination-items-lunch" class="p-4">
+                                    <h5 class="text-center">No items available for this menu.</h5>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="hot-tab-pane" role="tabpanel" aria-labelledby="hot-tab" tabindex="0">
+                                <div id="pagination-items-hot" class="p-4">
+                                    <h5 class="text-center">No items available for this menu.</h5>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="cold-tab-pane" role="tabpanel" aria-labelledby="cold-tab" tabindex="0">
+                                <div id="pagination-items-cold" class="p-4">
+                                    <h5 class="text-center">No items available for this menu.</h5>
+                                </div>
+                            </div>
+                        </div>
+
+<!--                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <input type="button" class="previous btn btn-secondary me-4" value="Previous">
+                                <input type="button" class="next btn btn-secondary me-4" value="Skip">
+                                <input type="button" class="next btn btn-primary" value="Next">
+                            </div>
+                        </div>-->
+                    </fieldset>
+                    
+                    
+                    <!-- Personal/Company Details -->
+<!--                    <fieldset class="form-group">
+                        <div class="row mt-4">
+                            <div class="col form-check">
+                                <input type="checkbox" class="form-check-input m-2">
+                                <h3><label class="form-check-label">Personal Details</label></h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4" id="clientPersonalDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalFName">First Name</label>
+                                    <input class="form-control" type="text" id="clientPersonalFName">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalLName">Last Name</label>
+                                    <input class="form-control" type="text" id="clientPersonalLName">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalEmail">Email</label>
+                                    <input class="form-control" type="text" id="clientPersonalEmail">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalNationality">Nationality</label>
+                                    <input class="form-control" type="text" id="clientPersonalNationality">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalGender">Gender</label>
+                                    <select class="form-select">
+                                        <option selected>Choose...</option>
+                                        <option value="1">Male</option>
+                                        <option value="2">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientPersonalDOB">Date of Birth</label>
+                                    <input class="form-control" type="date" id="clientPersonalDOB">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row mt-4">
+                            <div class="col form-check">
+                                <input type="checkbox" class="form-check-input m-2">
+                                <h3><label class="form-check-label">Company Details</label></h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4" id="clientCompanyDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanyName">Company Name</label>
+                                    <input class="form-control" type="text" id="clientCompanyName">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanySize">Company Size</label>
+                                    <input class="form-control" type="text" id="clientCompanySize">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanyCity">City</label>
+                                    <input class="form-control" type="text"  id="clientCompanyCity">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="clientCompanyWebsite">Website</label>
+                                    <input class="form-control" type="text"  id="clientCompanyWebsite">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <input type="button" class="previous btn btn-secondary me-4" value="Previous">
+                                <input type="button" class="next btn btn-primary" value="Next">
+                            </div>
+                        </div>
+                    </fieldset>-->
+                    
+                    
+                    <!-- Checkout -->
+                    <fieldset class="form-group">
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Billing Address</h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 mb-4">
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <label class="form-label" for="paymentBillingSelection">Choose Saved Address</label>
+                                    <!-- If there is already a saved address, immediately fill the form with it -->
+                                    <select class="form-select" id="paymentBillingSelection">
+                                        <option selected>Default Address</option>
+                                        <option value="1">Second Address</option>
+                                        <option value="2">Max limit should be 4</option>
+                                        <option value="3">To prevent flooding</option>
+                                    </select>
+                                </div>
+                                <div class="col-4 d-flex flex-column-reverse">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" class="btn btn-primary w-100" value="Save Address Below">
+                                        </div>
+                                        <div class="col">
+                                            <input type="button" class="btn btn-secondary w-100" onclick="clearBillingForm()" value="Clear Form">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="billingForm">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingBuilding">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingStreet">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingBlock">Block</label>
+                                        <input class="form-control" type="text" id="paymentBillingBlock">
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingArea">Area</label>
+                                        <input class="form-control" type="text" id="paymentBillingArea">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingCountry">Country</label>
+                                        <input class="form-control" type="text" id="paymentBillingCountry">
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" for="paymentBillingPhone">Phone Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingPhone">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Payment Details</h3>
+                            </div>
+                        </div>
+                        <div class="card p-4 pb-2" id="clientCompanyDetailsCard">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardNumber">Card Number</label>
+                                    <input class="form-control" type="text" id="paymentCardNumber">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardCVV">CVV</label>
+                                    <input class="form-control" type="text" id="paymentCardCVV">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="form-label" for="paymentCardExpiryYear">Card Expiry</label>
+                                    <select class="form-select" id="paymentCardExpiryYear">
+                                        <option selected>Year</option>
+                                        <option value="1">1</option>
+                                        <!-- Programmatically create values 1-12 -->
+                                    </select>
+                                </div>
+                                <div class="col d-flex align-items-end">
+                                    <select class="form-select" id="paymentCardExpiryMonth">
+                                        <option selected>Month</option>
+                                        <option value="1">1</option>
+                                        <!-- Programmatically create values 1-31 -->
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Display Total cost -->
+                            <div class="row">
+                                <div class="col">
+                                    <h2>Total: XXX.XXX BHD</h2>
+                                </div>
+                            </div>
+                        </div>
+                        
+<!--                        <div class="row mb-4">
+                            <div class="form-group col submitBar d-flex justify-content-end">
+                                <input type="button" class="previous btn btn-secondary me-4" value="Previous">
+                                <input type="button" class="btn btn-primary" value="Complete Booking">
+                            </div>
+                        </div>-->
+                    </fieldset>
+                    
+                    <!-- Previous/Next Buttons -->
+                    <div class="row my-4">
+                        <div class="form-group col submitBar d-flex justify-content-end">
+                            <input type="button" class="previous btn btn-secondary me-4 hide" value="Previous">
+                            <input type="button" class="next btn btn-primary" value="Next">
+                            <!-- This button only shows up at the last screen -->
+                            <input type="button" class="save btn btn-primary hide" value="Complete Booking">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+window.addEventListener("load", () => {
+    // load pages for first menu
+   enablePagination("breakfast", ".cateringItem");
+    handleCateringCheckboxes("breakfast");
+});
+// enable catering menu tabs
+const triggerTabList = document.querySelectorAll('#cateringTabBar button');
+triggerTabList.forEach(triggerEl => {
+  const tabTrigger = new bootstrap.Tab(triggerEl);
+
+  triggerEl.addEventListener('click', event => {
+//      console.log("CLICKED ON TABBB");
+    event.preventDefault();
+    const menuType = triggerEl.id.split("-",1)[0];
+    enablePagination(menuType, ".cateringItem");
+    handleCateringCheckboxes(menuType);
+    tabTrigger.show();
+  });
+});
+
+//      Catering Item Quantity and Checkbox 
+// disable quantity box based on checkbox for all menu items
+const handleCateringCheckboxes = (menuType) => {
+    const paginationList = document.getElementById("pagination-items-"+menuType);
+    
+    const SetQuantityActive = (index, state) => {
+        const quantityElement = paginationList.querySelector("#catering-item-"+menuType+"-"+index+"-quantity");
+        quantityElement.disabled = state;
+    };
+    
+    // add event listeners to checkboxes
+    paginationList.querySelectorAll(".cateringItemCheck").forEach(checkbox => {
+        checkbox.addEventListener('click', () => {
+            const index = checkbox.id.split("-", 4)[3];
+            const state = checkbox.checked;
+            SetQuantityActive(index, !state);
+        });
+    });
+    
+};
+
+
+
+//      Catering Menus Pagination
+
+
+
+//      Clear Billing Form
+const clearBillingForm = () => {
+    // get and clear inputs
+    const billingForm = document.getElementById("billingForm");
+    billingForm.querySelectorAll("input").forEach(field => {
+        field.value = "";
+    });
+};
+
+
+//      Previous/Next buttons functionality
+let currentSection = 0;
+let sections = document.querySelectorAll("#bookingForm > fieldset");
+let sectionButtons = document.querySelectorAll("#bookingProgress > li");
+let cards = document.querySelectorAll(".clientBookingSidebar > .clientCard");
+let nextButton = document.querySelector(".next");
+let saveButton = document.querySelector(".save");
+let previousButton = document.querySelector(".previous");
+
+for (let i = 0; i < sectionButtons.length; i++) {
+//    console.log("Added listener to " + sectionButtons[i]);
+    sectionButtons[i].addEventListener("click", function() {
+//        console.log("Clicked on me!!");
+        sections[currentSection].classList.remove("active");
+        sectionButtons[currentSection].classList.remove("active");
+        // if going to previous section, make current card inactive
+        if (currentSection > i && currentSection < cards.length) {
+            cards[currentSection].classList.add("inactive");
+        }
+        
+        sections[currentSection = i].classList.add("active");
+        sectionButtons[currentSection].classList.add("active");
+        if (currentSection < cards.length) {
+            cards[currentSection].classList.remove("inactive");
+        }
+        
+        if (i === 0) {
+            if (previousButton.className.split(" ").indexOf("hide") < 0) {
+                previousButton.classList.add("hide");
+            }
+        } else {
+            if (previousButton.className.split(" ").indexOf("hide") >= 0) {
+                previousButton.classList.remove("hide");
+            }
+        }
+        if (i === sectionButtons.length - 1) {
+            if (nextButton.className.split(" ").indexOf("hide") < 0) {
+                nextButton.classList.add("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") >= 0) {
+                saveButton.classList.remove("hide");
+            }
+        } else {
+            if (nextButton.className.split(" ").indexOf("hide") >= 0) {
+                nextButton.classList.remove("hide");
+            }
+            if (saveButton.className.split(" ").indexOf("hide") < 0) {
+                saveButton.classList.add("hide");
+            }
+        }
+    });
+}
+
+
+nextButton.addEventListener("click", function() {
+//        console.log("Tried to click");
+    if (currentSection < sectionButtons.length - 1) {
+        sectionButtons[currentSection + 1].click();
+    }
+});
+
+previousButton.addEventListener("click", function() {
+    if (currentSection > 0) {
+        sectionButtons[currentSection - 1].click();
+    }
+});
+
+
+//  add function for complete booking button
+saveButton.addEventListener("click", function() {
+    // take user to summary page
+    window.location.href = "booking_summary.php";
+});
+
+</script>
