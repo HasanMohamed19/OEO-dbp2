@@ -132,13 +132,14 @@ $loggedInClientId = $_COOKIE['clientId'];
                                         </div>
 
                                         <div class="col form-group required">
-                                            <label for="cardExpiryYear" class="form-label">Card Expiry</label>
+                                            <label for="cardExpiryYear" class="form-label">Card Expiry Year</label>
                                             <select name="cardExpiryYear" id="cardExpiryYear" class="form-select">
                                                 <option disabled selected>Year</option>
                                             </select>
                                         </div>
 
-                                        <div class="col d-flex align-items-end form-group required">
+                                        <div class="col form-group required">
+                                            <label for="cardExpiryMonth" class="form-label">Month</label>
                                             <select name="cardExpiryMonth" id="cardExpiryMonth" class="form-select">
                                                 <option selected disabled>Month</option>
                                                 <option value="1">January (1)</option>
