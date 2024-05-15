@@ -3,6 +3,7 @@
     include './models/CardDetail.php';
     include './models/PersonalDetails.php';
     include './models/CompanyDetails.php';
+    include './models/User.php';
     include './models/Client.php';
     include './models/Reservation.php';
     include './models/hall.php';

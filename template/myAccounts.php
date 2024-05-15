@@ -1,5 +1,5 @@
 <?php
-    $loggedInClientId = $_COOKIE['clientId'];
+$loggedInClientId = $_COOKIE['clientId'];
 ?>
 
 <!DOCTYPE html>
@@ -23,8 +23,8 @@
                                 <strong>Payment Cards</strong>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
-                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <strong>Wallet</strong>
+                            <button id="points" type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <strong>Royalty Points</strong>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                             <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -69,10 +69,10 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $reservation = new Reservation();
-                                    $reservation->setClientId($loggedInClientId);
-                                    $reservations = $reservation->getReservationsForClient();
-                                    $reservation->displayClientReservations($reservations);
+                                $reservation = new Reservation();
+                                $reservation->setClientId($loggedInClientId);
+                                $reservations = $reservation->getReservationsForClient();
+                                $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
@@ -195,33 +195,28 @@
 
                 <!-- end of my cards -->
 
-                <!-- Wallet & Royalty Points -->
-                
+                <!-- Royalty Points -->
+
                 <?php
 //                            include 'debugging.php';
 //                        include './models/Client.php';
-                            $cc = new Client();
+                $cc = new Client();
 //                            $client->setClientId('1');
-                            $s = $cc->getClientStatusName($loggedInClientId);
-                            $db = Database::getInstance();
-//                            $n = $db->querySQL('SELECT getNumberOfBookings(1)');
-//                            var_dump($db->querySQL('CALL getNumberOfBookings(1)'));
-//                            echo $n . ' is what??';
-//                            var_dump($s);
-//                            echo $s->status_name . ' is the status';
+                $s = $cc->getClientStatusName($loggedInClientId);
+
                 ?>
-                
+
                 <div class="card mb-2 ms-4 px-0 inactive">
                     <div class="card-header">
-                        <h3>Wallet & Royalty Points</h3>
+                        <h3>Royalty Points</h3>
                     </div>
 
                     <div class="row my-status align-self-center my-2">
-                        
+
                         <h1 class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
                         <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                     </div>
-                    
+
                     <div class="card rounded shadow-sm mb-2 mx-3">
 
                         <ul class="list-group list-group-flush border-0">
@@ -233,7 +228,7 @@
                     </div>
 
                 </div>
-                <!-- end of Wallet & Royalty Points -->
+                <!-- end of Royalty Points -->
 
                 <!--Profile -->
                 <div class="card col shadow-sm ms-4 px-0 inactive">
@@ -342,15 +337,15 @@
 
                 </div>
                 <!-- end of profile -->
-                
+
                 <?php
-                    $client = new Client();
-                    $client->iniwWithClientId($_COOKIE['clientId']);
-                    
-                    $user = new User();
-                    $user->initWithUserid($_COOKIE['userId']);
+                $client = new Client();
+                $client->iniwWithClientId($_COOKIE['clientId']);
+
+                $user = new User();
+                $user->initWithUserid($_COOKIE['userId']);
                 ?>
-                
+
                 <div class="card col shadow-sm ms-4 px-0 inactive">
                     <div class="card-header">
                         <h3>Edit Account</h3>
@@ -391,14 +386,14 @@
                         <h3>Address Book</h3>
                     </div>
 
-<?php
+                    <?php
 //                            echo 'book address section';
-$address = new BillingAddress();
-$address->setClientId($loggedInClientId);
-$addresses = BillingAddress::getAddresses($loggedInClientId);
-$address->displayAddresses($addresses);
+                    $address = new BillingAddress();
+                    $address->setClientId($loggedInClientId);
+                    $addresses = BillingAddress::getAddresses($loggedInClientId);
+                    $address->displayAddresses($addresses);
 //                            $card->displayCards($cards);
-?>
+                    ?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
@@ -572,6 +567,57 @@ $address->displayAddresses($addresses);
                     console.error('Error fetching address info:', error);
                 }
             });
+        });
+    });
+
+
+    function getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    $(function () {
+        $.ajax({
+            url: './helpers/get_client_status.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('status Info:', response);
+                
+                // Update class list
+                const statusDiv = $(".my-status");
+                switch (response) {
+                    case 'Gold':
+                        statusDiv.addClass('gold');
+                        break;
+                    case 'Silver':
+                        statusDiv.addClass('silver');
+                        break;
+                    case 'Bronze':
+                        statusDiv.addClass('bronze');
+                        break;
+                    default:
+                        statusDiv.addClass('nothing');
+                }
+                
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching address info:', error);
+            }
         });
     });
 

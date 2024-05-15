@@ -59,7 +59,7 @@ private $clientStatusId;
     public function iniwWithClientId($clientId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
-        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->client_status_id, $data->user_id);
     }
     
     public function getClientEmail() {
