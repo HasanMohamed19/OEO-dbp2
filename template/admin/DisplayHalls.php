@@ -70,9 +70,39 @@
 
                         <form id="add-form" action="Admin_ViewHalls.php" novalidate method="POST" enctype="multipart/form-data">
                             <div class="mb-3 form-group required" id="hallImg">
-                                <label class="form-label" id="imageUploadLabel">Hall Image</label>
-                                <input type="file" class="form-control" id="imageUpload" name="HallImage" required multiple >
-                                <input value="" type="hidden" name="imagePath" id="imagePath" >
+                                <label class="form-label" id="imageUploadLabel">Hall Images<span class="fst-italic"> (minimum1)</span></label>
+                                <input class="form-control hallimgIn" id="imageUpload1" name="HallImage[]" type="file" hidden>
+                                <input class="form-control hallimgIn" id="imageUpload2" name="HallImage[]" type="file" hidden>
+                                <input class="form-control hallimgIn" id="imageUpload3" name="HallImage[]" type="file" hidden>
+                                <input class="form-control hallimgIn" id="imageUpload4" name="HallImage[]" type="file" hidden>
+                                <table class="table">
+                                    <tbody id="imageList">
+                                        <tr>
+                                            <td>1.</td>
+                                            <td id="img1">Empty</td>
+                                            <td id="rm-file1"><i class="bi bi-trash3-fill">Delete</i></td>
+                                            <td id="add-file1"><i class="bi bi-plus-circle-fill">Add</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td id="img2">Empty</td>
+                                            <td id="rm-file2"><i class="bi bi-trash3-fill">Delete</i></td>
+                                            <td id="add-file2"><i class="bi bi-plus-circle-fill">Add</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3.</td>
+                                            <td id="img3">Empty</td>
+                                            <td id="rm-file3"><i class="bi bi-trash3-fill">Delete</i></td>
+                                            <td id="add-file3"><i class="bi bi-plus-circle-fill">Add</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4.</td>
+                                            <td id="img4">Empty</td>
+                                            <td id="rm-file4"><i class="bi bi-trash3-fill">Delete</i></td>
+                                            <td id="add-file4"><i class="bi bi-plus-circle-fill">Add</i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>  
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Name</label>
@@ -143,6 +173,58 @@
 
     //get Hall ID value 
     $(document).ready(function () {
+        $('#add-file1').click(function () {
+            $('#imageUpload1').click();
+        });
+        $('#add-file2').click(function () {
+            $('#imageUpload2').click();
+        });
+        $('#add-file3').click(function () {
+            $('#imageUpload3').click();
+        });
+        $('#add-file4').click(function () {
+            $('#imageUpload4').click();
+        });
+        $('#imageUpload1').change(function () {
+            // Check if any file is selected
+            if (this.files.length > 0) {
+                $('#img1').text(this.files[0].name);
+            }
+        });
+        $('#imageUpload2').change(function () {
+            // Check if any file is selected
+            if (this.files.length > 0) {
+                $('#img2').text(this.files[0].name);
+            }
+        });
+        $('#imageUpload3').change(function () {
+            // Check if any file is selected
+            if (this.files.length > 0) {
+                $('#img3').text(this.files[0].name);
+            }
+        });
+        $('#imageUpload4').change(function () {
+            // Check if any file is selected
+            if (this.files.length > 0) {
+                $('#img4').text(this.files[0].name);
+            }
+        });
+        $('#rm-file1').click(function () {
+            $('#imageUpload1').val('');
+            $('#img1').text("Empty");
+        });
+        $('#rm-file2').click(function () {
+            $('#imageUpload2').val('');
+            $('#img2').text("Empty");
+        });
+        $('#rm-file3').click(function () {
+            $('#imageUpload3').val('');
+            $('#img3').text("Empty");
+        });
+        $('#rm-file4').click(function () {
+            $('#imageUpload4').val('');
+            $('#img4').text("Empty");
+        });
         $('#halls').addClass('active-page');
         $(document).on('click', '#editHallBtn', function () {
 
@@ -176,7 +258,6 @@
             });
         });
     });
-
     $('#addModal').on('hidden.bs.modal', function (e) {
         // Clear form Input fields when closing the form
         $('.form-control').val('');
@@ -189,16 +270,24 @@
         $('#Add-HallID').removeAttr('value');
         $('#imageUploadLabel:after').add();
     });
-
     $('#add-form').submit(function (e) {
         // Get form inputs
         var Hallname = $('#hallNameInput').val();
         var rntlCharge = $('#RntlchargeInput').val();
         var capacity = $('#CapacityInput').val();
-        var imageUpload = $('#imageUpload');
+
+        var oneImageUploaded = false;
+
+        $('.hallimgIn').each(function () {
+            var inputValue = $(this).val().trim();
+            if (inputValue !== '') {
+                oneImageUploaded = true;
+                return false;
+            }
+        });
 
         // Check if any field is empty or image is not uploaded
-        if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || Hallname === '' || rntlCharge == '' || capacity == '') {
+        if (!oneImageUploaded || Hallname === '' || rntlCharge == '' || capacity == '') {
             $(this).addClass('was-validated');
             e.preventDefault(); // Prevent form submission
             return false;
@@ -206,10 +295,6 @@
         // If all checks pass, allow form submission
         return true;
     });
-
-
-
-
 </script>
 </body>
 
@@ -222,33 +307,43 @@ function displayHalls($dataSet) {
             $hall = new Hall();
             $id = $dataSet[$i]->hall_id;
             $hall->initWithHallid($id);
-
+            $image = new HallImage();
+            $hallImages = $image->getAllImagesForHall($id);
+            echo'<h1>number of images</h1>' . count($hallImages);
             echo '<div class="card hallCard mb-4 ">
                 <div class="card-body p-0">
                     <div class="row m-0">
                         <div class="col-xl-6 p-0">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="' . $hall->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="' . $hall->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="' . $hall->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    ';
+                                      for ($j = 0; $j < count($hallImages); $j++) {
+                                          if ($j==0){
+                                              echo'<button type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+                                          }else{
+                                              echo '<button type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide-to="'.($j).'" aria-label="Slide '.($j).'"></button>'; 
+                                          }
+                                      } 
+                                   
+                                echo'</div>
+                                <div class="carousel-inner">';
+                                    for ($k = 0; $k < count($hallImages); $k++) {
+                                        if ($k==0){
+                                        echo '<div class="carousel-item active">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
+                                        </div>';   
+                                        } else {
+                                        echo '<div class="carousel-item">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
+                                        </div>'; 
+                                        }
+                                        }
+                                echo'</div> 
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-'.$id .'" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>

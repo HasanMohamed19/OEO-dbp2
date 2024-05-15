@@ -10,36 +10,62 @@
  *
  * @author Hassan
  */
+include '../helpers/Database.php';
 class HallImage {
-    
+
     private $hallImageId;
     private $hallImagePath;
     private $hall_id;
-    
+
     public function __construct() {
         $this->hallImageId = null;
         $this->hallImagePath = null;
         $this->hall_id = null;
     }
-    
+
     public function initWith($hallImageId, $hallImagePath, $hall_id) {
         $this->hallImageId = $hallImageId;
         $this->hallImagePath = $hallImagePath;
         $this->hall_id = $hall_id;
     }
-    
+
     function initWithImageId($hallImageId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Hall_Image WHERE hall_image_id = ' . $hallImageId);
         $this->initWith($data->hall_image_id, $data->hall_image_path, $data->hall_id);
     }
-    
-    function getAllImagesForHall($hallImageId) {
+
+    function getAllImagesForHall($hallId) {
         $db = Database::getInstance();
-        $data = $db->multiFetch("SELECT * FROM dbProj_Hall_Image WHERE hall_image_id = " . $hallImageId);
+        $data = $db->multiFetch("SELECT * FROM dbProj_Hall_Image WHERE hall_id = " . $hallId);
         return $data;
     }
-    
+
+    function addHallImage() {
+        $db = new Database();
+        
+            $this->hallImagePath = $db->sanitizeString($this->hallImagePath);
+            $this->hall_id = $db->sanitizeString($this->hall_id);
+            
+            $q = "INSERT INTO dbProj_Hall_Image(hall_image_path,hall_id) VALUES(?,?)";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('si', $this->hallImagePath, $this->hall_id);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            return true;
+    }
+
     public function deleteImage() {
         try {
             $db = Database::getInstance();
@@ -50,7 +76,7 @@ class HallImage {
             return false;
         }
     }
-    
+
     public function getHallImageId() {
         return $this->hallImageId;
     }
@@ -74,8 +100,4 @@ class HallImage {
     public function setHall_id($hall_id) {
         $this->hall_id = $hall_id;
     }
-
-
-
-    
 }
