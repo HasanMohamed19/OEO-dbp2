@@ -93,7 +93,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     $card = new CardDetail();
                     $card->setClientId($loggedInClientId);
                     $cards = $card->getAllCardsForUser();
-                    $card->displayCards($cards);
+                    displayCards($cards);
                     ?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
@@ -250,16 +250,16 @@ $loggedInClientId = $_COOKIE['clientId'];
 
                     <form action="displayMyAccount.php" method="post">
                         <div class="container">
-                            <div class="row my-2">
-                                <div class="col">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" name="username" class="form-control" placeholder="Username" value="">
-                                </div>
-                                <div class="col">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Password">
-                                </div>
-                            </div>
+                            <!--                            <div class="row my-2">
+                                                            <div class="col">
+                                                                <label for="username" class="form-label">Username</label>
+                                                                <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                                                            </div>
+                                                            <div class="col">
+                                                                <label for="password" class="form-label">Password</label>
+                                                                <input type="password" name="password" class="form-control" placeholder="Password">
+                                                            </div>
+                                                        </div>-->
                             <div class="row my-2">
                                 <div class="col">
                                     <label for="firstname" class="form-label">First Name</label>
@@ -272,8 +272,12 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </div>
                             <div class="row my-2">
                                 <div class="col">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select name="gender" class="form-select" id="n">
+                                        <option value="" disabled>Gender</option>
+                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected'; ?> >Male</option>
+                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected'; ?> >Female</option>
+                                    </select>
                                 </div>
                                 <div class="col">
                                     <label for="nationality" class="form-label">Nationality</label>
@@ -285,14 +289,10 @@ $loggedInClientId = $_COOKIE['clientId'];
                                     <label for="dob" class="form-label">DOB</label>
                                     <input type="date" name="dob" class="form-control" placeholder="DOB" value="<?php echo $p->getDob(); ?>">
                                 </div>
-                                <div class="col">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select name="gender" class="form-select" id="n">
-                                        <option value="" disabled>Gender</option>
-                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected'; ?> >Male</option>
-                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected'; ?> >Female</option>
-                                    </select>
-                                </div>
+                                <!--                                <div class="col">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
+                                                                </div>-->
                             </div>
                         </div>
                         <!-- </form> -->
@@ -389,7 +389,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     $address = new BillingAddress();
                     $address->setClientId($loggedInClientId);
                     $addresses = BillingAddress::getAddresses($loggedInClientId);
-                    $address->displayAddresses($addresses);
+                    displayAddresses($addresses);
 //                            $card->displayCards($cards);
                     ?>
 
@@ -497,7 +497,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     </div>
                 </div>
             </div>
-            
+
             <!--extra card modal-->
             <div class="modal fade" id="noMoreAddressModal">
                 <div class="modal-dialog">
@@ -516,13 +516,76 @@ $loggedInClientId = $_COOKIE['clientId'];
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <!--END OF EXTRA MODALS-->
 
         </div>
 
     </div>
+
+    <?php
+
+    function displayCards($dataSet) {
+
+        if (!empty($dataSet)) {
+            for ($i = 0; $i < count($dataSet); $i++) {
+                $card = new CardDetail();
+                // todo: get this from the login
+//                $card->setClientId($_COOKIE['clientId']);
+                $cardId = $dataSet[$i]->card_id;
+                $card->initWithCardId($cardId);
+                echo '<div class="card my-3 mx-3 w-50 align-self-center">
+                        <div class="card-body vstack gap-2">';
+
+                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
+                echo '<div class="row justify-content-between">'
+                . '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
+                . '<span class="col-3 justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
+                echo '<div class="row my-2 gap-2">';
+                echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
+                echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
+                echo '</div></div></div>';
+            }
+        }
+    }
+
+    function displayAddresses($dataSet) {
+
+        if (!empty($dataSet)) {
+            for ($i = 0; $i < count($dataSet); $i++) {
+                $address = new BillingAddress();
+                // todo: get this from the login
+//                $address->setClientId('13');
+                $addressId = $dataSet[$i]->address_id;
+                $address->setAddressId($addressId);
+                $address->initWithId();
+
+                echo '<div class="card my-3 mx-3 w-50 align-self-center">
+                        <div class="card-body vstack gap-2 align-items-center">
+                            <div class="row fw-bold"><h2>Company Address</h2></div>';
+
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() . '</span>
+                     </div>';
+
+                echo ' <div class="row m-2">
+                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() . ', Street: ' . $address->getRoadNumber() . ', Block: ' . $address->getBlockNumber() . '</span>
+                     </div>';
+
+                echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">' . $address->getCity() . ', ' . $address->getCountry() . ' </span>
+                      </div>';
+
+                echo '</div><div class="row m-2 gap-1">';
+                echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                    <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
+                            </div>
+                        </div>';
+            }
+        }
+    }
+    ?>
 
 </div>
 
@@ -682,7 +745,7 @@ $loggedInClientId = $_COOKIE['clientId'];
             }
         });
     });
-    
+
     $(function () {
         $.ajax({
             url: './helpers/get_address_count.php',
@@ -746,5 +809,19 @@ $loggedInClientId = $_COOKIE['clientId'];
         }
         return true;
     });
+
+    $('#editCardModal').on('hidden.bs.modal', function (e) {
+        // Clear form Input fields when closing the form
+        $('.form-control').val('');
+        $('.form-select').val('');
+        $('#card-add-form').removeClass('was-validated');
+    });
+
+    $('#editAddressModal').on('hidden.bs.modal', function (e) {
+        // Clear form Input fields when closing the form
+        $('.form-control').val('');
+        $('#address-add-form').removeClass('was-validated');
+    });
+
 </script>
 </body>
