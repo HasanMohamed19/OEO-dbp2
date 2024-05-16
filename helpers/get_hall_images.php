@@ -1,28 +1,18 @@
 <?php
 // Include necessary files and classes
-include '../debugging.php';
-include '../models/Hall.php'; // Include the Hall class definition
-
+//include '../debugging.php';
+include '../models/HallImage.php'; // Include the Hall class definition
 // Check if hallId parameter is provided
-if (isset($_GET['hallId'])) {
+if (isset($_GET['hallIdImg'])) {
     // Get hallId from the request
-    $hallId = $_GET['hallId'];
+    $hallIdImg = $_GET['hallIdImg'];
 
     try {
         // Create a new instance of the Hall class
-        $hall = new Hall();
+        $hallImage = new HallImage();
         
         // Initialize the hall object with data based on hallId
-        $hall->initWithHallid($hallId);
-        // Prepare the response data
-        $responseData = array(
-            'hallId' => $hall->getHallId(),
-            'hallName' => $hall->getHallName(),
-            'description' => $hall->getDescription(),
-            'rentalCharge' => $hall->getRentalCharge(),
-            'capacity' => $hall->getCapacity(),
-            'status' => $hall->getHallStatus(),
-        );
+        $responseData = $hallImage->getAllImagesForHall($hallIdImg);
 
         // Send JSON response
         header('Content-Type: application/json');

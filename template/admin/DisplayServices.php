@@ -80,6 +80,14 @@
                                     <option value="4" >Cold Beverages</option>  
                                 </select>
                             </div>
+                            <div class="mb-3 form-group required">
+                                <label for="status" class="form-label">Item Status</label>
+                                <select name="status" class="form-select" id="itemStatus" required>
+                                    <option value="" disabled>Select Status</option>
+                                    <option value="1">Available</option>
+                                    <option value="2" >Cancelled</option>
+                                </select>
+                            </div>
                             <div class="mb-3" form-group>
                                 <label for="description">Item Description</label>
                                 <textarea class="form-control" rows="5" id="description" placeholder="Enter Items's Description" name="description" ></textarea>
@@ -193,9 +201,9 @@
             var serviceId = $('#serviceidSelect').val();
             console.log("service id value is:", serviceId);
             var imageUpload = $('#imageUpload');
-
+            var status = $('#itemStatus').val();
             // Check if any field is empty or image is not uploaded
-            if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId === null) {
+            if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId === null ||status=='') {
                 $(this).addClass('was-validated');
                 e.preventDefault(); // Prevent form submission
                 return false;
@@ -224,7 +232,11 @@ function displayMenuItems($dataSet) {
                         <div class="col-xl-6 p-0">
                             <div class="d-flex flex-column h-100 justify-content-between text-center ">
                                 <div class="row pt-5">
-                                    <h3>' . $item->getName() . '</h3>
+                                    <div class="col text-center " >
+                                        <span class="fw-bold display-6">' . $item->getName() . '</span>
+                                            <br>
+                                        <span class="badge bg-' . $item->getItemStatusName()->status_name . '">' . $item->getItemStatusName()->status_name . '</span>
+                                </div>
                                 </div>
                                 <div class="row ps-5 pe-5">
                                     <p>' . $item->getDescription() . '</p>
@@ -240,7 +252,6 @@ function displayMenuItems($dataSet) {
                                 <div class="row">
                                     <div class="d-flex col w-100">
                                         <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
-                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i> </button>
                                     </div>
                                 </div>
                             </div>

@@ -11,6 +11,7 @@
  * @author Hassan
  */
 include '../helpers/Database.php';
+
 class HallImage {
 
     private $hallImageId;
@@ -43,38 +44,51 @@ class HallImage {
 
     function addHallImage() {
         $db = new Database();
-        
-            $this->hallImagePath = $db->sanitizeString($this->hallImagePath);
-            $this->hall_id = $db->sanitizeString($this->hall_id);
-            
-            $q = "INSERT INTO dbProj_Hall_Image(hall_image_path,hall_id) VALUES(?,?)";
 
-            $stmt = mysqli_prepare($db->getDatabase(), $q);
+        $this->hallImagePath = $db->sanitizeString($this->hallImagePath);
+        $this->hall_id = $db->sanitizeString($this->hall_id);
 
-            if ($stmt) {
-                $stmt->bind_param('si', $this->hallImagePath, $this->hall_id);
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
+        $q = "INSERT INTO dbProj_Hall_Image(hall_image_path,hall_id) VALUES(?,?)";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if ($stmt) {
+            $stmt->bind_param('si', $this->hallImagePath, $this->hall_id);
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute failed';
                 $db->displayError($q);
                 return false;
             }
-            return true;
+        } else {
+            $db->displayError($q);
+            return false;
+        }
+        return true;
     }
 
     public function deleteImage() {
-        try {
-            $db = Database::getInstance();
-            $deleteQry = $db->querySQL("Delete from dbProj_Hall_Image where hall_image_id = " . $this->hallImageId);
-            return true;
-        } catch (Exception $e) {
-            echo 'Exception: ' . $e;
+        $db = new Database();
+
+        $this->hallImagePath = $db->sanitizeString($this->hallImagePath);
+        $q = "Delete from dbProj_Hall_Image where hall_image_path = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if ($stmt) {
+            $stmt->bind_param('s', $this->hallImagePath);
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute failed';
+                $db->displayError($q);
+                return false;
+            }
+        } else {
+            $db->displayError($q);
             return false;
         }
+        echo 'image deleted;';
+        return true;
     }
 
     public function getHallImageId() {

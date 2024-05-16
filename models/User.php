@@ -265,6 +265,11 @@ class User {
 
     function deleteUser() {
         $db = new Database();
+        $clientId = $this->getClientByUserId();
+        $chkbooking = $db->multiFetch('SELECT * FROM dbProj_Reservation WHERE client_id = \'' . $clientId . '\' and (reservation_status_id = 3 or reservation_status_id = 4)');
+        if  (count($chkbooking)>0){
+            return false;
+        }
         $this->userId = $db->sanitizeString($this->userId);
         $q = "Delete from dbProj_User where user_id=?";
         $stmt = mysqli_prepare($db->getDatabase(), $q);

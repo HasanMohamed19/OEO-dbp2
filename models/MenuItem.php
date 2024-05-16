@@ -23,6 +23,9 @@ const MENU_LUNCH = 2;
 const MENU_HOT_BEVERAGES = 3;
 const MENU_COLD_BEVERAGES = 4;
 
+const AVAILABLE_STATUS = 1;
+const CANCELLED_STATUS = 2;
+
 class MenuItem {
 
     private $itemId;
@@ -32,20 +35,22 @@ class MenuItem {
     private $imagePath;
     // service_id
     private $cateringServiceId;
+    private $ItemStatus;
 
-    public function initWith($itemId, $name, $description, $price, $imagePath, $cateringServiceId) {
+    public function initWith($itemId, $name, $description, $price, $imagePath, $cateringServiceId, $ItemStatus) {
         $this->itemId = $itemId;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
         $this->imagePath = $imagePath;
         $this->cateringServiceId = $cateringServiceId;
+        $this->ItemStatus = $ItemStatus;
     }
 
     public function initWithMenuItemid($id) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Menu_Item WHERE item_id = ' . $id);
-        $this->initWith($data->item_id, $data->name, $data->description, $data->price, $data->image_path, $data->service_id);
+        $this->initWith($data->item_id, $data->name, $data->description, $data->price, $data->image_path, $data->service_id, $data->item_status_id);
     }
 
     public function __construct() {
@@ -55,6 +60,7 @@ class MenuItem {
         $this->price = null;
         $this->imagePath = null;
         $this->cateringServiceId = null;
+        $this->ItemStatus = null;
     }
 
     public function getItemId() {
@@ -81,6 +87,10 @@ class MenuItem {
         return $this->cateringServiceId;
     }
 
+    public function getItemStatus() {
+        return $this->ItemStatus;
+    }
+
     public function setItemId($itemId) {
         $this->itemId = $itemId;
     }
@@ -99,6 +109,10 @@ class MenuItem {
 
     public function setImagePath($imagePath) {
         $this->imagePath = $imagePath;
+    }
+
+    public function setItemStaus($ItemStatus) {
+        $this->ItemStatus = $ItemStatus;
     }
 
     public function setCateringService($cateringServiceId) {
@@ -136,13 +150,14 @@ class MenuItem {
             $this->price = $db->sanitizeString($this->price);
             $this->imagePath = $db->sanitizeString($this->imagePath);
             $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
+            $this->ItemStatus = $db->sanitizeString($this->ItemStatus);
 
-            $q = "INSERT INTO dbProj_Menu_Item(name,description,price,image_path,service_id) VALUES(?,?,?,?,?)";
+            $q = "INSERT INTO dbProj_Menu_Item(name,description,price,image_path,service_id,service_status_id) VALUES(?,?,?,?,?,?)";
 
             $stmt = mysqli_prepare($db->getDatabase(), $q);
 
             if ($stmt) {
-                $stmt->bind_param('ssdsi', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId);
+                $stmt->bind_param('ssdsii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->ItemStatus);
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute failed';
@@ -154,7 +169,7 @@ class MenuItem {
                 return false;
             }
             return true;
-        } else{
+        } else {
             echo'invalid inputs';
         }
     }
@@ -179,7 +194,7 @@ class MenuItem {
         }
         return true;
     }
-    
+
     function updateMenuItem() {
         $db = new Database();
         if ($this->isValid()) {
@@ -189,13 +204,14 @@ class MenuItem {
             $this->price = $db->sanitizeString($this->price);
             $this->imagePath = $db->sanitizeString($this->imagePath);
             $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
+            $this->ItemStatus = $db->sanitizeString($this->ItemStatus);
 
-            $q = "UPDATE dbProj_Menu_Item set name = ? ,description = ?  ,price = ? ,image_path = ? ,service_id = ? WHERE item_id = ? ";
+            $q = "UPDATE dbProj_Menu_Item set name = ? ,description = ?  ,price = ? ,image_path = ? ,service_id = ?, item_status_id = ? WHERE item_id = ? ";
 
             $stmt = mysqli_prepare($db->getDatabase(), $q);
 
             if ($stmt) {
-                $stmt->bind_param('ssdsii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->itemId);
+                $stmt->bind_param('ssdsiii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->ItemStatus, $this->itemId);
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute failed';
@@ -212,6 +228,13 @@ class MenuItem {
         }
     }
 
+    function getItemStatusName() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT status_name FROM dbProj_Availability_Status a JOIN dbProj_Menu_Item m ON m.item_status_id = a.availability_status_id WHERE m.item_id = '$this->itemId'");
+//       var_dump($data);
+        return $data;
+    }
+
     public function isValid() {
         $errors = array();
 
@@ -225,13 +248,13 @@ class MenuItem {
             echo'no image';
             $errors[] = 'You must add an Image Path';
         }
-            
+        if (empty($this->ItemStatus))
+            $errors[] = 'You must enter a status';
+
         if (empty($this->cateringServiceId)) {
             echo'no service';
             $errors[] = 'You must add a catering service type';
         }
-            
-
         if (empty($errors))
             return true;
         else

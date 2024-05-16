@@ -39,7 +39,7 @@ if (isset($_POST['submitted'])) {
     $item->setDescription(trim($_POST['description']));
     $item->setCateringService(trim($_POST['serviceType']));
     $item->setPrice(trim($_POST['Price']));
-
+    $item->setItemStaus(trim($_POST['status']));
     // check the uploading of the image and assigning the image path
     $imgFileName = uploadImg();
     //if no image uploaded (only in update) then set the image to the old one
@@ -61,18 +61,6 @@ if (isset($_POST['submitted'])) {
         }
     } else if ($item->updateMenuItem()){
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
-    }
-}
-
-if (isset($_POST['deleteItemSubmitted'])) {
-    $ItemID = trim($_POST['ItemId']);
-    $deletedItem = new MenuItem();
-    $deletedItem->initWithMenuItemid($ItemID);
-
-    if ($deletedItem->deleteMenuItem()) {
-        echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
-    } else {
-        echo'Error: not deleted';
     }
 }
 include './template/admin/DisplayServices.php';

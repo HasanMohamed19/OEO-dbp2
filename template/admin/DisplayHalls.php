@@ -71,33 +71,33 @@
                         <form id="add-form" action="Admin_ViewHalls.php" novalidate method="POST" enctype="multipart/form-data">
                             <div class="mb-3 form-group required" id="hallImg">
                                 <label class="form-label" id="imageUploadLabel">Hall Images<span class="fst-italic"> (minimum1)</span></label>
-                                <input class="form-control hallimgIn" id="imageUpload1" name="HallImage[]" type="file" hidden>
-                                <input class="form-control hallimgIn" id="imageUpload2" name="HallImage[]" type="file" hidden>
-                                <input class="form-control hallimgIn" id="imageUpload3" name="HallImage[]" type="file" hidden>
-                                <input class="form-control hallimgIn" id="imageUpload4" name="HallImage[]" type="file" hidden>
+                                <input class="form-control " id="imageUpload1" name="HallImage[]" type="file" hidden>
+                                <input class="form-control " id="imageUpload2" name="HallImage[]" type="file" hidden>
+                                <input class="form-control " id="imageUpload3" name="HallImage[]" type="file" hidden>
+                                <input class="form-control " id="imageUpload4" name="HallImage[]" type="file" hidden>
                                 <table class="table">
                                     <tbody id="imageList">
                                         <tr>
                                             <td>1.</td>
-                                            <td id="img1">Empty</td>
+                                            <td id="img1" class="hallimgIn">Empty</td>
                                             <td id="rm-file1"><i class="bi bi-trash3-fill">Delete</i></td>
                                             <td id="add-file1"><i class="bi bi-plus-circle-fill">Add</i></td>
                                         </tr>
                                         <tr>
                                             <td>2.</td>
-                                            <td id="img2">Empty</td>
+                                            <td id="img2"class="hallimgIn">Empty</td>
                                             <td id="rm-file2"><i class="bi bi-trash3-fill">Delete</i></td>
                                             <td id="add-file2"><i class="bi bi-plus-circle-fill">Add</i></td>
                                         </tr>
                                         <tr>
                                             <td>3.</td>
-                                            <td id="img3">Empty</td>
+                                            <td id="img3"class="hallimgIn">Empty</td>
                                             <td id="rm-file3"><i class="bi bi-trash3-fill">Delete</i></td>
                                             <td id="add-file3"><i class="bi bi-plus-circle-fill">Add</i></td>
                                         </tr>
                                         <tr>
                                             <td>4.</td>
-                                            <td id="img4">Empty</td>
+                                            <td id="img4"class="hallimgIn">Empty</td>
                                             <td id="rm-file4"><i class="bi bi-trash3-fill">Delete</i></td>
                                             <td id="add-file4"><i class="bi bi-plus-circle-fill">Add</i></td>
                                         </tr>
@@ -115,6 +115,14 @@
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Capacity</label>
                                 <input type="number" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput" required >
+                            </div>
+                            <div class="mb-3 form-group required">
+                                <label for="status" class="form-label">Hall Status</label>
+                                <select name="status" class="form-select" id="hallStatus" required>
+                                    <option value="" disabled>Select Status</option>
+                                    <option value="1">Available</option>
+                                    <option value="2" >Cancelled</option>
+                                </select>
                             </div>
                             <div class="mb-3 form-group">
                                 <label class="form-label">Hall Description</label>
@@ -173,6 +181,7 @@
 
     //get Hall ID value 
     $(document).ready(function () {
+
         $('#add-file1').click(function () {
             $('#imageUpload1').click();
         });
@@ -210,20 +219,92 @@
             }
         });
         $('#rm-file1').click(function () {
-            $('#imageUpload1').val('');
-            $('#img1').text("Empty");
+            var imgPath = $('#img1').text();
+            console.log("image path is"+ imgPath);
+            if ($('#imageUpload1').val()=='' && $('#img1').text()!="Empty"){
+                console.log("old image path is"+ imgPath);
+               $.ajax({
+                url: './helpers/delete_hall_image.php',
+                method: 'POST',
+                data: {imgPath: imgPath},
+                success: function (response) {
+                    console.log(response);
+                    $('#img1').text("Empty");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error); // Log any errors
+                }
+            });
+            } else {
+                $('#imageUpload1').val('');
+                $('#img1').text("Empty");
+            }
         });
         $('#rm-file2').click(function () {
-            $('#imageUpload2').val('');
-            $('#img2').text("Empty");
+            var imgPath = $('#img2').text();
+            console.log("image path is"+ imgPath);
+            if ($('#imageUpload2').val()=='' && $('#img2').text()!="Empty"){
+                console.log("old image path is"+ imgPath);
+               $.ajax({
+                url: './helpers/delete_hall_image.php',
+                method: 'POST',
+                data: {imgPath: imgPath},
+                success: function (response) {
+                    console.log(response);
+                    $('#img2').text("Empty");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error); // Log any errors
+                }
+            });
+            } else {
+                $('#imageUpload2').val('');
+                $('#img2').text("Empty");
+            }
         });
         $('#rm-file3').click(function () {
-            $('#imageUpload3').val('');
-            $('#img3').text("Empty");
+            var imgPath = $('#img3').text();
+            console.log("image path is"+ imgPath);
+            if ($('#imageUpload3').val()=='' && $('#img3').text()!="Empty"){
+                console.log("old image path is"+ imgPath);
+               $.ajax({
+                url: './helpers/delete_hall_image.php',
+                method: 'POST',
+                data: {imgPath: imgPath},
+                success: function (response) {
+                    console.log(response);
+                    $('#img3').text("Empty");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error); // Log any errors
+                }
+            });
+            } else {
+                $('#imageUpload3').val('');
+                $('#img3').text("Empty");
+            }
         });
         $('#rm-file4').click(function () {
-            $('#imageUpload4').val('');
-            $('#img4').text("Empty");
+            var imgPath = $('#img4').text();
+            console.log("image path is"+ imgPath);
+            if ($('#imageUpload4').val()=='' && $('#img4').text()!="Empty"){
+                console.log("old image path is"+ imgPath);
+               $.ajax({
+                url: './helpers/delete_hall_image.php',
+                method: 'POST',
+                data: {imgPath: imgPath},
+                success: function (response) {
+                    console.log(response);
+                    $('#img4').text("Empty");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error); // Log any errors
+                }
+            });
+            } else {
+                $('#imageUpload4').val('');
+                $('#img4').text("Empty");
+            }
         });
         $('#halls').addClass('active-page');
         $(document).on('click', '#editHallBtn', function () {
@@ -239,16 +320,12 @@
                 success: function (response) {
                     // Handle successful response
                     console.log('Hall Info:', response);
-                    //remove image upload validation
-                    $('#hallImg').removeAttr('required');
-                    $('#imageUpload').removeAttr('required');
-                    $('#imageUploadLabel:after').remove();
                     // Update form inputs with fetched data
                     $('#hallNameInput').val(response.hallName);
                     $('#RntlchargeInput').val(response.rentalCharge);
                     $('#CapacityInput').val(response.capacity);
                     $('#descriptionInput').val(response.description);
-                    $('#imagePath').val(response.imagePath);
+                    $('#hallStatus').val(response.status);
                     $('#Add-HallID').val(response.hallId);
                 },
                 error: function (xhr, status, error) {
@@ -256,38 +333,60 @@
                     console.error('Error fetching hall info:', error);
                 }
             });
+            $.ajax({
+                url: './helpers/get_hall_images.php', // URL of your PHP script to fetch hall info
+                method: 'GET',
+                data: {hallIdImg: hallId}, // Send hallId to server
+                dataType: 'json', // Expected data type from server
+                success: function (response) {
+                    // Handle successful response
+                    console.log('Hall Images Info:', response);
+                    // Update form inputs with fetched data
+                    $('#img1').text(response[0].hall_image_path);
+                    $('#img2').text(response[1].hall_image_path);
+                    $('#img3').text(response[2].hall_image_path);
+                    $('#img4').text(response[3].hall_image_path);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching hall images info:', error);
+                }
+            });
         });
     });
     $('#addModal').on('hidden.bs.modal', function (e) {
         // Clear form Input fields when closing the form
         $('.form-control').val('');
+        $('.form-select').val('');
+        $('#img1').text("Empty");
+        $('#img2').text("Empty");
+        $('#img3').text("Empty");
+        $('#img4').text("Empty");
         $('#add-form').removeClass('was-validated');
         console.log('Modal dismissed');
     });
     $('#addHallBtn').click(function () {
-        $('#hallImg').attr('required', '');
-        $('#imageUpload').attr('required', '');
+        $('.form-control').val('');
+        $('.form-select').val('');
         $('#Add-HallID').removeAttr('value');
-        $('#imageUploadLabel:after').add();
     });
     $('#add-form').submit(function (e) {
         // Get form inputs
         var Hallname = $('#hallNameInput').val();
         var rntlCharge = $('#RntlchargeInput').val();
         var capacity = $('#CapacityInput').val();
-
+        var status = $('#hallStatus').val();
         var oneImageUploaded = false;
 
         $('.hallimgIn').each(function () {
-            var inputValue = $(this).val().trim();
-            if (inputValue !== '') {
+            if ($(this).text() !== 'Empty') {
                 oneImageUploaded = true;
                 return false;
             }
         });
 
         // Check if any field is empty or image is not uploaded
-        if (!oneImageUploaded || Hallname === '' || rntlCharge == '' || capacity == '') {
+        if (!oneImageUploaded || Hallname === '' || rntlCharge == '' || capacity == '' || status == '') {
             $(this).addClass('was-validated');
             e.preventDefault(); // Prevent form submission
             return false;
@@ -309,41 +408,39 @@ function displayHalls($dataSet) {
             $hall->initWithHallid($id);
             $image = new HallImage();
             $hallImages = $image->getAllImagesForHall($id);
-            echo'<h1>number of images</h1>' . count($hallImages);
             echo '<div class="card hallCard mb-4 ">
-                <div class="card-body p-0">
-                    <div class="row m-0">
-                        <div class="col-xl-6 p-0">
-                            <div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
+                    <div class="card-body p-0">
+                        <div class="row m-0">
+                            <div class="col-xl-6 p-0">
+                                <div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
                                     ';
-                                      for ($j = 0; $j < count($hallImages); $j++) {
-                                          if ($j==0){
-                                              echo'<button type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
-                                          }else{
-                                              echo '<button type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide-to="'.($j).'" aria-label="Slide '.($j).'"></button>'; 
-                                          }
-                                      } 
-                                   
-                                echo'</div>
+            for ($j = 0; $j < count($hallImages); $j++) {
+                if ($j == 0) {
+                    echo'<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+                } else {
+                    echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
+                }
+            }
+            echo'</div>
                                 <div class="carousel-inner">';
-                                    for ($k = 0; $k < count($hallImages); $k++) {
-                                        if ($k==0){
-                                        echo '<div class="carousel-item active">
+            for ($k = 0; $k < count($hallImages); $k++) {
+                if ($k == 0) {
+                    echo '<div class="carousel-item active">
                                         <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
-                                        </div>';   
-                                        } else {
-                                        echo '<div class="carousel-item">
+                                        </div>';
+                } else {
+                    echo '<div class="carousel-item">
                                         <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
-                                        </div>'; 
-                                        }
-                                        }
-                                echo'</div> 
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-'.$id .'" data-bs-slide="prev">
+                                        </div>';
+                }
+            }
+            echo'</div> 
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-'.$id.'" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -352,8 +449,12 @@ function displayHalls($dataSet) {
                         <div class="col-xl-6 p-0">
                             <div class="d-flex flex-column h-100 justify-content-between text-center ">
                                 <div class="row pt-5">
-                                    <h3>' . $hall->getHallName() . '</h3>
+                                    <div class="col text-center " >
+                                        <span class="fw-bold display-6">' . $hall->getHallName() . '</span>
+                                            <br>
+                                        <span class="badge bg-' . $hall->getHallStatusName()->status_name . '">' . $hall->getHallStatusName()->status_name . '</span>
                                 </div>
+                                    </div>
                                 <div class="row ps-5 pe-5">
                                     <p>' . $hall->getDescription() . '</p>
                                 </div>
@@ -368,7 +469,6 @@ function displayHalls($dataSet) {
                                 <div class="row">
                                     <div class="d-flex col w-100">
                                         <button id ="editHallBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
-                                        <button class="btn btn-danger rounded-0 flex-fill rounded-bottom-right" data-id="' . $hall->getHallId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i> </button>
                                     </div>
                                 </div>
                             </div>

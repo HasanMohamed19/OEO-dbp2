@@ -37,15 +37,8 @@ if (isset($_POST['submitted'])) {
     $hall->setDescription(trim($_POST['description']));
     $hall->setRentalCharge(trim($_POST['RntlCharge']));
     $hall->setCapacity(trim($_POST['capacity']));
-// check the uploading of the image and assigning the image path
+    $hall->setHallStatus(trim($_POST['status']));
     $images = uploadImg();
-    //if no image uploaded (only in update) then set the image to the old one
-//    if ($imgFileName == '') {
-//        $hall->setImagePath(trim($_POST['imagePath']));
-//    } else {
-//         //else if new image uploaded set it to the new one
-//        $hall->setImagePath($imgFileName);
-//    }
     $db = Database::getInstance();
 //check if hall id is null (New Hall) and call Add Function
     if ($hall->getHallId() == '') {
@@ -56,23 +49,12 @@ if (isset($_POST['submitted'])) {
         }
 //else if hall id is not null (Update Hall) and call Update function
     } else if ($hall->updateHall()) {
+        $hall->addHallImages($images);
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Hall has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     } else {
         echo'<h1>Not saved :(</h1>';
     }
 }
-
-
-
-if (isset($_POST['deleteHallSubmitted'])) {
-    $hallID = trim($_POST['hallId']);
-    $deletedHall = new Hall();
-    $deletedHall->initWithHallid($hallID);
-    if ($deletedHall->deleteHall()) {
-        echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Hall has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
-    }
-}
-
 include './template/admin/DisplayHalls.php';
 
 include './template/footer.html';

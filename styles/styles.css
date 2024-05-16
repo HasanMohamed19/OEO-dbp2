@@ -250,3 +250,9 @@
 .bg-Bronze {
     background-color: #B3967C;
 }
+.bg-Available {
+    background-color: var(--success);
+}
+.bg-Cancelled {
+    background-color: var(--danger);
+}
