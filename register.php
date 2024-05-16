@@ -1,13 +1,6 @@
 <?php
 include 'debugging.php';
 
-include './template/header.html';
-    
-echo '<div class="main"> ';
-include './template/register.html';
-echo '</div>';
-
-include './template/footer.html';
 
 
 include './helpers/Database.php';
@@ -22,14 +15,24 @@ if (isset($_POST['submitted'])) {
     $client->setPhoneNumber($_POST['phoneNumber']);
     $user->setRoleId(ROLE_CLIENT);
 
-    if ($user->initWithUsername()) {
-
-        if ($user->registerUser())
-            echo 'Registerd Successfully';
-        else
-            echo '<p class="error"> Not Successfull </p>';
-    }else {
-        echo '<p class="error"> Username Already Exists </p>';
+    if (!$user->initWithUsername()) {
+        echo 'Username already exists.';
+        exit();
     }
+    if ($user->registerUser()) {
+        echo 1;
+    } else {
+        echo 'Registration failed.';
+    }
+
+    exit();
 }
 
+
+include './template/header.html';
+    
+echo '<div class="main"> ';
+include './template/register.html';
+echo '</div>';
+
+include './template/footer.html';
