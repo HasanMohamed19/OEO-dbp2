@@ -21,6 +21,7 @@ $reservation->setClientId($_COOKIE['clientId']);
 
 //    var_dump($reservation);
 $reservationDetails = $reservation->getReservationDetails();
+//var_dump($reservationDetails);
 //echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
 //    echo '  reservation details are: ' . count($reservations);
 
@@ -33,7 +34,7 @@ $reservationDetails = $reservation->getReservationDetails();
         <div class="row justify-content-between mx-3 mt-2">
             <div class="col">Booking#: <?php echo $reservationDetails->reservation_id ?> </div>
             <div class="col text-secondary text-center"> <?php echo $reservationDetails->reservation_date ?> </div>
-            <div class="col text-end">Total: BHD 1700.16</div>
+            <div class="col text-end">Total: BHD <?php echo $reservationDetails->TotalCost ?></div>
         </div>
         <hr>
         <div class="card mb-2 border-0 mx-3">
