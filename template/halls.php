@@ -1,61 +1,101 @@
 <?php
-    include './models/Hall.php';
-    include './helpers/Database.php';
-    include './debugging.php';
-    $hall = new Hall();
-    $halls = $hall->getAllHalls();
-    
-    echo " there are " . count($hall);
-    
-    
-    function displayHalls($dataSet) {
-        
-        for ($i = 0; $i < count($dataSet); $i++) {
-            $hall = $dataSet[$i];
-            echo '<div class="card mb-5">
-                            <div id="hall-3" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
-                                                                                    <button class="btn btn-primary">Book Now</button>
-                                                                                </div>-->
+include './models/Hall.php';
+include './helpers/Database.php';
+include './debugging.php';
+$hall = new Hall();
+$halls = $hall->getAllHalls();
 
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-3" data-bs-slide="prev">
+echo " there are " . count($hall);
+
+function displayHalls($dataSet) {
+
+//    echo '<div class="col-xl-6 p-0">
+//                                <div id="carousel-1001" class="carousel slide pointer-event" data-bs-ride="carousel">
+//                                    <div class="carousel-indicators">
+//                                    <button type="button" data-bs-target="#carousel-1001" data-bs-slide-to="0" class="" aria-label="Slide 1"></button><button type="button" data-bs-target="#carousel-1001" data-bs-slide-to="1" aria-label="Slide 1" class="active" aria-current="true"></button><button type="button" data-bs-target="#carousel-1001" data-bs-slide-to="2" aria-label="Slide 2" class=""></button></div>
+//                                <div class="carousel-inner"><div class="carousel-item">
+//                                        <img src="images//hall_example2.jpeg" class="d-block w-100 rounded-start" alt="...">
+//                                        </div><div class="carousel-item active">
+//                                        <img src="images//hall_example3.jpg" class="d-block w-100 rounded-start" alt="...">
+//                                        </div><div class="carousel-item">
+//                                        <img src="images//hall_example4.jpg" class="d-block w-100 rounded-start" alt="...">
+//                                        </div></div> 
+//                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-1001" data-bs-slide="prev">
+//                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+//                                    <span class="visually-hidden">Previous</span>
+//                                </button>
+//                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-1001" data-bs-slide="next">
+//                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+//                                    <span class="visually-hidden">Next</span>
+//                                </button>
+//                            </div>
+//                        </div>';
+
+
+    for ($i = 0; $i < count($dataSet); $i++) {
+        $hall = $dataSet[$i];
+        $hall = new Hall();
+        $id = $dataSet[$i]->hall_id;
+        $hall->initWithHallid($id);
+        $image = new HallImage();
+        $hallImages = $image->getAllImagesForHall($id);
+        echo '<div class="card mb-5 ">
+                    <div class="card-body p-0">
+                        <div class="row m-0">
+                            
+                                <div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                    ';
+
+        for ($j = 0; $j < count($hallImages); $j++) {
+            if ($j == 0) {
+                echo'<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+            } else {
+                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
+            }
+        }
+
+        echo'</div>
+                                <div class="carousel-inner">';
+        for ($k = 0; $k < count($hallImages); $k++) {
+            if ($k == 0) {
+                echo '<div class="carousel-item active">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
+                                        </div>';
+            } else {
+                echo '<div class="carousel-item">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100 rounded-start" alt="...">
+                                        </div>';
+            }
+        }
+        echo'</div> 
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#hall-3" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
-                            </div>';
-            echo '<div class="row text-center">';
-            echo '<h1>' . $hall->hall_name .'</h1></div>';
-            echo '<div class="row mt-3 justify-content-center">' . $hall->description . '</div>';
-            echo '<div class="row mt-5">';
-            echo '<div class="col text-right"><h3>' . $hall->rental_charge . ' BHD/Hr</h3></div>'
-                    . '<div class="col text-center"><button class="btn btn-primary">Book Now</button></div>'
-                    . '<div class="col text-left"><h3>' . $hall->capacity . ' Seats</h3></div>'
-                    . '</div></div>';
-        }
-        
-        
-        
-                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                ';
+
+        echo '<div class="row text-center">';
+        echo '<h1>' . $hall->getHallName() . '</h1></div>';
+        echo '<div class="row mt-3 justify-content-center">' . $hall->getDescription() . '</div>';
+        echo '<div class="row mt-5">';
+            echo '<div class="col text-right"><h3>' . $hall->getRentalCharge() . ' BHD/Hr</h3></div>'
+                    . '<div class="col text-center"><a role="button" href="client_booking.php?hallId='.$id.'" class="btn btn-primary">Book Now</a></div>'
+                    . '<div class="col text-left"><h3>' . $hall->getCapacity() . ' Seats</h3></div>'
+        . '</div></div>';
+    }
+
+
+
+
 //                            </div>
 //                            <div class="row mt-3">
 //                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
@@ -66,7 +106,7 @@
 //                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
 //                                <div class="col text-center"><h3>80 Seats</h3></div>
 //                            </div>
-    }
+}
 ?>
 
 
@@ -108,24 +148,22 @@
                     </form>
                 </div>
             </div>
-            <div class="input-group bg-white rounded">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="fa fa-search fa-custom-size"></i>
-                    </span>
-                </div>
-                <input type="search" class="form-control" placeholder="Search">
+            <div class="input-group">
+                <input type="text" class="form-control mb-0" placeholder="Search For a Hall" id="search">
+                <button class="btn btn-outline-secondary" id="searchBtn">
+                    <i class="bi bi-search"> Search</i>
+                </button>
             </div>
 
             <section class="py-5">
                 <div class="container ">
                     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
 
-                       <?php
-                            displayHalls($halls);
-                       ?>
+                        <?php
+                        displayHalls($halls);
+                        ?>
 
-                        <div class="card mb-5">
+<!--                        <div class="card mb-5">
                             <div id="hall-3" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
                                     <button type="button" data-bs-target="#hall-3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -135,9 +173,9 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
+                                                                                <div class="carousel-caption d-none d-md-block text-end">
                                                                                     <button class="btn btn-primary">Book Now</button>
-                                                                                </div>-->
+                                                                                </div>
 
                                     </div>
                                     <div class="carousel-item">
@@ -169,7 +207,7 @@
                                 <div class="col text-center"><h3>80 Seats</h3></div>
                             </div>
                         </div>
-                        
+
                         <div class="card mb-5">
                             <div id="hall-4" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
@@ -180,9 +218,9 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                        <!--                                        <div class="carousel-caption d-none d-md-block text-end">
+                                                                                <div class="carousel-caption d-none d-md-block text-end">
                                                                                     <button class="btn btn-primary">Book Now</button>
-                                                                                </div>-->
+                                                                                </div>
 
                                     </div>
                                     <div class="carousel-item">
@@ -213,10 +251,10 @@
                                 <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
                                 <div class="col text-left"><h3>80 Seats</h3></div>
                             </div>
-                        </div>
+                        </div>-->
 
 
                     </div>
-                    
-    </body>
-</html>
+
+                    </body>
+                    </html>
