@@ -10,14 +10,25 @@
  *
  * @author Hassan
  */
+include '../helpers/Database.php';
+include_once 'models/HallImage.php';
+
+//hall status
+
+const AVAILABLE_STATUS = 1;
+const CANCELLED_STATUS = 2;
+
 class Hall {
-    
+
     private $hallId;
     private $hallName;
     private $description;
     private $rentalCharge;
     private $capacity;
-    private $imagePath;
+//    private $imagePath;
+//    private $images;
+    private $hallStatus;
+    private $deletedImages;
     
     public function __construct() {
         $this->hallId = null;
@@ -25,18 +36,32 @@ class Hall {
         $this->description = null;
         $this->rentalCharge = null;
         $this->capacity = null;
-        $this->imagePath = null;
+        $this->hallStatus = null;
+//        $this->imagePath = null;
+//        $this->images = [];
+        $this->deletedImages = [];
     }
-    
-    public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity, $imagePath) {
+
+    public function initWith($hallId, $hallName, $description, $rentalCharge, $capacity ,$hallStatus) {
         $this->hallId = $hallId;
         $this->hallName = $hallName;
         $this->description = $description;
         $this->rentalCharge = $rentalCharge;
         $this->capacity = $capacity;
-        $this->imagePath = $imagePath;
+        $this->hallStatus = $hallStatus;
+//        $this->imagePath = $imagePath;
     }
-    
+
+    public function initWithHallid($id) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $id);
+        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity,$data->hall_status_id);
+//        $hallImages = $db->multiFetch('Select * from dbProj_Hall_Image where hall_id ='.$id);
+//        for ($i=0;$i<count($hallImages);$i++){
+//            $this->images = $hallImages[$i]->hall_image_path;
+//        }
+    }
+
     public function getHallId() {
         return $this->hallId;
     }
@@ -56,11 +81,12 @@ class Hall {
     public function getCapacity() {
         return $this->capacity;
     }
-
-    public function getImagePath() {
-        return $this->imagePath;
+//    public function getImagePath() {
+//        return $this->imagePath;
+//    }
+    public function getHallStatus(){
+        return $this->hallStatus;
     }
-
     public function setHallId($hallId) {
         $this->hallId = $hallId;
     }
@@ -80,16 +106,138 @@ class Hall {
     public function setCapacity($capacity) {
         $this->capacity = $capacity;
     }
-
-    public function setImagePath($imagePath) {
-        $this->imagePath = $imagePath;
+    public function setHallStatus($hallStatus){
+        echo 'set hall status to ' .$hallStatus;
+        $this->hallStatus = $hallStatus;
     }
-    
+//    public function setImagePath($imagePath) {
+//        $this->imagePath = $imagePath;
+//    }
+
+    public function addHallImages($hallImages) {
+        for ($i = 0; $i < count($hallImages); $i++) {
+            $hallImg = new HallImage();
+            $hallImg->setHall_id($this->hallId);
+            echo'<h1>Hall id is</h1>'.$this->hallId;
+            $hallImg->setHallImagePath($hallImages[$i]);
+            $hallImg->addHallImage();
+        }
+    }
+
     function getAllHalls() {
         $db = Database::getInstance();
         $data = $db->multiFetch('Select * from dbProj_Hall');
         return $data;
     }
 
+    function addHall() {
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->hallName = $db->sanitizeString($this->hallName);
+            $this->description = $db->sanitizeString($this->description);
+            $this->rentalCharge = $db->sanitizeString($this->rentalCharge);
+            $this->capacity = $db->sanitizeString($this->capacity);
+//            $this->imagePath = $db->sanitizeString($this->imagePath);
+            $this->hallStatus = $db->sanitizeString($this->hallStatus);
 
+            $q = "INSERT INTO dbProj_Hall(hall_name,description,rental_charge,capacity,hall_status_id) VALUES(?,?,?,?,?)";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdii', $this->hallName, $this->description, $this->rentalCharge, $this->capacity,$this->hallStatus);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            $this->hallId = $db->singleFetch("SELECT hall_id FROM dbProj_Hall WHERE hall_name = '" . $this->hallName.'\'')->hall_id;
+            return true;
+        }else {
+            echo'invalid inputs';
+            return false;
+        }
+    }
+
+    function deleteHall() {
+        $db = new Database();
+        $this->hallId = $db->sanitizeString($this->hallId);
+        $q = "Delete from dbProj_Hall where hall_id=?";
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if ($stmt) {
+            $stmt->bind_param('i', $this->hallId);
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute failed';
+                $db->displayError($q);
+                return false;
+            }
+        } else {
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
+
+    function updateHall() {
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->hallId = $db->sanitizeString($this->hallId);
+            $this->hallName = $db->sanitizeString($this->hallName);
+            $this->description = $db->sanitizeString($this->description);
+            $this->rentalCharge = $db->sanitizeString($this->rentalCharge);
+            $this->capacity = $db->sanitizeString($this->capacity);
+            $this->hallStatus = $db->sanitizeString($this->hallStatus);
+            $q = "UPDATE dbProj_Hall set hall_name = ? ,description = ?  ,rental_charge = ? ,capacity = ?, hall_status_id = ? WHERE hall_id = ? ";
+
+            $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+            if ($stmt) {
+                $stmt->bind_param('ssdiii', $this->hallName, $this->description, $this->rentalCharge, $this->capacity,$this->hallStatus, $this->hallId);
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+            return true;
+        } else {
+            echo'invalid values :(';
+        }
+    }
+    
+    function getHallStatusName() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT status_name FROM dbProj_Availability_Status a JOIN dbProj_Hall h ON h.hall_status_id = a.availability_status_id WHERE h.hall_id = '$this->hallId'");
+//       var_dump($data);
+        return $data;
+    }
+    public function isValid() {
+        $errors = array();
+
+        if (empty($this->hallName))
+            $errors[] = 'You must enter a Hall Name';
+
+        if (empty($this->rentalCharge))
+            $errors[] = 'You must enter a Rental Charge';
+
+        if (empty($this->capacity))
+            $errors[] = 'You must enter a Capacity';
+        if (empty ($this->hallStatus))
+            $errors[] = 'You must enter a status';
+        if (empty($errors))
+            return true;
+        else
+            return false;
+    }
 }

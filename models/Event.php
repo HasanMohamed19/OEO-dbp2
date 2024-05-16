@@ -16,6 +16,8 @@ class Event {
     private $name;
     private $startDate;
     private $endDate;
+    private $startTime;
+    private $endTime;
     private $audienceNumber;
     
     public function __construct() {
@@ -23,15 +25,25 @@ class Event {
         $this->name = null;
         $this->startDate = null;
         $this->endDate = null;
+        $this->startTime = null;
+        $this->endTime = null;
         $this->audienceNumber = null;
     }
     
-    public function initWith($eventId, $name, $startDate, $endDate, $audienceNumber) {
+    public function initWith($eventId, $name, $startDate, $endDate, $startTime, $endTime, $audienceNumber) {
         $this->eventId = $eventId;
         $this->name = $name;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->audienceNumber = $audience;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+        $this->audienceNumber = $audienceNumber;
+    }
+    
+    public function initWithEventId($eventId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
+        $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
     }
     
     public function getEventId() {
@@ -49,6 +61,14 @@ class Event {
     public function getEndDate() {
         return $this->endDate;
     }
+    
+    public function getStartTime() {
+        return $this->startTime;
+    }
+    
+    public function getEndTime() {
+        return $this->endTime;
+    }
 
     public function getAudienceNumber() {
         return $this->audienceNumber;
@@ -65,6 +85,14 @@ class Event {
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
     }
+    
+    public function setStartTime($startTime) {
+        $this->startTime = $startTime;
+    }
+    
+    public function setEndTime($endTime) {
+        $this->endTime = $endTime;
+    }
 
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -73,6 +101,5 @@ class Event {
     public function setAudienceNumber($audienceNumber) {
         $this->audienceNumber = $audienceNumber;
     }
-
 
 }

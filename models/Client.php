@@ -10,91 +10,133 @@
  *
  * @author Hassan
  */
+include_once 'models/User.php';
 
-enum ClientStatus: int {
-    // clientStatus with its discount rate
-    case golden = 0.2;
-    case silver = 0.1;
-    case bronze = 0.05;
-}
+//enum ClientStatus: int {
+//    // clientStatus with its discount rate
+//    case golden = 0.2;
+//    case silver = 0.1;
+//    case bronze = 0.05;
+//}
+
+const GOLDEN_STATUS = 0.2;
+const SILVER_STATUS = 0.1;
+const BRONZE_STATUS = 0.05;
 
 class Client extends User {
-    
+
     private $clientId;
-    private $firstName;
-    private $lastName;
-    private $balance;
-    private ClientStatus $clientStatus;
-    private $userId;
-    
+    private $phoneNumber;
+    private $clientStatusId;
+
+//    private $userId;
+
     public function __construct() {
         $this->clientId = null;
-        $this->firstName = null;
-        $this->lastName = null;
-        $this->balance = null;
-        $this->clientStatus = null;
-        $this->userId = null;
+        $this->phoneNumber = null;
+        $this->clientStatusId = null;
+//        $this->userId = null;
         parent::__construct();
     }
 
-    
-    public function initClientWith($clientId, $firstName, $lastName, $balance, ClientStatus $clientStatus, $userId, $userId, $username, $password, $email, UserRole $userRole) {
+    public function initClientWith($clientId, $phoneNumber, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->balance = $balance;
-        $this->clientStatus = $clientStatus;
-        $this->userId = $userId;
-        parent::initWith($userId, $username, $password, $email, $userRole);
+        $this->phoneNumber = $phoneNumber;
+        $this->clientStatusId = $clientStatusId;
+//        $this->userId = $userId;
+        parent::initWith($userId, $username, $password, $email, $roleId);
     }
 
-    
+    public function initClientWithoutParent($clientId, $phoneNumber, $clientStatusId, $userId) {
+        $this->clientId = $clientId;
+        $this->phoneNumber = $phoneNumber;
+        $this->$clientStatusId = $clientStatusId;
+//        $this->userId = $userId;
+    }
+
+    public function iniwWithClientId($clientId) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->client_status_id, $data->user_id);
+    }
+
+    public function getClientEmail() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch('SELECT email FROM dbProj_User WHERE user_id = ' . $this->userId);
+        return $data;
+    }
+
     public function getClientId() {
         return $this->clientId;
     }
 
-    public function getFirstName() {
-        return $this->firstName;
-    }
+//    public function getUserId() {
+//        return $this->clientId;
+//    }
 
-    public function getLastName() {
-        return $this->lastName;
-    }
 
-    public function getBalance() {
-        return $this->balance;
-    }
-    
-    public function getUserId() {
-        return $this->clientId;
-    }
-
-    public function getClientStatus(): ClientStatus {
-        return $this->clientStatus;
+    public function getClientStatusId() {
+        return $this->clientStatusId;
     }
 
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
 
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
+    public function setClientStatus($clientStatusId) {
+        $this->clientStatusId = $clientStatusId;
     }
 
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
+//    public function setUserId($userId) {
+//        $this->userId = $userId;
+//    }
+
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
     }
 
-    public function setBalance($balance) {
-        $this->balance = $balance;
+    public function setPhoneNumber($phoneNumber) {
+        $this->phoneNumber = $phoneNumber;
     }
 
-    public function setClientStatus(ClientStatus $clientStatus) {
-        $this->clientStatus = $clientStatus;
+    function getAllClients() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch('Select * from dbProj_Client');
+        return $data;
     }
-    
-    public function setUserId($userId) {
-        $this->userId = $userId;
+
+    function getClientStatusName($client_id) {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
+//       var_dump($data);
+        return $data;
     }
-    
+
+        function updateClient($clientId) {
+        include_once  "./helpers/Database.php";
+
+        $db = new Database();
+//        if ($this->isValid()) {
+//                    echo "username $this->username, password $this->password";
+            $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_Client SET "
+                . "phone_number=? WHERE client_id=?";
+
+            $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                $stmt->bind_param('si', $this->phoneNumber, $clientId);
+            }
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+//            } else {
+//                $db->displayError($q);
+//                return false;
+//            }
+
+    }
 }
