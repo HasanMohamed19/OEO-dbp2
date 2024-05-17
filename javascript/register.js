@@ -16,7 +16,7 @@ const validateAccount = () => {
     if (email === null || email.length <= 0)
         return 'Email cannot be empty.';
     
-    // simple email validation
+    // simple email validation with regex
     if (!/^\S+@\S+$/.test(email))
         return 'Email is invalid.';
     
@@ -29,16 +29,69 @@ const validateAccount = () => {
     return null;
 };
 
+const togglePersonalForm = (value) => {
+    $('#firstName').prop('disabled', !value);
+    $('#lastName').prop('disabled', !value);
+    $('#gender').prop('disabled', !value);
+    $('#nationality').prop('disabled', !value);
+    $('#dob').prop('disabled', !value);
+};
+
+const toggleCompanyForm = (value) => {
+    $('#companyName').prop('disabled', !value);
+    $('#website').prop('disabled', !value);
+    $('#city').prop('disabled', !value);
+    $('#size').prop('disabled', !value);
+};
+
+
+const handleDetailsCheckboxes = () => {
+    // enable personal/company details forms
+    // based on checkboxes
+//    console.log("checking boxes");
+    let personalFormChecked = $('#personalDetailsCheck')
+                                    .prop('checked');
+    togglePersonalForm(personalFormChecked);
+    
+    let companyFormChecked = $('#companyDetailsCheck')
+                                    .prop('checked');
+    toggleCompanyForm(companyFormChecked);
+};
+
 const validateDetails = () => {
+    let personalChecked = $('#personalDetailsCheck').prop('checked');
+    let companyChecked = $('#companyDetailsCheck').prop('checked');
+    let bothUnchecked = ! (personalChecked || companyChecked);
+    
+    if (bothUnchecked) {
+        return 'At least one form must be filled.';
+    }
+    
+    if (personalChecked) {
+        let personalFormMessage = validatePersonalDetails();
+
+        if (personalFormMessage !== null) {
+            return personalFormMessage;
+        }
+    }
+    
+    if (companyChecked) {
+        let companyFormMessage = validateCompanyDetails();
+
+        if (companyFormMessage !== null) {
+            return companyFormMessage;
+        }
+    }
+    
+    return null;
+};
+
+const validatePersonalDetails = () => {
     let firstName = $('#firstName').val();
     let lastName = $('#lastName').val();
     let gender = $('#gender').val();
     let nationality = $('#nationality').val();
     let dob = $('#dob').val();
-    let companyName = $('#companyName').val();
-    let website = $('#website').val();
-    let city = $('#city').val();
-    let size = $('#size').val();
     
     if (firstName === null || firstName.length <= 0)
         return 'First name cannot be empty.';
@@ -49,44 +102,86 @@ const validateDetails = () => {
     if (gender === null || gender.length <= 0)
         return 'Gender cannot be empty.';
     
+    if (gender === 'Gender')
+        return 'Gender cannot be empty.';
+    
     if (nationality === null || nationality.length <= 0)
         return 'Nationality cannot be empty.';
     
-    if (firstName === null || firstName.length <= 0)
-        return 'First name cannot be empty.';
-    
-    if (firstName === null || firstName.length <= 0)
-        return 'First name cannot be empty.';
+    if (dob === null || dob.length <= 0)
+        return 'Date of Birth cannot be empty.';
     
     return null;
 };
 
+const validateCompanyDetails = () => {
+    let companyName = $('#companyName').val();
+//    let website = $('#website').val();
+    let city = $('#city').val();
+    let size = $('#size').val();
+    
+    if (companyName === null || companyName.length <= 0)
+        return 'Company name cannot be empty.';
+    
+    if (city === null || city.length <= 0)
+        return 'City cannot be empty.';
+    
+    if (size === null || size.length <= 0)
+        return 'Company size cannot be empty.';
+    
+    return null;
+};
+
+const getUserData = () => {
+    let personalChecked = $('#personalDetailsCheck').prop('checked');
+    let companyChecked = $('#companyDetailsCheck').prop('checked');
+    let data = { submitted: true };
+    
+    // add account information
+    data['username'] = $('#username').val();
+    data['password'] = $('#password').val();
+    data['email'] = $('#email').val();
+    data['phone'] = $('#phoneNumber').val();
+    
+    // add personal details if they are selected
+    if (personalChecked) {
+        data['firstName'] = $('#firstName').val();
+        data['lastName'] = $('#lastName').val();
+        data['gender'] = $('#gender').val();
+        data['nationality'] = $('#nationality').val();
+        data['dob'] = $('#dob').val();
+    }
+    // add company details if they are selected
+    if (companyChecked) {
+        data['companyName'] = $('#companyName').val();
+        data['website'] = $('#website').val();
+        data['city'] = $('#city').val();
+        data['size'] = $('#size').val();
+    }
+    
+    return data;
+};
+
 const registerUser = () => {
-    validateDetails();
+    let errorMessage = validateDetails();
+    if (errorMessage !== null) {
+        displayError(errorMessage);
+        return;
+    }
+    
+    let data = getUserData();
+    console.log(data);
+    return;
+    // send registration request to server
     $.ajax({
         type: 'POST',
         url: 'register.php',
-        data: {
-            submitted: true,
-            username: $('#username').val(),
-            password: $('#password').val(),
-            email: $('#email').val(),
-            phone: $('#phoneNumber').val(),
-            firstName: $('#firstName').val(),
-            lastName: $('#lastName').val(),
-            gender: $('#gender').val(),
-            nationality: $('#nationality').val(),
-            dob: $('#dob').val(),
-            companyName: $('#companyName').val(),
-            website: $('#website').val(),
-            city: $('#city').val(),
-            size: $('#size').val()
-        }
+        data: data
     }).then(function(res) {
         if (res > 0) {
             console.log('user registered successfully');
         } else {
-            
+            // registration failed, handle error
         }
     });
 };
@@ -100,6 +195,7 @@ const hideError = () => {
     $('#errorBox').addClass('d-none');
 };
 
+//      Pagination code
 var currentPage = 0;
 
 const setPage = (num) => {
@@ -118,7 +214,7 @@ const setPage = (num) => {
         $('#regBtn').removeClass('d-none');
     }
 };
-
+// button event listeners
 $('#nextBtn').on("click", function() {
 //    console.log("Clicked next");
     let message = validateAccount();
@@ -126,6 +222,7 @@ $('#nextBtn').on("click", function() {
         displayError(message);
         return;
     }
+    handleDetailsCheckboxes();
     hideError();
     setPage(1);
 });
@@ -144,3 +241,9 @@ $('#regBtn').on("click", function() {
     registerUser();
 });
 
+// checkbox event listeners
+$('#personalDetailsCheck')
+        .change(handleDetailsCheckboxes);
+
+$('#companyDetailsCheck')
+        .change(handleDetailsCheckboxes);

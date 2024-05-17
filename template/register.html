@@ -22,6 +22,10 @@
                                 </fieldset>
                                 <div id="detailsForm" class="d-none">
                                     <fieldset id="personalDetailsForm">
+                                        <div class="form-check mb-3">
+                                            <input type="checkbox" id="personalDetailsCheck" class="form-check-input mt-2" checked>
+                                            <h4 class=""><label for="personalDetailsCheck" class="form-check-label">Personal Details</label></h4>
+                                        </div>
                                         <div class="row">
                                             <div class="col">
                                                 <input type="text" class="form-control form-control-user" id="firstName" placeholder="First Name" name="firstName">
@@ -34,8 +38,8 @@
                                             <div class="col">
                                                 <select class="form-select mb-3" id="gender" name="gender">
                                                     <option selected>Gender</option>
-                                                    <option value="1">Male</option>
-                                                    <option value="2">Female</option>
+                                                    <option value="M">Male</option>
+                                                    <option value="F">Female</option>
                                                 </select>
                                             </div>
                                             <div class="col">
@@ -53,6 +57,10 @@
                                     </fieldset>
                                     <hr>
                                     <fieldset id="companyDetailsForm">
+                                        <div class="form-check mb-3">
+                                            <input type="checkbox" id="companyDetailsCheck" class="form-check-input mt-2">
+                                            <h4 class=""><label for="companyDetailsCheck" class="form-check-label">Company Details</label></h4>
+                                        </div>
                                         <input type="text" class="form-control form-control-user" id="companyName" placeholder="Company Name" name="companyName">
                                         <input type="text" class="form-control form-control-user" id="website" placeholder="Website" name="website">
                                         <div class="row">
@@ -60,7 +68,7 @@
                                                 <input type="text" class="form-control form-control-user" id="city" placeholder="City" name="city">
                                             </div>
                                             <div class="col">
-                                                <input type="number" class="form-control form-control-user" id="size" placeholder="Comapany Size" name="size">
+                                                <input type="number" class="form-control form-control-user" id="size" placeholder="Company Size" name="size">
                                             </div>
                                         </div>
                                     </fieldset>
