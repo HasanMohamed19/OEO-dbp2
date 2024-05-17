@@ -61,7 +61,7 @@ private $clientStatusId;
     public function iniwWithClientId($clientId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
-        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->client_status_id, $data->user_id);
     }
     
     public function getClientEmail() {
@@ -125,6 +125,34 @@ private $clientStatusId;
        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
 //       var_dump($data);
        return $data;
+
+    }
+    
+        function updateClient($clientId) {
+        include_once  "./helpers/Database.php";
+
+        $db = new Database();
+//        if ($this->isValid()) {
+//                    echo "username $this->username, password $this->password";
+            $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_Client SET "
+                . "phone_number=? WHERE client_id=?";
+
+            $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                $stmt->bind_param('si', $this->phoneNumber, $clientId);
+            }
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+//            } else {
+//                $db->displayError($q);
+//                return false;
+//            }
 
     }
     

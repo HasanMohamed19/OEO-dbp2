@@ -68,49 +68,12 @@ class BillingAddress {
         try {
             $db = Database::getInstance();
             $deleteQry = $db->querySQL("Delete from dbProj_Billing_Address where address_id=" . $this->addressId);
-            var_dump($deleteQry);
+//            var_dump($deleteQry);
 //            unlink($this->imagePath);
             return true;
         } catch (Exception $e) {
             echo 'Exception: ' . $e;
             return false;
-        }
-    }
-    
-    function displayAddresses($dataSet) {
-        
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $address = new BillingAddress();
-                // todo: get this from the login
-                $address->setClientId('13');
-                $addressId = $dataSet[$i]->address_id;
-                $address->setAddressId($addressId);
-                $address->initWithId();
-                
-                
-                echo '<div class="card my-3 mx-3">
-                        <div class="card-body vstack gap-2 align-items-center">
-                            <div class="row fw-bold"><h2>Company Address</h2></div>';
-                                
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() .'</span>
-                     </div>';
-                
-                echo ' <div class="row m-2">
-                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() .', Street: ' . $address->getRoadNumber() .', Block: ' . $address->getBlockNumber() .'</span>
-                     </div>';
-                
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">' . $address->getCity() .', ' . $address->getCountry() .' </span>
-                      </div>';
-                
-                echo '<button id="editAddressBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
-                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
-                            </div>
-                        </div>';
-                                
-            }
         }
     }
     
@@ -244,7 +207,32 @@ class BillingAddress {
         $this->clientId = $clientId;
     }
 
+    
+    public function getAddressCount($clientId) {
+        $db = new Database();
+        $q = "SELECT COUNT(*) AS addressCount FROM dbProj_Billing_Address WHERE client_id = ?";
 
+        $this->clientId = $db->sanitizeString($clientId);
 
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if ($stmt) {
+            $stmt->bind_param('i', $this->clientId);
+
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute Failed';
+                $db->displayError($q);
+//                    return false;
+            } else {
+                $result = $stmt->get_result();
+                $data = $result->fetch_array(MYSQLI_ASSOC);
+//                var_dump($data);
+                return $data["addressCount"];
+            }
+        } else {
+            echo 'Execute Failed';
+            $db->displayError($q);
+        }
+    }
     
 }

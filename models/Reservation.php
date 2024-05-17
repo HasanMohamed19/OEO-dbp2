@@ -67,24 +67,26 @@ class Reservation {
     
     function getReservationsForClient() {
         $db = Database::getInstance();
-        $data = $db->multiFetch("SELECT r.reservation_id,
+        $data = $db->multiFetch('SELECT r.reservation_id,
             r.reservation_status_id,
             r.notes,
             r.reservation_date,
             h.hall_name,
             h.capacity,
-            h.image_path,
             e.event_name,
             e.start_date,
             e.end_date,
             e.start_time,
             e.end_time,
-            c.phone_number
+            c.phone_number,
+            i.hall_cost + i.catering_cost AS "TotalCost"
             FROM dbProj_Reservation r
             JOIN dbProj_Hall h ON r.hall_id = h.hall_id
             JOIN dbProj_Event e ON r.event_id = e.event_id
             JOIN dbProj_Client c ON r.client_id = c.client_id
-            WHERE r.client_id = " . $this->clientId);
+            JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
+            WHERE r.client_id = ' . $this->clientId);
+        var_dump($data);
         return $data;
     }
     
@@ -97,18 +99,20 @@ class Reservation {
             h.hall_id,
             h.hall_name,
             h.capacity,
-            h.image_path,
+            e.event_id,
             e.event_name,
             e.start_date,
             e.end_date,
             e.start_time,
             e.end_time,
             e.audience_number,
-            c.phone_number
+            c.phone_number,
+            i.hall_cost + i.catering_cost AS 'TotalCost'
             FROM dbProj_Reservation r
             JOIN dbProj_Hall h ON r.hall_id = h.hall_id
             JOIN dbProj_Event e ON r.event_id = e.event_id
             JOIN dbProj_Client c ON r.client_id = c.client_id
+            JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
             WHERE r.reservation_id = " . $this->reservationId);
 //        var_dump($data);
         return $data;
@@ -124,7 +128,7 @@ class Reservation {
             $hall = new Hall();
             $event = new Event();
             
-            $reservation->setClientId('1');
+//            $reservation->setClientId('1');
             $reservationId = $dataSet[$i]->reservation_id;
             $reservation->initReservationWithId($reservationId);
             $hall->setHallId($reservation->hallId);
@@ -140,8 +144,7 @@ class Reservation {
             echo '<td>' . $reservation->getReservationDate() . '</td>';
             echo '<td>' . $event->getName() . '</td>';
             echo '<td>' . $hall->getHallName() . '</td>';
-            echo '<td>' . 101010 . '</td>';
-            
+            echo '<td>' . $dataSet[$i]->TotalCost . '</td>';
             echo '</tr>';
         }
         

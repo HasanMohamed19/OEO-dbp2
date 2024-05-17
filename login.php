@@ -23,7 +23,7 @@ include './models/Login.php';
 //    }
 
      if ($login->login($username, $password)) {
-         header("Location: myAccount.php");
+         header("Location: displayMyAccount.php");
          echo 'Logged in successfully';
      } else {
 //         header("Location: viewBookings.php");
