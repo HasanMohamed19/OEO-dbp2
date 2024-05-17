@@ -63,7 +63,10 @@ const updateSideMenu = () => {
         );
     
     getMenuItemSelections(); // this updates selectedMenuItems
-    if (selectedMenuItems === null || selectedMenuItems.length <= 0) return;
+    if (selectedMenuItems === null || selectedMenuItems.length <= 0) {
+        updateCateringDetails('None', 0);
+        return;
+    }
     let menuNamesArray = getCateringSelectedMenus(selectedMenuItems);
     let menuNamesRenamedArray = [];
     if (menuNamesArray['breakfast'] > 0) menuNamesRenamedArray.push("Breakfast");
