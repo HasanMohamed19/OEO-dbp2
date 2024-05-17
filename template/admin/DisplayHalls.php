@@ -48,7 +48,7 @@
         </div>
         <br>
 
-        <div id="pagination-items-halls" class="card-deck">
+        <div id="pagination-items-halls">
 
         </div>
         <!-- Pagination bar -->

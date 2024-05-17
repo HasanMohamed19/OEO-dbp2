@@ -59,19 +59,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="Admin_ViewClients.php" id ="add-form" novalidate method="POST" enctype="multipart/form-data">
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control userInputs" id="usrName" placeholder="Enter Username" name="usrName" required>
                             </div>
-                            <div class="mb-3" id="passwordDiv" hidden>
+                            <div class="mb-3 form-group required" id="passwordDiv" hidden>
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control userInputs" id="pwd" placeholder="Enter Password" name="pwd" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control userInputs" id="email" placeholder="Enter Email" name="email" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 form-group required">
                                 <label for="phoneNum" class="form-label">Phone Number</label>
                                 <input type="text" class="form-control userInputs" id="phoneNum" placeholder="Enter Phone Number" name="phoneNumber" required>
                             </div>
@@ -186,6 +186,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             $('.form-control').val('');
             $('.form-select').val('');
             $("#passwordDiv").removeAttr('hidden');
+            $('#pwd').attr('required','');
             $('#Add-UserID').removeAttr('value');
         });
     });
@@ -196,6 +197,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         $('#add-form').removeClass('was-validated');
         $('.pdInputs').prop('required', false);
         $('.cmpInputs').prop('required', false);
+        $('#pdCheckBx').prop( "checked", false );
+        $('#cmpCheckBx').prop( "checked", false );
     });
 
     $('#cmpCheckBx').change(function () {
