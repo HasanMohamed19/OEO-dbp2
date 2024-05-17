@@ -55,7 +55,7 @@ if (isset($_POST['submitted'])) {
         echo'<h1>Not saved :(</h1>';
     }
 }
-include './template/admin/DisplayHalls.php';
+include './template/admin/DisplayHalls.html';
 
 include './template/footer.html';
 ?>

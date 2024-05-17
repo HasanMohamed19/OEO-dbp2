@@ -99,5 +99,5 @@ if (isset($_POST['deleteClientSubmitted'])) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Client has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
-include './template/admin/DisplayClients.php';
+include './template/admin/DisplayClients.html';
 include './template/footer.html';
