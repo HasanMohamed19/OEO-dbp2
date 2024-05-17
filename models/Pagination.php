@@ -130,5 +130,15 @@ class Pagination {
     public function where() {
         return $this->where;
     }
+    
+    public function setTotal_records($total_records) {
+        $this->total_records = $total_records;
+    }
+
+    public function getTotal_records() {
+        return $this->total_records;
+    }
+
+
 
 }

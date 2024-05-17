@@ -25,12 +25,13 @@ $table = 'dbProj_Reservation';
 $reservation = new Reservation();
 $reservations = $reservation->getAllReservations($start, $end);
 
-//echo count($reservations) . " rows were found";
+echo count($reservations) . " rows were found";
 
 $reservation->createReservationsTable($reservations);
 $pagination = new Pagination();
-$pagination->totalRecords($table);
-//echo $pagination->total_records . ' is total records';
+$pagination->setTotal_records(count($reservations));
+//$pagination->totalRecords($table);
+echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
 $pagination->page("");
  
