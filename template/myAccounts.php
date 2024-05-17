@@ -1,5 +1,6 @@
 <?php
 $loggedInClientId = $_COOKIE['clientId'];
+include './models/Pagination.php';
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +70,23 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </thead>
                             <tbody>
                                 <?php
+                                $start = 0;
+                                $limit = 10;
                                 $reservation = new Reservation();
                                 $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient();
+                                $reservations = $reservation->getReservationsForClient($start, $limit);
                                 $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
                         </table>
+                        <?php
+                        
+                        $pagination = new Pagination();
+                        $pagination->setTotal_records(count($reservations));
+                        $pagination->setLimit($limit);
+                        $pagination->page("");
+                        ?>
                     </div>
 
 
@@ -790,13 +800,13 @@ $loggedInClientId = $_COOKIE['clientId'];
             e.preventDefault();
             return false;
         }
-        
+
         if (cardNumber.length !== 16) {
             console.log("wrong card number");
             e.preventDefault();
             return false;
         }
-        
+
         return true;
     });
 
