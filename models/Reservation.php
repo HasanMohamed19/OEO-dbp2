@@ -11,12 +11,12 @@
  * @author Hassan
  */
 class Reservation {
-    
+
     private $reservationId;
     private $hallId;
     private $clientId;
     private $eventId;
-    
+
     public function initWith($reservationId, $hallId, $clientId, $eventId) {
         $this->reservationId = $reservationId;
         $this->hallId = $hallId;
@@ -31,9 +31,9 @@ class Reservation {
         $this->eventId = null;
     }
 
-    public function getAllReservations() {
+    public function getAllReservations($start, $end) {
         $db = Database::getInstance();
-        $data = $db->multiFetch("
+        $q = "
         SELECT r.reservation_id,
         r.reservation_status_id,
         h.hall_name,
@@ -42,15 +42,18 @@ class Reservation {
         e.end_date,
         e.start_time,
         e.end_time,
-        c.phone_number,
-        p.first_name,
-        p.last_name
+        c.phone_number
         FROM dbProj_Reservation r
-        INNER JOIN dbProj_Hall h ON r.hall_id = h.hall_id
-        INNER JOIN dbProj_Event e ON r.event_id = e.event_id
-        INNER JOIN dbProj_Client c ON r.client_id = c.client_id
-        INNER JOIN dbProj_PersonalDetails p ON r.client_id = p.client_id;
-        ");
+        JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+        JOIN dbProj_Event e ON r.event_id = e.event_id
+        JOIN dbProj_Client c ON r.client_id = c.client_id
+        ";
+
+        if (isset($start)) {
+            $q .= ' limit ' . $start . ',' . $end;
+        }
+
+        $data = $db->multiFetch($q);
         return $data;
     }
 
@@ -62,7 +65,7 @@ class Reservation {
 
         // make table header
 
-        echo 
+        echo
         ' <div class="table-responsive">
         <table id="pagination-items-bookings" class="table table-striped table-bordered border-5 align-middle text-center rounded rounded-2">
             <!-- table header -->
@@ -84,29 +87,28 @@ class Reservation {
             <tbody>
             ';
 
-            // now populate table
-            for ($i=0; $i < count($dataset); $i++) { 
-                echo '<tr class="booking">
-                    <td scope="row">'. $dataset[$i]->reservation_id .'</td>
-                    <td>'. $dataset[$i]->start_date .'</td>
-                    <td>'. $dataset[$i]->end_date .'</td>
-                    <td>'. $dataset[$i]->start_time .'</td>
-                    <td>'. $dataset[$i]->end_time .'</td>
-                    <td>'. $dataset[$i]->hall_name .'</td>
-                    <td>'. $dataset[$i]->event_name .'</td>
-                    <td>'. $dataset[$i]->first_name . ' ' . $dataset[$i]->last_name .'</td>
-                    <td>'. $dataset[$i]->reservation_status_id .'</td>
-                    <td>'. 100 .'</td>
+        // now populate table
+        for ($i = 0; $i < count($dataset); $i++) {
+            echo '<tr class="booking">
+                    <td scope="row">' . $dataset[$i]->reservation_id . '</td>
+                    <td>' . $dataset[$i]->start_date . '</td>
+                    <td>' . $dataset[$i]->end_date . '</td>
+                    <td>' . $dataset[$i]->start_time . '</td>
+                    <td>' . $dataset[$i]->end_time . '</td>
+                    <td>' . $dataset[$i]->hall_name . '</td>
+                    <td>' . $dataset[$i]->event_name . '</td>
+                    <td>' . $dataset[$i]->first_name . ' ' . $dataset[$i]->last_name . '</td>
+                    <td>' . $dataset[$i]->reservation_status_id . '</td>
+                    <td>' . 100 . '</td>
 
                 </tr>';
-            }
-        
-            echo '</tbody>'
-            . '</table>';
+        }
+
+        echo '</tbody>'
+        . '</table>';
 
     }
-    
-    
+
     public function getReservationId() {
         return $this->reservationId;
     }
@@ -138,7 +140,5 @@ class Reservation {
     public function setEventId($eventId) {
         $this->eventId = $eventId;
     }
-
-
 
 }
