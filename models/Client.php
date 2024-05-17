@@ -11,7 +11,6 @@
  * @author Hassan
  */
 
-include_once 'models/User.php';
 
 //enum ClientStatus: int {
 //    // clientStatus with its discount rate
@@ -41,7 +40,43 @@ private $clientStatusId;
         parent::__construct();
     }
 
-    
+    // overrides registerUser from User class
+    public function registerUser() {
+        include_once  "./helpers/Database.php";
+        $db = new Database();
+//        if (!$this->isValid()) {
+//            return false;
+//        }
+        
+        // add a User first
+        if (!parent::registerUser()) {
+            return false;
+        }
+        
+        $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+
+        $q = "INSERT INTO `dbProj_Client` (`client_id`,`phone_number`, `user_id`, `client_status_id`)
+            VALUES (NULL, ?, ?, 4)";
+        $clientStmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$clientStmt) {
+            $db->displayError($q);
+            return false;
+        }
+
+        $clientStmt->bind_param('is', 
+                $this->phoneNumber,
+                $this->userId);
+
+        if (!$clientStmt->execute()) {
+            var_dump($clientStmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $this->clientId = $db->getDatabase()->insert_id;
+        return true;
+    }
 
     public function initClientWith($clientId, $phoneNumber, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;

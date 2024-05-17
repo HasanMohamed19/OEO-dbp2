@@ -171,7 +171,6 @@ const registerUser = () => {
     
     let data = getUserData();
     console.log(data);
-    return;
     // send registration request to server
     $.ajax({
         type: 'POST',
@@ -181,7 +180,7 @@ const registerUser = () => {
         if (res > 0) {
             console.log('user registered successfully');
         } else {
-            // registration failed, handle error
+            displayError(res);
         }
     });
 };
