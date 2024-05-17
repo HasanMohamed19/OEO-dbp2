@@ -4,10 +4,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
-include './debugging.php';
-include './template/header.html';
-include './models/MenuItem.php';
-include './helpers/Database.php';
+include_once './debugging.php';
+include_once './template/header.html';
+include_once './models/MenuItem.php';
+include_once './helpers/Database.php';
 
 function uploadImg() {
     //$_FILES is a PHP global array simialr to $_POST and $_GET

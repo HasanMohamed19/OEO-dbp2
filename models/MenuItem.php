@@ -124,7 +124,19 @@ class MenuItem {
         $data = $db->multiFetch('Select * from dbProj_Menu_Item');
         return $data;
     }
+        function getAvailableItems() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_Menu_Item WHERE item_status_id =" . AVAILABLE_STATUS);
+//       var_dump($data);
+        return $data;
+    }
 
+    function getCancelledItems() {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM dbProj_Menu_Item WHERE item_status_id =" . CANCELLED_STATUS);
+//       var_dump($data);
+        return $data;
+    }
     public function getCateringSerivceName() {
         switch ($this->cateringServiceId) {
             case 1:

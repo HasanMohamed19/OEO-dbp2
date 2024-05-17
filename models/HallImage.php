@@ -10,7 +10,7 @@
  *
  * @author Hassan
  */
-include '../helpers/Database.php';
+include_once '../helpers/Database.php';
 
 class HallImage {
 
