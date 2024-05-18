@@ -42,16 +42,11 @@ class Reservation {
         e.end_date,
         e.start_time,
         e.end_time,
-        c.client_id,
-        c.phone_number,
-        rs.status_name,
-        i.catering_cost + i.hall_cost AS 'totalCost'
+        c.phone_number
         FROM dbProj_Reservation r
         JOIN dbProj_Hall h ON r.hall_id = h.hall_id
         JOIN dbProj_Event e ON r.event_id = e.event_id
         JOIN dbProj_Client c ON r.client_id = c.client_id
-        JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
-        JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_status_id
         ";
 
         if (isset($start)) {
@@ -94,11 +89,6 @@ class Reservation {
 
         // now populate table
         for ($i = 0; $i < count($dataset); $i++) {
-
-            $client = new Client();
-            $rp = $client->hasPersonalDeatils($dataset[$i]->client_id);
-
-            $details = ($rp == 1) ? $client->getPersonalDeatils($dataset[$i]->client_id) : $client->getCompanyDetails($dataset[$i]->client_id);
             echo '<tr class="booking">
                     <td scope="row">' . $dataset[$i]->reservation_id . '</td>
                     <td>' . $dataset[$i]->start_date . '</td>
@@ -106,23 +96,17 @@ class Reservation {
                     <td>' . $dataset[$i]->start_time . '</td>
                     <td>' . $dataset[$i]->end_time . '</td>
                     <td>' . $dataset[$i]->hall_name . '</td>
-                    <td>' . $dataset[$i]->event_name . '</td>';
-            if ($rp == 1) {
-                echo '<td>' . $details->first_name . " " . $details->last_name . '</td>';
-            } else {
-                echo '<td>' . $details->company_name . '</td>';
-            }
-
-            echo '
-                    <td>' . $dataset[$i]->status_name . '</td>
-                    <td>' . $dataset[$i]->totalCost . '</td>
+                    <td>' . $dataset[$i]->event_name . '</td>
+                    <td>' . $dataset[$i]->first_name . ' ' . $dataset[$i]->last_name . '</td>
+                    <td>' . $dataset[$i]->reservation_status_id . '</td>
+                    <td>' . 100 . '</td>
 
                 </tr>';
-
         }
 
         echo '</tbody>'
         . '</table>';
+
     }
 
     public function getReservationId() {
