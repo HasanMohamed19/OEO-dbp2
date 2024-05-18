@@ -68,7 +68,7 @@ include './template/admin/DisplayServices.php';
 
 if(isset($_GET['pageno']))
    $start = $_GET['pageno'];
-else $start = 0;
+else $start = 1;
 
 $end = 10;
 

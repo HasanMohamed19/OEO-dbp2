@@ -121,7 +121,12 @@ class MenuItem {
 
     function getAllMenuItems($start, $end, $filter) {
         $db = Database::getInstance();
-        $start *= $end;
+        if ($start == 1){
+            $start = 0;
+        } else {
+           $start = $start * $end - $end; 
+        }
+        
         $q = 'Select * from dbProj_Menu_Item ';
             if ($filter=='ava') {
                 $q .= 'WHERE item_status_id = ' .AVAILABLE_STATUS;
