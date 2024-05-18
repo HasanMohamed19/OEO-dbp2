@@ -11,7 +11,6 @@
  * @author Hassan
  */
 
-include_once 'models/User.php';
 
 //enum ClientStatus: int {
 //    // clientStatus with its discount rate
@@ -41,7 +40,43 @@ private $clientStatusId;
         parent::__construct();
     }
 
-    
+    // overrides registerUser from User class
+    public function registerUser() {
+        include_once  "./helpers/Database.php";
+        $db = new Database();
+//        if (!$this->isValid()) {
+//            return false;
+//        }
+        
+        // add a User first
+        if (!parent::registerUser()) {
+            return false;
+        }
+        
+        $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+
+        $q = "INSERT INTO `dbProj_Client` (`client_id`,`phone_number`, `user_id`, `client_status_id`)
+            VALUES (NULL, ?, ?, 4)";
+        $clientStmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$clientStmt) {
+            $db->displayError($q);
+            return false;
+        }
+
+        $clientStmt->bind_param('is', 
+                $this->phoneNumber,
+                $this->userId);
+
+        if (!$clientStmt->execute()) {
+            var_dump($clientStmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $this->clientId = $db->getDatabase()->insert_id;
+        return true;
+    }
 
     public function initClientWith($clientId, $phoneNumber, $clientStatusId, $userId, $username, $password, $email, $roleId) {
         $this->clientId = $clientId;
@@ -61,7 +96,7 @@ private $clientStatusId;
     public function iniwWithClientId($clientId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Client WHERE client_id = ' . $clientId);
-        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->user_id, $client_status_id);
+        $this->initClientWithoutParent($data->client_id, $data->phone_number, $data->client_status_id, $data->user_id);
     }
     
     public function getClientEmail() {
@@ -125,6 +160,34 @@ private $clientStatusId;
        $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
 //       var_dump($data);
        return $data;
+
+    }
+    
+        function updateClient($clientId) {
+        include_once  "./helpers/Database.php";
+
+        $db = new Database();
+//        if ($this->isValid()) {
+//                    echo "username $this->username, password $this->password";
+            $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_Client SET "
+                . "phone_number=? WHERE client_id=?";
+
+            $stmt = mysqli_prepare($db->getDatabase(),$q);
+            if ($stmt) {
+                $stmt->bind_param('si', $this->phoneNumber, $clientId);
+            }
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+//            } else {
+//                $db->displayError($q);
+//                return false;
+//            }
 
     }
     

@@ -65,16 +65,15 @@ class CompanyDetails {
             $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
             
             $stmt = mysqli_prepare($db->getDatabase(), $q);
-            if ($stmt) {
-                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
-                
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute Failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
+            if (!$stmt) {
+                $db->displayError($q);
+                return false;
+            }
+            $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
+
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute Failed';
                 $db->displayError($q);
                 return false;
             }

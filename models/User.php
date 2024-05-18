@@ -17,11 +17,11 @@ const ROLE_EMPLOYEE = 3;
 const SALT= 'B4baB00eY';
 
 class User {
-    private $userId;
-    private $username;
-    private $password;
-    private $email;
-    private $roleId;
+    protected $userId;
+    protected $username;
+    protected $password;
+    protected $email;
+    protected $roleId;
     
     public function __construct() {
         $this->userId = null;
@@ -69,80 +69,58 @@ class User {
 
     function registerUser() {
         include_once  "./helpers/Database.php";
-        include_once 'Client.php';
         $db = new Database();
-        if ($this->isValid()) {
-//                    echo "username $this->username, password $this->password";
-            $this->username = $db->sanitizeString($this->username);
-            $this->password = $db->sanitizeString($this->password);
-            $this->email    = $db->sanitizeString($this->email);
-            
-            
-            
-            if ($this->userId == null) {
-                $q = 'INSERT INTO dbProj_User (username, password, email, role_id) values'
-                        . '(?,AES_ENCRYPT(?, "'.SALT.'"),?,?)';
-            } else {
-                // assuming role_id never changes
-                $q = "UPDATE dbProj_User SET "
-                        . "username='?', password=AES_ENCRYPT(?, '".SALT."'), email='?'"
-                        . "WHERE user_id=?";
-            }
-            
-            
-            
-            $stmt = mysqli_prepare($db->getDatabase(),$q);
-            if ($stmt) {
-                if ($this->userId == null) {
-                    $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $this->roleId);
-                } else {
-                    $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $this->userId);
-                }
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-            
-            $client = new Client();
-            $phoneNumber = $db->sanitizeString($_POST['phoneNumber']);
-            $client->setPhoneNumber($phoneNumber);
-//            $client->setUserId(mysqli_insert_id($db->getDatabase()));
-            echo 'client user id: ' . $client->getUserId();
-            $clientStmt = mysqli_prepare($db->getDatabase(), "CALL InsertClient(?,?)");
-            $clientStmt->bind_param('is', mysqli_insert_id($db->getDatabase()), $phoneNumber);
-            
-            if ($clientStmt) {
-                if (!$clientStmt->execute()) {
-                    var_dump($clientStmt);
-                    echo 'Execute failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-            
-//            try {
-//                $db = Database::getInstance();
-//                $q = 'INSERT INTO dbProj_User (user_id, username, password, email, role_id)
-//                 VALUES (NULL, \'' . $this->username . '\',\'' . $this->password . '\',\'' . $this->email . '\',' . $this->roleId . ')';
-//                $data = $db->querySql($q);
-//                var_dump($q);
-//                 return true;
-//            } catch (Exception $e) {
-//                echo 'Exception: ' . $e;
-//                return false;
-//            }
-        } else {
+        if (!$this->isValid()) {
             return false;
         }
+//                    echo "username $this->username, password $this->password";
+        $this->username = $db->sanitizeString($this->username);
+        $this->password = $db->sanitizeString($this->password);
+        $this->email    = $db->sanitizeString($this->email);
+
+
+        if ($this->userId == null) {
+            $q = 'INSERT INTO dbProj_User (username, password, email, role_id) values'
+                    . '(?,AES_ENCRYPT(?, "'.SALT.'"),?,?)';
+        } else {
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_User SET "
+                    . "username='?', password=AES_ENCRYPT(?, '".SALT."'), email='?'"
+                    . "WHERE user_id=?";
+        }
+
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+        
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        
+        if ($this->userId == null) {
+            $stmt->bind_param('sssi', 
+                    $this->username, 
+                    $this->password, 
+                    $this->email, 
+                    $this->roleId);
+        } else {
+            $stmt->bind_param('sssi', 
+                    $this->username, 
+                    $this->password, 
+                    $this->email, 
+                    $this->userId);
+        }
+        
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        // add userId if new user
+        if ($this->userId == null) {
+            $this->userId = mysqli_insert_id($db->getDatabase());
+        }
+
         return true;
     }
 
@@ -238,6 +216,40 @@ class User {
 //        echo 'error:'.mysqli_error($db->getDatabase());
 //    }
     
+        function updateUser($userId) {
+        include_once  "./helpers/Database.php";
+        $db = new Database();
+        if ($this->isValid()) {
+            $this->username = $db->sanitizeString($this->username);
+            $this->password = $db->sanitizeString($this->password);
+            $this->email    = $db->sanitizeString($this->email);
+            // assuming role_id never changes
+            $q = "UPDATE dbProj_User SET "
+                . "username=?, password=AES_ENCRYPT(?, '".SALT."'), email=? "
+                . "WHERE user_id=?";
+
+
+            $stmt = mysqli_prepare($db->getDatabase(),$q);
+            var_dump($stmt);
+            if ($stmt) {
+                $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
+//                    echo "username" . $this->username ." password ". $this->password;
+
+                if (!$stmt->execute()) {
+                    var_dump($stmt);
+                    echo 'Execute failed';
+                    $db->displayError($q);
+                    return false;
+                }
+            }
+
+            } else {
+                $db->displayError($q);
+                return false;
+            }
+
+    }
+    
     public function getUserId() {
         return $this->userId;
     }
@@ -276,6 +288,17 @@ class User {
 
     public function setRoleId($roleId) {
         $this->roleId = $roleId;
+    }
+    
+    function logout() {
+        $this->ok = false;
+        $_SESSION['userId'] = '';
+        $_SESSION['username'] = '';
+        $_SESSION['clientId'] = '';
+        setcookie('userId', '', time() - 3600, '/', $this->domain);
+        setcookie('username', '', time() - 3600, '/', $this->domain);
+        setcookie('clientId', '', time() - 3600, '/', $this->domain);
+        session_destroy();
     }
     
 }

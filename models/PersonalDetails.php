@@ -65,32 +65,40 @@ class PersonalDetails {
         
         
         $db = new Database();
-        if ($this->isValid()) {
-            $this->firstName = $db->sanitizeString($this->firstName);
-            $this->lastName = $db->sanitizeString($this->lastName);
-            $this->dob = $db->sanitizeString($this->dob);
-            $this->gender = $db->sanitizeString($this->gender);
-            $this->nationality = $db->sanitizeString($this->nationality);
-            
-            $q = "INSERT INTO dbProj_PersonalDetails (first_name, last_name, dob, gender, nationality, client_id) VALUES (?,?,?,?,?,?)";
-            
-            $stmt = mysqli_prepare($db->getDatabase(), $q);
-            if ($stmt) {
-                $stmt->bind_param('sssssi', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality, $this->clientId);
-                
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute Failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-            return true;
-            
+        if (!$this->isValid()) {
+            return false;
         }
+        $this->firstName = $db->sanitizeString($this->firstName);
+        $this->lastName = $db->sanitizeString($this->lastName);
+        $this->dob = $db->sanitizeString($this->dob);
+        $this->gender = $db->sanitizeString($this->gender);
+        $this->nationality = $db->sanitizeString($this->nationality);
+
+        $q = "INSERT INTO dbProj_PersonalDetails "
+                . "(personal_details_id, first_name, last_name, dob, gender, nationality, client_id) "
+                . "VALUES (NULL,?,?,?,?,?,?)";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+
+        $stmt->bind_param('sssssi', 
+                $this->firstName, 
+                $this->lastName, 
+                $this->dob, 
+                $this->gender, 
+                $this->nationality, 
+                $this->clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
         
     }
     

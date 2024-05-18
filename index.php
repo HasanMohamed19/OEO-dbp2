@@ -2,11 +2,11 @@
 
 
 
-session_start();
-setcookie('userId', '1', time() + 60 * 60 * 24 * 7, '/');
+//session_start();
+//setcookie('userId', '1', time() + 60 * 60 * 24 * 7, '/');
 
-echo 'This is cookie: '.$_COOKIE['userId'];
-echo 'This is session: '.$_SESSION['userId'];
+//echo 'This is cookie: '.$_COOKIE['userId'];
+//echo 'This is session: '.$_SESSION['userId'];
     
 include './template/header.html';
     

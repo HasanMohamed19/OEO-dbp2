@@ -12,14 +12,14 @@ include_once '../helpers/Database.php';
  * @author Hassan
  */
 class CardDetail {
-    
+
     private $cardId;
     private $cardholderName;
     private $cardNumber;
     private $CVV;
     private $expiryDate;
     private $clientId;
-    
+
     public function initWith($cardId, $cardholderName, $cardNumber, $CVV, $expiryDate, $clientId) {
         $this->cardId = $cardId;
         $this->cardholderName = $cardholderName;
@@ -28,7 +28,7 @@ class CardDetail {
         $this->expiryDate = $expiryDate;
         $this->clientId = $clientId;
     }
-    
+
     public function __construct() {
         $this->cardId = null;
         $this->cardholderName = null;
@@ -43,10 +43,10 @@ class CardDetail {
 
         if (empty($this->cardholderName))
             $errors = false;
-        
+
         if (empty($this->cardNumber))
             $errors = false;
-        
+
         if (empty($this->CVV))
             $errors = false;
 
@@ -65,7 +65,7 @@ class CardDetail {
         $data = $db->multiFetch("SELECT * FROM dbProj_Card_Detail");
         return $data;
     }
-    
+
     function getAllCardsForUser() {
         $db = Database::getInstance();
         $data = $db->multiFetch("SELECT * FROM dbProj_Card_Detail where client_id = " . $this->clientId);
@@ -90,20 +90,20 @@ class CardDetail {
 //            return false;
 //        }
         $db = new Database();
-        
+
         if ($this->isValid()) {
             $this->cardholderName = $db->sanitizeString($this->cardholderName);
             $this->cardNumber = $db->sanitizeString($this->cardNumber);
             $this->CVV = $db->sanitizeString($this->CVV);
             $this->expiryDate = $db->sanitizeString($this->expiryDate);
-            
+
             $q = "INSERT INTO dbProj_Card_Detail (cardholder_name, card_number, CVV, expiry_date, client_id) VALUES (?,?,?,?,?)";
-            
+
             $stmt = mysqli_prepare($db->getDatabase(), $q);
-            
+
             if ($stmt) {
                 $stmt->bind_param('ssssi', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate, $this->clientId);
-                
+
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute Failed';
@@ -116,39 +116,16 @@ class CardDetail {
             }
             return true;
         }
-        
     }
-    
+
     function initWithCardId($cardId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Card_Detail WHERE card_id = ' . $cardId);
         $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
     }
+
     
-    function displayCards($dataSet) {
-        
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $card = new CardDetail();
-                // todo: get this from the login
-                $card->setClientId('1');
-                $cardId = $dataSet[$i]->card_id;
-                $card->initWithCardId($cardId);
-                echo '<div class="card my-3 mx-3">
-                        <div class="card-body vstack gap-2">';
-                
-                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() .'</h2></div>';
-                echo '<div class="row justify-content-between">'
-                .       '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() .'</span>';
-                echo '<button id="editCardBtn" class="btn btn-outline-primary fw-bold col-3 border-0 justify-content-end" data-id="' . $card->getCardId() .'" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>
-                    <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>
-                    </div>
-                        </div>
-                    </div>';
-            }
-        }
-    }
-    
+
     public function deleteCard() {
         try {
             $db = Database::getInstance();
@@ -161,26 +138,26 @@ class CardDetail {
             return false;
         }
     }
-    
+
     function updateCard() {
-        
-        
+
+
         $db = new Database();
-        
+
         if ($this->isValid()) {
             $this->cardholderName = $db->sanitizeString($this->cardholderName);
             $this->cardNumber = $db->sanitizeString($this->cardNumber);
             $this->CVV = $db->sanitizeString($this->CVV);
             $this->expiryDate = $db->sanitizeString($this->expiryDate);
-            
+
             $q = "UPDATE dbProj_Card_Detail set
 			cardholder_name = ?, card_number = ?, CVV = ?, expiry_date = ? WHERE card_id = '$this->cardId';";
-            
+
             $stmt = mysqli_prepare($db->getDatabase(), $q);
-            
+
             if ($stmt) {
                 $stmt->bind_param('ssss', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate);
-                
+
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute Failed';
@@ -247,6 +224,34 @@ class CardDetail {
     }
     
     
+
+    public function getCardCount($clientId) {
+        $db = new Database();
+        $q = "SELECT COUNT(*) AS cardCount FROM dbProj_Card_Detail WHERE client_id = ?";
+
+        $this->clientId = $db->sanitizeString($clientId);
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if ($stmt) {
+            $stmt->bind_param('i', $this->clientId);
+
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute Failed';
+                $db->displayError($q);
+//                    return false;
+            } else {
+                $result = $stmt->get_result();
+                $data = $result->fetch_array(MYSQLI_ASSOC);
+//                var_dump($data);
+                return $data["cardCount"];
+            }
+        } else {
+            echo 'Execute Failed';
+            $db->displayError($q);
+        }
+    }
+
     public function getCardId() {
         return $this->cardId;
     }
@@ -294,5 +299,5 @@ class CardDetail {
     public function setClientId($clientId): void {
         $this->clientId = $clientId;
     }
-    
+
 }
