@@ -4,10 +4,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
-include './debugging.php';
-include './template/header.html';
-include './models/MenuItem.php';
-include './helpers/Database.php';
+include_once './debugging.php';
+include_once './template/header.html';
+include_once './models/MenuItem.php';
+include_once './models/Pagination.php';
+include_once './helpers/Database.php';
 
 function uploadImg() {
     //$_FILES is a PHP global array simialr to $_POST and $_GET
@@ -65,5 +66,99 @@ if (isset($_POST['submitted'])) {
 }
 include './template/admin/DisplayServices.php';
 
+if(isset($_GET['pageno']))
+   $start = $_GET['pageno'];
+else $start = 0;
+
+$end = 10;
+
+$filter = (isset($_GET['filter'])) ? $_GET['filter'] : 'all';
+
+switch ($filter) 
+{
+    case 'ava':
+        $displayby = 'ava';
+        break;
+    case 'cncl':
+        $displayby = 'cncl';
+        break;
+    default:
+        $displayby = 'all';
+        break;
+}
+$item = new MenuItem();
+$data = $item->getAllMenuItems($start, $end, $displayby);
+echo '<div class="container">';
+displayMenuItems($data);
+
+$pagination = new Pagination();
+if ($displayby=='all'){
+    $pagination->setTotal_records(28);
+} else if ($display=='ava') {
+    $pagination->setTotal_records(23);
+} else {
+    $pagination->setTotal_records(5);
+}
+
+//$pagination->totalRecords($table);
+echo $pagination->total_records . ' is total records';
+$pagination->setLimit($end);
+$pagination->page("");
+
+echo '</div>';
+
+
 include './template/footer.html';
 
+
+
+
+function displayMenuItems($dataSet) {
+    if (!empty($dataSet)) {
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $item = new MenuItem();
+            $id = $dataSet[$i]->item_id;
+            $item->initWithMenuItemid($id);
+            echo '<div class="card serviceCard mb-4 ">
+                <div class="card-body p-0">
+                    <div class="row m-0">
+                        <div class="col-xl-6 p-0">
+                        <img src="' . $item->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
+                        </div>
+                        <div class="col-xl-6 p-0">
+                            <div class="d-flex flex-column h-100 justify-content-between text-center ">
+                                <div class="row pt-5">
+                                    <div class="col text-center " >
+                                        <span class="fw-bold display-6">' . $item->getName() . '</span>
+                                            <br>
+                                        <span class="badge bg-' . $item->getItemStatusName()->status_name . '">' . $item->getItemStatusName()->status_name . '</span>
+                                </div>
+                                </div>
+                                <div class="row ps-5 pe-5">
+                                    <p>' . $item->getDescription() . '</p>
+                                </div>
+                                <div class="row ps-5 pe-5">
+                                    <div class="col text-start">
+                                        <h3>' . $item->getPrice() . '/Hr</h3>
+                                    </div>
+                                    <div class="col text-end">
+                                        <h3>' . $item->getCateringSerivceName() . '</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex col w-100">
+                                        <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>';
+        }
+    } else {
+        echo '<h1>No Menu Items to Display</h1>';
+    }
+}
+?>

@@ -6,7 +6,7 @@
             <h1>Browse Services</h1>
         </div>
         <div class="row">
-            <div class="col-xl-10 mb-4">
+            <div class="col-xl-8 mb-4">
                 <div class="input-group">
                     <input type="text" class="form-control mb-0" placeholder="Search For a Hall" id="search">
                     <button class="btn btn-outline-secondary" id="searchBtn">
@@ -14,35 +14,21 @@
                     </button>
                 </div>
             </div>
+            <div class="col-xl-2">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a id="all-halls" class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF'] . '?filter=all'; ?>">All Items</a></li>
+                        <li><a id="all-halls" class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF'] . '?filter=ava'; ?>">Available Items</a></li>
+                        <li><a id="all-halls" class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF'] . '?filter=cncl'; ?>">Cancelled Items</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="col-xl-2 text-end">
                 <button id="addItemBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Service</button>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-2">
-                <!-- Pagination bar -->
-                <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
-                    <span class="me-2">Page: </span>
-                    <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><input type="button" class="pagination-first-services page-link mx-2 rounded border-2" value="First"></li>
-                    </ul>
-                    <ul class="pagination pagination-numbers-services d-flex flex-row m-0">
-                    </ul>
-                    <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><input type="button" class="pagination-last-services page-link mx-2 rounded border-2" value="Last"></li>
-                    </ul>
-                </nav>
-
-            </div>
-        </div>
-        <br>
-        <div id="pagination-items-services">
-            <!-- display menu items -->
-            <?php
-            $newMenu = new MenuItem();
-            $dataSet = $newMenu->getAllMenuItems();
-            displayMenuItems($dataSet);
-            ?>
         </div>
         <br>
         <!-- Add Modal -->
@@ -132,7 +118,6 @@
     </div>
     <script src="./helpers/pagination.js"></script>
     <script src="./helpers/AdminForms.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
@@ -203,7 +188,7 @@
             var imageUpload = $('#imageUpload');
             var status = $('#itemStatus').val();
             // Check if any field is empty or image is not uploaded
-            if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId === null ||status=='') {
+            if ((imageUpload.prop('required') && imageUpload[0].files.length === 0) || name === '' || price == '' || serviceId == '' || serviceId === null || status == '') {
                 $(this).addClass('was-validated');
                 e.preventDefault(); // Prevent form submission
                 return false;
@@ -215,54 +200,3 @@
 </body>
 
 
-<?php
-
-function displayMenuItems($dataSet) {
-    if (!empty($dataSet)) {
-        for ($i = 0; $i < count($dataSet); $i++) {
-            $item = new MenuItem();
-            $id = $dataSet[$i]->item_id;
-            $item->initWithMenuItemid($id);
-            echo '<div class="card serviceCard mb-4 ">
-                <div class="card-body p-0">
-                    <div class="row m-0">
-                        <div class="col-xl-6 p-0">
-                        <img src="' . $item->getImagePath() . '" class="d-block w-100 rounded-start" alt="...">
-                        </div>
-                        <div class="col-xl-6 p-0">
-                            <div class="d-flex flex-column h-100 justify-content-between text-center ">
-                                <div class="row pt-5">
-                                    <div class="col text-center " >
-                                        <span class="fw-bold display-6">' . $item->getName() . '</span>
-                                            <br>
-                                        <span class="badge bg-' . $item->getItemStatusName()->status_name . '">' . $item->getItemStatusName()->status_name . '</span>
-                                </div>
-                                </div>
-                                <div class="row ps-5 pe-5">
-                                    <p>' . $item->getDescription() . '</p>
-                                </div>
-                                <div class="row ps-5 pe-5">
-                                    <div class="col text-start">
-                                        <h3>' . $item->getPrice() . '/Hr</h3>
-                                    </div>
-                                    <div class="col text-end">
-                                        <h3>' . $item->getCateringSerivceName() . '</h3>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="d-flex col w-100">
-                                        <button id ="editItemBtn" class="btn btn-primary rounded-0 flex-fill" data-id="' . $item->getItemId() . '" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-pen-fill">Edit</i> </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>';
-        }
-    } else {
-        echo '<h1>No Menu Items to Display</h1>';
-    }
-}
-?>

@@ -119,12 +119,26 @@ class MenuItem {
         $this->cateringServiceId = $cateringServiceId;
     }
 
-    function getAllMenuItems() {
+    function getAllMenuItems($start, $end, $filter) {
         $db = Database::getInstance();
-        $data = $db->multiFetch('Select * from dbProj_Menu_Item');
+        $start *= $end;
+        $q = 'Select * from dbProj_Menu_Item ';
+            if ($filter=='ava') {
+                $q .= 'WHERE item_status_id = ' .AVAILABLE_STATUS;
+            }
+            else if ($filter=='cncl') {
+                $q .= 'WHERE item_status_id = ' .CANCELLED_STATUS; 
+            }
+        if (isset($start))
+            $q .= ' limit ' . $start . ',' . $end;
+        echo 'Query is'. $q;
+        $data = $db->multiFetch($q);
+        echo 'data count is'.count($data);
         return $data;
     }
-
+    function getRecordsNum($q){
+        
+    }
     public function getCateringSerivceName() {
         switch ($this->cateringServiceId) {
             case 1:
