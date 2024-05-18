@@ -18,12 +18,16 @@ if ($_POST['submitted']) {
 function displayHalls($dataSet) {
 
 
-
-    for ($i = 0; $i < count($dataSet); $i++) {
-        $hall = $dataSet[$i];
+    foreach ($dataSet as $data) {
+        $data = (object) $data;
         $hall = new Hall();
-        $id = $dataSet[$i]->hall_id;
+        $id = $data->hall_id;
         $hall->initWithHallid($id);
+//        if ($_POST['submitted']) {
+//            var_dump($data);
+//            var_dump($id);
+//            echo 'hall id: '.$data->hall_id;
+//        }
         $image = new HallImage();
         $hallImages = $image->getAllImagesForHall($id);
         echo '

@@ -142,24 +142,22 @@ class Hall {
 
         $stmt = mysqli_prepare($db->getDatabase(), $q);
 
-        if ($stmt) {
-            $stmt->bind_param('s', $searhTerm);
-            if (!$stmt->execute()) {
-//                var_dump($stmt);
-                echo 'Execute failed';
-                $db->displayError($q);
-                return false;
-            } else {
-                $result = $stmt->get_result();             
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                var_dump($data);
-                return $data;
-//                return $data["client_id"];
-            }
-        } else {
+        if (!$stmt) {
             $db->displayError($q);
             return false;
         }
+        $stmt->bind_param('s', $searhTerm);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
+        return $data;
     }
 
     function addHall() {
