@@ -1,5 +1,6 @@
 <?php
 $loggedInClientId = $_COOKIE['clientId'];
+include './models/Pagination.php';
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +70,23 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </thead>
                             <tbody>
                                 <?php
+                                $start = 0;
+                                $limit = 10;
                                 $reservation = new Reservation();
                                 $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient();
+                                $reservations = $reservation->getReservationsForClient($start, $limit);
                                 $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
                         </table>
+                        <?php
+                        
+                        $pagination = new Pagination();
+                        $pagination->setTotal_records(count($reservations));
+                        $pagination->setLimit($limit);
+                        $pagination->page("");
+                        ?>
                     </div>
 
 
@@ -211,8 +221,8 @@ $loggedInClientId = $_COOKIE['clientId'];
 
                     <div class="row my-status align-self-center my-2">
 
-                        <h1 class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
-                        <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
+                        <h1 id="statusName" class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
+                        <p id="nextStatus" class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                     </div>
 
                     <div class="card rounded shadow-sm mb-2 mx-3">
@@ -694,26 +704,40 @@ $loggedInClientId = $_COOKIE['clientId'];
             url: './helpers/get_client_status.php',
             method: 'GET',
             data: {clientId: getCookie('clientId')},
-            dataType: 'text', // Expected data type from server
+            dataType: 'json', // Expected data type from server
             success: function (response) {
                 // Handle successful response
                 console.log('status Info:', response);
 
                 // Update class list
                 const statusDiv = $(".my-status");
-                switch (response) {
+                const statusText = $("#statusName");
+                const nextStatus = $("#nextStatus");
+                const numberOfReservations = parseInt(response.numberOfReservations);
+                 
+                switch (response.status) {
                     case 'Gold':
+                        nextStatus.html("You are at the highest tier");
                         statusDiv.addClass('gold');
                         break;
                     case 'Silver':
+                        nextStatus.html(15 - numberOfReservations + " until Gold Tier");
                         statusDiv.addClass('silver');
                         break;
                     case 'Bronze':
+                        nextStatus.html(10 - numberOfReservations + " until Silver Tier");
                         statusDiv.addClass('bronze');
                         break;
                     default:
+                        nextStatus.html(5 - numberOfReservations + " until Bronze Tier");
                         statusDiv.addClass('nothing');
+                        statusText.addClass('text-black');
+                        nextStatus.addClass('text-black');
+                        statusText.removeClass('text-white');
+                        nextStatus.removeClass('text-white');
                 }
+                
+                
 
             },
             error: function (xhr, status, error) {
@@ -790,13 +814,13 @@ $loggedInClientId = $_COOKIE['clientId'];
             e.preventDefault();
             return false;
         }
-        
+
         if (cardNumber.length !== 16) {
             console.log("wrong card number");
             e.preventDefault();
             return false;
         }
-        
+
         return true;
     });
 

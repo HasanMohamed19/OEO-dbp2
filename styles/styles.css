@@ -106,7 +106,8 @@
 .my-status.nothing {
 /*    background: linear-gradient(180deg, #cccccc 28%, #808080 83.5%);*/
  /*temporary*/
-    background-color: black;
+    /*background-color: black;*/
+    border-color: black;
 }
 
 
