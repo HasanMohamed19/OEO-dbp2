@@ -68,25 +68,25 @@ include './models/Pagination.php';
                                     <th scope="col">Price</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="reservationsTable">
                                 <?php
-                                $start = 0;
-                                $limit = 10;
-                                $reservation = new Reservation();
-                                $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient($start, $limit);
-                                $reservation->displayClientReservations($reservations);
-                                ?>
+//                                $start = 0;
+//                                $limit = 10;
+//                                $reservation = new Reservation();
+//                                $reservation->setClientId($loggedInClientId);
+//                                $reservations = $reservation->getReservationsForClient($start, $limit);
+//                                $reservation->displayClientReservations($reservations);
+//                                ?>
                             </tbody>
 
                         </table>
                         <?php
-                        
-                        $pagination = new Pagination();
-                        $pagination->setTotal_records(count($reservations));
-                        $pagination->setLimit($limit);
-                        $pagination->page("");
-                        ?>
+//                        
+//                        $pagination = new Pagination();
+//                        $pagination->setTotal_records(count($reservations));
+//                        $pagination->setLimit($limit);
+//                        $pagination->page("");
+//                        ?>
                     </div>
 
 
@@ -98,14 +98,14 @@ include './models/Pagination.php';
                     <div class="card-header">
                         <h3>My Cards</h3>
                     </div>
-
-                    <?php
-                    $card = new CardDetail();
-                    $card->setClientId($loggedInClientId);
-                    $cards = $card->getAllCardsForUser();
-                    displayCards($cards);
-                    ?>
-
+                    <div id="cards" class="row row-cols-2 justify-content-center">
+                        <?php
+    //                    $card = new CardDetail();
+    //                    $card->setClientId($loggedInClientId);
+    //                    $cards = $card->getAllCardsForUser();
+    //                    displayCards($cards);
+                        ?>
+                    </div>
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddCard" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
                     </div>
@@ -393,13 +393,17 @@ include './models/Pagination.php';
                     <div class="card-header">
                         <h3>Address Book</h3>
                     </div>
-
+                    
+                    <div id="addresses" class="row row-cols-2 justify-content-center">
+                        
+                    </div>
+                    
                     <?php
 //                            echo 'book address section';
-                    $address = new BillingAddress();
-                    $address->setClientId($loggedInClientId);
-                    $addresses = BillingAddress::getAddresses($loggedInClientId);
-                    displayAddresses($addresses);
+//                    $address = new BillingAddress();
+//                    $address->setClientId($loggedInClientId);
+//                    $addresses = BillingAddress::getAddresses($loggedInClientId);
+//                    displayAddresses($addresses);
 //                            $card->displayCards($cards);
                     ?>
 
@@ -536,65 +540,9 @@ include './models/Pagination.php';
 
     <?php
 
-    function displayCards($dataSet) {
+    
 
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $card = new CardDetail();
-                // todo: get this from the login
-//                $card->setClientId($_COOKIE['clientId']);
-                $cardId = $dataSet[$i]->card_id;
-                $card->initWithCardId($cardId);
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
-                        <div class="card-body vstack gap-2">';
-
-                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
-                echo '<div class="row justify-content-between">'
-                . '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
-                . '<span class="col-3 justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
-                echo '<div class="row my-2 gap-2">';
-                echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
-                echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
-                echo '</div></div></div>';
-            }
-        }
-    }
-
-    function displayAddresses($dataSet) {
-
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $address = new BillingAddress();
-                // todo: get this from the login
-//                $address->setClientId('13');
-                $addressId = $dataSet[$i]->address_id;
-                $address->setAddressId($addressId);
-                $address->initWithId();
-
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
-                        <div class="card-body vstack gap-2 align-items-center">
-                            <div class="row fw-bold"><h2>Company Address</h2></div>';
-
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() . '</span>
-                     </div>';
-
-                echo ' <div class="row m-2">
-                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() . ', Street: ' . $address->getRoadNumber() . ', Block: ' . $address->getBlockNumber() . '</span>
-                     </div>';
-
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">' . $address->getCity() . ', ' . $address->getCountry() . ' </span>
-                      </div>';
-
-                echo '</div><div class="row m-2 gap-1">';
-                echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
-                    <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
-                            </div>
-                        </div>';
-            }
-        }
-    }
+    
     ?>
 
 </div>
@@ -616,7 +564,41 @@ include './models/Pagination.php';
 
     updateCardExpiryYearDropdown();
 
-    $(document).ready(function () {
+//    $(document).ready(function () {
+//        $(document).on('click', '#editCardBtn', function () {
+//
+//            var cardId = $(this).attr('data-id');
+//            console.log('Card id is:', cardId);
+//            // AJAX request
+//            $.ajax({
+//                url: './helpers/get_card_info.php', // URL of your PHP script to fetch hall info
+//                method: 'GET',
+//                data: {cardId: cardId},
+//                dataType: 'json', // Expected data type from server
+//                success: function (response) {
+//                    // Handle successful response
+//                    console.log('Card Info:', response);
+//
+//                    // Update form inputs with fetched data
+//                    $('#cardholdernameInput').val(response.cardholderName);
+//                    $('#cardNumberInput').val(response.cardNumber);
+//                    $('#CVVInput').val(response.CVV);
+//                    const expiryDate = response.expiryDate.split("-");
+//                    console.log(parseInt(expiryDate[1]));
+//                    $('#cardExpiryYear').val(expiryDate[0]);
+//                    $('#cardExpiryMonth').val(parseInt(expiryDate[1]));
+////                    $('#cardExpiryMonth').val(expiryDate[1]);
+//                    $('#Add-CardID').val(response.cardId);
+//                },
+//                error: function (xhr, status, error) {
+//                    // Handle errors
+//                    console.error('Error fetching card info:', error);
+//                }
+//            });
+//        });
+//    });
+    
+     $(document).ready(function () {
         $(document).on('click', '#editCardBtn', function () {
 
             var cardId = $(this).attr('data-id');
@@ -647,6 +629,45 @@ include './models/Pagination.php';
                     console.error('Error fetching card info:', error);
                 }
             });
+        });
+        
+        $.ajax({
+            url: './helpers/display_cards.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            success: function (response) {
+                $('#cards').html(response);
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error); // Log any errors
+            }
+        });
+        
+        $.ajax({
+            url: './helpers/display_reservations.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            success: function (response) {
+                $('#reservationsTable').html(response);
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error); // Log any errors
+            }
+        });
+        
+        $.ajax({
+            url: './helpers/display_addresses.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            success: function (response) {
+                $('#addresses').html(response);
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error); // Log any errors
+            }
         });
     });
 
@@ -839,6 +860,6 @@ include './models/Pagination.php';
         $('.form-control').val('');
         $('#address-add-form').removeClass('was-validated');
     });
-
+    
 </script>
 </body>
