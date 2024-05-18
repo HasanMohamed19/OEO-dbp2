@@ -1,9 +1,9 @@
 <?php
 
-include_once'./debugging.php';
-include_once './template/header.html';
-include_once './models/Hall.php';
-include_once './helpers/Database.php';
+include './debugging.php';
+include './template/header.html';
+include './models/Hall.php';
+include './helpers/Database.php';
 
 function uploadImg() {
     $fileNames = []; // Array to store file names
