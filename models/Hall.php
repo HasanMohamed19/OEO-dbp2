@@ -291,9 +291,7 @@ class Hall {
 //                        . " and end date is $eEndDate.";
                 
                 // check if event timeframe overlaps requested timeframe
-                if (($startDate >= $eStartDate && $startDate <= $eEndDate)
-                        || ($endDate >= $eStartDate && $endDate <= $eEndDate)
-                        || ($eStartDate >= $startDate && $eStartDate <= $endDate)) {
+                if (self::areDatesOverlapping($startDate, $endDate, $eStartDate, $eEndDate)) {
                     // there is overlap, meaning hall is already booked at this time
                     $isOverlapping = true;
                     break;
@@ -307,6 +305,12 @@ class Hall {
 //        echo 'Available halls found are: ';
 //        var_dump($availableHalls);
         return $availableHalls;
+    }
+    
+    public static function areDatesOverlapping($startDate1, $endDate1, $startDate2, $endDate2) {
+        return ($startDate1 >= $startDate2 && $startDate1 <= $endDate2)
+                || ($endDate1 >= $startDate2 && $endDate1 <= $endDate2)
+                || ($startDate2 >= $startDate1 && $startDate2 <= $endDate1);
     }
     
 }

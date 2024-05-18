@@ -75,6 +75,46 @@ class Event {
         return $data;
     }
     
+    public static function getEventsForHallSorted($hallId, $sortType) {
+        $db = new Database();
+        $hallId = $db->sanitizeString($hallId);
+        
+        if ($sortType == 'asc') {
+            $q = "SELECT * "
+                    . "FROM dbProj_Event e "
+                    . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                    . "WHERE r.hall_id = ? "
+                    . "ORDER BY e.end_date ASC";
+        } else {
+            echo "sorting desc";
+            $q = "SELECT * "
+                    . "FROM dbProj_Event e "
+                    . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                    . "WHERE r.hall_id = ? "
+                    . "ORDER BY e.start_date DESC";
+        }
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $hallId);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
+        //returns results as array
+        return $data;
+    }
+    
     public function getEventId() {
         return $this->eventId;
     }
