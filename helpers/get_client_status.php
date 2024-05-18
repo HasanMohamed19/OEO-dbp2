@@ -10,19 +10,28 @@ if (isset($_GET['clientId'])) {
     // Get hallId from the request
     $clientId = $_GET['clientId'];
     try {
-    echo $clientId . ' is client id';
+//    echo $clientId . ' is client id';
         // Create a new instance of the Hall class
         $client = new Client();
         $client->setClientId($clientId);
         // Initialize the hall object with data based on hallId
-        $clientStatus = $client->getClientStatusName($clientId);
+        $clientStatus = $client->getClientStatusName($clientId)->status_name;
+        $totalReservations = Client::getTotalReservations($clientId)->totalReservations;
         // Prepare the response data
-        $responseData = $clientStatus;
+//        $responseData = $clientStatus;
+        $responseData = array(
+            "status"=>$clientStatus,
+            "numberOfReservations"=>$totalReservations
+        );
+
 //        echo $responseData->status_name . ' is response data';
 
         // Send JSON response
-        header('Content-Type: text/html');
-        echo $responseData->status_name;
+//        header('Content-Type: text/html');
+        header('Content-Type: application/json'); 
+        echo json_encode($responseData);
+        
+//        echo $responseData->status_name;
     } catch (Exception $e) {
         // Handle any exceptions
         header('HTTP/1.1 500 Internal Server Error');

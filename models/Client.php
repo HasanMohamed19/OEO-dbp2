@@ -141,4 +141,11 @@ private $clientStatusId;
 
     }
     
+    static function getTotalReservations($clientId) {
+        $db = Database::getInstance();
+       $data = $db->singleFetch('SELECT COUNT(*) AS "totalReservations" FROM dbProj_Reservation WHERE client_id = ' . $clientId);
+//       var_dump($data);
+       return $data;
+    }
+    
 }
