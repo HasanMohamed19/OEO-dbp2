@@ -63,7 +63,7 @@ if (isset($_POST['submitted'])) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Item has been updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
-include './template/admin/DisplayServices.html';
+include './template/admin/DisplayServices.php';
 
 include './template/footer.html';
 
