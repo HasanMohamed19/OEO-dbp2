@@ -94,7 +94,7 @@ displayMenuItems($data);
 $pagination = new Pagination();
 if ($displayby=='all'){
     $pagination->setTotal_records(28);
-} else if ($display=='ava') {
+} else if ($displayby=='ava') {
     $pagination->setTotal_records(23);
 } else {
     $pagination->setTotal_records(5);
@@ -103,7 +103,7 @@ if ($displayby=='all'){
 //$pagination->totalRecords($table);
 echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
-$pagination->page("");
+$pagination->page($displayby);
 
 echo '</div>';
 
