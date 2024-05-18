@@ -282,8 +282,13 @@ class Hall {
             $events = Event::getEventsForHall($hall->hall_id);
             $isOverlapping = false;
             foreach ($events as $event) {
+                $event = (object) $event;
                 $eStartDate = $event->start_date;
                 $eEndDate = $event->end_date;
+                
+//                echo "For hall $hall->hall_name, checking event $event->event_name."
+//                        . " Currently, start date for event is $eStartDate"
+//                        . " and end date is $eEndDate.";
                 
                 // check if event timeframe overlaps requested timeframe
                 if (($startDate >= $eStartDate && $startDate <= $eEndDate)
