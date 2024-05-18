@@ -8,7 +8,7 @@
 //echo 'This is cookie: '.$_COOKIE['userId'];
 //echo 'This is session: '.$_SESSION['userId'];
     
-include './template/header.html';
+include 'header.php';
     
     echo '<div class="main"> </div>';
 

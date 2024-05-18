@@ -6,7 +6,7 @@ include './models/User.php';
 include './models/Login.php';
 
     if (!empty($_COOKIE['userId'])) {
-        header('Location: myAccount.php');
+        header('Location: displayMyAccount.php');
     }
 
     if (isset($_POST['submitted'])) {
@@ -33,7 +33,7 @@ include './models/Login.php';
 
 
 
-include './template/header.html';
+//include './template/header.html';
 // start_session();
 
 
