@@ -10,7 +10,7 @@
  *
  * @author Hassan
  */
-include '../helpers/Database.php';
+include_once '../helpers/Database.php';
 include_once 'models/HallImage.php';
 
 //hall status
@@ -271,5 +271,37 @@ class Hall {
         else
             return false;
     }
-
+    
+    public static function getAvailableHalls($startDate, $endDate) {
+        include_once './models/Event.php';
+        // returns halls that are available at the selected timeframe
+        $availableHalls = [];
+        $h = new Hall();
+        $halls = $h->getAllHalls();
+        foreach ($halls as $hall) {
+            $events = Event::getEventsForHall($hall->hall_id);
+            $isOverlapping = false;
+            foreach ($events as $event) {
+                $eStartDate = $event->start_date;
+                $eEndDate = $event->end_date;
+                
+                // check if event timeframe overlaps requested timeframe
+                if (($startDate >= $eStartDate && $startDate <= $eEndDate)
+                        || ($endDate >= $eStartDate && $endDate <= $eEndDate)
+                        || ($eStartDate >= $startDate && $eStartDate <= $endDate)) {
+                    // there is overlap, meaning hall is already booked at this time
+                    $isOverlapping = true;
+                    break;
+                }
+            }
+            // if no timeframes overlap, this hall is available
+            if (!$isOverlapping) {
+                $availableHalls[] = $hall;
+            }
+        }
+//        echo 'Available halls found are: ';
+//        var_dump($availableHalls);
+        return $availableHalls;
+    }
+    
 }

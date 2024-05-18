@@ -2,14 +2,29 @@
 include './models/Hall.php';
 include './helpers/Database.php';
 include './debugging.php';
+
+// filter halls based on selected time range and audience number
+if (isset($_POST['filter'])) {
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate'];
+    $audience = $_POST['audience'];
+    
+    // check if there are any halls available at this time
+    $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
+    
+    $halls = $availableHalls;
+}
+
+
+// search and display halls based on search query
 $hall = new Hall();
 
 if ($_POST['submitted']) {
     $searchTerm = trim($_POST['search']);
-    echo 'submitted: ' . $searchTerm;
+//    echo 'submitted: ' . $searchTerm;
     $halls = $hall->getHallsBySearch($searchTerm);
-} else {
-    echo 'get all active halls';
+} else if (!isset($_POST['filter'])) {
+//    echo 'get all active halls';
     $halls = $hall->getAllHalls();
 }
 
@@ -108,24 +123,25 @@ function displayHalls($dataSet) {
     <div class="row justify-content-center">
         <div class="col-md-9 shadow-lg rounded my-5 p-4">
             <h4 class="text-left">Search for Available Halls</h4>
-            <form>
+            <form action="index.php" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="startDate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control border border-secondary" id="startDate">
+                        <input type="date" class="form-control border border-secondary" id="startDate" name="startDate">
                     </div>
                     <div class="col-md-4">
                         <label for="endDate" class="form-label">End Date</label>
-                        <input type="date" class="form-control border border-secondary" id="endDate">
+                        <input type="date" class="form-control border border-secondary" id="endDate" name="endDate">
                     </div>
                     <div class="col-md-4">
                         <label for="audienceCount" class="form-label">Number of Audiences</label>
-                        <input type="number" class="form-control border border-secondary" id="audienceCount">
+                        <input type="number" class="form-control border border-secondary" id="audienceCount" name="audience">
                     </div>
                 </div>
                 <div class="row g-3">
                     <div class="col-md-12 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary shadow-lg mt-4">Search Now</button>
+                        <input type="hidden" name="filter" value="1">
                     </div>
                 </div>
             </form>

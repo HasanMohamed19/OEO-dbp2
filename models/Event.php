@@ -46,6 +46,35 @@ class Event {
         $this->initWith($data->event_Id, $data->event_name, $data->start_date, $data->end_date, $data->audience_number, $data->start_time, $data->end_time);
     }
     
+    public static function getEventsForHall($hallId) {
+        $db = new Database();
+        $hallId = $db->sanitizeString($hallId);
+        $q = "SELECT * "
+                . "FROM dbProj_Event e "
+                . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                . "WHERE r.hall_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $hallId);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
+        //returns results as array
+        return $data;
+    }
+    
     public function getEventId() {
         return $this->eventId;
     }
