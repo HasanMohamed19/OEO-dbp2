@@ -87,7 +87,7 @@ class Event {
                     . "AND e.end_date >= ? "
                     . "ORDER BY e.end_date ASC";
         } else {
-            echo "sorting desc";
+//            echo "sorting desc";
             $q = "SELECT * "
                     . "FROM dbProj_Event e "
                     . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "

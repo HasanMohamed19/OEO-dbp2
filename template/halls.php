@@ -4,6 +4,117 @@ include './models/Event.php';
 include './helpers/Database.php';
 include './debugging.php';
 
+
+function getSuggestedDatesForHall($hall, $startDate, $endDate, $checkAfter) {
+    // sort by end date ascending to get earliest possible available
+    // time for the hall after the desired timeframe
+    // OR descending to get latest possible available time for the hall
+    // before the desired timeframe
+    $events = $checkAfter ? 
+            Event::getEventsForHallSorted($hall->hall_id, 'asc', $startDate)
+            :  Event::getEventsForHallSorted($hall->hall_id, 'desc', $endDate);
+    $eventsCount = count($events);
+    $suggestStart = '';
+    $suggestEnd = '';
+    for ($i = 0; $i < $eventsCount; $i++) {
+        $event = (object) $events[$i];
+
+        $eStartDate = $event->start_date;
+        $eEndDate = $event->end_date;
+//        echo "Checking event for hall $hall->hall_name which starts on $eStartDate and ends on $eEndDate.  ";
+
+        // set check parameters based on whether to check after the event or before it
+        if ($checkAfter) {
+            $dateInterval = date_diff(new DateTime($startDate), new DateTime($endDate));
+//            echo "Date interval is ". $dateInterval->format('%R%a days');
+            $startDateCheck = new DateTime($eEndDate);
+            $startDateCheck->modify('+1 day');
+            $endDateCheck = clone $startDateCheck;
+            $endDateCheck->add($dateInterval);
+        } else {
+            $dateInterval = date_diff(new DateTime($endDate), new DateTime($startDate));
+//            echo "Date interval is ". $dateInterval->format('%R%a days');
+            $endDateCheck = new DateTime($eStartDate);
+            $endDateCheck->modify('-1 day');
+            $startDateCheck = clone $endDateCheck;
+            $startDateCheck->add($dateInterval);
+        }
+
+        // if this is the last event, no need to check
+        if ($i == $eventsCount-1) {
+//            echo "Last event to check, just return";
+            $suggestStart = $startDateCheck->format('Y-m-d');
+            $suggestEnd = $endDateCheck->format('Y-m-d');
+//            echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
+            break;
+        }
+//        echo "Checking dates ".$startDateCheck->format('Y-m-d')." and ".$endDateCheck->format('Y-m-d')." to see if they are valid. ";
+
+        $nextEvent = (object) $events[$i+1];
+        $nextStart = $nextEvent->start_date;
+        $nextEnd = $nextEvent->end_date;
+//        echo "Next event starts $nextStart and ends $nextEnd.  ";
+        
+        if (!Hall::areDatesOverlapping($startDateCheck->format('Y-m-d'), 
+                $endDateCheck->format('Y-m-d'), $nextStart, $nextEnd)) {
+            // if not overlapping, this date range works
+//            echo "Dates do not overlap. get timerange.  ";
+            $suggestStart = $startDateCheck->format('Y-m-d');
+            $suggestEnd = $endDateCheck->format('Y-m-d');
+//            echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
+            break;
+        }
+        // dates are overlapping next event, wont work
+//        echo "Dates are overlapping. Continuing.<br>  ";
+    }
+    return [
+        "suggestedStartDate"=>$suggestStart,
+        "suggestedEndDate"=>$suggestEnd
+    ];
+}
+
+function getClosestDate($testDate, $against1, $against2) {
+    // compare $against1 and $against2 to $testDate
+    // to find which one is closer
+    $testDateObj = new DateTime($testDate);
+    $against1Obj = new DateTime($against1);
+    $against2Obj = new DateTime($against2);
+    $diff1 = date_diff($testDateObj, $against1Obj, true);
+    $diff2 = date_diff($testDateObj, $against2Obj, true);
+    return $diff1 < $diff2 ? $against1 : $against2;
+}
+
+function getSuggestedDates($startDate, $endDate) {
+    $h = new Hall();
+    $halls = $h->getAllHalls();
+    $suggestedDates = [];
+    // loop through each hall to get best available dates
+    foreach ($halls as $hall) {
+        $hallSuggestedDatesAfter = getSuggestedDatesForHall($hall, $startDate, $endDate, true);
+        $hallSuggestedDatesBefore = getSuggestedDatesForHall($hall, $startDate, $endDate, false);
+        
+        $testAfter = $hallSuggestedDatesAfter['suggestedStartDate'];
+        $testBefore = $hallSuggestedDatesBefore['suggestedStartDate'];
+        
+        $closestSuggestedDate = getClosestDate($startDate, $testAfter, $testBefore);
+        $closestSuggestedDates = $closestSuggestedDate == $testAfter ?
+                $hallSuggestedDatesAfter : $hallSuggestedDatesBefore;
+        $suggestedDates[] = $closestSuggestedDates;
+    }
+    return $suggestedDates;
+}
+
+function getSuggestedDate($suggestedDates, $num) {
+    // returns formatted string for the date from the array $suggestedDates
+    if (count($suggestedDates) >= $num){
+        $suggested = $suggestedDates[$num-1];
+        $text = $suggested['suggestedStartDate'];
+        $text .= " to ";
+        $text .= $suggested['suggestedEndDate'];
+        return $text;
+    }
+}
+
 // filter halls based on selected time range and audience number
 if (isset($_POST['filter'])) {
     $startDate = $_POST['startDate'];
@@ -14,57 +125,7 @@ if (isset($_POST['filter'])) {
     $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
     
     if (!$availableHalls) {
-        $h = new Hall();
-        $halls = $h->getAllHalls();
-        foreach ($halls as $hall) {
-            // sort by end date ascending to get earliest possible available
-            // time for the hall after the desired timeframe
-            $events = Event::getEventsForHallSorted($hall->hall_id, 'asc', $startDate);
-            $eventsCount = count($events);
-            $suggestStart = '';
-            $suggestEnd = '';
-            for ($i = 0; $i < $eventsCount; $i++) {
-                $event = (object) $events[$i];
-
-                $eEndDate = $event->end_date;
-                echo "Checking event which ends on ".$eEndDate;
-
-                $dateInterval = date_diff(new DateTime($startDate), new DateTime($endDate));
-                echo "Date interval is ". $dateInterval->format('%R%a days');
-                $startDateCheck = new DateTime($eEndDate);
-                $startDateCheck->modify('+1 day');
-                $endDateCheck = clone $startDateCheck;
-                $endDateCheck->add($dateInterval);
-
-                // if this is the last event, no need to check
-                if ($i == $eventsCount-1) {
-                    echo "Last event to check, just return";
-                    $suggestStart = $startDateCheck->format('Y-m-d');
-                    $suggestEnd = $endDateCheck->format('Y-m-d');
-                    echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
-                    break;
-                }
-                echo "Checking dates ".$startDateCheck->format('Y-m-d')." and ".$endDateCheck->format('Y-m-d')." to see if they are valid. ";
-                
-                $nextEvent = (object) $events[$i+1];
-                $nextStart = $nextEvent->start_date;
-                $nextEnd = $nextEvent->end_date;
-                echo "Next event starts $nextStart and ends $nextEnd.  ";
-                
-                if (!Hall::areDatesOverlapping($startDateCheck->format('Y-m-d'), 
-                        $endDateCheck->format('Y-m-d'), $nextStart, $nextEnd)) {
-                    // if not overlapping, this date range works
-                    echo "Dates do not overlap. get timerange.  ";
-                    $suggestStart = $startDateCheck->format('Y-m-d');
-                    $suggestEnd = $endDateCheck->format('Y-m-d');
-                    echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
-                    break;
-                }
-                // dates are overlapping next event, wont work
-                echo "Dates are overlapping. Continuing.<br>  ";
-            }
-            
-        }
+        $suggestedDates = getSuggestedDates($startDate, $endDate);
     }
     
     $halls = $availableHalls;
@@ -213,7 +274,25 @@ function displayHalls($dataSet) {
     </form>
     <section class="my-4">
         <div class="container ">
-            <div class="row mb-3 d-none"><h3 class="col">No halls found with the search parameters. Here are some alternatives:</h3></div>
+            <div id="suggestionBox" class="row <?php if (!$_POST['filter'] || $availableHalls) echo "d-none" ?>">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h4>No halls are available for the selected time slot. Here are some alternatives:</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <?php
+                        for ($i = 0; $i < count($suggestedDates) 
+                                && $i < 3;$i++) {
+                            echo "<div class='col-4'>";
+                            echo '<h5 class="text-center">'.getSuggestedDate($suggestedDates,$i+1).'</h5>';
+                            echo "</div>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-sm-1 row-cols-xl-2 justify-content-center">
                 <?php
                 displayHalls($halls);
