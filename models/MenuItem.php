@@ -206,6 +206,7 @@ class MenuItem {
             $db->displayError($q);
             return false;
         }
+        unlink($this->imagePath);
         return true;
     }
 

@@ -87,6 +87,7 @@ class HallImage {
             $db->displayError($q);
             return false;
         }
+        unlink($this->$hallImagePath);
         echo 'image deleted;';
         return true;
     }
