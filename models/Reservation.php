@@ -10,6 +10,9 @@
  *
  * @author Hassan
  */
+
+include_once './helpers/Database.php';
+
 class Reservation {
 
     private $reservationId;
@@ -33,6 +36,13 @@ class Reservation {
 
     public function getAllReservations($start, $end) {
         $db = Database::getInstance();
+        
+         if ($start == 1){
+            $start = 0;
+        } else {
+           $start = $start * $end - $end; 
+        }
+        
         $q = "
         SELECT r.reservation_id,
         r.reservation_status_id,
@@ -60,6 +70,31 @@ class Reservation {
 
         $data = $db->multiFetch($q);
         return $data;
+    }
+    
+    public static function countAllReservations() {
+        $db = Database::getInstance();
+        $q = "SELECT r.reservation_id,
+        r.reservation_status_id,
+        h.hall_name,
+        e.event_name,
+        e.start_date,
+        e.end_date,
+        e.start_time,
+        e.end_time,
+        c.client_id,
+        c.phone_number,
+        rs.status_name,
+        i.catering_cost + i.hall_cost AS 'totalCost'
+        FROM dbProj_Reservation r
+        JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+        JOIN dbProj_Event e ON r.event_id = e.event_id
+        JOIN dbProj_Client c ON r.client_id = c.client_id
+        JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
+        JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_status_id";
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+//        echo $dataCount . ' datacount found is';
     }
 
     public function createReservationsTable($dataset) {

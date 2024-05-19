@@ -16,7 +16,7 @@ include './template/admin/view_bookings.html';
 if (isset($_GET['pageno']))
     $start = $_GET['pageno'];
 else
-    $start = 0;
+    $start = 1;
 
 $end = 10;
 
@@ -29,7 +29,7 @@ echo count($reservations) . " rows were found";
 
 $reservation->createReservationsTable($reservations);
 $pagination = new Pagination();
-$pagination->setTotal_records(count($reservations));
+$pagination->setTotal_records(Reservation::countAllReservations());
 //$pagination->totalRecords($table);
 echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
