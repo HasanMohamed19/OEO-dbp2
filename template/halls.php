@@ -132,17 +132,26 @@ function filterHalls() {
     $returnList = [
         'suggestedDates'=>null,
         'maxAudience'=>null,
-        'halls'=>null
+        'halls'=>null,
+        'filterError'=>null
     ];
     // check if start and end dates are valid
     if (!$startDate || !$endDate) {
         $filterError = "Both dates must be filled to search.";
-        return;
+        $returnList['filterError'] = $filterError;
+        return $returnList;
     }
     if ($startDate > $endDate) {
         $filterError = "Start date cannot be before end date.";
-        return;
+        $returnList['filterError'] = $filterError;
+        return $returnList;
     }
+    if ($startDate <= date("Y-m-d")) {
+        $filterError = "Start date cannot be today or earlier.";
+        $returnList['filterError'] = $filterError;
+        return $returnList;
+    }
+    
     // check if there are any halls available at this time
     $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
     if (!$availableHalls) {
@@ -164,6 +173,7 @@ function filterHalls() {
     }
     $halls = $availableHalls;
     $returnList['halls'] = $halls;
+    $returnList['availableHalls'] = $availableHalls;
     return $returnList;
 }
 
@@ -172,10 +182,13 @@ if (isset($_POST['filter'])) {
     $result = filterHalls();
     if ($result['halls']) {
         $halls = $result['halls'];
+//        $availableHalls = $result['availableHalls'];
     } else if ($result['suggestedDates']) {
         $suggestedDates = $result['suggestedDates'];
     } else if ($result['maxAudience']) {
         $maxAudience = $result['maxAudience'];
+    } else if ($result['filterError']) {
+        $filterError = $result['filterError'];
     }
 }
 
@@ -308,11 +321,15 @@ function displayHalls($dataSet) {
                         <input type="hidden" name="filter" value="1">
                     </div>
                 </div>
-                <div class="row <?php if (!$filterError) echo "d-none"; ?>">
+                <?php
+                if ($filterError) {
+            echo '<div class="row">
                     <div class="col-md-12 d-flex justify-content-center">
-                        <p class="text-center text-danger"><?php echo $filterError ?></p>
+                        <p class="text-center text-danger">'.$filterError.'</p>
                     </div>
-                </div>
+                </div>';
+                }
+                ?>
             </form>
         </div>
     </div>
@@ -335,7 +352,7 @@ function displayHalls($dataSet) {
                             <h5 class='text-danger'>No halls found for the specified audience number. The largest hall available has $maxAudience seats.</h5>
                         </div>
                     </div>";
-            } else if ($_POST['filter'] && !$availableHalls && !$filterError) {
+            } else if ($_POST['filter'] && !$halls && !$filterError) {
                 // print suggested time slots if no halls are available
                 echo '<div id="suggestionBox" class="row">
                         <div class="col">
