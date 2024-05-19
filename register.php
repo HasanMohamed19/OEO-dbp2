@@ -62,7 +62,7 @@ if (isset($_POST['submitted'])) {
 }
 
 
-include './template/header.html';
+include 'header.php';
     
 echo '<div class="main"> ';
 include './template/register.html';
