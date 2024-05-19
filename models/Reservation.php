@@ -24,7 +24,7 @@ const RESERVATION_PENDING_PAYMENT = 3; // if reservation has completed but not p
 const RESERVATION_CANCELLED = 2;
 
 class Reservation {
-
+    
     private $reservationId;
     private $hallId;
     private $clientId;
@@ -56,6 +56,8 @@ class Reservation {
         $this->reservationDate = null;
     }
 
+    
+
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
@@ -63,6 +65,7 @@ class Reservation {
         $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id, $data->reservation_date);
     }
     
+
     public function getAllReservations($start, $end) {
         $db = Database::getInstance();
         
@@ -215,6 +218,7 @@ class Reservation {
         $dataCount = $db->getRows($q);
 //        echo $dataCount . ' is data count';
         return $dataCount;
+        
     }
 
     function getReservationsForClient($start, $end) {
@@ -256,6 +260,7 @@ class Reservation {
         return $data;
     }
 
+
     function getReservationDetails() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT r.reservation_id,
@@ -273,18 +278,23 @@ class Reservation {
             e.end_time,
             e.audience_number,
             c.phone_number,
+            i.invoice_id,
             i.hall_cost + i.catering_cost AS 'TotalCost'
             FROM dbProj_Reservation r
             JOIN dbProj_Hall h ON r.hall_id = h.hall_id
             JOIN dbProj_Event e ON r.event_id = e.event_id
             JOIN dbProj_Client c ON r.client_id = c.client_id
             JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
-            WHERE r.reservation_id = " . $this->reservationId);
+            WHERE r.reservation_id = " . $this->reservationId . " ORDER BY i.invoice_id DESC LIMIT 1");
 //        var_dump($data);
         return $data;
     }
 
-    public function displayClientReservations($dataSet) {
+
+
+    
+
+     public function displayClientReservations($dataSet) {
         if (empty($dataSet)) {
             echo 'nothing found';
         }
@@ -314,6 +324,7 @@ class Reservation {
             echo '</tr>';
         }
     }
+    
 
     public function displayReservationMenuItems($dataSet) {
         if (empty($dataSet)) {
@@ -337,8 +348,9 @@ class Reservation {
                    </div>';
         }
     }
+    
 
-    public function displayUserReservations($dataSet) {
+     public function displayUserReservations($dataSet) {
         if (empty($dataSet)) {
             return;
         }
@@ -445,6 +457,24 @@ class Reservation {
 //        var_dump($data);
         return $data;
     }
+
+//        public function getAdditionalServicesForReservation($reservationId) { 
+//        $db = Database::getInstance();
+//        $data = $db->multiFetch("SELECT 
+//             m.item_id,
+//            m.name,
+//            m.image_path,
+//            m.price,
+//            rm.reservation_id,
+//            rm.quantity
+//            FROM dbProj_Menu_Item m
+//            JOIN dbProj_Reservation_Menu_Item rm ON rm.item_id = m.item_id
+//            JOIN dbProj_Reservation r ON rm.reservation_id = r.reservation_id
+//            WHERE r.reservation_id =" . $reservationId);
+////        var_dump($data);
+//        return $data;
+//    }
+
     
 
     public function saveReservation(Event $event) {
@@ -523,6 +553,7 @@ class Reservation {
         return true;
     }
     
+
 
 
     public function getReservationId() {

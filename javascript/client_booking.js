@@ -73,7 +73,8 @@ $('#bookingForm').on('submit', function(event) {
     }).then(function(resId) {
         // redirect to summary if complete
         if (resId !== null && resId > 0) {
-            window.location.href = 'booking_summary.php?reservationId='+resId;
+//            console.log(redId);
+            window.location.href = 'booking_detail.php?reservationId='+resId;
         }
     });
 });

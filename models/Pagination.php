@@ -4,7 +4,7 @@
 include './debugging.php';
 
 class Pagination {
-    
+
     // total records in table
     public $total_records;
     // limit of items per page
@@ -44,11 +44,10 @@ class Pagination {
     }
 
     // determine what the current page is also, it returns the current page
-    public function page($search) {
+    public function page($filter) {
         $pageno = (int) (isset($_GET['pageno'])) ? $_GET['pageno'] : $pageno = 1;
 //        $sType = $_REQUEST['searchType'];
 //        $srank = $_REQUEST['showRank'];
-
         // out of range check
         if ($pageno > $this->total_pages) {
             $pageno = $this->total_pages;
@@ -63,20 +62,16 @@ class Pagination {
             // backtrack
             $prevpage = $pageno - 1;
 
-            // 'first' and 'back' links
-//            $this->firstBack = "<div><a href='$_SERVER[PHP_SELF]?submitted=1&pageno=1'>First</a> <a href='$_SERVER[PHP_SELF]?submitted=1&pageno=$prevpage'>Back</a></div>";
             $this->firstBack = '<ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><a href="'.$_SERVER[PHP_SELF].'?submitted=1&pageno=1" type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="First" disabled="true">First</a></li>
-              </ul>';
+                        <li class="page-item"><a href="' . $_SERVER['PHP_SELF'] . '?filter=' . $filter . '&submitted=1&pageno=1" type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="First" disabled="true">First</a></li>
+                   </ul>';
+
             echo $this->firstBack;
-            
         }
 
         $this->where = "<div>(Page $pageno of $this->total_pages)</div>";
-        
-        
-        
-        for ($i = 1; $i <= $this->total_pages; $i++ ) {
+
+        for ($i = 1; $i <= $this->total_pages; $i++) {
 //            <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
 //                    <span class="me-2">Page: </span>
 //                    <ul class="pagination d-flex flex-row m-0">
@@ -90,14 +85,14 @@ class Pagination {
             if ($pageno == $i) {
 //                echo "<a  class="page-link ms-2 rounded border-2 pagination-number-button-bookings active'>'.$i.'</a>";
 //                echo "<a class='page-link ms-2 rounded border-2 pagination-number-button-bookings active' href='$_SERVER[PHP_SELF]?submitted=1&pageno=".$i."'>".$i."</a>";
-                echo '<ul class="pagination pagination-numbers-bookings d-flex flex-row m-0"><li class="page-item pagination-number-bookings"><a href="'.$_SERVER[PHP_SELF].'?submitted=1&pageno='.$i.'" class="page-link ms-2 rounded border-2 pagination-number-button-bookings active" page-index="'.$i.'" type="button">'.$i.'</a></li></ul>';
+                echo '<ul class="pagination pagination-numbers-bookings d-flex flex-row m-0"><li class="page-item pagination-number-bookings"><a href="' . $_SERVER['PHP_SELF'] . '?filter=' . $filter . '&submitted=1&pageno=' . $i . '" class="page-link ms-2 rounded border-2 pagination-number-button-bookings active" page-index="' . $i . '" type="button">' . $i . '</a></li></ul>';
             } else {
-                echo '<ul class="pagination pagination-numbers-bookings d-flex flex-row m-0"><li class="page-item pagination-number-bookings"><a href="'.$_SERVER[PHP_SELF].'?submitted=1&pageno='.$i.'" class="page-link ms-2 rounded border-2 pagination-number-button-bookings" page-index="'.$i.'" type="button">'.$i.'</a></li></ul>';
+                echo '<ul class="pagination pagination-numbers-bookings d-flex flex-row m-0"><li class="page-item pagination-number-bookings"><a href="' . $_SERVER['PHP_SELF'] . '?filter=' . $filter . '&submitted=1&pageno=' . $i . '" class="page-link ms-2 rounded border-2 pagination-number-button-bookings" page-index="' . $i . '" type="button">' . $i . '</a></li></ul>';
             }
         }
-        
-        
-        
+
+
+
 //        echo $pageno . " is the current page number";
 
         if ($pageno < $this->total_pages) {
@@ -107,10 +102,10 @@ class Pagination {
             // 'next' and 'last' links 
 //            $this->nextLast = "<div><a href='$_SERVER[PHP_SELF]?sort=$sort&submitted=1&search=$search&pageno=$nextpage&showRank=$srank&searchType=$sType'>Next</a> <a href='$_SERVER[PHP_SELF]?sort=$sort&submitted=1&search=$search&pageno=$this->total_pages&showRank=$srank&searchType=$sType'>Last</a></div>";
             echo '<ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><a href="'.$_SERVER[PHP_SELF].'?submitted=1&pageno='.$this->total_pages.'" type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="Last" disabled="true">Last</a></li>
+                        <li class="page-item"><a href="' . $_SERVER['PHP_SELF'] . '?filter=' . $filter . '&submitted=1&pageno=' . $this->total_pages . '" type="button" class="pagination-last-bookings page-link mx-2 rounded border-2" value="Last" disabled="true">Last</a></li>
               </ul>';
         }
-        
+
         echo '</nav>';
 
         return $pageno;
@@ -141,4 +136,11 @@ class Pagination {
 
 
 
+//    public function setTotal_records($total_records) {
+//        $this->total_records = $total_records;
+//    }
+//
+//    public function getTotal_records() {
+//        return $this->total_records;
+//    }
 }

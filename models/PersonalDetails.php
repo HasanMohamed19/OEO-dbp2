@@ -10,12 +10,11 @@
  *
  * @author Hassan
  */
-
 const GENDER_MALE = 'M';
 const GENDER_FEMALE = 'F';
 
 class PersonalDetails {
-    
+
     private $personalDetialId;
     private $firstName;
     private $lastName;
@@ -24,7 +23,7 @@ class PersonalDetails {
     private $gender;
     private $nationality;
     private $clientId;
-    
+
     public function __construct() {
         $this->personalDetialId = null;
         $this->firstName = null;
@@ -35,7 +34,7 @@ class PersonalDetails {
         $this->clientId = null;
     }
 
-        public function initWith($personalDetialId, $firstName, $lastName, $dob, $gender, $nationality, $clientId) {
+    public function initWith($personalDetialId, $firstName, $lastName, $dob, $gender, $nationality, $clientId) {
         $this->personalDetialId = $personalDetialId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -44,7 +43,7 @@ class PersonalDetails {
         $this->nationality = $nationality;
         $this->clientId = $clientId;
     }
-    
+
     function addPersonalDetails() {
 //        if ($this->isValid()) {
 //            try {
@@ -62,9 +61,10 @@ class PersonalDetails {
 //        } else {
 //            return false;
 //        }
-        
-        
+
+
         $db = new Database();
+
         if (!$this->isValid()) {
             return false;
         }
@@ -100,8 +100,35 @@ class PersonalDetails {
         }
         return true;
         
+
+//        if ($this->isValid()) {
+//            $this->firstName = $db->sanitizeString($this->firstName);
+//            $this->lastName = $db->sanitizeString($this->lastName);
+//            $this->dob = $db->sanitizeString($this->dob);
+//            $this->gender = $db->sanitizeString($this->gender);
+//            $this->nationality = $db->sanitizeString($this->nationality);
+//
+//            $q = "INSERT INTO dbProj_PersonalDetails (first_name, last_name, dob, gender, nationality, client_id) VALUES (?,?,?,?,?,?)";
+//
+//            $stmt = mysqli_prepare($db->getDatabase(), $q);
+//            if ($stmt) {
+//                $stmt->bind_param('sssssi', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality, $this->clientId);
+//
+//                if (!$stmt->execute()) {
+//                    var_dump($stmt);
+//                    echo 'Execute Failed';
+//                    $db->displayError($q);
+//                    return false;
+//                }
+//            } else {
+//                $db->displayError($q);
+//                return false;
+//            }
+//            return true;
+//        }
+
     }
-    
+
     function initWithClientId() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
@@ -113,30 +140,39 @@ class PersonalDetails {
         return true;
     }
 
+    function getPersonalDetail() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
+//        var_dump($data);
+        if ($data == null) {
+            return false;
+        }
+        return true;
+    }
 
     function getAllPersonalDetails() {
         $db = Database::getInstance();
         $data = $db->multiFetch("SELECT * FROM dbProj_PersonalDetails");
         return $data;
     }
-    
+
     function updatePersonalDetails() {
         $db = new Database();
-        
+
         if ($this->isValid()) {
             $this->firstName = $db->sanitizeString($this->firstName);
             $this->lastName = $db->sanitizeString($this->lastName);
             $this->dob = $db->sanitizeString($this->dob);
             $this->gender = $db->sanitizeString($this->gender);
             $this->nationality = $db->sanitizeString($this->nationality);
-            
+
             $q = "UPDATE dbProj_PersonalDetails set
 			first_name = ?, last_name = ?, dob = ?, gender = ?, nationality = ? WHERE client_id = '$this->clientId';";
-            
+
             $stmt = mysqli_prepare($db->getDatabase(), $q);
             if ($stmt) {
                 $stmt->bind_param('sssss', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality);
-                
+
                 if (!$stmt->execute()) {
                     var_dump($stmt);
                     echo 'Execute Failed';
@@ -149,7 +185,7 @@ class PersonalDetails {
             }
             return true;
         }
-        
+        return false;
 //        if ($this->isValid()) {
 //            try {
 //                $db = Database::getInstance();
@@ -171,29 +207,28 @@ class PersonalDetails {
 //            return false;
 //        }
     }
-    
+
     public function isValid() {
         $errors = true;
 
         if (empty($this->firstName))
             $errors = false;
-        
+
         if (empty($this->lastName))
             $errors = false;
-        
+
         if (empty($this->dob))
             $errors = false;
 
         if (empty($this->gender))
             $errors = false;
-        
+
         if (empty($this->nationality))
             $errors = false;
 
         return $errors;
     }
 
-    
     public function getPersonalDetialId() {
         return $this->personalDetialId;
     }
@@ -209,12 +244,11 @@ class PersonalDetails {
     public function getDepartment() {
         return $this->department;
     }
-    
+
     public function getDob() {
         return $this->dob;
-
     }
-    
+
     public function getAge() {
         // calculate age
     }
@@ -226,7 +260,7 @@ class PersonalDetails {
     public function getNationality() {
         return $this->nationality;
     }
-    
+
     public function getClientId() {
         return $this->clientId;
     }
@@ -246,7 +280,7 @@ class PersonalDetails {
     public function setDepartment($department) {
         $this->department = $department;
     }
-    
+
     public function setDob($dob) {
         $this->dob = $dob;
     }
@@ -258,11 +292,8 @@ class PersonalDetails {
     public function setNationality($nationality) {
         $this->nationality = $nationality;
     }
-    
+
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
-
-
-    
 }

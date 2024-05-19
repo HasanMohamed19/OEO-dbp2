@@ -66,8 +66,8 @@ if (isset($_POST['submitted'])) {
 }
     
 
-include('./template/header.html');
 
+include_once ('header.php');
 include('./template/client/client_booking.html');
 
 include('./template/footer.html');

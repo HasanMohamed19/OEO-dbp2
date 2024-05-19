@@ -22,6 +22,19 @@
     background-color: turquoise;
     height: 50px;
 }
+.nav-item a {
+  font-size: 17px;
+}
+
+.nav-item a:hover {
+  color: var(--primary);
+  width: 100%;
+}
+.active-page {
+  text-decoration: underline var(--primary-400) 3px;
+  text-underline-offset: 7px;
+  color: black;
+}
 .logo {
     height: auto;
 }
@@ -85,7 +98,6 @@
 .my-status {
     width: 355px;
     height: 358px;
-    
     
     border: 1px solid #CDCDCD;
     border-radius: 12px;
@@ -193,7 +205,7 @@
     background-color: var(--primary) !important;
     border-color: var(--primary) !important;
 }
-    
+
 /* Admin Form with list Temp Code Might be removed */
 .admin-form-card {
     background-color: #F7F7F7; /* Custom background color */
@@ -212,13 +224,12 @@
 }
 
 /* Admin Forms */
-.rounded-top-right {
-    border-top-right-radius: 0.25rem!important;
+.rounded-bottom-left {
+    border-bottom-left-radius: 0.25rem!important;
 }
 .rounded-bottom-right {
     border-bottom-right-radius: 0.25rem!important;
 }
-
 .modal-dialog{
     overflow-y: initial !important
 }
@@ -233,10 +244,30 @@
   color:red !important;;
 }
 
+
 /* Register */
 .account-form .form-control {
     margin-bottom: 1rem;
 }
 .bg-login-image {
     background-color: gray;
+}
+
+/*manage clients badges*/
+
+.bg-Gold {
+    background-color: #DAC717;
+}
+.bg-Silver {
+    background-color: #D9D9D9;
+    color:black;
+}
+.bg-Bronze {
+    background-color: #B3967C;
+}
+.bg-Available {
+    background-color: var(--success);
+}
+.bg-Cancelled {
+    background-color: var(--danger);
 }

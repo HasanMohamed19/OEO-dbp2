@@ -1,4 +1,5 @@
 <?php
+    include 'debugging.php';
     include './helpers/Database.php';
     include './models/CardDetail.php';
     include './models/PersonalDetails.php';
@@ -10,7 +11,6 @@
     include './models/BillingAddress.php';
     include './header.php';
     
-    include 'debugging.php';
 //    echo 'what is happening';
     // if add/edit card form submitted
     
