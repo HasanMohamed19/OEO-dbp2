@@ -6,13 +6,15 @@ include './models/User.php';
 include_once './models/Client.php';
 include './models/Reservation.php';
 include './models/Pagination.php';
-include './template/header.html';
+include 'header.php';
 
-include './template/admin/view_bookings.html';
-
-
+//include './template/admin/view_bookings.html';
 
 
+
+
+echo '<div class="container">';
+echo '<div class="row"><h1>Reservations</h1></div>';
 if (isset($_GET['pageno']))
     $start = $_GET['pageno'];
 else
@@ -42,6 +44,6 @@ $pagination->page("");
 //echo $pagination->where();
 //echo $pagination->nextLast();
 //echo 'current page is: ' . $pagination->where();
-
+echo '</div>';
 include './template/footer.html';
 ?>

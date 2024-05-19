@@ -167,7 +167,7 @@ class Reservation {
 
             $details = ($rp == 1) ? $client->getPersonalDeatils($dataset[$i]->client_id) : $client->getCompanyDetails($dataset[$i]->client_id);
             echo '<tr class="booking">
-                    <td scope="row">' . $dataset[$i]->reservation_id . '</td>
+                    <th scope="row"><a class="text-decoration-none" href="booking_detail.php?reservationId=' . $dataset[$i]->reservation_id . '" </a>' . $dataset[$i]->reservation_id .'</th>
                     <td>' . $dataset[$i]->start_date . '</td>
                     <td>' . $dataset[$i]->end_date . '</td>
                     <td>' . $dataset[$i]->start_time . '</td>
