@@ -133,7 +133,8 @@ function filterHalls() {
         'suggestedDates'=>null,
         'maxAudience'=>null,
         'halls'=>null,
-        'filterError'=>null
+        'filterError'=>null,
+        'searchError'=>null
     ];
     // check if start and end dates are valid
     if (!$startDate || !$endDate) {
@@ -160,20 +161,29 @@ function filterHalls() {
         $returnList['suggestedDates'] = $suggestedDates;
         return $returnList;
     }
+    
+    // handle audience count
     if ($audience) {
-        $availableHalls = filterByCapacity($availableHalls, $audience);
+        $availableHallsCapacityFiltered = filterByCapacity($availableHalls, $audience);
         // if halls are available but not for this amount of audience,
         // find maximum audience and display message
-        if (!$availableHalls) {
-            // will display message in html below
+        if (!$availableHallsCapacityFiltered) {
             $maxAudience = Hall::getMaxCapacity();
-            $returnList['maxAudience'] = $maxAudience;
-            return $returnList;
+            if ($audience > $maxAudience) {
+                $searchError = "No halls found for the specified audience number. The largest hall available has $maxAudience seats.";
+                $returnList['searchError'] = $searchError;
+                $returnList['maxAudience'] = $maxAudience;
+                return $returnList;
+            }
+            // if halls found but not for this audience amount, show suggestions (dont return)
+            $searchError = "The halls with the specified filters do not have enough capacity for your audience. Here are some suggestions:";
+            $returnList['searchError'] = $searchError;
         }
     }
+    
     $halls = $availableHalls;
     $returnList['halls'] = $halls;
-    $returnList['availableHalls'] = $availableHalls;
+//    $returnList['availableHalls'] = $availableHalls;
     return $returnList;
 }
 
@@ -189,6 +199,9 @@ if (isset($_POST['filter'])) {
         $maxAudience = $result['maxAudience'];
     } else if ($result['filterError']) {
         $filterError = $result['filterError'];
+    }
+    if ($result['searchError']) {
+        $searchError = $result['searchError'];
     }
 }
 
@@ -346,10 +359,10 @@ function displayHalls($dataSet) {
         <div class="container ">
             <?php
             // print error if audience doesnt fit any halls
-            if ($maxAudience) {
+            if ($searchError) {
                 echo "<div class='row'>
                         <div class='col'>
-                            <h5 class='text-danger'>No halls found for the specified audience number. The largest hall available has $maxAudience seats.</h5>
+                            <h5 class='text-danger'>$searchError</h5>
                         </div>
                     </div>";
             } else if ($_POST['filter'] && !$halls && !$filterError) {
