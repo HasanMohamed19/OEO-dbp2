@@ -296,7 +296,7 @@ class Reservation {
 
      public function displayClientReservations($dataSet) {
         if (empty($dataSet)) {
-            echo 'nothing found';
+            echo '<h1 class="text-center">No reservations were found.</h1>';
         }
 
         for ($i = 0; $i < count($dataSet); $i++) {
@@ -350,96 +350,7 @@ class Reservation {
     }
     
 
-     public function displayUserReservations($dataSet) {
-        if (empty($dataSet)) {
-            return;
-        }
-
-        for ($i = 0; $i < count($dataSet); $i++) {
-            $reservation = new Reservation();
-            $hall = new Hall();
-            $event = new Event();
-            $client = new Client();
-
-            // todo: get this from the login
-            $reservation->setClientId('1');
-            $reservationId = $dataSet[$i]->reservation_id;
-            $reservation->initReservationWithId($reservationId);
-            $hall->setHallId($reservation->hallId);
-            $event->setEventId($reservation->eventId);
-            $client->setClientId($reservation->clientId);
-
-            $client->iniwWithClientId($client->getClientId());
-            $hall->initWithHallId($hall->getHallId());
-            $event->initWithEventId($event->getEventId());
-
-            echo 'image path was ' . $hall->getCapacity() . ' image path was';
-            // display the header
-            echo '<div class="row justify-content-between mx-3 mt-2">
-                                <div class="col">Booking#: ' . $reservation->getReservationId() . '</div>
-                                <div class="col text-secondary text-center">random date</div>
-                                <div class="col text-end">random price</div>
-                  </div>';
-
-            echo ' <hr>'
-            . '<div class="card mb-2 border-0 mx-3">'
-            . '<div class="row g-0">';
-
-            // image
-            echo '<div class="col-xl-5 p-2">
-                    <img src="' . $hall->getImagePath() . ' " alt="" class="img-fluid rounded">
-                  </div>';
-
-            echo '<div class="col-xl-5 p-2 flex-grow-1">
-                    <div class="row m-2">
-                        <div class="col text-start completed">' . $reservation->getReservationId() . '</div>
-                        <div class="col text-end"><button class="btn btn-danger">Cancel Booking</button></div>
-                  </div>';
-
-            echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">Hall Name: </span>
-                        <span class="col text-start">' . $hall->getHallName() . '</span>
-                  </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">Event Name: </span>
-                    <span class="col text-start">' . $event->getName() . '</span>
-                  </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">Start Date: </span>
-                    <span class="col text-start">' . $event->getStartDate() . '</span>
-                 </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">End Date: </span>
-                    <span class="col text-start">' . $event->getEndDate() . '</span>
-                 </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">Daily Start Time: </span>
-                    <span class="col text-start">' . $event->getStartTime() . '</span>
-                 </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">Daily End Time: </span>
-                    <span class="col text-start">' . $event->getEndTime() . '</span>
-                 </div>';
-
-            echo '<div class="row m-2">
-                    <span class="col text-start text-secondary">No. Audiences </span>
-                    <span class="col text-start">' . $event->getAudienceNumber() . '</span>
-                  </div>
-                </div>
-              </div>';
-
-            // notes section
-            echo '<div class="row mx-1">
-                    <span class="text-secondary">Notes: </span>
-                    <p class="justify">' . $hall->getDescription() . '</p>
-                  </div>';
-        }
-    }
+     
 
     public function getAdditionalServicesForReservation($reservationId) {
         $db = Database::getInstance();
@@ -458,22 +369,6 @@ class Reservation {
         return $data;
     }
 
-//        public function getAdditionalServicesForReservation($reservationId) { 
-//        $db = Database::getInstance();
-//        $data = $db->multiFetch("SELECT 
-//             m.item_id,
-//            m.name,
-//            m.image_path,
-//            m.price,
-//            rm.reservation_id,
-//            rm.quantity
-//            FROM dbProj_Menu_Item m
-//            JOIN dbProj_Reservation_Menu_Item rm ON rm.item_id = m.item_id
-//            JOIN dbProj_Reservation r ON rm.reservation_id = r.reservation_id
-//            WHERE r.reservation_id =" . $reservationId);
-////        var_dump($data);
-//        return $data;
-//    }
 
     
 

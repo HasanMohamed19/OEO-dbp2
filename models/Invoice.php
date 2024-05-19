@@ -2,11 +2,7 @@
 
 
 include_once '../helpers/Database.php';
-/**
- * Description of Invoice
- *
- * @author Hassan
- */
+
 class Invoice {
     
     private $invoiceId;

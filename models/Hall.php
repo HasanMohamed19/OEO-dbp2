@@ -2,17 +2,6 @@
 
 include_once '../helpers/Database.php';
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-
-/**
- * Description of Hall
- *
- * @author Hassan
- */
-//include '../helpers/Database.php';
 include_once 'models/HallImage.php';
 
 //hall status

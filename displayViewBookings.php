@@ -35,8 +35,7 @@ echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
 $pagination->page("");
  
-$c = new Client();
-$r = $c->hasPersonalDeatils('50');
+
 
 
 //echo $pagination->firstBack();
