@@ -198,4 +198,36 @@ private $clientStatusId;
        return $data;
     }
     
+     public function hasPersonalDeatils($clientId) {
+        $db = Database::getInstance();
+        $q = "SELECT EXISTS (SELECT * from dbProj_PersonalDetails WHERE client_id=" . $clientId . ") AS hasPersonalDetails";
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        return $data->hasPersonalDetails;
+    }
+    
+    public function hasCompanyDetails($clientId) {
+        $db = Database::getInstance();
+        $q = "SELECT EXISTS(SELECT * from dbProj_CompanyDetails WHERE client_id=" . $clientId . ") AS hasCompanyDetails";
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        return $data->hasCompanyDetails;
+    }
+    
+    public function getPersonalDeatils($clientId) {
+        $db = Database::getInstance();
+        $q = "SELECT * from dbProj_PersonalDetails WHERE client_id=" . $clientId;
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        return $data;
+    }
+    
+    public function getCompanyDetails($clientId) {
+        $db = Database::getInstance();
+        $q = "SELECT * from dbProj_CompanyDetails WHERE client_id=" . $clientId;
+        $data = $db->singleFetch($q);
+//        var_dump($data);
+        return $data;
+    }
+    
 }
