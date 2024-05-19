@@ -317,15 +317,15 @@ function displayHalls($dataSet) {
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="startDate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control border border-secondary" id="startDate" name="startDate">
+                        <input type="date" value="<?php echo $_POST['startDate'] ?>" class="form-control border border-secondary" id="startDate" name="startDate">
                     </div>
                     <div class="col-md-4">
                         <label for="endDate" class="form-label">End Date</label>
-                        <input type="date" class="form-control border border-secondary" id="endDate" name="endDate">
+                        <input type="date" value="<?php echo $_POST['endDate'] ?>" class="form-control border border-secondary" id="endDate" name="endDate">
                     </div>
                     <div class="col-md-4">
                         <label for="audienceCount" class="form-label">Number of Audiences</label>
-                        <input type="number" class="form-control border border-secondary" id="audienceCount" name="audience">
+                        <input type="number" value="<?php echo $_POST['audience'] ?>" class="form-control border border-secondary" id="audienceCount" name="audience">
                     </div>
                 </div>
                 <div class="row g-3">
@@ -348,7 +348,7 @@ function displayHalls($dataSet) {
     </div>
     <form method="post" action="index.php">
         <div class="input-group">
-            <input type="text" class="form-control mb-0" placeholder="Search For a Hall" id="search" name="search">
+            <input type="text" value="<?php echo $_POST['search'] ?>" class="form-control mb-0" placeholder="Search For a Hall" id="search" name="search">
             <button type="submit" class="btn btn-outline-secondary rounded-end" id="searchBtn">
                 <i class="bi bi-search"> Search</i>
             </button>
