@@ -19,20 +19,15 @@ if (isset($_POST['filter'])) {
         foreach ($halls as $hall) {
             // sort by end date ascending to get earliest possible available
             // time for the hall after the desired timeframe
-            
-            // TODO: make this start from the current end date
-            $events = Event::getEventsForHallSorted($hall->hall_id, 'asc');
+            $events = Event::getEventsForHallSorted($hall->hall_id, 'asc', $startDate);
             $eventsCount = count($events);
+            $suggestStart = '';
+            $suggestEnd = '';
             for ($i = 0; $i < $eventsCount; $i++) {
                 $event = (object) $events[$i];
 
                 $eEndDate = $event->end_date;
                 echo "Checking event which ends on ".$eEndDate;
-                // if this is the last event, no need to check
-                if ($i == $eventsCount-1) {
-                    echo "Last event to check, just return";
-                    break;
-                }
 
                 $dateInterval = date_diff(new DateTime($startDate), new DateTime($endDate));
                 echo "Date interval is ". $dateInterval->format('%R%a days');
@@ -41,23 +36,34 @@ if (isset($_POST['filter'])) {
                 $endDateCheck = clone $startDateCheck;
                 $endDateCheck->add($dateInterval);
 
+                // if this is the last event, no need to check
+                if ($i == $eventsCount-1) {
+                    echo "Last event to check, just return";
+                    $suggestStart = $startDateCheck->format('Y-m-d');
+                    $suggestEnd = $endDateCheck->format('Y-m-d');
+                    echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
+                    break;
+                }
                 echo "Checking dates ".$startDateCheck->format('Y-m-d')." and ".$endDateCheck->format('Y-m-d')." to see if they are valid. ";
                 
                 $nextEvent = (object) $events[$i+1];
                 $nextStart = $nextEvent->start_date;
                 $nextEnd = $nextEvent->end_date;
                 echo "Next event starts $nextStart and ends $nextEnd.  ";
-                if (!Hall::areDatesOverlapping($startDateCheck, $endDateCheck, $nextStart, $nextEnd)) {
+                
+                if (!Hall::areDatesOverlapping($startDateCheck->format('Y-m-d'), 
+                        $endDateCheck->format('Y-m-d'), $nextStart, $nextEnd)) {
                     // if not overlapping, this date range works
                     echo "Dates do not overlap. get timerange.  ";
-                    $hall->suggest_start_date1 = $startDateCheck->format('Y-m-d');
-                    $hall->suggest_end_date1 = $endDateCheck->format('Y-m-d');
-                    echo "Now suggested dates are $hall->suggest_start_date1 and $hall->suggest_end_date1.  ";
+                    $suggestStart = $startDateCheck->format('Y-m-d');
+                    $suggestEnd = $endDateCheck->format('Y-m-d');
+                    echo "Now suggested dates are $suggestStart and $suggestEnd. <br> ";
                     break;
                 }
                 // dates are overlapping next event, wont work
-                echo "Dates are overlapping. Continuing.  ";
+                echo "Dates are overlapping. Continuing.<br>  ";
             }
+            
         }
     }
     

@@ -75,7 +75,7 @@ class Event {
         return $data;
     }
     
-    public static function getEventsForHallSorted($hallId, $sortType) {
+    public static function getEventsForHallSorted($hallId, $sortType, $startDate) {
         $db = new Database();
         $hallId = $db->sanitizeString($hallId);
         
@@ -84,6 +84,7 @@ class Event {
                     . "FROM dbProj_Event e "
                     . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
                     . "WHERE r.hall_id = ? "
+                    . "AND e.end_date >= ? "
                     . "ORDER BY e.end_date ASC";
         } else {
             echo "sorting desc";
@@ -91,6 +92,7 @@ class Event {
                     . "FROM dbProj_Event e "
                     . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
                     . "WHERE r.hall_id = ? "
+                    . "AND e.start_date <= ? "
                     . "ORDER BY e.start_date DESC";
         }
 
@@ -100,7 +102,8 @@ class Event {
             $db->displayError($q);
             return false;
         }
-        $stmt->bind_param('i', $hallId);
+        // $startDate is used to filter events before/after this date
+        $stmt->bind_param('is', $hallId, $startDate);
         if (!$stmt->execute()) {
 //                var_dump($stmt);
             echo 'Execute failed';
