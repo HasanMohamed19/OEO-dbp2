@@ -313,4 +313,11 @@ class Hall {
                 || ($startDate2 >= $startDate1 && $startDate2 <= $endDate1);
     }
     
+    public static function getMaxCapacity() {
+        $db = Database::getInstance();
+        // get only active halls
+        $data = $db->singleFetch('Select MAX(capacity) as max_capacity from dbProj_Hall WHERE hall_status_id != 2');
+        return $data->max_capacity;
+    }
+    
 }

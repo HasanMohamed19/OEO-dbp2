@@ -115,26 +115,67 @@ function getSuggestedDate($suggestedDates, $num) {
     }
 }
 
-// filter halls based on selected time range and audience number
-if (isset($_POST['filter'])) {
+function filterByCapacity($availableHalls, $audience) {
+    $newList = [];
+    foreach ($availableHalls as $hall) {
+        if ($audience <= $hall->capacity) {
+            $newList[] = $hall;
+        }
+    }
+    return $newList;
+}
+
+function filterHalls() {
     $startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];
     $audience = $_POST['audience'];
-    
+    $returnList = [
+        'suggestedDates'=>null,
+        'maxAudience'=>null,
+        'halls'=>null
+    ];
     // check if start and end dates are valid
     if (!$startDate || !$endDate) {
         $filterError = "Both dates must be filled to search.";
-    } else if ($startDate > $endDate) {
+        return;
+    }
+    if ($startDate > $endDate) {
         $filterError = "Start date cannot be before end date.";
-    } else {
-        // check if there are any halls available at this time
-        $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
-
+        return;
+    }
+    // check if there are any halls available at this time
+    $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
+    if (!$availableHalls) {
+        // suggest different time slot if no halls are available
+        $suggestedDates = getSuggestedDates($startDate, $endDate);
+        $returnList['suggestedDates'] = $suggestedDates;
+        return $returnList;
+    }
+    if ($audience) {
+        $availableHalls = filterByCapacity($availableHalls, $audience);
+        // if halls are available but not for this amount of audience,
+        // find maximum audience and display message
         if (!$availableHalls) {
-            $suggestedDates = getSuggestedDates($startDate, $endDate);
+            // will display message in html below
+            $maxAudience = Hall::getMaxCapacity();
+            $returnList['maxAudience'] = $maxAudience;
+            return $returnList;
         }
+    }
+    $halls = $availableHalls;
+    $returnList['halls'] = $halls;
+    return $returnList;
+}
 
-        $halls = $availableHalls;
+// filter halls based on selected time range and audience number
+if (isset($_POST['filter'])) {
+    $result = filterHalls();
+    if ($result['halls']) {
+        $halls = $result['halls'];
+    } else if ($result['suggestedDates']) {
+        $suggestedDates = $result['suggestedDates'];
+    } else if ($result['maxAudience']) {
+        $maxAudience = $result['maxAudience'];
     }
 }
 
@@ -286,25 +327,36 @@ function displayHalls($dataSet) {
     </form>
     <section class="my-4">
         <div class="container ">
-            <div id="suggestionBox" class="row <?php if (!$_POST['filter'] || $availableHalls || $filterError) echo "d-none" ?>">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <h4>No halls are available for the selected time slot. Here are some alternatives:</h4>
+            <?php
+            // print error if audience doesnt fit any halls
+            if ($maxAudience) {
+                echo "<div class='row'>
+                        <div class='col'>
+                            <h5 class='text-danger'>No halls found for the specified audience number. The largest hall available has $maxAudience seats.</h5>
                         </div>
-                    </div>
-                    <div class="row">
-                        <?php
+                    </div>";
+            } else if ($_POST['filter'] && !$availableHalls && !$filterError) {
+                // print suggested time slots if no halls are available
+                echo '<div id="suggestionBox" class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h4>No halls are available for the selected time slot. Here are some alternatives:</h4>
+                                </div>
+                            </div>
+                            <div class="row">';
                         for ($i = 0; $i < count($suggestedDates) 
                                 && $i < 3;$i++) {
                             echo "<div class='col-4'>";
-                            echo '<h5 class="text-center">'.getSuggestedDate($suggestedDates,$i+1).'</h5>';
+                                echo '<h5 class="text-center">'.getSuggestedDate($suggestedDates,$i+1).'</h5>';
                             echo "</div>";
                         }
-                        ?>
-                    </div>
-                </div>
-            </div>
+                    echo '</div>
+                        </div>
+                    </div>';
+            }
+            ?>
+                    
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-sm-1 row-cols-xl-2 justify-content-center">
                 <?php
                 displayHalls($halls);
