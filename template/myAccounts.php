@@ -70,21 +70,24 @@ include './models/Pagination.php';
                             </thead>
                             <tbody>
                                 <?php
-                                $start = 0;
-                                $limit = 10;
+                                if (isset($_GET['pageno']))
+                                    $start = $_GET['pageno'];
+                                else
+                                    $start = 1;
+                                
+                                $end = 10;
                                 $reservation = new Reservation();
                                 $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient($start, $limit);
+                                $reservations = $reservation->getReservationsForClient($start, $end);
                                 $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
                         </table>
                         <?php
-                        
                         $pagination = new Pagination();
-                        $pagination->setTotal_records(count($reservations));
-                        $pagination->setLimit($limit);
+                        $pagination->setTotal_records(Reservation::countReservationsForClient($loggedInClientId));
+                        $pagination->setLimit($end);
                         $pagination->page("");
                         ?>
                     </div>
@@ -714,7 +717,7 @@ include './models/Pagination.php';
                 const statusText = $("#statusName");
                 const nextStatus = $("#nextStatus");
                 const numberOfReservations = parseInt(response.numberOfReservations);
-                 
+
                 switch (response.status) {
                     case 'Gold':
                         nextStatus.html("You are at the highest tier");
@@ -736,8 +739,8 @@ include './models/Pagination.php';
                         statusText.removeClass('text-white');
                         nextStatus.removeClass('text-white');
                 }
-                
-                
+
+
 
             },
             error: function (xhr, status, error) {

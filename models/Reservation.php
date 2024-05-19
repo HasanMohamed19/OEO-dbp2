@@ -189,9 +189,43 @@ class Reservation {
         . '</table>';
     }
 
+    
+    public static function countReservationsForClient($clientId) {
+        $db = Database::getInstance();
+        $q = 'SELECT r.reservation_id,
+            r.reservation_status_id,
+            r.notes,
+            r.reservation_date,
+            h.hall_name,
+            h.capacity,
+            e.event_name,
+            e.start_date,
+            e.end_date,
+            e.start_time,
+            e.end_time,
+            c.phone_number,
+            i.hall_cost + i.catering_cost AS "TotalCost"
+            FROM dbProj_Reservation r
+            JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+            JOIN dbProj_Event e ON r.event_id = e.event_id
+            JOIN dbProj_Client c ON r.client_id = c.client_id
+            JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
+            WHERE r.client_id = ' . $clientId;
+        
+        $dataCount = $db->getRows($q);
+//        echo $dataCount . ' is data count';
+        return $dataCount;
+    }
 
     function getReservationsForClient($start, $end) {
         $db = Database::getInstance();
+        
+         if ($start == 1){
+            $start = 0;
+        } else {
+           $start = $start * $end - $end; 
+        }
+        
         $q = 'SELECT r.reservation_id,
             r.reservation_status_id,
             r.notes,
