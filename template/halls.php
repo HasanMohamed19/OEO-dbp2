@@ -121,14 +121,21 @@ if (isset($_POST['filter'])) {
     $endDate = $_POST['endDate'];
     $audience = $_POST['audience'];
     
-    // check if there are any halls available at this time
-    $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
-    
-    if (!$availableHalls) {
-        $suggestedDates = getSuggestedDates($startDate, $endDate);
+    // check if start and end dates are valid
+    if (!$startDate || !$endDate) {
+        $filterError = "Both dates must be filled to search.";
+    } else if ($startDate > $endDate) {
+        $filterError = "Start date cannot be before end date.";
+    } else {
+        // check if there are any halls available at this time
+        $availableHalls = Hall::getAvailableHalls($startDate, $endDate);
+
+        if (!$availableHalls) {
+            $suggestedDates = getSuggestedDates($startDate, $endDate);
+        }
+
+        $halls = $availableHalls;
     }
-    
-    $halls = $availableHalls;
 }
 
 
@@ -260,6 +267,11 @@ function displayHalls($dataSet) {
                         <input type="hidden" name="filter" value="1">
                     </div>
                 </div>
+                <div class="row <?php if (!$filterError) echo "d-none"; ?>">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <p class="text-center text-danger"><?php echo $filterError ?></p>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -274,7 +286,7 @@ function displayHalls($dataSet) {
     </form>
     <section class="my-4">
         <div class="container ">
-            <div id="suggestionBox" class="row <?php if (!$_POST['filter'] || $availableHalls) echo "d-none" ?>">
+            <div id="suggestionBox" class="row <?php if (!$_POST['filter'] || $availableHalls || $filterError) echo "d-none" ?>">
                 <div class="col">
                     <div class="row">
                         <div class="col">
