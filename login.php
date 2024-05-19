@@ -23,7 +23,12 @@ include './models/Login.php';
 //    }
 
      if ($login->login($username, $password)) {
-         header("Location: displayMyAccount.php");
+         if ($username == 'admin') {
+             header("Location: Admin_ViewHalls.php");
+         } else {
+             header("Location: displayMyAccount.php");
+         }
+         
          echo 'Logged in successfully';
      } else {
 //         header("Location: viewBookings.php");

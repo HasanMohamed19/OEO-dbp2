@@ -8,7 +8,7 @@
     include './models/Reservation.php';
     include './models/hall.php';
     include './models/BillingAddress.php';
-    include './template/header.html';   
+    include './header.php';
     
     include 'debugging.php';
 //    echo 'what is happening';

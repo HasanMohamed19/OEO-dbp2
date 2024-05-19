@@ -23,6 +23,7 @@ session_start();
 // }
 
 $userId = $_COOKIE['userId'];
+$userName = $_COOKIE['username'];
 
 ?>
 
@@ -55,34 +56,61 @@ $userId = $_COOKIE['userId'];
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="Admin_ViewHalls.php">Halls</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Catering</a>
-                  </li>
-                  <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    
+                    <?php
+                        if ($userName == 'admin') {
+                            echo '<li class="nav-item">
+                                    <a class="nav-link" href="Admin_ViewHalls.php">Halls</a>
+                                </li>';
+                            
+                            echo '<li class="nav-item">
+                                    <a class="nav-link" href="Admin_ViewServices.php">Catering</a>
+                                </li>';
+                            
+                            echo '<li class="nav-item">
+                                    <a class="nav-link" href="Admin_ViewClients.php">Clients</a>
+                                </li>';
+                        } else {
+                            echo '<li class="nav-item">
+                                    <a class="nav-link" href="halls.php">Halls</a>
+                                </li>';
+                            
+                            echo '<li class="nav-item">
+                                    <a class="nav-link" href="displayMyAccount.php">My Account</a>
+                                </li>';
+                            
+//                            echo '<li class="nav-item">
+//                                    <a class="nav-link" href="Admin_ViewClients.php">Clients</a>
+//                                </li>';
+                        }
+                    ?>
+                  
+                  
+                  
+<!--                  <li class="nav-item">
                     <a class="nav-link" href="#">Royalty Points</a>
-                  </li>
+                  </li>-->
                   <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="aboutUs.php">About Us</a>
                   </li>
                 </ul>
-                
+                  <!--<li class="nav-item">-->
                  <?php
                     if (!isset($userId)) {
 //                        echo '<button type="button" class="btn btn-primary" onclick="window.location.href="login.php"">Login</button>';
                         
                         echo '<a type="button" class="btn btn-primary" href="login.php">Login</a>';
                     } else {
-                        echo $_COOKIE['username'];
-                        echo '<a type="button" class="btn btn-primary" href="logout.php">Logout</a>';
+                        echo '<div class="row">';
+                        echo '<span class="col align-self-center">' . $_COOKIE['username'] . '</span>';
+                        echo '<a type="button" class="btn btn-primary col" href="logout.php">Logout</a>';
+                        echo '</div>';
                     }
                  ?>
-                  
+                  <!--</li>-->
                   
                 
               </div>
