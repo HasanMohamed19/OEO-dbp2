@@ -10,13 +10,15 @@ function getSuggestedDatesForHall($hall, $startDate, $endDate, $checkAfter) {
     // time for the hall after the desired timeframe
     // OR descending to get latest possible available time for the hall
     // before the desired timeframe
+    $checkLimit = 5; // stop checking events after this
     $events = $checkAfter ? 
             Event::getEventsForHallSorted($hall->hall_id, 'asc', $startDate)
             :  Event::getEventsForHallSorted($hall->hall_id, 'desc', $endDate);
     $eventsCount = count($events);
     $suggestStart = '';
     $suggestEnd = '';
-    for ($i = 0; $i < $eventsCount; $i++) {
+    for ($i = 0; $i < $eventsCount && $i < $checkLimit; $i++) {
+//        echo "Checking event #$i... ";
         $event = (object) $events[$i];
 
         $eStartDate = $event->start_date;
@@ -67,6 +69,9 @@ function getSuggestedDatesForHall($hall, $startDate, $endDate, $checkAfter) {
         // dates are overlapping next event, wont work
 //        echo "Dates are overlapping. Continuing.<br>  ";
     }
+    if (!$suggestStart || !$suggestEnd) {
+        return;
+    }
     return [
         "suggestedStartDate"=>$suggestStart,
         "suggestedEndDate"=>$suggestEnd
@@ -96,9 +101,24 @@ function getSuggestedDates($startDate, $endDate) {
         $testAfter = $hallSuggestedDatesAfter['suggestedStartDate'];
         $testBefore = $hallSuggestedDatesBefore['suggestedStartDate'];
         
-        $closestSuggestedDate = getClosestDate($startDate, $testAfter, $testBefore);
-        $closestSuggestedDates = $closestSuggestedDate == $testAfter ?
-                $hallSuggestedDatesAfter : $hallSuggestedDatesBefore;
+        // if no suggestions available for this hall, move on
+        if (!$testAfter && !$testBefore) {
+            continue;
+        }
+        
+        // check if either one is missing then make the other one the suggested one
+        if (!$testAfter) {
+            $closestSuggestedDates = $hallSuggestedDatesBefore;
+        } else if (!$testBefore) {
+            $closestSuggestedDates = $hallSuggestedDatesAfter;
+            
+        } else {
+            // if both dates are found then suggest closest one
+            $closestSuggestedDate = getClosestDate($startDate, $testAfter, $testBefore);
+            $closestSuggestedDates = $closestSuggestedDate == $testAfter ?
+                    $hallSuggestedDatesAfter : $hallSuggestedDatesBefore;
+        }
+            
         $suggestedDates[] = $closestSuggestedDates;
     }
     return $suggestedDates;
