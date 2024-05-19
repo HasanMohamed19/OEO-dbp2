@@ -257,5 +257,5 @@ const setEditInputs = (data) => {
     $('#bookingStartTime').val(data['eventStartTime']);
     $('#bookingEndTime').val(data['eventEndTime']);
     $('#bookingNoAudiences').val(data['eventAudience']);
-    $('#bookingNotes').val(data['eventNotes']);
+    $('#bookingNotes').val(data['notes']);
 };
