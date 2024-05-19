@@ -213,6 +213,9 @@ if ($_POST['submitted']) {
     $searchTerm = trim($_POST['search']);
 //    echo 'submitted: ' . $searchTerm;
     $halls = $hall->getHallsBySearch($searchTerm);
+    if (!$halls) {
+        $searchError = "No halls found with the search criteria.";
+    }
 } else if (!isset($_POST['filter'])) {
 //    echo 'get all active halls';
     $halls = $hall->getAllHalls();
