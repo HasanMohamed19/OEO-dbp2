@@ -60,7 +60,7 @@ include './template/admin/DisplayHalls.php';
 
 if(isset($_GET['pageno']))
    $start = $_GET['pageno'];
-else $start = 0;
+else $start = 1;
 
 $end = 10;
 
@@ -88,7 +88,7 @@ $pagination->totalRecords('dbProj_Hall');
 //$pagination->totalRecords($table);
 echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
-$pagination->page("");
+$pagination->page($displayby);
 echo '</div>';
 include './template/footer.html';
 ?>

@@ -130,6 +130,7 @@ class Hall {
 
     function getAllHalls($start, $end, $filter) {
         $db = Database::getInstance();
+        $start = $start * $end - $end;
         $q = 'Select * from dbProj_Hall ';
             if ($filter=='ava') {
                 $q .= 'WHERE hall_status_id = ' .AVAILABLE_STATUS;

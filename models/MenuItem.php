@@ -121,11 +121,8 @@ class MenuItem {
 
     function getAllMenuItems($start, $end, $filter) {
         $db = Database::getInstance();
-        if ($start == 1){
-            $start = 0;
-        } else {
            $start = $start * $end - $end; 
-        }
+        
         
         $q = 'Select * from dbProj_Menu_Item ';
             if ($filter=='ava') {
@@ -136,9 +133,7 @@ class MenuItem {
             }
         if (isset($start))
             $q .= ' limit ' . $start . ',' . $end;
-        echo 'Query is'. $q;
         $data = $db->multiFetch($q);
-        echo 'data count is'.count($data);
         return $data;
     }
     function getRecordsNum($q){

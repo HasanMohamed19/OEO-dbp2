@@ -99,9 +99,14 @@ class Client extends User {
         $this->phoneNumber = $phoneNumber;
     }
 
-    function getAllClients() {
+    function getAllClients($start, $end) {
         $db = Database::getInstance();
-        $data = $db->multiFetch('Select * from dbProj_Client');
+           $start = $start * $end - $end; 
+        
+        $q = 'Select * from dbProj_Client ';
+        if (isset($start))
+            $q .= ' limit ' . $start . ',' . $end;
+        $data = $db->multiFetch($q);
         return $data;
     }
 

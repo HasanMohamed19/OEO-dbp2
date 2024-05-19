@@ -22,31 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Client</button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xl-2">
-                <!-- Pagination bar -->
-                <nav class="mb-3 d-flex justify-content-center align-items-center" aria-label="Menu Page Navigation">
-                    <span class="me-2">Page: </span>
-                    <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><input type="button" class="pagination-first-clients page-link mx-2 rounded border-2" value="First"></li>
-                    </ul>
-                    <ul class="pagination pagination-numbers-clients d-flex flex-row m-0">
-                    </ul>
-                    <ul class="pagination d-flex flex-row m-0">
-                        <li class="page-item"><input type="button" class="pagination-last-clients page-link mx-2 rounded border-2" value="Last"></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
         <br>
-        <div id="pagination-items-clients">
-            <?php
-            $client = new Client();
-            $dataSet = $client->getAllClients();
-            displayClients($dataSet);
-            ?>
-        </div>
-
         <!-- The Modal -->
         <div class="modal" id="addModal">
             <div class="modal-dialog">
@@ -173,7 +149,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 </body>
 <script src="./helpers/pagination.js"></script>
 <script src="./helpers/AdminForms.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
@@ -186,7 +161,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             $('.form-control').val('');
             $('.form-select').val('');
             $("#passwordDiv").removeAttr('hidden');
-            $('#pwd').attr('required','');
+            $('#pwd').attr('required', '');
             $('#Add-UserID').removeAttr('value');
         });
     });
@@ -197,8 +172,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         $('#add-form').removeClass('was-validated');
         $('.pdInputs').prop('required', false);
         $('.cmpInputs').prop('required', false);
-        $('#pdCheckBx').prop( "checked", false );
-        $('#cmpCheckBx').prop( "checked", false );
+        $('#pdCheckBx').prop("checked", false);
+        $('#cmpCheckBx').prop("checked", false);
     });
 
     $('#cmpCheckBx').change(function () {
@@ -275,91 +250,3 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         });
     });
 </script>
-
-<?php
-
-function displayClients($dataSet) {
-    if (!empty($dataSet)) {
-        for ($i = 0; $i < count($dataSet); $i++) {
-            $userId = $dataSet[$i]->user_id;
-            $clientId = $dataSet[$i]->client_id;
-
-            $user = new User();
-            $user->initWithUserid($userId);
-
-            $client = new Client();
-            $client->iniwWithClientId($clientId);
-
-            $pd = new PersonalDetails();
-            $pd->setClientId($clientId);
-            $pd->initWithClientId();
-
-            $cmp = new CompanyDetails();
-            $cmp->setClientId($clientId);
-            $cmp->initWithClientId();
-
-            echo '<div class="card clientCard mb-4">
-                <div class="card-body p-0">
-                    <div class="row ">
-                        <div class="col-xl-11">
-                            <br>
-                            <div class="row">
-                                <div class="col text-center " >
-                                    <span class="fw-bold display-6">@' . $user->getUsername() . '</span>
-                                    <span class="badge bg-' . $client->getClientStatusName($clientId)->status_name . '">' . $client->getClientStatusName($clientId)->status_name . '</span>
-                                    <br>
-                                    <span class="fw-bold">#' . $user->getUserId() . '</span>
-                                </div>
-                            </div>
-
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-xl-5">
-                                    <dl class="row d-flex justify-content-center align-items-center">
-                                        <dt class="col-xl-5">Full Name:</dt>
-                                        <dd class="col-xl-5">' . $pd->getFirstName() . ' ' . $pd->getLastName() . '</dd>
-
-                                        <dt class="col-xl-5">Email:</dt>
-                                        <dd class="col-xl-5">' . $user->getEmail() . '</dd>
-
-                                        <dt class="col-xl-5">DOB:</dt>
-                                        <dd class="col-xl-5">' . $pd->getDob() . ' </dd>
-
-                                        <dt class="col-xl-5">Nationality:</dt>
-                                        <dd class="col-xl-5">' . $pd->getNationality() . '</dd>
-
-                                        <dt class="col-xl-5">Phone Number:</dt>
-                                        <dd class="col-xl-5">' . $client->getPhoneNumber() . '</dd>
-                                    </dl>  
-                                </div>
-                                <div class="col-xl-5">
-                                    <dl class="row d-flex justify-content-center align-items-center">
-                                        <dt class="col-xl-5">Company Name:</dt>
-                                        <dd class="col-xl-5">' . $cmp->getName() . '</dd>
-
-                                        <dt class="col-xl-5">Size:</dt>
-                                        <dd class="col-xl-5">' . $cmp->getComapnySize() . '</dd>
-
-                                        <dt class="col-xl-5">Webiste:</dt>
-                                        <dd class="col-xl-5">' . $cmp->getWebsite() . '</dd>
-
-                                        <dt class="col-xl-5">City:</dt>
-                                        <dd class="col-xl-5">' . $cmp->getCity() . '</dd>
-                                    </dl>    
-
-                                </div>  
-                            </div>
-
-                        </div>
-                        <div class="col-xl-1">
-                            <div class="d-flex flex-column h-100 justify-content-between">
-                                <button id="editClientBtn" class="btn btn-primary flex-fill rounded-0 rounded-top-right" data-bs-toggle="modal" data-bs-target="#addModal" data-id="' . $user->getUserId() . '"><i class="bi bi-pen-fill">Edit</i></button>
-                                <button class="btn btn-danger flex-fill rounded-0 rounded-bottom-right" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $user->getUserId() . '" onclick="setDeleteID(this)"><i class="bi bi-trash3-fill">Delete</i></button>
-                                <input type="hidden" id="' . $userId . '" name="clientId" value ="' . $clientId . '">   
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
-        }
-    }
-}
