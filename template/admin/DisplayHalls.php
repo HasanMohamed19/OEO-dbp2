@@ -39,7 +39,7 @@
         <div id="pagination-items-halls" class="card-deck">
             <?php
             $newHall = new Hall();
-            $dataSet = $newHall->getAllHalls();
+            $dataSet = $newHall->getAllHallsClient();
             displayHalls($dataSet);
             ?>
         </div>

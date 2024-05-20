@@ -128,7 +128,8 @@ class Hall {
         }
     }
 
-    function getAllHalls() {
+    // combine function after merging
+    function getAllHallsClient() {
         $db = Database::getInstance();
         // get only active halls
         $data = $db->multiFetch('Select * from dbProj_Hall WHERE hall_status_id != 2');
@@ -277,7 +278,7 @@ class Hall {
         // returns halls that are available at the selected timeframe
         $availableHalls = [];
         $h = new Hall();
-        $halls = $h->getAllHalls();
+        $halls = $h->getAllHallsClient();
         foreach ($halls as $hall) {
             $events = Event::getEventsForHall($hall->hall_id);
             $isOverlapping = false;

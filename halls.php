@@ -92,7 +92,7 @@ function getClosestDate($testDate, $against1, $against2) {
 
 function getSuggestedDates($startDate, $endDate) {
     $h = new Hall();
-    $halls = $h->getAllHalls();
+    $halls = $h->getAllHallsClient();
     $suggestedDates = [];
     // loop through each hall to get best available dates
     foreach ($halls as $hall) {
@@ -237,7 +237,7 @@ if ($_POST['submitted']) {
         $searchError = "No halls found with the search criteria.";
     }
 } else if (!isset($_POST['filter'])) {
-    $halls = $hall->getAllHalls();
+    $halls = $hall->getAllHallsClient();
 }
 
 
