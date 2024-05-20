@@ -62,14 +62,25 @@ class CompanyDetails {
             $this->city = $db->sanitizeString($this->city);
             $this->website = $db->sanitizeString($this->website);
             
-            $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
+            if ($this->comapnyId == null) {
+                $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
+            } else {
+                $q = "UPDATE dbProj_CompanyDetails set
+			name = ?, company_size = ?, city = ?, website = ? WHERE company_id = ?";
+            }
             
             $stmt = mysqli_prepare($db->getDatabase(), $q);
             if (!$stmt) {
                 $db->displayError($q);
                 return false;
             }
-            $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
+            if ($this->comapnyId == null) {
+                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
+            } else {
+                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->comapnyId);
+            }
+                
+                
 
             if (!$stmt->execute()) {
                 var_dump($stmt);
@@ -77,6 +88,11 @@ class CompanyDetails {
                 $db->displayError($q);
                 return false;
             }
+            
+            if ($this->comapnyId == null) {
+                $this->comapnyId = mysqli_insert_id($db->getDatabase());
+            }
+            
             return true;
             
         }
@@ -173,10 +189,31 @@ class CompanyDetails {
         if (empty($this->city))
             $errors = false;
 
-        if (empty($this->website))
-            $errors = false;
+//        if (empty($this->website))
+//            $errors = false;
 
         return $errors;
+    }
+    
+    public static function deleteCompanyDetail($clientIdIn) {
+        $db = new Database();
+        $clientId = $db->sanitizeString($clientIdIn);
+        $q = "DELETE FROM dbProj_CompanyDetails WHERE client_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
     }
     
     public function getComapnyId() {

@@ -29,108 +29,6 @@ const validateAccount = () => {
     return null;
 };
 
-const togglePersonalForm = (value) => {
-    $('#firstName').prop('disabled', !value);
-    $('#lastName').prop('disabled', !value);
-    $('#gender').prop('disabled', !value);
-    $('#nationality').prop('disabled', !value);
-    $('#dob').prop('disabled', !value);
-};
-
-const toggleCompanyForm = (value) => {
-    $('#companyName').prop('disabled', !value);
-    $('#website').prop('disabled', !value);
-    $('#city').prop('disabled', !value);
-    $('#size').prop('disabled', !value);
-};
-
-
-const handleDetailsCheckboxes = () => {
-    // enable personal/company details forms
-    // based on checkboxes
-//    console.log("checking boxes");
-    let personalFormChecked = $('#personalDetailsCheck')
-                                    .prop('checked');
-    togglePersonalForm(personalFormChecked);
-    
-    let companyFormChecked = $('#companyDetailsCheck')
-                                    .prop('checked');
-    toggleCompanyForm(companyFormChecked);
-};
-
-const validateDetails = () => {
-    let personalChecked = $('#personalDetailsCheck').prop('checked');
-    let companyChecked = $('#companyDetailsCheck').prop('checked');
-    let bothUnchecked = ! (personalChecked || companyChecked);
-    
-    if (bothUnchecked) {
-        return 'At least one form must be filled.';
-    }
-    
-    if (personalChecked) {
-        let personalFormMessage = validatePersonalDetails();
-
-        if (personalFormMessage !== null) {
-            return personalFormMessage;
-        }
-    }
-    
-    if (companyChecked) {
-        let companyFormMessage = validateCompanyDetails();
-
-        if (companyFormMessage !== null) {
-            return companyFormMessage;
-        }
-    }
-    
-    return null;
-};
-
-const validatePersonalDetails = () => {
-    let firstName = $('#firstName').val();
-    let lastName = $('#lastName').val();
-    let gender = $('#gender').val();
-    let nationality = $('#nationality').val();
-    let dob = $('#dob').val();
-    
-    if (firstName === null || firstName.length <= 0)
-        return 'First name cannot be empty.';
-    
-    if (lastName === null || lastName.length <= 0)
-        return 'Last name cannot be empty.';
-    
-    if (gender === null || gender.length <= 0)
-        return 'Gender cannot be empty.';
-    
-    if (gender === 'Gender')
-        return 'Gender cannot be empty.';
-    
-    if (nationality === null || nationality.length <= 0)
-        return 'Nationality cannot be empty.';
-    
-    if (dob === null || dob.length <= 0)
-        return 'Date of Birth cannot be empty.';
-    
-    return null;
-};
-
-const validateCompanyDetails = () => {
-    let companyName = $('#companyName').val();
-//    let website = $('#website').val();
-    let city = $('#city').val();
-    let size = $('#size').val();
-    
-    if (companyName === null || companyName.length <= 0)
-        return 'Company name cannot be empty.';
-    
-    if (city === null || city.length <= 0)
-        return 'City cannot be empty.';
-    
-    if (size === null || size.length <= 0)
-        return 'Company size cannot be empty.';
-    
-    return null;
-};
 
 const getUserData = () => {
     let personalChecked = $('#personalDetailsCheck').prop('checked');
@@ -170,7 +68,7 @@ const registerUser = () => {
     }
     
     let data = getUserData();
-    console.log(data);
+//    console.log(data);
     // send registration request to server
     $.ajax({
         type: 'POST',
@@ -185,14 +83,6 @@ const registerUser = () => {
     });
 };
 
-const displayError = (message) => {
-    $('#errorBox').html(message);
-    $('#errorBox').removeClass('d-none');
-};
-
-const hideError = () => {
-    $('#errorBox').addClass('d-none');
-};
 
 //      Pagination code
 var currentPage = 0;
@@ -239,10 +129,3 @@ $('#regBtn').on("click", function() {
     }
     registerUser();
 });
-
-// checkbox event listeners
-$('#personalDetailsCheck')
-        .change(handleDetailsCheckboxes);
-
-$('#companyDetailsCheck')
-        .change(handleDetailsCheckboxes);

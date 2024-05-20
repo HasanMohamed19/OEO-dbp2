@@ -246,9 +246,6 @@ include './models/Pagination.php';
                     <div class="card-header">
                         <h3>Profile</h3>
                     </div>
-                    <div class="row mx-3">
-                        <h6>Personal Information</h6>
-                    </div>
 
                     <?php
                     $p = new PersonalDetails();
@@ -259,11 +256,80 @@ include './models/Pagination.php';
                     $c->setClientId($loggedInClientId);
                     $c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
+//                            echo $c->getName() . " sdds";
                     ?>
-
-                    <form action="displayMyAccount.php" method="post">
+                    <div id="detailsForm" class="card-body">
+                        <fieldset id="personalDetailsForm">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" id="personalDetailsCheck" class="form-check-input mt-2"  <?php if ($p->getPersonalDetialId() > 0) echo 'checked' ?>>
+                                <h4 class=""><label for="personalDetailsCheck" class="form-check-label">Personal Details</label></h4>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" value="<?php echo $p->getFirstName() ?>" class="form-control form-control-user mb-3" id="firstName" placeholder="First Name" name="firstName">
+                                </div>
+                                <div class="col">
+                                    <input type="text" value="<?php echo $p->getLastName() ?>" class="form-control form-control-user mb-3" id="lastName" placeholder="Last Name" name="lastName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select mb-3" id="gender" name="gender">
+                                        <option value="" disabled>Gender</option>
+                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected' ?>>Male</option>
+                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected' ?>>Female</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="text" value="<?php echo $p->getNationality() ?>" class="form-control form-control-user" id="nationality" placeholder="Nationality" name="nationality">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex align-items-center">
+                                    <label class="form-label mb-3 ms-3" for="dob">Date of Birth</label>
+                                </div>
+                                <div class="col">
+                                    <input type="date" value="<?php echo $p->getDob() ?>" class="form-control form-control-user" id="dob" name="dob">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr>
+                        <fieldset id="companyDetailsForm">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" id="companyDetailsCheck" class="form-check-input mt-2" <?php if ($c->getComapnyId() > 0) echo 'checked' ?>>
+                                <h4 class=""><label for="companyDetailsCheck" class="form-check-label">Company Details</label></h4>
+                            </div>
+                            <input type="text" value="<?php echo $c->getName() ?>" class="form-control form-control-user mb-3" id="companyName" placeholder="Company Name" name="companyName">
+                            <input type="text" value="<?php echo $c->getWebsite() ?>" class="form-control form-control-user mb-3" id="website" placeholder="Website" name="website">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" value="<?php echo $c->getCity() ?>" class="form-control form-control-user" id="city" placeholder="City" name="city">
+                                </div>
+                                <div class="col">
+                                    <input type="number" value="<?php echo $c->getComapnySize() ?>" class="form-control form-control-user" id="size" placeholder="Company Size" name="size">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="text-center my-2">
+                        <input type="button" class="btn btn-primary" id="saveBtn" value="Save" onclick="updateClientDetails()">
+                        <input type="hidden" class="btn btn-primary" id="personalIdInput" value="<?php echo $p->getPersonalDetialId() ?>">
+                        <input type="hidden" class="btn btn-primary" id="companyIdInput" value="<?php echo $c->getComapnyId() ?>">
+                        <input type="hidden" class="btn btn-primary" id="clientIdInput" value="<?php echo $loggedInClientId ?>">
+                    </div>
+                    <div id="errorBox" class="text-center text-danger mb-3 d-none">
+                        Error
+                    </div>
+                    <div id="successBox" class="text-center text-success mb-3 d-none">
+                        Details have been saved successfully.
+                    </div>
+                    <script src="javascript/client_details.js"></script>
+                    <script>
+                        handleDetailsCheckboxes();
+                    </script>
+<!--                    <form action="displayMyAccount.php" method="post">
                         <div class="container">
-                            <!--                            <div class="row my-2">
+                                                        <div class="row my-2">
                                                             <div class="col">
                                                                 <label for="username" class="form-label">Username</label>
                                                                 <input type="text" name="username" class="form-control" placeholder="Username" value="">
@@ -272,7 +338,7 @@ include './models/Pagination.php';
                                                                 <label for="password" class="form-label">Password</label>
                                                                 <input type="password" name="password" class="form-control" placeholder="Password">
                                                             </div>
-                                                        </div>-->
+                                                        </div>
                             <div class="row my-2">
                                 <div class="col">
                                     <label for="firstname" class="form-label">First Name</label>
@@ -302,19 +368,19 @@ include './models/Pagination.php';
                                     <label for="dob" class="form-label">DOB</label>
                                     <input type="date" name="dob" class="form-control" placeholder="DOB" value="<?php echo $p->getDob(); ?>">
                                 </div>
-                                <!--                                <div class="col">
+                                                                <div class="col">
                                                                     <label for="email" class="form-label">Email</label>
                                                                     <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
-                                                                </div>-->
+                                                                </div>
                             </div>
                         </div>
-                        <!-- </form> -->
+                         </form> 
 
                         <hr>
                         <div class="row mx-3">
                             <h6>Company Information</h6>
                         </div>
-                        <!-- <form action=""> -->
+                         <form action=""> 
                         <div class="container">
                             <div class="row my-2">
                                 <div class="col">
@@ -344,7 +410,7 @@ include './models/Pagination.php';
                             </div>
 
                         </div>
-                    </form>
+                    </form>-->
 
                 </div>
                 <!-- end of profile -->

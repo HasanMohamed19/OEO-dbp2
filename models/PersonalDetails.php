@@ -73,24 +73,39 @@ class PersonalDetails {
         $this->dob = $db->sanitizeString($this->dob);
         $this->gender = $db->sanitizeString($this->gender);
         $this->nationality = $db->sanitizeString($this->nationality);
-
-        $q = "INSERT INTO dbProj_PersonalDetails "
-                . "(personal_details_id, first_name, last_name, dob, gender, nationality, client_id) "
-                . "VALUES (NULL,?,?,?,?,?,?)";
+        
+        if ($this->personalDetialId == null) {
+            $q = "INSERT INTO dbProj_PersonalDetails "
+                    . "(personal_details_id, first_name, last_name, dob, gender, nationality, client_id) "
+                    . "VALUES (NULL,?,?,?,?,?,?)";
+        } else {
+            $q = "UPDATE dbProj_PersonalDetails set
+			first_name = ?, last_name = ?, dob = ?, gender = ?, nationality = ? WHERE personal_details_id = ?;";
+        }
 
         $stmt = mysqli_prepare($db->getDatabase(), $q);
         if (!$stmt) {
             $db->displayError($q);
             return false;
         }
-
-        $stmt->bind_param('sssssi', 
-                $this->firstName, 
-                $this->lastName, 
-                $this->dob, 
-                $this->gender, 
-                $this->nationality, 
-                $this->clientId);
+        
+        if ($this->personalDetialId == null) {
+            $stmt->bind_param('sssssi', 
+                    $this->firstName, 
+                    $this->lastName, 
+                    $this->dob, 
+                    $this->gender, 
+                    $this->nationality, 
+                    $this->clientId);
+        } else {
+            $stmt->bind_param('sssssi', 
+                    $this->firstName, 
+                    $this->lastName, 
+                    $this->dob, 
+                    $this->gender, 
+                    $this->nationality, 
+                    $this->personalDetialId);
+        }
 
         if (!$stmt->execute()) {
             var_dump($stmt);
@@ -98,6 +113,11 @@ class PersonalDetails {
             $db->displayError($q);
             return false;
         }
+        
+        if ($this->personalDetialId == null) {
+            $this->personalDetialId = mysqli_insert_id($db->getDatabase());
+        }
+        
         return true;
         
 
@@ -208,6 +228,27 @@ class PersonalDetails {
 //        }
     }
 
+    public static function deletePersonalDetail($clientIdIn) {
+        $db = new Database();
+        $clientId = $db->sanitizeString($clientIdIn);
+        $q = "DELETE FROM dbProj_PersonalDetails WHERE client_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
+    
     public function isValid() {
         $errors = true;
 

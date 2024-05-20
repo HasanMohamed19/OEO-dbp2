@@ -37,7 +37,7 @@ if (isset($_POST['submitted'])) {
         $personal->setClientId($client->getClientId());
         if (!$personal->addPersonalDetails()) {
 //            echo $registrationFailedMessage;
-            echo 'personal failed';
+            echo $registrationFailedMessage;
             exit();
         }
     }
@@ -52,7 +52,7 @@ if (isset($_POST['submitted'])) {
         $company->setClientId($client->getClientId());
         if (!$company->addCompanyDetails()) {
 //            echo $registrationFailedMessage;
-            echo 'company failed';
+            echo $registrationFailedMessage;
             exit();
         }
     }
@@ -62,7 +62,7 @@ if (isset($_POST['submitted'])) {
 }
 
 
-include './template/header.html';
+include './header.php';
     
 echo '<div class="main"> ';
 include './template/register.html';
