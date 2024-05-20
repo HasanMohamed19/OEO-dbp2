@@ -155,6 +155,7 @@
                         $('#serviceidSelect').val(response.service_id).change();
                         $('#description').val(response.description);
                         $('#imagePath').val(response.image_path);
+                        $('#itemStatus').val(response.status);
                         $('#Add-ItemID').val(response.ItemId);
                     },
                     error: function (xhr, status, error) {

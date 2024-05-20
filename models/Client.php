@@ -109,7 +109,12 @@ class Client extends User {
         $data = $db->multiFetch($q);
         return $data;
     }
-
+    public static function countAllClients() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Client";
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+    }
     function getClientStatusName($client_id) {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");

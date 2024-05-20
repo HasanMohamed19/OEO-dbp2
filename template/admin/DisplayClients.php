@@ -54,7 +54,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="pdCheckBx" name="pdCheckBx">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    <h5>Personal Details:</h5>
+                                    <h5>Personal Details:</h5> <em><small>(Check the box if you want to add/edit personal details)</small></em>
                                 </label>
                             </div>
                             <hr>
@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="cmpCheckBx" name="cmpCheckBx">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    <h5>Company Details:</h5>
+                                    <h5>Company Details:</h5><em><small>(Check the box if you want to add/edit company details)</small></em>
                                 </label>
                             </div>
                             <hr>

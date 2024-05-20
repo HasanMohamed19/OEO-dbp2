@@ -84,9 +84,13 @@ echo '<div class="container">';
 displayHalls($data);
 
 $pagination = new Pagination();
-$pagination->totalRecords('dbProj_Hall');
-//$pagination->totalRecords($table);
-echo $pagination->total_records . ' is total records';
+if ($displayby=='all'){
+    $pagination->setTotal_records(Hall::countAllHalls());
+} else if ($displayby=='ava') {
+    $pagination->setTotal_records(Hall::countAvailableHalls());
+} else if ($displayby == 'cncl'){
+    $pagination->setTotal_records(Hall::countCancelledHalls());
+}
 $pagination->setLimit($end);
 $pagination->page($displayby);
 echo '</div>';

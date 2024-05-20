@@ -115,9 +115,7 @@ echo '<div class="container">';
 displayClients($data);
 
 $pagination = new Pagination();
-$pagination->totalRecords('dbProj_Client');
-//$pagination->totalRecords($table);
-echo $pagination->total_records . ' is total records';
+$pagination->setTotal_records(Client::countAllClients());
 $pagination->setLimit($end);
 $pagination->page($filter);
 echo '</div>';

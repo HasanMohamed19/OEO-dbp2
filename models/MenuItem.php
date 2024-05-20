@@ -136,8 +136,25 @@ class MenuItem {
         $data = $db->multiFetch($q);
         return $data;
     }
-    function getRecordsNum($q){
-        
+    public static function countAllItems() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Menu_Item";
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+    }
+
+    public static function countAvailableItems() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Menu_Item WHERE item_status_id = " . AVAILABLE_STATUS;;
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+    }
+
+    public static function countCancelledItems() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Menu_Item WHERE item_status_id = " . CANCELLED_STATUS;
+        $dataCount = $db->getRows($q);
+        return $dataCount;
     }
     public function getCateringSerivceName() {
         switch ($this->cateringServiceId) {
