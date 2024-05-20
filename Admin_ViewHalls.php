@@ -6,6 +6,11 @@ include_once './models/Hall.php';
 include_once './models/Pagination.php';
 include_once './helpers/Database.php';
 
+// assuming admin id is always 1
+if ($_COOKIE['userId'] != 1) {
+    header("Location: 404.php");
+}
+
 function uploadImg() {
     $fileNames = []; // Array to store file names
 

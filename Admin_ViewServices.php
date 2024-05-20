@@ -10,6 +10,11 @@ include_once './models/MenuItem.php';
 include_once './models/Pagination.php';
 include_once './helpers/Database.php';
 
+// assuming admin id is always 1
+if ($_COOKIE['userId'] != 1) {
+    header("Location: 404.php");
+}
+
 function uploadImg() {
     //$_FILES is a PHP global array simialr to $_POST and $_GET
     if (isset($_FILES['MenuItemImg'])) {

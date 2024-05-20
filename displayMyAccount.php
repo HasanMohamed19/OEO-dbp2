@@ -14,6 +14,11 @@
 //    echo 'what is happening';
     // if add/edit card form submitted
     
+    // assuming admin id is always 1
+if ($_COOKIE['userId'] == 1) {
+    header("Location: 404.php");
+}
+    
     $loggedInClientId = $_COOKIE['clientId'];
     
     if (isset($_POST['submitted'])) {

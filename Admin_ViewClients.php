@@ -13,6 +13,11 @@ include_once './models/CompanyDetails.php';
 include_once './models/Pagination.php';
 include_once 'header.php';
 
+// assuming admin id is always 1
+if ($_COOKIE['userId'] != 1) {
+    header("Location: 404.php");
+}
+
 if (isset($_POST['clientFormSubmitted'])) {
 //initialze a new Client object
     $userid = trim($_POST['Add-UserID']);
