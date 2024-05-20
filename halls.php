@@ -4,6 +4,7 @@ include './models/Event.php';
 include './helpers/Database.php';
 include './debugging.php';
 
+include 'header.php';
 
 function getSuggestedDatesForHall($hall, $startDate, $endDate, $checkAfter) {
     // sort by end date ascending to get earliest possible available
@@ -231,17 +232,15 @@ $hall = new Hall();
 
 if ($_POST['submitted']) {
     $searchTerm = trim($_POST['search']);
-//    echo 'submitted: ' . $searchTerm;
     $halls = $hall->getHallsBySearch($searchTerm);
     if (!$halls) {
         $searchError = "No halls found with the search criteria.";
     }
 } else if (!isset($_POST['filter'])) {
-//    echo 'get all active halls';
     $halls = $hall->getAllHalls();
 }
 
-//echo " there are " . count($halls);
+
 
 function displayHalls($dataSet) {
 
@@ -251,11 +250,6 @@ function displayHalls($dataSet) {
         $hall = new Hall();
         $id = $data->hall_id;
         $hall->initWithHallid($id);
-//        if ($_POST['submitted']) {
-//            var_dump($data);
-//            var_dump($id);
-//            echo 'hall id: '.$data->hall_id;
-//        }
         $image = new HallImage();
         $hallImages = $image->getAllImagesForHall($id);
         echo '
@@ -315,20 +309,6 @@ function displayHalls($dataSet) {
             </div>
         </div>';
     }
-
-
-
-
-//                            </div>
-//                            <div class="row mt-3">
-//                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
-//                                thats very long to show the length of the lthing is very long...
-//                            </div>
-//                            <div class="row mt-5">
-//                                <div class="col text-center"><h3>100.00 BHD/Hr</h3></div>
-//                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
-//                                <div class="col text-center"><h3>80 Seats</h3></div>
-//                            </div>
 }
 ?>
 
@@ -336,7 +316,7 @@ function displayHalls($dataSet) {
     <div class="row justify-content-center">
         <div class="col-md-9 shadow-lg rounded my-5 p-4">
             <h4 class="text-left">Search for Available Halls</h4>
-            <form action="index.php" method="POST">
+            <form action="halls.php" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="startDate" class="form-label">Start Date</label>
@@ -369,7 +349,7 @@ function displayHalls($dataSet) {
             </form>
         </div>
     </div>
-    <form method="post" action="index.php">
+    <form method="post" action="halls.php">
         <div class="input-group">
             <input type="text" value="<?php echo $_POST['search'] ?>" class="form-control mb-0" placeholder="Search For a Hall" id="search" name="search">
             <button type="submit" class="btn btn-outline-secondary rounded-end" id="searchBtn">
@@ -415,98 +395,11 @@ function displayHalls($dataSet) {
                 displayHalls($halls);
                 ?>
 
-                <!--                        <div class="card mb-5">
-                                            <div id="hall-3" class="carousel slide" data-bs-ride="carousel">
-                                                <div class="carousel-indicators">
-                                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                    <button type="button" data-bs-target="#hall-3" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                                </div>
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                                                                <div class="carousel-caption d-none d-md-block text-end">
-                                                                                                    <button class="btn btn-primary">Book Now</button>
-                                                                                                </div>
-
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                    </div>
-                                                </div>
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-3" data-bs-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Previous</span>
-                                                </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#hall-3" data-bs-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Next</span>
-                                                </button>
-                                            </div>
-                                            <div class="row text-center">
-                                                <h1>Hall Name and Stuff</h1>
-                                            </div>
-                                            <div class="row mt-3">
-                                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
-                                                thats very long to show the length of the lthing is very long...
-                                            </div>
-                                            <div class="row mt-5">
-                                                <div class="col text-center"><h3>100.00 BHD/Hr</h3></div>
-                                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
-                                                <div class="col text-center"><h3>80 Seats</h3></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card mb-5">
-                                            <div id="hall-4" class="carousel slide" data-bs-ride="carousel">
-                                                <div class="carousel-indicators">
-                                                    <button type="button" data-bs-target="#hall-4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                                    <button type="button" data-bs-target="#hall-4" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                    <button type="button" data-bs-target="#hall-4" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                                </div>
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                                                                <div class="carousel-caption d-none d-md-block text-end">
-                                                                                                    <button class="btn btn-primary">Book Now</button>
-                                                                                                </div>
-
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="d-block w-100" alt="...">
-                                                    </div>
-                                                </div>
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#hall-4" data-bs-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Previous</span>
-                                                </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#hall-4" data-bs-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Next</span>
-                                                </button>
-                                            </div>
-                                            <div class="row text-center">
-                                                <h1>Hall Name and Stuff</h1>
-                                            </div>
-                                            <div class="row mt-3">
-                                                Description for the hall thats very long to show the length of the lthing is very long Description for the hall
-                                                thats very long to show the length of the lthing is very long...
-                                            </div>
-                                            <div class="row mt-5">
-                                                <div class="col text-right"><h3>100.00 BHD/Hr</h3></div>
-                                                <div class="col text-center"><button class="btn btn-primary">Book Now</button></div>
-                                                <div class="col text-left"><h3>80 Seats</h3></div>
-                                            </div>
-                                        </div>-->
-
-
             </div>
         </div>
     </section>
 </div>
+<?php
+    
+    include '/template/footer.html';
+?>

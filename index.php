@@ -4,7 +4,7 @@
 
 include './template/header.html';
 
-include './template/halls.php';
+//include './template/halls.php';
 
 include './template/footer.html';
 ?>
