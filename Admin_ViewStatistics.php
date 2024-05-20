@@ -8,48 +8,54 @@ include_once './debugging.php';
 include_once './template/header.html';
 include_once './models/Hall.php';
 include_once './models/Reservation.php';
+include_once './models/ReservationMenuItem.php';
 include_once './helpers/Database.php';
 ?>
 <div class="container">
-    <div class="row">
+    <div class="row p-3">
         <h1>View Statistics</h1>
     </div>
-    <div class="row">
+    <div class="row p-5">
         <div class="col-xl-4">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="card">
+                <img src="./images/hall-icon.png" class="card-img-top img-f"alt="...">
+                <div class="card-body text-center">
+                    <h4>Most Reserved Hall</h4>
+                    <?php
+                    $rsrvIhall = new Hall();
+                    $bestHall = $rsrvIhall->getBestHall();
+                    echo'<h6>#' . $bestHall->hall_id . '</h6>';
+                    echo'<h6>' . $bestHall->hall_name . '</h6>';
+                    ?>
                 </div>
             </div>
         </div>
         <div class="col-xl-4">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="card">
+                <img class="h-50" src="./images/menu-item.png" class="card-img-top h-30" alt="...">
+                <div class="card-body text-center">
+                    <h4>Best Seller In Menu Items</h4>
+                    <?php
+                    $rsrvItem = new ReservationMenuItem();
+                    $bestItem = $rsrvItem->getBestSellerItem();
+                    echo'<h6>#' . $bestItem->item_id . '</h6>';
+                    echo'<h6>' . $bestItem->name . '</h6>';
+                    ?>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row p-5">
         <div class="col-xl-12">
+            <h3>Total number of Reservations Per Hall</h3>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#Hall ID</th>
                         <th scope="col">Hall Name</th>
                         <th scope="col">Total Number of Reservations</th>
-                        <th scope="col">Hall Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,12 +65,11 @@ include_once './helpers/Database.php';
                     $reservation = new Reservation();
                     for ($i = 0; $i < count($allHalls); $i++) {
                         echo '<tr>';
-                        echo '<th scope="row">'.$allHalls[$i]->hall_id.'</th>';
-                        echo'<td>'.$allHalls[$i]->hall_name.'</td>';
-                        echo'<td>'.$allHalls[$i]->hall_name.'</td>';
+                        echo '<th scope="row">' . $allHalls[$i]->hall_id . '</th>';
+                        echo'<td>' . $allHalls[$i]->hall_name . '</td>';
                         $halltotalres = $reservation->getHallReservations($allHalls[$i]->hall_id);
-                        echo'<td>'. count($halltotalres).'</td>';
-                          echo '</tr>';
+                        echo'<td>' . count($halltotalres) . '</td>';
+                        echo '</tr>';
                     }
                     ?>
                 </tbody>

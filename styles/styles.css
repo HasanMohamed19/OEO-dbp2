@@ -256,3 +256,7 @@
 .bg-Cancelled {
     background-color: var(--danger);
 }
+
+.stat-card-h{
+    height:300px;
+}

@@ -366,7 +366,7 @@ class Reservation {
 
     function getHallReservations($hallId) {
         $db = Database::getInstance();
-        $data = $db->multiFetch("SELECT * FROM  dbProj_Reservation WHERE hall_id = ".$hallId);
+        $data = $db->multiFetch("SELECT * FROM  dbProj_Reservation WHERE hall_id = ".$hallId ." AND reservation_status_id != 2");
         return $data;
     }
 }

@@ -10,27 +10,28 @@
  *
  * @author Hassan
  */
+include_once '../helpers/Database.php';
 class ReservationMenuItem {
-    
+
     private $reservationMenuItemId;
     private $quantity;
     private $reservationId;
     private $itemId;
-    
+
     public function __construct() {
         $this->reservationMenuItemId = null;
         $this->quantity = null;
         $this->reservationId = null;
         $this->itemId = null;
     }
-    
+
     public function initWith($reservationMenuItemId, $quantity, $reservationId, $itemId) {
         $this->reservationMenuItemId = $reservationMenuItemId;
         $this->quantity = $quantity;
         $this->reservationId = $reservationId;
         $this->itemId = $itemId;
     }
-    
+
     public function getReservationMenuItemId() {
         return $this->reservationMenuItemId;
     }
@@ -63,6 +64,14 @@ class ReservationMenuItem {
         $this->itemId = $itemId;
     }
 
-
-    
+    public function getBestSellerItem() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT mi.name, rmi.item_id, SUM(rmi.quantity) AS total_quantity
+                                FROM dbProj_Reservation_Menu_Item rmi
+                                JOIN dbProj_Menu_Item mi ON rmi.item_id = mi.item_id
+                                GROUP BY rmi.item_id, mi.name
+                                ORDER BY total_quantity DESC
+                                LIMIT 1");
+        return $data;
+    }
 }
