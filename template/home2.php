@@ -3,20 +3,37 @@ include './helpers/Database.php';
 include './models/Hall.php';
 include './debugging.php';
 ?>
+<body>
 <style>
     .hero {
-        background: url(./images/hero4.jpg) no-repeat !important;
+        position: relative;
+        background: url(./images/hero8.webp) no-repeat !important;
         background-size: cover !important;
-        background-position: center !important;
+        background-position: bottom !important;
         height: 40vh !important;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.25); /* Adjust the opacity and color as needed */
+        z-index: 1;
+    }
+
+    .hero .container-fluid {
+        position: relative;
+        z-index: 2;
     }
 </style>
 <body>
-
-    <div class="hero bg-light text-dark mb-5">
-        <div class="text-center col-xl-4 p-4">
+    <div class="hero bg-light text-white w-100 h-50 mb-5">
+        <div class="container-fluid">
             <h1 class="display-5 fw-bold">Hall Booking Simplified</h1>
-            <h5>Find and reserve the perfect space for your events, from weddings to corporate meetings, with ease and confidence. </h5>
+            <p class="col-md-8 lead">Find and reserve the perfect space for your events, from weddings to corporate meetings, with ease and confidence.</p>
             <button class="btn btn-primary btn-lg" onclick="location.href = '#popularHalls'">View Halls</button>
         </div>
     </div>
