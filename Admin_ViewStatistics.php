@@ -8,6 +8,7 @@ include_once './debugging.php';
 include_once './template/header.html';
 include_once './models/Hall.php';
 include_once './models/Reservation.php';
+include_once './helpers/Database.php';
 ?>
 <div class="container">
     <div class="row">

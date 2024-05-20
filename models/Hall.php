@@ -12,6 +12,7 @@
  */
 include_once '../helpers/Database.php';
 include_once 'models/HallImage.php';
+//include_once '../debugging.php';
 
 //hall status
 
@@ -144,7 +145,7 @@ class Hall {
     }
         function getAllHallsWithoutFilter() {
         $db = Database::getInstance();
-        $q = 'Select * from dbProj_Hall';;
+        $q = 'Select * from dbProj_Hall';
         $data = $db->multiFetch($q);
         return $data;
     }
