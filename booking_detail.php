@@ -39,7 +39,7 @@ $hallImages = $image->getAllImagesForHall($id);
 <div class="container">
     <div class="my-account-body">
         <div class="row justify-content-between mx-3 mt-2">
-            <div class="col">Booking#: <?php echo $reservationDetails->reservation_id ?> </div>
+            <div class="col" id="resId" data-id="<?php echo $reservationDetails->reservation_id ?>">Booking#: <?php echo $reservationDetails->reservation_id ?> </div>
             <div class="col text-secondary text-center"> <?php echo $reservationDetails->reservation_date ?> </div>
             <div class="col text-end">Total: BHD <?php echo $reservationDetails->TotalCost ?></div>
         </div>
@@ -93,7 +93,7 @@ $hallImages = $image->getAllImagesForHall($id);
 
                 <div class="col-xl-5 p-2 flex-grow-1">
                     <div class="row m-2">
-                        <div class="col text-start completed"> <?php echo Reservation::getStatusName($reservationDetails->reservation_status_id) ?> </div>
+                        <div id="resStatus" class="col text-start"> <?php echo Reservation::getStatusName($reservationDetails->reservation_status_id) ?> </div>
                         <!-- condition needs to be changed -->
                         <?php
                             $event = new Event();
@@ -196,6 +196,49 @@ $hallImages = $image->getAllImagesForHall($id);
  
 <script src="./helpers/CardForm.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+<script>
+    
+    $(function () {
+        $.ajax({
+            url: './helpers/get_reservation_status.php',
+            method: 'GET',
+            data: {reservationId: $("#resId").attr('data-id')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('reservation Info:', response);
+
+                // Update class list
+                const statusDiv = $("#resStatus");
+//
+                switch (response) {
+                    case 'Completed':
+                        statusDiv.addClass('completed');
+                        break;
+                    case 'Canceled':
+                        statusDiv.addClass('cancelled');
+                        break;
+                    case 'In Progress':
+                        statusDiv.addClass('in-progress');
+                        break;
+                    case 'Booked':
+                        statusDiv.addClass('in-progress');
+                        break;
+                }
+
+
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching status info:', error);
+            }
+        });
+    });
+    
+</script>
+
 </div>
 
 <?php
@@ -210,7 +253,7 @@ $hallImages = $image->getAllImagesForHall($id);
         $reservation = new Reservation();
         $reservation->cancelReservation($reservationId);
     } else {
-        echo 'nothing is submitted yet';
+//        echo 'nothing is submitted yet';
     }
     
 ?>
