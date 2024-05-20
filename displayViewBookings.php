@@ -6,13 +6,15 @@ include './models/User.php';
 include_once './models/Client.php';
 include './models/Reservation.php';
 include './models/Pagination.php';
-include './template/header.html';
+include 'header.php';
 
-include './template/admin/view_bookings.html';
-
-
+//include './template/admin/view_bookings.html';
 
 
+
+
+echo '<div class="container">';
+echo '<div class="row"><h1>Reservations</h1></div>';
 if (isset($_GET['pageno']))
     $start = $_GET['pageno'];
 else
@@ -35,14 +37,13 @@ echo $pagination->total_records . ' is total records';
 $pagination->setLimit($end);
 $pagination->page("");
  
-$c = new Client();
-$r = $c->hasPersonalDeatils('50');
+
 
 
 //echo $pagination->firstBack();
 //echo $pagination->where();
 //echo $pagination->nextLast();
 //echo 'current page is: ' . $pagination->where();
-
+echo '</div>';
 include './template/footer.html';
 ?>

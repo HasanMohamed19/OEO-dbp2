@@ -2,16 +2,7 @@
 
 include_once '../helpers/Database.php';
 include_once 'Hall.php';
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
 
-/**
- * Description of Event
- *
- * @author Hassan
- */
 class Event {
 
     private $eventId;
@@ -158,6 +149,78 @@ class Event {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Event WHERE event_id = ' . $eventId);
         $this->initWith($data->event_id, $data->event_name, $data->start_date, $data->end_date, $data->start_time, $data->end_time, $data->audience_number);
+    }
+    
+    public static function getEventsForHall($hallId) {
+        $db = new Database();
+        $hallId = $db->sanitizeString($hallId);
+        $q = "SELECT * "
+                . "FROM dbProj_Event e "
+                . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                . "WHERE r.hall_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $hallId);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
+        //returns results as array
+        return $data;
+    }
+    
+    public static function getEventsForHallSorted($hallId, $sortType, $startDate) {
+        $db = new Database();
+        $hallId = $db->sanitizeString($hallId);
+        
+        if ($sortType == 'asc') {
+            $q = "SELECT * "
+                    . "FROM dbProj_Event e "
+                    . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                    . "WHERE r.hall_id = ? "
+                    . "AND e.end_date >= ? "
+                    . "ORDER BY e.end_date ASC";
+        } else {
+//            echo "sorting desc";
+            $q = "SELECT * "
+                    . "FROM dbProj_Event e "
+                    . "JOIN dbProj_Reservation r ON e.event_id = r.event_id "
+                    . "WHERE r.hall_id = ? "
+                    . "AND e.start_date <= ? "
+                    . "ORDER BY e.start_date DESC";
+        }
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        // $startDate is used to filter events before/after this date
+        $stmt->bind_param('is', $hallId, $startDate);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
+        //returns results as array
+        return $data;
     }
 
     public function getEventId() {

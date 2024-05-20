@@ -55,9 +55,19 @@ include './models/Pagination.php';
                     <div class="card-header">
                         <h3>My Bookings</h3>
                     </div>
+                    <?php
+                    if (isset($_GET['pageno']))
+                        $start = $_GET['pageno'];
+                    else
+                        $start = 1;
 
+                    $end = 10;
+                    $reservation = new Reservation();
+                    $reservation->setClientId($loggedInClientId);
+                    $reservations = $reservation->getReservationsForClient($start, $end);
+                    ?>
                     <div class="table-responsive mx-4 px-0 mt-3">
-                        <table class="table table-striped border">
+                        <table class="table table-striped border <?php if (count($reservations) <= 0) echo 'd-none' ?>">
                             <thead>
                                 <tr class="text-center">
                                     <th scope="col">Booking #</th>
@@ -70,25 +80,18 @@ include './models/Pagination.php';
                             </thead>
                             <tbody>
                                 <?php
-                                if (isset($_GET['pageno']))
-                                    $start = $_GET['pageno'];
-                                else
-                                    $start = 1;
-                                
-                                $end = 10;
-                                $reservation = new Reservation();
-                                $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient($start, $end);
                                 $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
                         </table>
                         <?php
-                        $pagination = new Pagination();
-                        $pagination->setTotal_records(Reservation::countReservationsForClient($loggedInClientId));
-                        $pagination->setLimit($end);
-                        $pagination->page("");
+                        if (count($reservations) >= 1) {
+                            $pagination = new Pagination();
+                            $pagination->setTotal_records(Reservation::countReservationsForClient($loggedInClientId));
+                            $pagination->setLimit($end);
+                            $pagination->page("");
+                        }
                         ?>
                     </div>
 
@@ -102,12 +105,12 @@ include './models/Pagination.php';
                         <h3>My Cards</h3>
                     </div>
 
-                    <?php
-                    $card = new CardDetail();
-                    $card->setClientId($loggedInClientId);
-                    $cards = $card->getAllCardsForUser();
-                    displayCards($cards);
-                    ?>
+<?php
+$card = new CardDetail();
+$card->setClientId($loggedInClientId);
+$cards = $card->getAllCardsForUser();
+displayCards($cards);
+?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddCard" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
@@ -209,13 +212,13 @@ include './models/Pagination.php';
 
                 <!-- Royalty Points -->
 
-                <?php
+<?php
 //                            include 'debugging.php';
 //                        include './models/Client.php';
-                $cc = new Client();
+$cc = new Client();
 //                            $client->setClientId('1');
-                $s = $cc->getClientStatusName($loggedInClientId);
-                ?>
+$s = $cc->getClientStatusName($loggedInClientId);
+?>
 
                 <div class="card mb-2 ms-4 px-0 inactive">
                     <div class="card-header">
@@ -247,14 +250,14 @@ include './models/Pagination.php';
                         <h3>Profile</h3>
                     </div>
 
-                    <?php
-                    $p = new PersonalDetails();
-                    $p->setClientId($loggedInClientId);
-                    $p->initWithClientId();
+<?php
+$p = new PersonalDetails();
+$p->setClientId($loggedInClientId);
+$p->initWithClientId();
 
-                    $c = new CompanyDetails();
-                    $c->setClientId($loggedInClientId);
-                    $c->initWithClientId();
+$c = new CompanyDetails();
+$c->setClientId($loggedInClientId);
+$c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
 //                            echo $c->getName() . " sdds";
                     ?>
@@ -415,13 +418,13 @@ include './models/Pagination.php';
                 </div>
                 <!-- end of profile -->
 
-                <?php
-                $client = new Client();
-                $client->iniwWithClientId($_COOKIE['clientId']);
+<?php
+$client = new Client();
+$client->iniwWithClientId($_COOKIE['clientId']);
 
-                $user = new User();
-                $user->initWithUserid($_COOKIE['userId']);
-                ?>
+$user = new User();
+$user->initWithUserid($_COOKIE['userId']);
+?>
 
                 <div class="card col shadow-sm ms-4 px-0 inactive">
                     <div class="card-header">
@@ -463,14 +466,14 @@ include './models/Pagination.php';
                         <h3>Address Book</h3>
                     </div>
 
-                    <?php
+<?php
 //                            echo 'book address section';
-                    $address = new BillingAddress();
-                    $address->setClientId($loggedInClientId);
-                    $addresses = BillingAddress::getAddresses($loggedInClientId);
-                    displayAddresses($addresses);
+$address = new BillingAddress();
+$address->setClientId($loggedInClientId);
+$addresses = BillingAddress::getAddresses($loggedInClientId);
+displayAddresses($addresses);
 //                            $card->displayCards($cards);
-                    ?>
+?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
@@ -603,68 +606,68 @@ include './models/Pagination.php';
 
     </div>
 
-    <?php
+<?php
 
-    function displayCards($dataSet) {
+function displayCards($dataSet) {
 
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $card = new CardDetail();
-                // todo: get this from the login
+    if (!empty($dataSet)) {
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $card = new CardDetail();
+            // todo: get this from the login
 //                $card->setClientId($_COOKIE['clientId']);
-                $cardId = $dataSet[$i]->card_id;
-                $card->initWithCardId($cardId);
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
+            $cardId = $dataSet[$i]->card_id;
+            $card->initWithCardId($cardId);
+            echo '<div class="card my-3 mx-3 w-50 align-self-center">
                         <div class="card-body vstack gap-2">';
 
-                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
-                echo '<div class="row justify-content-between">'
-                . '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
-                . '<span class="col-3 justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
-                echo '<div class="row my-2 gap-2">';
-                echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
-                echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
-                echo '</div></div></div>';
-            }
+            echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
+            echo '<div class="row">'
+            . '<span class="col justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
+            . '<span class="col text-end justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
+            echo '<div class="row my-2 gap-2">';
+            echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
+            echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
+            echo '</div></div></div>';
         }
     }
+}
 
-    function displayAddresses($dataSet) {
+function displayAddresses($dataSet) {
 
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $address = new BillingAddress();
-                // todo: get this from the login
+    if (!empty($dataSet)) {
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $address = new BillingAddress();
+            // todo: get this from the login
 //                $address->setClientId('13');
-                $addressId = $dataSet[$i]->address_id;
-                $address->setAddressId($addressId);
-                $address->initWithId();
+            $addressId = $dataSet[$i]->address_id;
+            $address->setAddressId($addressId);
+            $address->initWithId();
 
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
+            echo '<div class="card my-3 mx-3 w-50 align-self-center">
                         <div class="card-body vstack gap-2 align-items-center">
                             <div class="row fw-bold"><h2>Company Address</h2></div>';
 
-                echo '<div class="row m-2">
+            echo '<div class="row m-2">
                         <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() . '</span>
                      </div>';
 
-                echo ' <div class="row m-2">
+            echo ' <div class="row m-2">
                         <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() . ', Street: ' . $address->getRoadNumber() . ', Block: ' . $address->getBlockNumber() . '</span>
                      </div>';
 
-                echo '<div class="row m-2">
+            echo '<div class="row m-2">
                         <span class="col text-start text-secondary">' . $address->getCity() . ', ' . $address->getCountry() . ' </span>
                       </div>';
 
-                echo '</div><div class="row m-2 gap-1">';
-                echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+            echo '</div><div class="row m-2 gap-1">';
+            echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
                     <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
                             </div>
                         </div>';
-            }
         }
     }
-    ?>
+}
+?>
 
 </div>
 

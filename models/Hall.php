@@ -2,17 +2,6 @@
 
 include_once '../helpers/Database.php';
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-
-/**
- * Description of Hall
- *
- * @author Hassan
- */
-//include '../helpers/Database.php';
 include_once 'models/HallImage.php';
 
 //hall status
@@ -166,6 +155,14 @@ class Hall {
             $hallImg->addHallImage();
         }
     }
+    
+    // combine function after merging
+    function getAllHallsClient() {
+        $db = Database::getInstance();
+        // get only active halls
+        $data = $db->multiFetch('Select * from dbProj_Hall WHERE hall_status_id != 2');
+        return $data;
+    }
 
     function getAllHalls($start, $end, $filter) {
         $db = Database::getInstance();
@@ -181,6 +178,31 @@ class Hall {
             $q .= ' limit ' . $start . ',' . $end;
         echo 'Query is'. $q;
         $data = $db->multiFetch($q);
+        return $data;
+    }
+    
+    function getHallsBySearch($search) {
+        $db = new Database();
+        $searhTerm = $db->sanitizeString($search);
+        $q = "SELECT * FROM dbProj_Hall WHERE hall_status_id != 2 AND MATCH(hall_name, description) against (?)";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('s', $searhTerm);
+        if (!$stmt->execute()) {
+//                var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();             
+//        var_dump($result);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+//        var_dump($data);
         return $data;
     }
 
@@ -294,5 +316,53 @@ class Hall {
             return true;
         else
             return false;
+    }
+    
+    public static function getAvailableHalls($startDate, $endDate) {
+        include_once './models/Event.php';
+        // returns halls that are available at the selected timeframe
+        $availableHalls = [];
+        $h = new Hall();
+        $halls = $h->getAllHallsClient();
+        foreach ($halls as $hall) {
+            $events = Event::getEventsForHall($hall->hall_id);
+            $isOverlapping = false;
+            foreach ($events as $event) {
+                $event = (object) $event;
+                $eStartDate = $event->start_date;
+                $eEndDate = $event->end_date;
+                
+//                echo "For hall $hall->hall_name, checking event $event->event_name."
+//                        . " Currently, start date for event is $eStartDate"
+//                        . " and end date is $eEndDate.";
+                
+                // check if event timeframe overlaps requested timeframe
+                if (self::areDatesOverlapping($startDate, $endDate, $eStartDate, $eEndDate)) {
+                    // there is overlap, meaning hall is already booked at this time
+                    $isOverlapping = true;
+                    break;
+                }
+            }
+            // if no timeframes overlap, this hall is available
+            if (!$isOverlapping) {
+                $availableHalls[] = $hall;
+            }
+        }
+//        echo 'Available halls found are: ';
+//        var_dump($availableHalls);
+        return $availableHalls;
+    }
+    
+    public static function areDatesOverlapping($startDate1, $endDate1, $startDate2, $endDate2) {
+        return ($startDate1 >= $startDate2 && $startDate1 <= $endDate2)
+                || ($endDate1 >= $startDate2 && $endDate1 <= $endDate2)
+                || ($startDate2 >= $startDate1 && $startDate2 <= $endDate1);
+    }
+    
+    public static function getMaxCapacity() {
+        $db = Database::getInstance();
+        // get only active halls
+        $data = $db->singleFetch('Select MAX(capacity) as max_capacity from dbProj_Hall WHERE hall_status_id != 2');
+        return $data->max_capacity;
     }
 }

@@ -139,7 +139,7 @@ function displayMenuItems($dataSet) {
                                 </div>
                                 <div class="row ps-5 pe-5">
                                     <div class="col text-start">
-                                        <h3>' . $item->getPrice() . '/Hr</h3>
+                                        <h3>' . $item->getPrice() . ' BHD</h3>
                                     </div>
                                     <div class="col text-end">
                                         <h3>' . $item->getCateringSerivceName() . '</h3>

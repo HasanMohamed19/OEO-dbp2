@@ -3,7 +3,8 @@ include 'debugging.php';
 include './helpers/Database.php';
 include './models/Reservation.php';
 include_once ''; './models/Event.php';
-//include './models/Hall.php';
+//include_once './models/Hall.php';
+//include_once './models/HallImage.php';
 //include './models/MenuItem.php';
 //include './models/ReservationMenuItem.php';
 
@@ -25,6 +26,12 @@ $reservationDetails = $reservation->getReservationDetails();
 //echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
 //    echo '  reservation details are: ' . count($reservations);
 
+$hall = new Hall();
+$id = $reservationDetails->hall_id;
+$hall->initWithHallid($id);
+$image = new HallImage();
+$hallImages = $image->getAllImagesForHall($id);
+
 ?>
 
 
@@ -40,7 +47,48 @@ $reservationDetails = $reservation->getReservationDetails();
         <div class="card mb-2 border-0 mx-3">
             <div class="row g-0">
                 <div class="col-xl-5 p-2">
-                    <img src="<?php echo $reservationDetails->image_path ?>" alt="" class="img-fluid rounded">
+                    <?php
+                    
+                    
+                    
+                        echo '<div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">';
+                        for ($j = 0; $j < count($hallImages); $j++) {
+                            if ($j == 0) {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+                            } else {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
+                            }
+                        }
+                           echo'</div>
+                                <div class="carousel-inner rounded-top">';
+                        for ($k = 0; $k < count($hallImages); $k++) {
+                            if ($k == 0) {
+                                echo '<div class="carousel-item active">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
+                                    </div>';
+                            } else {
+                                echo '<div class="carousel-item">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
+                                    </div>';
+                            }
+                        }
+
+                            
+                            
+                            echo'</div> 
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+        ';
+                    ?>
+                    
                 </div>
 
                 <div class="col-xl-5 p-2 flex-grow-1">

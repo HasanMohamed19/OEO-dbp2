@@ -2,19 +2,6 @@
 
 include_once '../helpers/Database.php';
 
-/**
- * Description of MenuItem
- *
- * @author Hassan
- */
-// if required this can be changed to class as before
-//enum CateringService: int {
-//    case Breakfast = 1;
-//    case Lunch = 2;
-//    case HotBeverages = 3;
-//    case ColdBeverages = 4;
-//}
-
 const MENU_BREAKFAST = 1;
 const MENU_LUNCH = 2;
 const MENU_HOT_BEVERAGES = 3;
