@@ -52,7 +52,7 @@ include_once './helpers/Database.php';
                     $rsrvClient = new Client();
                     $bestClient = $rsrvClient->getBestClient();
                     echo'<h6>#' . $bestClient->user_id . '</h6>';
-                    echo'<h6>' . $bestClient->username . '</h6>';
+                    echo'<h6>@' . $bestClient->username . '</h6>';
                     ?>
 
                 </div>
