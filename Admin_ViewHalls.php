@@ -8,7 +8,7 @@ include_once './helpers/Database.php';
 
 // assuming admin id is always 1
 if ($_COOKIE['userId'] != 1) {
-    header("Location: 404.php");
+    header("Location: PageNotFound.html");
 }
 
 function uploadImg() {

@@ -98,7 +98,7 @@
 .my-status {
     width: 355px;
     height: 358px;
-    
+
     border: 1px solid #CDCDCD;
     border-radius: 12px;
 }
@@ -116,10 +116,16 @@
 }
 
 .my-status.nothing {
+
 /*    background: linear-gradient(180deg, #cccccc 28%, #808080 83.5%);*/
  /*temporary*/
     /*background-color: black;*/
-    border-color: black;
+    /*border-color: black;*/
+
+    /*    background: linear-gradient(180deg, #cccccc 28%, #808080 83.5%);*/
+    /*temporary*/
+    background-color: black;
+
 }
 
 
@@ -240,7 +246,7 @@
 }
 
 .form-group.required .form-label:after {
-  content:"*";
+    content:"*";
   color:red !important;;
 }
 
@@ -284,4 +290,29 @@
 
 .in-progress {
     color: yellow;
+}
+/*homepage*/
+.hero {
+    position: relative;
+    background: url(../images/hero8.webp) no-repeat !important;
+    background-size: cover !important;
+    background-position: bottom !important;
+    height: 40vh !important;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25); /* Adjust the opacity and color as needed */
+    z-index: 1;
+}
+
+.hero .container-fluid {
+    position: relative;
+    z-index: 2;
+
 }

@@ -16,7 +16,7 @@
     
     // assuming admin id is always 1
 if ($_COOKIE['userId'] == 1) {
-    header("Location: 404.php");
+    header("Location: PageNotFound.html");
 }
     
     $loggedInClientId = $_COOKIE['clientId'];

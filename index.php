@@ -12,12 +12,13 @@
     
 include 'header.php';
     
-    echo '<div class="main"> </div>';
+//    echo '<div class="main"> </div>';
 
 
 //include './template/header.html';
 
-echo '<div class="main"> </div>';
+//echo '<div class="main"> </div>';
+include './template/home2.php';
 
 
 include './template/footer.html';

@@ -15,7 +15,7 @@ include_once 'header.php';
 
 // assuming admin id is always 1
 if ($_COOKIE['userId'] != 1) {
-    header("Location: 404.php");
+    header("Location: PageNotFound.html");
 }
 
 if (isset($_POST['clientFormSubmitted'])) {

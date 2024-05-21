@@ -9,6 +9,7 @@ include_once 'models/HallImage.php';
 const AVAILABLE_STATUS = 1;
 const CANCELLED_STATUS = 2;
 
+
 class Hall {
 
     private $hallId;
@@ -42,6 +43,7 @@ class Hall {
         $this->hallStatus = $hallStatus;
 //        $this->imagePath = $imagePath;
     }
+
 
     
     public function initWithId() {
@@ -89,6 +91,17 @@ class Hall {
 //            $this->images = $hallImages[$i]->hall_image_path;
 //        }
     }
+
+//    public function initWithHallid($id) {
+//        $db = Database::getInstance();
+//        $data = $db->singleFetch('SELECT * FROM dbProj_Hall WHERE hall_id = ' . $id);
+//        $this->initWith($data->hall_id, $data->hall_name, $data->description, $data->rental_charge, $data->capacity, $data->hall_status_id);
+////        $hallImages = $db->multiFetch('Select * from dbProj_Hall_Image where hall_id ='.$id);
+////        for ($i=0;$i<count($hallImages);$i++){
+////            $this->images = $hallImages[$i]->hall_image_path;
+////        }
+//    }
+
 
     public function getHallId() {
         return $this->hallId;
@@ -155,14 +168,17 @@ class Hall {
             $hallImg->addHallImage();
         }
     }
+
     
     // combine function after merging
     function getAllHallsClient() {
+
         $db = Database::getInstance();
         // get only active halls
         $data = $db->multiFetch('Select * from dbProj_Hall WHERE hall_status_id != 2');
         return $data;
     }
+
 
     function getAllHalls($start, $end, $filter) {
         $db = Database::getInstance();
@@ -181,6 +197,7 @@ class Hall {
         return $data;
     }
     
+
     function getHallsBySearch($search) {
         $db = new Database();
         $searhTerm = $db->sanitizeString($search);
@@ -199,6 +216,7 @@ class Hall {
             $db->displayError($q);
             return false;
         }
+
         $result = $stmt->get_result();             
 //        var_dump($result);
         $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -317,13 +335,18 @@ class Hall {
         else
             return false;
     }
-    
+
+
+ 
     public static function getAvailableHalls($startDate, $endDate) {
         include_once './models/Event.php';
         // returns halls that are available at the selected timeframe
         $availableHalls = [];
         $h = new Hall();
+
         $halls = $h->getAllHallsClient();
+
+
         foreach ($halls as $hall) {
             $events = Event::getEventsForHall($hall->hall_id);
             $isOverlapping = false;
@@ -331,11 +354,17 @@ class Hall {
                 $event = (object) $event;
                 $eStartDate = $event->start_date;
                 $eEndDate = $event->end_date;
-                
+               
 //                echo "For hall $hall->hall_name, checking event $event->event_name."
 //                        . " Currently, start date for event is $eStartDate"
 //                        . " and end date is $eEndDate.";
                 
+
+
+//                echo "For hall $hall->hall_name, checking event $event->event_name."
+//                        . " Currently, start date for event is $eStartDate"
+//                        . " and end date is $eEndDate.";
+
                 // check if event timeframe overlaps requested timeframe
                 if (self::areDatesOverlapping($startDate, $endDate, $eStartDate, $eEndDate)) {
                     // there is overlap, meaning hall is already booked at this time
@@ -352,17 +381,35 @@ class Hall {
 //        var_dump($availableHalls);
         return $availableHalls;
     }
+
     
-    public static function areDatesOverlapping($startDate1, $endDate1, $startDate2, $endDate2) {
+     public static function areDatesOverlapping($startDate1, $endDate1, $startDate2, $endDate2) {
         return ($startDate1 >= $startDate2 && $startDate1 <= $endDate2)
                 || ($endDate1 >= $startDate2 && $endDate1 <= $endDate2)
                 || ($startDate2 >= $startDate1 && $startDate2 <= $endDate1);
     }
     
+
     public static function getMaxCapacity() {
         $db = Database::getInstance();
         // get only active halls
         $data = $db->singleFetch('Select MAX(capacity) as max_capacity from dbProj_Hall WHERE hall_status_id != 2');
         return $data->max_capacity;
+    }
+ 
+
+
+    function getPopularHalls() {
+        $db = new Database();
+        $q = "SELECT r.hall_id, COUNT(*) AS reservation_count 
+      FROM dbProj_Reservation r
+      JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+      WHERE r.reservation_status_id != 2
+      AND h.hall_status_id = 1
+      GROUP BY r.hall_id
+      ORDER BY reservation_count DESC 
+      LIMIT 3";
+        $data = $db->multiFetch($q);
+        return $data;
     }
 }
