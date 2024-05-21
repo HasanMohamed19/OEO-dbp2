@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 session_start();
 include_once 'debugging.php';
 include_once './models/User.php';
