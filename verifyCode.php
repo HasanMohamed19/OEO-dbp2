@@ -2,6 +2,7 @@
 session_start();
 include_once 'debugging.php';
 include_once './models/User.php';
+include_once './helpers/emailController.php';
 // send verification code via email to client
 // validate the code to allow changing password
 function sendEmail() {
@@ -21,9 +22,8 @@ function sendEmail() {
     $verificationCode = 123457;
     $_SESSION['verifyCode'] = $verificationCode;
     // send email here
-
+    EmailController::sendForgotPasswordEmail($email, $user->getUsername(), $verificationCode);
     //
-    
 }
 
 $errorMessage = sendEmail();
