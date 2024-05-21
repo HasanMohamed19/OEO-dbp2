@@ -40,7 +40,11 @@ $userName = $_COOKIE['username'];
         <link rel="stylesheet" href="./styles/styles.css">
 
         <!-- fontawesome links-->
-        <script src="https://kit.fontawesome.com/a96d123e51.js" crossorigin="anonymous"></script> 
+        <script src="https://kit.fontawesome.com/a96d123e51.js" crossorigin="anonymous"></script>
+        
+        
+        <!--AJAX-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
     </head>
     <body>

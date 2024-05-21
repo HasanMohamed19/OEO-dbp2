@@ -155,7 +155,7 @@
 
     //get Hall ID value 
     $(document).ready(function () {
-
+        var imgArray = [];
         $('#add-file1').click(function () {
             $('#imageUpload1').click();
         });
@@ -197,18 +197,8 @@
             console.log("image path is" + imgPath);
             if ($('#imageUpload1').val() == '' && $('#img1').text() != "Empty") {
                 console.log("old image path is" + imgPath);
-                $.ajax({
-                    url: './helpers/delete_hall_image.php',
-                    method: 'POST',
-                    data: {imgPath: imgPath},
-                    success: function (response) {
-                        console.log(response);
-                        $('#img1').text("Empty");
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error); // Log any errors
-                    }
-                });
+                imgArray.push(imgPath);
+                $('#img1').text("Empty");
             } else {
                 $('#imageUpload1').val('');
                 $('#img1').text("Empty");
@@ -218,19 +208,8 @@
             var imgPath = $('#img2').text();
             console.log("image path is" + imgPath);
             if ($('#imageUpload2').val() == '' && $('#img2').text() != "Empty") {
-                console.log("old image path is" + imgPath);
-                $.ajax({
-                    url: './helpers/delete_hall_image.php',
-                    method: 'POST',
-                    data: {imgPath: imgPath},
-                    success: function (response) {
-                        console.log(response);
-                        $('#img2').text("Empty");
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error); // Log any errors
-                    }
-                });
+                imgArray.push(imgPath);
+                $('#img2').text("Empty");
             } else {
                 $('#imageUpload2').val('');
                 $('#img2').text("Empty");
@@ -241,18 +220,8 @@
             console.log("image path is" + imgPath);
             if ($('#imageUpload3').val() == '' && $('#img3').text() != "Empty") {
                 console.log("old image path is" + imgPath);
-                $.ajax({
-                    url: './helpers/delete_hall_image.php',
-                    method: 'POST',
-                    data: {imgPath: imgPath},
-                    success: function (response) {
-                        console.log(response);
-                        $('#img3').text("Empty");
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error); // Log any errors
-                    }
-                });
+                imgArray.push(imgPath);
+                $('#img3').text("Empty");
             } else {
                 $('#imageUpload3').val('');
                 $('#img3').text("Empty");
@@ -263,18 +232,8 @@
             console.log("image path is" + imgPath);
             if ($('#imageUpload4').val() == '' && $('#img4').text() != "Empty") {
                 console.log("old image path is" + imgPath);
-                $.ajax({
-                    url: './helpers/delete_hall_image.php',
-                    method: 'POST',
-                    data: {imgPath: imgPath},
-                    success: function (response) {
-                        console.log(response);
-                        $('#img4').text("Empty");
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error); // Log any errors
-                    }
-                });
+                imgArray.push(imgPath);
+                $('#img4').text("Empty");
             } else {
                 $('#imageUpload4').val('');
                 $('#img4').text("Empty");
@@ -327,6 +286,46 @@
                 }
             });
         });
+
+        $('#add-form').submit(function (e) {
+            // Get form inputs
+            var Hallname = $('#hallNameInput').val();
+            var rntlCharge = $('#RntlchargeInput').val();
+            var capacity = $('#CapacityInput').val();
+            var status = $('#hallStatus').val();
+            var oneImageUploaded = false;
+
+            $('.hallimgIn').each(function () {
+                if ($(this).text() !== 'Empty') {
+                    oneImageUploaded = true;
+                    return false;
+                }
+            });
+
+            // Check if any field is empty or image is not uploaded
+            if (!oneImageUploaded || Hallname === '' || rntlCharge == '' || capacity == '' || status == '') {
+                $(this).addClass('was-validated');
+                e.preventDefault(); // Prevent form submission
+                console.log(imgArray+"these are images");
+                return false;
+            }
+//            var jsonData = JSON.stringify(imgArray);
+            $.ajax({
+                url: './helpers/delete_hall_image.php',
+                method: 'POST',
+                data: {imgArray: imgArray},
+                success: function (response) {
+                    console.log(response);
+                    return true;
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    return false;// Log any errors
+                }
+            });
+            // If all checks pass, allow form submission
+            
+        });
     });
     $('#addModal').on('hidden.bs.modal', function (e) {
         // Clear form Input fields when closing the form
@@ -344,30 +343,7 @@
         $('.form-select').val('');
         $('#Add-HallID').removeAttr('value');
     });
-    $('#add-form').submit(function (e) {
-        // Get form inputs
-        var Hallname = $('#hallNameInput').val();
-        var rntlCharge = $('#RntlchargeInput').val();
-        var capacity = $('#CapacityInput').val();
-        var status = $('#hallStatus').val();
-        var oneImageUploaded = false;
 
-        $('.hallimgIn').each(function () {
-            if ($(this).text() !== 'Empty') {
-                oneImageUploaded = true;
-                return false;
-            }
-        });
-
-        // Check if any field is empty or image is not uploaded
-        if (!oneImageUploaded || Hallname === '' || rntlCharge == '' || capacity == '' || status == '') {
-            $(this).addClass('was-validated');
-            e.preventDefault(); // Prevent form submission
-            return false;
-        }
-        // If all checks pass, allow form submission
-        return true;
-    });
 </script>
 </body>
 

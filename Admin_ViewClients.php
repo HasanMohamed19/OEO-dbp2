@@ -50,7 +50,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     //if user id is empty (New user) add the user
     if ($userid == '') {
         if ($user->initWithUsername()) {
-            if ($user->registerUser()) {
+            if ($user->addUser()) {
                 echo'user after register is' . $user->getUserId();
                 if (isset($_POST['pdCheckBx'])) {
                     $pd->setClientId($user->getClientByUserId());

@@ -251,7 +251,12 @@ class MenuItem {
             $this->imagePath = $db->sanitizeString($this->imagePath);
             $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
             $this->ItemStatus = $db->sanitizeString($this->ItemStatus);
-
+            
+            //check if image has been updated, if true delete the image from the server
+            $oldImg = $db->singleFetch("SELECT image_path FROM dbProj_Menu_Item WHERE item_id = '" . $this->itemId."'")->image_path;
+            if ($oldImg!=$this->imagePath){
+                unlink($oldImg);
+            }
             $q = "UPDATE dbProj_Menu_Item set name = ? ,description = ?  ,price = ? ,image_path = ? ,service_id = ?, item_status_id = ? WHERE item_id = ? ";
 
             $stmt = mysqli_prepare($db->getDatabase(), $q);
