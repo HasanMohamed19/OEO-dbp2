@@ -1,25 +1,42 @@
 <?php
 session_start();
-$verifyCode = isset($_POST['verifyCode']);
 
-if (!$verifyCode) {
-    header('Location: ./verifyCode.php?incorrect=1');
-    exit();
-}
-
-$correctCode = $_SESSION['verifyCode'];
-echo 'Input code is '.$_POST['code'];
-echo ' Correct code is '.$correctCode;
-if ($_POST['code'] != $correctCode) {
-//    header('Location: ./verifyCode.php?incorrect=1');
-    exit();
-}
-
-// correct code, allow changing password
+include_once './debugging.php';
+include_once './models/User.php';
 
 if (isset($_POST['submitted'])) {
-    echo 'changing pass';
+    $user = new User();
+    $user->setUsername($_POST['username']);
+    if (!$user->createWithUsername()) {
+        $errorMessage = 'Update failed.';
+    } else {
+        $user->setPassword($_POST['password']);
+        if (!$user->updateUser($user->getUserId())) {
+            // update failed
+            $errorMessage = 'Update failed.';
+        } else {
+            header('Location: ./login.php');
+        }
+    }
+} else {
+    $verifyCode = isset($_POST['verifyCode']);
+
+    if (!$verifyCode) {
+        header('Location: ./verifyCode.php?incorrect=1');
+        exit();
+    }
+
+    $correctCode = $_SESSION['verifyCode'];
+    //echo 'Input code is '.$_POST['code'];
+    //echo ' Correct code is '.$correctCode;
+    if ($_POST['code'] != $correctCode) {
+        header('Location: ./verifyCode.php?incorrect=1');
+        exit();
+    }
 }
+
+
+
 
 include 'header.php';
 ?>
@@ -42,6 +59,7 @@ include 'header.php';
                                             <!-- <button type="submit" class="btn btn-primary" id="loginBtn">Login</button> -->
                                             <button type="submit" class="btn btn-primary" id="passBtn">Change Password</button>
                                             <input type="hidden" name="submitted" value="1" />
+                                            <input type="hidden" name="username" value="<?php echo $_POST['username'] ?>" />
                                         </div>
                                     </form>
                                     <div class="text-center">
@@ -49,9 +67,9 @@ include 'header.php';
                                     </div>
                                     <?php
                                     if ($errorMessage) {
-                                        echo '<div id="errorBox">
-                                                    <p class="text-danger">'.$errorMessage.'</p>
-                                                </div>';
+                                echo '<div id="errorBox">
+                                            <p class="text-danger">'.$errorMessage.'</p>
+                                        </div>';
                                     }
                                     ?>
                                 </div>

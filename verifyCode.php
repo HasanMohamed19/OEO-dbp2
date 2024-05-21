@@ -62,12 +62,13 @@ include 'header.php';
                                         </div>
                                     </form>
                                     <?php
-                                    if (isset($_POST['sentCode']) && !$errorMessage) {
+                                    if (isset($_POST['sentCode']) && isset($_POST['username']) && !$errorMessage) {
                                 echo '<form class="user account-form" action="forgetPassword.php" method="post">
                                         <input type="text" class="form-control form-control-user" id="code" placeholder="Verification Code" name="code">
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary" id="loginBtn">Verify</button>
                                             <input type="hidden" name="verifyCode" value="1" />
+                                            <input type="hidden" name="username" value="'.$_POST['username'].'" />
                                         </div>
                                     </form>';
                                     }
