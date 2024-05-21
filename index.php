@@ -15,7 +15,7 @@
 //echo 'number of halls found ' . count($halls);
 
 
-include './template/header.html';
+include 'header.php';
     
 include './template/home2.php';
 

@@ -34,9 +34,9 @@ class HallImage {
         $this->initWith($data->hall_image_id, $data->hall_image_path, $data->hall_id);
     }
     
-    function getAllImagesForHall($hallImageId) {
+    function getAllImagesForHall($hallId) {
         $db = Database::getInstance();
-        $data = $db->multiFetch("SELECT * FROM dbProj_Hall_Image WHERE hall_image_id = " . $hallImageId);
+        $data = $db->multiFetch("SELECT * FROM dbProj_Hall_Image WHERE hall_id = " . $hallId);
         return $data;
     }
     

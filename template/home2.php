@@ -4,31 +4,7 @@ include './models/Hall.php';
 include './debugging.php';
 ?>
 <body>
-<style>
-    .hero {
-        position: relative;
-        background: url(./images/hero8.webp) no-repeat !important;
-        background-size: cover !important;
-        background-position: bottom !important;
-        height: 40vh !important;
-    }
 
-    .hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.25); /* Adjust the opacity and color as needed */
-        z-index: 1;
-    }
-
-    .hero .container-fluid {
-        position: relative;
-        z-index: 2;
-    }
-</style>
 <body>
     <div class="hero bg-light text-white w-100 h-50 mb-5">
         <div class="container-fluid">
@@ -69,28 +45,28 @@ function displayHalls($dataSet) {
                         <div class="col">
                             <div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">';
-        for ($j = 0; $j < count($hallImages); $j++) {
-            if ($j == 0) {
-                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
-            } else {
-                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
-            }
-        }
-        echo'</div>
+                        for ($j = 0; $j < count($hallImages); $j++) {
+                            if ($j == 0) {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+                            } else {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
+                            }
+                        }
+                           echo'</div>
                                 <div class="carousel-inner rounded-top">';
-        for ($k = 0; $k < count($hallImages); $k++) {
-            if ($k == 0) {
-                echo '<div class="carousel-item active">
+                        for ($k = 0; $k < count($hallImages); $k++) {
+                            if ($k == 0) {
+                                echo '<div class="carousel-item active">
                                         <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
                                     </div>';
-            } else {
-                echo '<div class="carousel-item">
+                            } else {
+                                echo '<div class="carousel-item">
                                         <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
                                     </div>';
-            }
-        }
+                            }
+                        }
 
-        echo'</div> 
+                            echo'</div> 
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
@@ -105,15 +81,15 @@ function displayHalls($dataSet) {
                 </div>
         ';
         echo '<div class="p-3">';
-        echo '<div class="row text-center">';
-        echo '<h1 class="col">' . $hall->getHallName() . '</h1>'
-        . '</div>';
-        echo '<div class="row"><p class="col text-center text-truncate">' . $hall->getDescription() . '</p></div>';
-        echo '<div class="row align-items-center">';
+            echo '<div class="row text-center">';
+                echo '<h1 class="col">' . $hall->getHallName() . '</h1>'
+                . '</div>';
+            echo '<div class="row"><p class="col text-center text-truncate">' . $hall->getDescription() . '</p></div>';
+            echo '<div class="row align-items-center">';
         echo '<div class="col"><h5 class="text-end">' . $hall->getRentalCharge() . ' BHD/Hr</h5></div>'
-        . '<div class="col-auto text-center"><a role="button" href="client_booking.php?hallId=' . $id . '" class="btn btn-primary btn-lg">Book Now</a></div>'
+                    . '<div class="col-auto text-center"><a role="button" href="client_booking.php?hallId=' . $id . '" class="btn btn-primary btn-lg">Book Now</a></div>'
         . '<div class="col"><h5 class="text-start">' . $hall->getCapacity() . ' Seats</h5></div>'
-        . '</div>
+                . '</div>
                 </div>
             </div>
         </div>';
