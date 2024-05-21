@@ -324,12 +324,52 @@ class User {
     }
 
     function initWithUsername() {
-
+        include_once "./helpers/Database.php";
         $db = Database::getInstance();
-        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $this->username . '\'');
+        $u = $db->sanitizeString($this->username);
+        $q = "SELECT * FROM dbProj_User WHERE username = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('s', $u);
+        if (!$stmt->execute()) {
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();
+        $data = $result->fetch_array(MYSQLI_ASSOC);
+        var_dump($data);
         if ($data != null) {
             return false;
         }
+        return true;
+    }
+    
+    function createWithUsername() {
+        include_once "./helpers/Database.php";
+        $db = Database::getInstance();
+        $u = $db->sanitizeString($this->username);
+        $q = "SELECT * FROM dbProj_User WHERE username = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('s', $u);
+        if (!$stmt->execute()) {
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_array(MYSQLI_ASSOC);
+        $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
         return true;
     }
 

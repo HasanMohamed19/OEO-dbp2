@@ -1,9 +1,68 @@
 <?php
+session_start();
+$verifyCode = isset($_POST['verifyCode']);
+
+if (!$verifyCode) {
+    header('Location: ./verifyCode.php?incorrect=1');
+    exit();
+}
+
+$correctCode = $_SESSION['verifyCode'];
+echo 'Input code is '.$_POST['code'];
+echo ' Correct code is '.$correctCode;
+if ($_POST['code'] != $correctCode) {
+//    header('Location: ./verifyCode.php?incorrect=1');
+    exit();
+}
+
+// correct code, allow changing password
+
+if (isset($_POST['submitted'])) {
+    echo 'changing pass';
+}
 
 include 'header.php';
+?>
+<div class="main">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image rounded-start"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h1 text-gray-900 mb-4">Forget Password</h1>
+                                    </div>
+                                    <form class="user account-form" action="forgetPassword.php" method="post">
+                                        <input type="text" class="form-control form-control-user" id="password" placeholder="New Password" name="password">
+                                        <div class="text-center">
+                                            <!-- <button type="submit" class="btn btn-primary" id="loginBtn">Login</button> -->
+                                            <button type="submit" class="btn btn-primary" id="passBtn">Change Password</button>
+                                            <input type="hidden" name="submitted" value="1" />
+                                        </div>
+                                    </form>
+                                    <div class="text-center">
+                                        <p>Don't have an account? <a class="btn-link" href="./register.php">Sign Up</a></p>
+                                    </div>
+                                    <?php
+                                    if ($errorMessage) {
+                                        echo '<div id="errorBox">
+                                                    <p class="text-danger">'.$errorMessage.'</p>
+                                                </div>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-echo '<div class="main">';
-include './template/forgetPassword.html';
-echo  '</div>';
-
+<?php
 include './template/footer.html';
