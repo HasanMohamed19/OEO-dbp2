@@ -54,7 +54,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="pdCheckBx" name="pdCheckBx">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    <h5>Personal Details:</h5>
+                                    <h5>Personal Details:</h5> <em><small>(Check the box if you want to add personal details)</small></em>
                                 </label>
                             </div>
                             <hr>
@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="cmpCheckBx" name="cmpCheckBx">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    <h5>Company Details:</h5>
+                                    <h5>Company Details:</h5><em><small>(Check the box if you want to add company details)</small></em>
                                 </label>
                             </div>
                             <hr>
@@ -107,6 +107,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <label for="cmpcity" class="form-label">Company City</label>
                                 <input type="text" class="form-control cmpInputs" id="cmpcity" placeholder="Enter Company City" name="cmpcity">
                             </div>
+                            <em id="chckboxerror" class="text-center text-danger mb-3"></em>
                             <div class="row">
                                 <div class="col text-start">
                                     <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
@@ -147,15 +148,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
 
 </body>
-<!--<script src="./helpers/pagination.js"></script>-->
+<script src="./helpers/pagination.js"></script>
 <script src="./helpers/AdminForms.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-//    window.addEventListener("load", () => {
-//        enablePagination("clients", ".clientCard");
-//    });
-
+    window.addEventListener("load", () => {
+        enablePagination("clients", ".clientCard");
+    });
     $(document).ready(function () {
         $("#addClientBtn").click(function () {
             $('.form-control').val('');
@@ -163,6 +163,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             $("#passwordDiv").removeAttr('hidden');
             $('#pwd').attr('required', '');
             $('#Add-UserID').removeAttr('value');
+            $('.cmpInputs').prop('disabled', true);
+            $('.pdInputs').prop('disabled', true);
+            $('#chckboxerror').html("");
         });
     });
     $('#addModal').on('hidden.bs.modal', function (e) {
@@ -174,33 +177,50 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         $('.cmpInputs').prop('required', false);
         $('#pdCheckBx').prop("checked", false);
         $('#cmpCheckBx').prop("checked", false);
+        $('#chckboxerror').html("");
+        $('.pdInputs').prop('disabled', false);
+        $('.cmpInputs').prop('disabled', false);
     });
-
     $('#cmpCheckBx').change(function () {
         if ($(this).is(':checked')) {
             // Do something when the input is checked
             $('.cmpInputs').prop('required', true);
+            $('.cmpInputs').prop('disabled', false);
+            $('#pdCheckBx').prop("required", false);
         } else {
             // Do something when the input is unchecked
             $('.cmpInputs').prop('required', false);
+            $('.cmpInputs').prop('disabled', true);
         }
     });
-
     $('#pdCheckBx').change(function () {
         if ($(this).is(':checked')) {
             // Do something when the input is checked
             $('.pdInputs').prop('required', true);
+            $('.pdInputs').prop('disabled', false);
+            $('#cmpCheckBx').prop("required", false);
         } else {
             // Do something when the input is unchecked
             $('.pdInputs').prop('required', false);
+            $('.pdInputs').prop('disabled', true);
         }
     });
-
     $('#add-form').submit(function (e) {
+        var isNotChecked = !($('#pdCheckBx').is(':checked') || $('#cmpCheckBx').is(':checked'));
+        if (isNotChecked) {
+            $('#chckboxerror').html("Personal and/or Company Details must be provided");
+            $('#cmpCheckBx').prop("required", true);
+            $('#pdCheckBx').prop("required", true);
+        } else {
+            $('#chckboxerror').html("");
+            $('#cmpCheckBx').prop("required", false);
+            $('#pdCheckBx').prop("required", false);
+        }
+
         // Loop over the required inputs
         $('.cmpInputs, .pdInputs,.userInputs').each(function () {
             // Check if company details checkbox is checked
-            if ($(this).val() == '' && $(this).attr('required') !== undefined) {
+            if (($(this).val() === '' && $(this).attr('required') !== undefined) || isNotChecked) {
                 $('#add-form').addClass('was-validated');
                 e.preventDefault(); // Prevent form submission
                 return false;
@@ -232,11 +252,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     $('#phoneNum').val(response.phoneNumber);
                     $('#pwd').val(response.password);
                     $('#fName').val(response.firstName);
+                    if ($('#fName').val() !== '') {
+                        $('#pdCheckBx').prop("checked", true);
+                    }else {
+                        $('.pdInputs').prop('disabled', true);
+                    }
                     $('#lName').val(response.lastName);
                     $('#gender').val(response.gender);
                     $('#nation').val(response.nationality);
                     $('#dob').val(response.dob);
                     $('#cmpName').val(response.companyName);
+                    if ($('#cmpName').val() !== '') {
+                        $('#cmpCheckBx').prop("checked", true);
+                    } else {
+                        $('.cmpInputs').prop('disabled', true);
+                    }
                     $('#cmpSize').val(response.companySize);
                     $('#cmpWeb').val(response.website);
                     $('#cmpcity').val(response.city);

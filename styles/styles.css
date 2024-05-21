@@ -278,6 +278,7 @@
     background-color: var(--danger);
 }
 
+
 /*reservation status*/
 
 /*.completed {
@@ -316,3 +317,9 @@
     z-index: 2;
 
 }
+
+/* admin statistics*/
+.stat-card-h{
+    height:300px;
+}
+

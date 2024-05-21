@@ -4,12 +4,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
-//include './debugging.php';
-include_once './helpers/Database.php';
-include_once './models/User.php';
-include_once './models/Client.php';
-include_once './models/PersonalDetails.php';
-include_once './models/CompanyDetails.php';
+include './debugging.php';
+include './helpers/Database.php';
+include './models/User.php';
+include './models/Client.php';
+include './models/PersonalDetails.php';
+include './models/CompanyDetails.php';
 include_once './models/Pagination.php';
 include_once 'header.php';
 
@@ -29,7 +29,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $user->setPassword(trim($_POST['pwd']));
     $user->setRoleId(ROLE_CLIENT);
     $user->setEmail(trim($_POST['email']));
-    
+
     //get personal details
     $pd = new PersonalDetails();
     $pd->setFirstName(trim($_POST['fName']));
@@ -38,7 +38,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $pd->setNationality(trim($_POST['nation']));
     $pd->setDob(trim($_POST['dob']));
 
-//    echo 'client id is' . $user->getClientByUserId();
+    echo 'client id is' . $user->getClientByUserId();
     //get company details
     $cmp = new CompanyDetails();
     $cmp->setName(trim($_POST['cmpName']));
@@ -50,8 +50,8 @@ if (isset($_POST['clientFormSubmitted'])) {
     //if user id is empty (New user) add the user
     if ($userid == '') {
         if ($user->initWithUsername()) {
-            if ($user->addUser()) {
-//                echo'user after register is' . $user->getUserId();
+            if ($user->registerUser()) {
+                echo'user after register is' . $user->getUserId();
                 if (isset($_POST['pdCheckBx'])) {
                     $pd->setClientId($user->getClientByUserId());
                     $pd->addPersonalDetails();
@@ -69,7 +69,7 @@ if (isset($_POST['clientFormSubmitted'])) {
         }
     } else {
         //update user when user id is not empty
-        $user->editUser($userid);
+        $user->updateUser($userid);
         $clientId = $user->getClientByUserId();
         $client = new Client();
         $client->setClientId($clientId);
@@ -84,6 +84,11 @@ if (isset($_POST['clientFormSubmitted'])) {
             } else {
                 $pd->addPersonalDetails();
             }
+        } else {
+            $pd->setClientId($clientId);
+            if ($pd->getPersonalDetail()) {
+                PersonalDetails::deletePersonalDetail($clientId);
+            }
         }
         if (isset($_POST['cmpCheckBx'])) {
             $cmp->setClientId($clientId);
@@ -92,6 +97,12 @@ if (isset($_POST['clientFormSubmitted'])) {
             } else {
                 $cmp->addCompanyDetails();
             }
+        } else {
+            $cmp->setClientId($clientId);
+            if ($cmp->getCompanyDetail()) {
+                CompanyDetails::deleteCompanyDetail($clientId);
+            }
+            
         }
     }
 }
@@ -120,9 +131,7 @@ echo '<div class="container">';
 displayClients($data);
 
 $pagination = new Pagination();
-$pagination->totalRecords('dbProj_Client');
-//$pagination->totalRecords($table);
-//echo $pagination->total_records . ' is total records';
+$pagination->setTotal_records(Client::countAllClients());
 $pagination->setLimit($end);
 $pagination->page($filter);
 echo '</div>';

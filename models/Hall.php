@@ -4,6 +4,7 @@ include_once '../helpers/Database.php';
 
 include_once 'models/HallImage.php';
 
+//include_once '../debugging.php';
 //hall status
 
 const AVAILABLE_STATUS = 1;
@@ -184,15 +185,13 @@ class Hall {
         $db = Database::getInstance();
         $start = $start * $end - $end;
         $q = 'Select * from dbProj_Hall ';
-            if ($filter=='ava') {
-                $q .= 'WHERE hall_status_id = ' .AVAILABLE_STATUS;
-            }
-            else if ($filter=='cncl') {
-                $q .= 'WHERE hall_status_id = ' .CANCELLED_STATUS; 
-            }
+        if ($filter == 'ava') {
+            $q .= 'WHERE hall_status_id = ' . AVAILABLE_STATUS;
+        } else if ($filter == 'cncl') {
+            $q .= 'WHERE hall_status_id = ' . CANCELLED_STATUS;
+        }
         if (isset($start))
             $q .= ' limit ' . $start . ',' . $end;
-        echo 'Query is'. $q;
         $data = $db->multiFetch($q);
         return $data;
     }
@@ -222,6 +221,47 @@ class Hall {
         $data = $result->fetch_all(MYSQLI_ASSOC);
 //        var_dump($data);
         return $data;
+    }
+
+    function getAllHallsWithoutFilter() {
+        $db = Database::getInstance();
+        $q = 'Select * from dbProj_Hall';
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+
+    public function getBestHall() {
+        $db = Database::getInstance();
+            $data = $db->singleFetch("SELECT h.hall_id, h.hall_name, COUNT(r.reservation_id) AS total_reservations
+                                        FROM dbProj_Hall h
+                                        JOIN dbProj_Reservation r ON h.hall_id = r.hall_id
+                                        WHERE r.reservation_status_id != 2
+                                        GROUP BY h.hall_id, h.hall_name
+                                        ORDER BY total_reservations DESC
+                                        LIMIT 1");
+        return $data;
+    }
+
+    public static function countAllHalls() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Hall";
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+    }
+
+    public static function countAvailableHalls() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Hall WHERE hall_status_id = " . AVAILABLE_STATUS;
+        ;
+        $dataCount = $db->getRows($q);
+        return $dataCount;
+    }
+
+    public static function countCancelledHalls() {
+        $db = Database::getInstance();
+        $q = "Select * from dbProj_Hall WHERE hall_status_id = " . CANCELLED_STATUS;
+        $dataCount = $db->getRows($q);
+        return $dataCount;
     }
 
     function addHall() {

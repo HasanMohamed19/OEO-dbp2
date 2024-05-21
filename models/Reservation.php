@@ -17,6 +17,13 @@ include_once 'ReservationMenuItem.php';
  * @author Hassan
  */
 //include 'Client.php';
+ 
+
+include_once 'Hall.php';
+include_once 'Event.php';
+include_once 'MenuItem.php';
+include_once 'ReservationMenuItem.php';
+include_once '../helpers/Database.php';
 
 const RESERVATION_RESERVED = 4;
 const RESERVATION_COMPLETE = 1;
@@ -24,7 +31,7 @@ const RESERVATION_PENDING_PAYMENT = 3; // if reservation has completed but not p
 const RESERVATION_CANCELLED = 2;
 
 class Reservation {
-    
+
     private $reservationId;
     private $hallId;
     private $clientId;
@@ -56,7 +63,7 @@ class Reservation {
         $this->reservationDate = null;
     }
 
-    
+
 
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
@@ -64,9 +71,55 @@ class Reservation {
 //        var_dump($data);
         $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id, $data->reservation_date);
     }
+
     
 
     public function getAllReservations($start, $end) {
+        $db = Database::getInstance();
+        
+         if ($start == 1){
+            $start = 0;
+        } else {
+           $start = $start * $end - $end; 
+        }
+        
+//        $start *= $end;
+        
+        $q = "
+        SELECT r.reservation_id,
+       r.reservation_status_id,
+       h.hall_name,
+       e.event_name,
+       e.start_date,
+       e.end_date,
+       e.start_time,
+       e.end_time,
+       c.client_id,
+       c.phone_number,
+       rs.status_name,
+       (
+           SELECT i2.catering_cost + i2.hall_cost
+           FROM dbProj_Invoice i2
+           WHERE i2.reservation_id = r.reservation_id
+           ORDER BY i2.issue_date DESC
+           LIMIT 1
+       ) AS 'totalCost'
+FROM dbProj_Reservation r
+JOIN dbProj_Hall h ON r.hall_id = h.hall_id
+JOIN dbProj_Event e ON r.event_id = e.event_id
+JOIN dbProj_Client c ON r.client_id = c.client_id
+JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_status_id
+        ";
+
+        if (isset($start)) {
+            $q .= ' limit ' . $start . ',' . $end;
+        }
+//        echo "query is: " . $q;
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+
+    function getReservationsForClient() {
         $db = Database::getInstance();
         
          if ($start == 1){
@@ -235,46 +288,6 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         
     }
 
-    function getReservationsForClient($start, $end) {
-        $db = Database::getInstance();
-        
-         if ($start == 1){
-            $start = 0;
-        } else {
-           $start = $start * $end - $end; 
-        }
-        
-        $q = 'SELECT r.reservation_id,
-            r.reservation_status_id,
-            r.notes,
-            r.reservation_date,
-            h.hall_name,
-            h.capacity,
-            e.event_name,
-            e.start_date,
-            e.end_date,
-            e.start_time,
-            e.end_time,
-            c.phone_number,
-            i.hall_cost + i.catering_cost AS "TotalCost"
-            FROM dbProj_Reservation r
-            JOIN dbProj_Hall h ON r.hall_id = h.hall_id
-            JOIN dbProj_Event e ON r.event_id = e.event_id
-            JOIN dbProj_Client c ON r.client_id = c.client_id
-            JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
-            WHERE r.client_id = ' . $this->clientId;
-
-        if (isset($start)) {
-            $q .= ' limit ' . $start . ', ' . $end;
-        }
-
-        $data = $db->multiFetch($q);
-
-//        var_dump($data);
-        return $data;
-    }
-
-
     function getReservationDetails() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT r.reservation_id,
@@ -362,10 +375,10 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
                    </div>';
         }
     }
+
     
 
      
-
     public function getAdditionalServicesForReservation($reservationId) {
         $db = Database::getInstance();
         $data = $db->multiFetch("SELECT 
@@ -384,8 +397,8 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
     }
 
 
-    
 
+    
     public function saveReservation(Event $event) {
         $db = new Database();
         if (!$this->isValid()) {
@@ -555,4 +568,9 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         $data = $db->querySQL($q);
     }
 
+    function getHallReservations($hallId) {
+        $db = Database::getInstance();
+        $data = $db->multiFetch("SELECT * FROM  dbProj_Reservation WHERE hall_id = ".$hallId ." AND reservation_status_id != 2");
+        return $data;
+    }
 }

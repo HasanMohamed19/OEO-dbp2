@@ -131,7 +131,11 @@ class User {
             return false;
         }
         //get the new user id from db and set it
+
 //        $this->userId = $db->singleFetch("SELECT user_id FROM dbProj_User WHERE username = " . $this->username)->user_id;
+
+        $this->userId = $db->singleFetch("SELECT user_id FROM dbProj_User WHERE username = '" . $this->username."'")->user_id;
+
         return true;
     }
 

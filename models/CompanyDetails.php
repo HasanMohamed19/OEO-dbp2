@@ -255,5 +255,5 @@ class CompanyDetails {
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
-
+    
 }
