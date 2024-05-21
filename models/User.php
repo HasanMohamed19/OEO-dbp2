@@ -91,6 +91,8 @@ class User {
                     $db->displayError($q);
                     return false;
                 }
+                $this->userId = mysqli_insert_id($db->getDatabase());
+//                echo 'User id after insert: '.$this->userId;
             } else {
                 $db->displayError($q);
                 return false;
@@ -99,9 +101,8 @@ class User {
             $phoneNumber = $db->sanitizeString($_POST['phoneNumber']);
             $client->setPhoneNumber($phoneNumber);
 //            $client->setUserId(mysqli_insert_id($db->getDatabase()));
-            echo 'client user id: ' . $client->getUserId();
             $clientStmt = mysqli_prepare($db->getDatabase(), "CALL InsertClient(?,?)");
-            $clientStmt->bind_param('is', mysqli_insert_id($db->getDatabase()), $phoneNumber);
+            $clientStmt->bind_param('is', $this->userId, $phoneNumber);
 
             if ($clientStmt) {
                 if (!$clientStmt->execute()) {
@@ -130,7 +131,7 @@ class User {
             return false;
         }
         //get the new user id from db and set it
-        $this->userId = $db->singleFetch("SELECT user_id FROM dbProj_User WHERE username = " . $this->username)->user_id;
+//        $this->userId = $db->singleFetch("SELECT user_id FROM dbProj_User WHERE username = " . $this->username)->user_id;
         return true;
     }
 

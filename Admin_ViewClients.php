@@ -29,7 +29,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $user->setPassword(trim($_POST['pwd']));
     $user->setRoleId(ROLE_CLIENT);
     $user->setEmail(trim($_POST['email']));
-
+    
     //get personal details
     $pd = new PersonalDetails();
     $pd->setFirstName(trim($_POST['fName']));
@@ -38,7 +38,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $pd->setNationality(trim($_POST['nation']));
     $pd->setDob(trim($_POST['dob']));
 
-    echo 'client id is' . $user->getClientByUserId();
+//    echo 'client id is' . $user->getClientByUserId();
     //get company details
     $cmp = new CompanyDetails();
     $cmp->setName(trim($_POST['cmpName']));
@@ -51,7 +51,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     if ($userid == '') {
         if ($user->initWithUsername()) {
             if ($user->addUser()) {
-                echo'user after register is' . $user->getUserId();
+//                echo'user after register is' . $user->getUserId();
                 if (isset($_POST['pdCheckBx'])) {
                     $pd->setClientId($user->getClientByUserId());
                     $pd->addPersonalDetails();
