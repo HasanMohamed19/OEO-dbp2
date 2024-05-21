@@ -19,8 +19,8 @@ function sendEmail() {
         return 'Username '.$user->getUsername().' not found.';
     }
     $email = $user->getEmail();
-//    $verificationCode = random_int(123410, 996540);
-    $verificationCode = 123457;
+    $verificationCode = random_int(123410, 996540);
+//    $verificationCode = 123457;
     $_SESSION['verifyCode'] = $verificationCode;
     // send email here
     EmailController::sendForgotPasswordEmail($email, $user->getUsername(), $verificationCode);
