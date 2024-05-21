@@ -66,6 +66,9 @@ class Event {
         if ($this->endDate < $this->startDate)
             return 'Your event cannot end before it starts. Please enter a valid date range.';
         
+        if ($this->startDate <= date('Y-m-d')) 
+            return 'Your event cannot take place today or earlier.';
+        
         // check if hall is already booked
         if (!$this->isHallAvailable($hallId, $isEditing))
             return 'There is a hall already booked at the selected date. Please enter a different date.';
