@@ -79,6 +79,11 @@ if (isset($_POST['clientFormSubmitted'])) {
             } else {
                 $pd->addPersonalDetails();
             }
+        } else {
+            $pd->setClientId($clientId);
+            if ($pd->getPersonalDetail()) {
+                PersonalDetails::deletePersonalDetail($clientId);
+            }
         }
         if (isset($_POST['cmpCheckBx'])) {
             $cmp->setClientId($clientId);
@@ -87,6 +92,12 @@ if (isset($_POST['clientFormSubmitted'])) {
             } else {
                 $cmp->addCompanyDetails();
             }
+        } else {
+            $cmp->setClientId($clientId);
+            if ($cmp->getCompanyDetail()) {
+                CompanyDetails::deleteCompanyDetail($clientId);
+            }
+            
         }
     }
 }

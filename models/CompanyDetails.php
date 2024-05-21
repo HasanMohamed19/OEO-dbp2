@@ -228,5 +228,24 @@ class CompanyDetails {
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
+    public static function deleteCompanyDetail($clientIdIn) {
+        $db = new Database();
+        $clientId = $db->sanitizeString($clientIdIn);
+        $q = "DELETE FROM dbProj_CompanyDetails WHERE client_id = ?";
 
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
 }

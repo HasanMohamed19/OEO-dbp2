@@ -258,4 +258,24 @@ class PersonalDetails {
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
+        public static function deletePersonalDetail($clientIdIn) {
+        $db = new Database();
+        $clientId = $db->sanitizeString($clientIdIn);
+        $q = "DELETE FROM dbProj_PersonalDetails WHERE client_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
 }
