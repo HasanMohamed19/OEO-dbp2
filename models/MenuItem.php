@@ -175,7 +175,7 @@ class MenuItem {
             $this->cateringServiceId = $db->sanitizeString($this->cateringServiceId);
             $this->ItemStatus = $db->sanitizeString($this->ItemStatus);
 
-            $q = "INSERT INTO dbProj_Menu_Item(name,description,price,image_path,service_id,service_status_id) VALUES(?,?,?,?,?,?)";
+            $q = "INSERT INTO dbProj_Menu_Item(name,description,price,image_path,service_id,item_status_id) VALUES(?,?,?,?,?,?)";
 
             $stmt = mysqli_prepare($db->getDatabase(), $q);
 
