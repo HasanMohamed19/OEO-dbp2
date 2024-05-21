@@ -60,6 +60,10 @@ if (isset($_POST['submitted'])) {
     // now add invoice
     Invoice::addWithReservationId($resId, $isAmending);
     
+    // since removing a menu item from a reservation sets the quantity to 0 instead
+    // of dropping the row (technical limitation), clean the reservation_menu_items table
+    ReservationMenuItem::cleanZeroQuantity();
+    
     // this will flag completed reservation and js will redirect to summary page
     echo $resId;
     exit();

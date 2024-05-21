@@ -128,4 +128,11 @@ class ReservationMenuItem {
                                 LIMIT 1");
         return $data;
     }
+    
+    public static function cleanZeroQuantity() {
+        $db = Database::getInstance();
+        $q = 'DELETE FROM dbProj_Reservation_Menu_Item 
+                WHERE quantity = 0';
+        $data = $db->multiFetch($q);
+    }
 }
