@@ -101,20 +101,48 @@ class Client extends User {
 
     function getAllClients($start, $end) {
         $db = Database::getInstance();
-           $start = $start * $end - $end; 
-        
+        $start = $start * $end - $end;
+
         $q = 'Select * from dbProj_Client ';
         if (isset($start))
             $q .= ' limit ' . $start . ',' . $end;
         $data = $db->multiFetch($q);
         return $data;
     }
+
     public static function countAllClients() {
         $db = Database::getInstance();
         $q = "Select * from dbProj_Client";
         $dataCount = $db->getRows($q);
         return $dataCount;
     }
+
+    public function getBestClient() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT 
+            c.client_id,
+            u.user_id,
+            u.username,
+            r.reservation_count
+        FROM (
+            SELECT 
+                client_id,
+                COUNT(*) AS reservation_count
+            FROM 
+                dbProj_Reservation
+            GROUP BY 
+                client_id
+        ) AS r
+        JOIN 
+            dbProj_Client c ON r.client_id = c.client_id
+        JOIN 
+            dbProj_User u ON c.user_id = u.user_id
+        ORDER BY 
+            r.reservation_count DESC
+        LIMIT 1");
+        return $data;
+    }
+
     function getClientStatusName($client_id) {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
@@ -122,31 +150,30 @@ class Client extends User {
         return $data;
     }
 
-        function updateClient($clientId) {
-        include_once  "./helpers/Database.php";
+    function updateClient($clientId) {
+        include_once "./helpers/Database.php";
 
         $db = new Database();
 //        if ($this->isValid()) {
 //                    echo "username $this->username, password $this->password";
-            $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
-            // assuming role_id never changes
-            $q = "UPDATE dbProj_Client SET "
+        $this->phoneNumber = $db->sanitizeString($this->phoneNumber);
+        // assuming role_id never changes
+        $q = "UPDATE dbProj_Client SET "
                 . "phone_number=? WHERE client_id=?";
 
-            $stmt = mysqli_prepare($db->getDatabase(),$q);
-            if ($stmt) {
-                $stmt->bind_param('si', $this->phoneNumber, $clientId);
-            }
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute failed';
-                    $db->displayError($q);
-                    return false;
-                }
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if ($stmt) {
+            $stmt->bind_param('si', $this->phoneNumber, $clientId);
+        }
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
 //            } else {
 //                $db->displayError($q);
 //                return false;
 //            }
-
     }
 }

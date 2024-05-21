@@ -9,6 +9,7 @@ include_once './template/header.html';
 include_once './models/Hall.php';
 include_once './models/Reservation.php';
 include_once './models/ReservationMenuItem.php';
+include_once './models/Client.php';
 include_once './helpers/Database.php';
 ?>
 <div class="container">
@@ -18,7 +19,6 @@ include_once './helpers/Database.php';
     <div class="row p-5">
         <div class="col-xl-4">
             <div class="card">
-                <img src="./images/hall-icon.png" class="card-img-top img-f"alt="...">
                 <div class="card-body text-center">
                     <h4>Most Reserved Hall</h4>
                     <?php
@@ -32,7 +32,6 @@ include_once './helpers/Database.php';
         </div>
         <div class="col-xl-4">
             <div class="card">
-                <img class="h-50" src="./images/menu-item.png" class="card-img-top h-30" alt="...">
                 <div class="card-body text-center">
                     <h4>Best Seller In Menu Items</h4>
                     <?php
@@ -40,6 +39,20 @@ include_once './helpers/Database.php';
                     $bestItem = $rsrvItem->getBestSellerItem();
                     echo'<h6>#' . $bestItem->item_id . '</h6>';
                     echo'<h6>' . $bestItem->name . '</h6>';
+                    ?>
+
+                </div>
+            </div>
+        </div>
+                <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4>Most Client Made Reservations</h4>
+                    <?php
+                    $rsrvClient = new Client();
+                    $bestClient = $rsrvClient->getBestClient();
+                    echo'<h6>#' . $bestClient->user_id . '</h6>';
+                    echo'<h6>' . $bestClient->username . '</h6>';
                     ?>
 
                 </div>
