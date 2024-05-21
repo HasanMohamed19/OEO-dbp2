@@ -63,7 +63,7 @@ $userName = $_COOKIE['username'];
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     
                     <?php
@@ -86,7 +86,7 @@ $userName = $_COOKIE['username'];
                                 </li>';    
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="Admin_ViewStatistics.php">DashBoard</a>
+                                    <a class="nav-link" href="Admin_ViewStatistics.php">Dashboard</a>
                                 </li>';
                         } else {
                             echo '<li class="nav-item">

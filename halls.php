@@ -254,7 +254,7 @@ function displayHalls($dataSet) {
         $hallImages = $image->getAllImagesForHall($id);
         echo '
         <div class="col">
-            <div class="card mb-5 ">
+            <div class="card h-100">
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col">
@@ -390,7 +390,7 @@ function displayHalls($dataSet) {
             }
             ?>
                     
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-sm-1 row-cols-xl-2 justify-content-center">
+            <div class="row gx-4 gy-5 gx-lg-5 row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-xl-2 justify-content-center">
                 <?php
                 displayHalls($halls);
                 ?>
