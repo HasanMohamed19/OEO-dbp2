@@ -199,6 +199,8 @@ function filterHalls() {
             // if halls found but not for this audience amount, show suggestions (dont return)
             $searchError = "The halls with the specified filters do not have enough capacity for your audience. Here are some suggestions:";
             $returnList['searchError'] = $searchError;
+        } else {
+            $availableHalls = $availableHallsCapacityFiltered;
         }
     }
     
