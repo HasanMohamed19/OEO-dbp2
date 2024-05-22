@@ -3,7 +3,8 @@ include 'debugging.php';
 include './helpers/Database.php';
 include './models/Reservation.php';
 include_once ''; './models/Event.php';
-//include './models/Hall.php';
+//include_once './models/Hall.php';
+//include_once './models/HallImage.php';
 //include './models/MenuItem.php';
 //include './models/ReservationMenuItem.php';
 
@@ -21,8 +22,15 @@ $reservation->setClientId($_COOKIE['clientId']);
 
 //    var_dump($reservation);
 $reservationDetails = $reservation->getReservationDetails();
+//var_dump($reservationDetails);
 //echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
 //    echo '  reservation details are: ' . count($reservations);
+
+$hall = new Hall();
+$id = $reservationDetails->hall_id;
+$hall->initWithHallid($id);
+$image = new HallImage();
+$hallImages = $image->getAllImagesForHall($id);
 
 ?>
 
@@ -31,20 +39,61 @@ $reservationDetails = $reservation->getReservationDetails();
 <div class="container">
     <div class="my-account-body">
         <div class="row justify-content-between mx-3 mt-2">
-            <div class="col">Booking#: <?php echo $reservationDetails->reservation_id ?> </div>
+            <div class="col" id="resId" data-id="<?php echo $reservationDetails->reservation_id ?>">Booking#: <?php echo $reservationDetails->reservation_id ?> </div>
             <div class="col text-secondary text-center"> <?php echo $reservationDetails->reservation_date ?> </div>
-            <div class="col text-end">Total: BHD 1700.16</div>
+            <div class="col text-end">Total: BHD <?php echo $reservationDetails->TotalCost ?></div>
         </div>
         <hr>
         <div class="card mb-2 border-0 mx-3">
             <div class="row g-0">
                 <div class="col-xl-5 p-2">
-                    <img src="<?php echo $reservationDetails->image_path ?>" alt="" class="img-fluid rounded">
+                    <?php
+                    
+                    
+                    
+                        echo '<div id="carousel-' . $id . '" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">';
+                        for ($j = 0; $j < count($hallImages); $j++) {
+                            if ($j == 0) {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
+                            } else {
+                                echo '<button type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide-to="' . ($j) . '" aria-label="Slide ' . ($j) . '"></button>';
+                            }
+                        }
+                           echo'</div>
+                                <div class="carousel-inner rounded-top">';
+                        for ($k = 0; $k < count($hallImages); $k++) {
+                            if ($k == 0) {
+                                echo '<div class="carousel-item active">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
+                                    </div>';
+                            } else {
+                                echo '<div class="carousel-item">
+                                        <img src="' . $hallImages[$k]->hall_image_path . '" class="d-block w-100" alt="...">
+                                    </div>';
+                            }
+                        }
+
+                            
+                            
+                            echo'</div> 
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-' . $id . '" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+        ';
+                    ?>
+                    
                 </div>
 
                 <div class="col-xl-5 p-2 flex-grow-1">
                     <div class="row m-2">
-                        <div class="col text-start completed"> <?php echo Reservation::getStatusName($reservationDetails->reservation_status_id) ?> </div>
+                        <div id="resStatus" class="col text-start"> <?php echo Reservation::getStatusName($reservationDetails->reservation_status_id) ?> </div>
                         <!-- condition needs to be changed -->
                         <?php
                             $event = new Event();
@@ -147,6 +196,49 @@ $reservationDetails = $reservation->getReservationDetails();
  
 <script src="./helpers/CardForm.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+<script>
+    
+    $(function () {
+        $.ajax({
+            url: './helpers/get_reservation_status.php',
+            method: 'GET',
+            data: {reservationId: $("#resId").attr('data-id')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('reservation Info:', response);
+
+                // Update class list
+                const statusDiv = $("#resStatus");
+//
+                switch (response) {
+                    case 'Completed':
+                        statusDiv.addClass('completed');
+                        break;
+                    case 'Canceled':
+                        statusDiv.addClass('cancelled');
+                        break;
+                    case 'In Progress':
+                        statusDiv.addClass('in-progress');
+                        break;
+                    case 'Booked':
+                        statusDiv.addClass('in-progress');
+                        break;
+                }
+
+
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching status info:', error);
+            }
+        });
+    });
+    
+</script>
+
 </div>
 
 <?php
@@ -161,7 +253,7 @@ $reservationDetails = $reservation->getReservationDetails();
         $reservation = new Reservation();
         $reservation->cancelReservation($reservationId);
     } else {
-        echo 'nothing is submitted yet';
+//        echo 'nothing is submitted yet';
     }
     
 ?>

@@ -1,16 +1,7 @@
 <?php
 
 include_once '../helpers/Database.php';
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
 
-/**
- * Description of BillingAddress
- *
- * @author Hassan
- */
 class BillingAddress {
     
     private $addressId;
@@ -22,7 +13,7 @@ class BillingAddress {
     private $country;
     private $clientId;
     
-    public function initWith($addressId, $phoneNumber, $roadNumber, $buildingNumber, $city, $blockNumber, $country, $clientId) {
+    public function initWith($addressId, $phoneNumber, $roadNumber, $buildingNumber, $blockNumber, $city, $country, $clientId) {
         $this->addressId = $addressId;
         $this->phoneNumber = $phoneNumber;
         $this->roadNumber = $roadNumber;
@@ -50,8 +41,9 @@ class BillingAddress {
                 $db = Database::getInstance();
                 // TODO: get client_id from cookie
                 $q = "INSERT INTO dbProj_Billing_Address (address_id, phone_number, road_number, building_number, block_number, city, country, client_id)
-                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country','$this->clientId')"; 
+                 VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country',$this->clientId)"; 
                 $data = $db->querySql($q);
+                $this->addressId = mysqli_insert_id($db->dblink);
 //                var_dump($q);
                  return true;
             } catch (Exception $e) {
@@ -73,44 +65,6 @@ class BillingAddress {
         } catch (Exception $e) {
             echo 'Exception: ' . $e;
             return false;
-        }
-    }
-    
-    function displayAddresses($dataSet) {
-        
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $address = new BillingAddress();
-                // todo: get this from the login
-                $address->setClientId('13');
-                $addressId = $dataSet[$i]->address_id;
-                $address->setAddressId($addressId);
-                $address->initWithId();
-                
-                
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
-                        <div class="card-body vstack gap-2 align-items-center">
-                            <div class="row fw-bold"><h2>Company Address</h2></div>';
-                                
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() .'</span>
-                     </div>';
-                
-                echo ' <div class="row m-2">
-                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() .', Street: ' . $address->getRoadNumber() .', Block: ' . $address->getBlockNumber() .'</span>
-                     </div>';
-                
-                echo '<div class="row m-2">
-                        <span class="col text-start text-secondary">' . $address->getCity() .', ' . $address->getCountry() .' </span>
-                      </div>';
-                
-                echo '</div><div class="row m-2 gap-1">';
-                echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
-                    <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
-                            </div>
-                        </div>';
-                                
-            }
         }
     }
     
@@ -150,7 +104,7 @@ class BillingAddress {
 //        var_dump($q);
         $data = $db->singleFetch($q);
 //        var_dump($data);
-        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->city, $data->block_number, $data->country, $data->client_id);
+        $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->block_number, $data->city, $data->country, $data->client_id);
     }
     
     public function isValid() {
@@ -174,7 +128,7 @@ class BillingAddress {
         if (empty($this->country))
             $errors = false;
 
-        if (empty($this->clientId))
+        if (empty($this->clientId) || $this->clientId <= 0)
             $errors = false;
 
         return $errors;

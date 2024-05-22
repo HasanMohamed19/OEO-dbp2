@@ -1,15 +1,8 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
 
-/**
- * Description of Invoice
- *
- * @author Hassan
- */
+include_once '../helpers/Database.php';
+
 class Invoice {
     
     private $invoiceId;
@@ -35,6 +28,34 @@ class Invoice {
         $this->issueDate = null;
     }
     
+    public static function addWithReservationId($resId, $isAmending) {
+        $db = new Database();
+        
+        // this procedure will automatically calculate
+        // rental and catering costs too
+        $q = 'CALL insertInvoice(?,?)';
+        
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+//        var_dump($stmt);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        
+        $stmt->bind_param('ii',
+            $resId,
+            $isAmending
+        );
+        
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
+    }
+    
     public function getInvoiceId() {
         return $this->invoiceId;
     }
@@ -46,7 +67,16 @@ class Invoice {
     public function getCateringCost() {
         return $this->cateringCost;
     }
+    
+    public function getReservationId() {
+        return $this->reservationId;
+    }
 
+    public function setReservationId($reservationId): void {
+        $this->reservationId = $reservationId;
+    }
+
+    
     public function setInvoiceId($invoiceId) {
         $this->invoiceId = $invoiceId;
     }
@@ -59,16 +89,8 @@ class Invoice {
         $this->cateringCost = $cateringCost;
     }
 
-    public function getReservationId() {
-        return $this->reservationId;
-    }
-
     public function getIssueDate() {
         return $this->issueDate;
-    }
-
-    public function setReservationId($reservationId) {
-        $this->reservationId = $reservationId;
     }
 
     public function setIssueDate($issueDate) {

@@ -1,5 +1,6 @@
 <?php
 $loggedInClientId = $_COOKIE['clientId'];
+include './models/Pagination.php';
 ?>
 
 <!DOCTYPE html>
@@ -54,9 +55,19 @@ $loggedInClientId = $_COOKIE['clientId'];
                     <div class="card-header">
                         <h3>My Bookings</h3>
                     </div>
+                    <?php
+                    if (isset($_GET['pageno']))
+                        $start = $_GET['pageno'];
+                    else
+                        $start = 1;
 
+                    $end = 10;
+                    $reservation = new Reservation();
+                    $reservation->setClientId($loggedInClientId);
+                    $reservations = $reservation->getReservationsForClient($start, $end);
+                    ?>
                     <div class="table-responsive mx-4 px-0 mt-3">
-                        <table class="table table-striped border">
+                        <table class="table table-striped border <?php if (count($reservations) <= 0) echo 'd-none' ?>">
                             <thead>
                                 <tr class="text-center">
                                     <th scope="col">Booking #</th>
@@ -69,14 +80,19 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </thead>
                             <tbody>
                                 <?php
-                                $reservation = new Reservation();
-                                $reservation->setClientId($loggedInClientId);
-                                $reservations = $reservation->getReservationsForClient();
                                 $reservation->displayClientReservations($reservations);
                                 ?>
                             </tbody>
 
                         </table>
+                        <?php
+                        if (count($reservations) >= 1) {
+                            $pagination = new Pagination();
+                            $pagination->setTotal_records(Reservation::countReservationsForClient($loggedInClientId));
+                            $pagination->setLimit($end);
+                            $pagination->page("");
+                        }
+                        ?>
                     </div>
 
 
@@ -89,12 +105,12 @@ $loggedInClientId = $_COOKIE['clientId'];
                         <h3>My Cards</h3>
                     </div>
 
-                    <?php
-                    $card = new CardDetail();
-                    $card->setClientId($loggedInClientId);
-                    $cards = $card->getAllCardsForUser();
-                    $card->displayCards($cards);
-                    ?>
+<?php
+$card = new CardDetail();
+$card->setClientId($loggedInClientId);
+$cards = $card->getAllCardsForUser();
+displayCards($cards);
+?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddCard" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCardModal"> +Add </button>
@@ -120,25 +136,25 @@ $loggedInClientId = $_COOKIE['clientId'];
                                         </div>
                                         <div class="col form-group required">
                                             <label for="cardNumber" class="form-label">Card Number</label>
-                                            <input type="text" id="cardNumberInput" class="form-control" name="cardNumber" required>
+                                            <input type="text" inputmode="numeric" pattern="[0-9\s]{16}" maxlength="16" id="cardNumberInput" class="form-control" name="cardNumber" required>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col form-group required">
                                             <label for="CVV" class="form-label">CVV</label>
-                                            <input type="number" id="CVVInput" class="form-control" name="CVV" value="" required>
+                                            <input type="text" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" id="CVVInput" class="form-control" name="CVV" value="" required>
                                         </div>
 
                                         <div class="col form-group required">
                                             <label for="cardExpiryYear" class="form-label">Card Expiry Year</label>
-                                            <select name="cardExpiryYear" id="cardExpiryYear" class="form-select">
+                                            <select name="cardExpiryYear" id="cardExpiryYear" class="form-select" required>
                                                 <option disabled selected>Year</option>
                                             </select>
                                         </div>
 
                                         <div class="col form-group required">
                                             <label for="cardExpiryMonth" class="form-label">Month</label>
-                                            <select name="cardExpiryMonth" id="cardExpiryMonth" class="form-select">
+                                            <select name="cardExpiryMonth" id="cardExpiryMonth" class="form-select" required>
                                                 <option selected disabled>Month</option>
                                                 <option value="1">January (1)</option>
                                                 <option value="2">February (2)</option>
@@ -196,13 +212,13 @@ $loggedInClientId = $_COOKIE['clientId'];
 
                 <!-- Royalty Points -->
 
-                <?php
+<?php
 //                            include 'debugging.php';
 //                        include './models/Client.php';
-                $cc = new Client();
+$cc = new Client();
 //                            $client->setClientId('1');
-                $s = $cc->getClientStatusName($loggedInClientId);
-                ?>
+$s = $cc->getClientStatusName($loggedInClientId);
+?>
 
                 <div class="card mb-2 ms-4 px-0 inactive">
                     <div class="card-header">
@@ -211,8 +227,8 @@ $loggedInClientId = $_COOKIE['clientId'];
 
                     <div class="row my-status align-self-center my-2">
 
-                        <h1 class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
-                        <p class="text-white text-center align-self-center">3 Bookings to GOLD</p>
+                        <h1 id="statusName" class="text-uppercase text-center text-white align-self-center"><?php echo $s->status_name ?></h1>
+                        <p id="nextStatus" class="text-white text-center align-self-center">3 Bookings to GOLD</p>
                     </div>
 
                     <div class="card rounded shadow-sm mb-2 mx-3">
@@ -233,33 +249,99 @@ $loggedInClientId = $_COOKIE['clientId'];
                     <div class="card-header">
                         <h3>Profile</h3>
                     </div>
-                    <div class="row mx-3">
-                        <h6>Personal Information</h6>
-                    </div>
 
-                    <?php
-                    $p = new PersonalDetails();
-                    $p->setClientId($loggedInClientId);
-                    $p->initWithClientId();
+<?php
+$p = new PersonalDetails();
+$p->setClientId($loggedInClientId);
+$p->initWithClientId();
 
-                    $c = new CompanyDetails();
-                    $c->setClientId($loggedInClientId);
-                    $c->initWithClientId();
+$c = new CompanyDetails();
+$c->setClientId($loggedInClientId);
+$c->initWithClientId();
 //                            echo $p->getFirstName() . " sdds";
+//                            echo $c->getName() . " sdds";
                     ?>
-
-                    <form action="displayMyAccount.php" method="post">
-                        <div class="container">
-                            <div class="row my-2">
+                    <div id="detailsForm" class="card-body">
+                        <fieldset id="personalDetailsForm">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" id="personalDetailsCheck" class="form-check-input mt-2"  <?php if ($p->getPersonalDetialId() > 0) echo 'checked' ?>>
+                                <h4 class=""><label for="personalDetailsCheck" class="form-check-label">Personal Details</label></h4>
+                            </div>
+                            <div class="row">
                                 <div class="col">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                                    <input type="text" value="<?php echo $p->getFirstName() ?>" class="form-control form-control-user mb-3" id="firstName" placeholder="First Name" name="firstName">
                                 </div>
                                 <div class="col">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Password">
+                                    <input type="text" value="<?php echo $p->getLastName() ?>" class="form-control form-control-user mb-3" id="lastName" placeholder="Last Name" name="lastName">
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select mb-3" id="gender" name="gender">
+                                        <option value="" disabled>Gender</option>
+                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected' ?>>Male</option>
+                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected' ?>>Female</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="text" value="<?php echo $p->getNationality() ?>" class="form-control form-control-user" id="nationality" placeholder="Nationality" name="nationality">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex align-items-center">
+                                    <label class="form-label mb-3 ms-3" for="dob">Date of Birth</label>
+                                </div>
+                                <div class="col">
+                                    <input type="date" value="<?php echo $p->getDob() ?>" class="form-control form-control-user" id="dob" name="dob">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr>
+                        <fieldset id="companyDetailsForm">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" id="companyDetailsCheck" class="form-check-input mt-2" <?php if ($c->getComapnyId() > 0) echo 'checked' ?>>
+                                <h4 class=""><label for="companyDetailsCheck" class="form-check-label">Company Details</label></h4>
+                            </div>
+                            <input type="text" value="<?php echo $c->getName() ?>" class="form-control form-control-user mb-3" id="companyName" placeholder="Company Name" name="companyName">
+                            <input type="text" value="<?php echo $c->getWebsite() ?>" class="form-control form-control-user mb-3" id="website" placeholder="Website" name="website">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" value="<?php echo $c->getCity() ?>" class="form-control form-control-user" id="city" placeholder="City" name="city">
+                                </div>
+                                <div class="col">
+                                    <input type="number" value="<?php echo $c->getComapnySize() ?>" class="form-control form-control-user" id="size" placeholder="Company Size" name="size">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="text-center my-2">
+                        <input type="button" class="btn btn-primary" id="saveBtn" value="Save" onclick="updateClientDetails()">
+                        <input type="hidden" class="btn btn-primary" id="personalIdInput" value="<?php echo $p->getPersonalDetialId() ?>">
+                        <input type="hidden" class="btn btn-primary" id="companyIdInput" value="<?php echo $c->getComapnyId() ?>">
+                        <input type="hidden" class="btn btn-primary" id="clientIdInput" value="<?php echo $loggedInClientId ?>">
+                    </div>
+                    <div id="errorBox" class="text-center text-danger mb-3 d-none">
+                        Error
+                    </div>
+                    <div id="successBox" class="text-center text-success mb-3 d-none">
+                        Details have been saved successfully.
+                    </div>
+                    <script src="javascript/client_details.js"></script>
+                    <script>
+                        handleDetailsCheckboxes();
+                    </script>
+<!--                    <form action="displayMyAccount.php" method="post">
+                        <div class="container">
+                                                        <div class="row my-2">
+                                                            <div class="col">
+                                                                <label for="username" class="form-label">Username</label>
+                                                                <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                                                            </div>
+                                                            <div class="col">
+                                                                <label for="password" class="form-label">Password</label>
+                                                                <input type="password" name="password" class="form-control" placeholder="Password">
+                                                            </div>
+                                                        </div>
                             <div class="row my-2">
                                 <div class="col">
                                     <label for="firstname" class="form-label">First Name</label>
@@ -272,8 +354,12 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </div>
                             <div class="row my-2">
                                 <div class="col">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select name="gender" class="form-select" id="n">
+                                        <option value="" disabled>Gender</option>
+                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected'; ?> >Male</option>
+                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected'; ?> >Female</option>
+                                    </select>
                                 </div>
                                 <div class="col">
                                     <label for="nationality" class="form-label">Nationality</label>
@@ -285,23 +371,19 @@ $loggedInClientId = $_COOKIE['clientId'];
                                     <label for="dob" class="form-label">DOB</label>
                                     <input type="date" name="dob" class="form-control" placeholder="DOB" value="<?php echo $p->getDob(); ?>">
                                 </div>
-                                <div class="col">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select name="gender" class="form-select" id="n">
-                                        <option value="" disabled>Gender</option>
-                                        <option value="M" <?php if ($p->getGender() == 'M') echo 'selected'; ?> >Male</option>
-                                        <option value="F" <?php if ($p->getGender() == 'F') echo 'selected'; ?> >Female</option>
-                                    </select>
-                                </div>
+                                                                <div class="col">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <input type="email" name="email" class="form-control" value="<?php echo 'email should go here' ?>" placeholder="Email">
+                                                                </div>
                             </div>
                         </div>
-                        <!-- </form> -->
+                         </form> 
 
                         <hr>
                         <div class="row mx-3">
                             <h6>Company Information</h6>
                         </div>
-                        <!-- <form action=""> -->
+                         <form action=""> 
                         <div class="container">
                             <div class="row my-2">
                                 <div class="col">
@@ -331,18 +413,18 @@ $loggedInClientId = $_COOKIE['clientId'];
                             </div>
 
                         </div>
-                    </form>
+                    </form>-->
 
                 </div>
                 <!-- end of profile -->
 
-                <?php
-                $client = new Client();
-                $client->iniwWithClientId($_COOKIE['clientId']);
+<?php
+$client = new Client();
+$client->iniwWithClientId($_COOKIE['clientId']);
 
-                $user = new User();
-                $user->initWithUserid($_COOKIE['userId']);
-                ?>
+$user = new User();
+$user->initWithUserid($_COOKIE['userId']);
+?>
 
                 <div class="card col shadow-sm ms-4 px-0 inactive">
                     <div class="card-header">
@@ -384,14 +466,14 @@ $loggedInClientId = $_COOKIE['clientId'];
                         <h3>Address Book</h3>
                     </div>
 
-                    <?php
+<?php
 //                            echo 'book address section';
-                    $address = new BillingAddress();
-                    $address->setClientId($loggedInClientId);
-                    $addresses = BillingAddress::getAddresses($loggedInClientId);
-                    $address->displayAddresses($addresses);
+$address = new BillingAddress();
+$address->setClientId($loggedInClientId);
+$addresses = BillingAddress::getAddresses($loggedInClientId);
+displayAddresses($addresses);
 //                            $card->displayCards($cards);
-                    ?>
+?>
 
                     <div class="row mx-auto mb-2" style="width: 15%;">
                         <button id="btnAddAddress" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal"> +Add </button>
@@ -497,7 +579,7 @@ $loggedInClientId = $_COOKIE['clientId'];
                     </div>
                 </div>
             </div>
-            
+
             <!--extra card modal-->
             <div class="modal fade" id="noMoreAddressModal">
                 <div class="modal-dialog">
@@ -516,13 +598,76 @@ $loggedInClientId = $_COOKIE['clientId'];
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <!--END OF EXTRA MODALS-->
 
         </div>
 
     </div>
+
+<?php
+
+function displayCards($dataSet) {
+
+    if (!empty($dataSet)) {
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $card = new CardDetail();
+            // todo: get this from the login
+//                $card->setClientId($_COOKIE['clientId']);
+            $cardId = $dataSet[$i]->card_id;
+            $card->initWithCardId($cardId);
+            echo '<div class="card my-3 mx-3 w-50 align-self-center">
+                        <div class="card-body vstack gap-2">';
+
+            echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
+            echo '<div class="row">'
+            . '<span class="col justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
+            . '<span class="col text-end justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
+            echo '<div class="row my-2 gap-2">';
+            echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
+            echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
+            echo '</div></div></div>';
+        }
+    }
+}
+
+function displayAddresses($dataSet) {
+
+    if (!empty($dataSet)) {
+        for ($i = 0; $i < count($dataSet); $i++) {
+            $address = new BillingAddress();
+            // todo: get this from the login
+//                $address->setClientId('13');
+            $addressId = $dataSet[$i]->address_id;
+            $address->setAddressId($addressId);
+            $address->initWithId();
+
+            echo '<div class="card my-3 mx-3 w-50 align-self-center">
+                        <div class="card-body vstack gap-2 align-items-center">
+                            <div class="row fw-bold"><h2>Company Address</h2></div>';
+
+            echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() . '</span>
+                     </div>';
+
+            echo ' <div class="row m-2">
+                        <span class="col text-start text-secondary">Building: ' . $address->getBuildingNumber() . ', Street: ' . $address->getRoadNumber() . ', Block: ' . $address->getBlockNumber() . '</span>
+                     </div>';
+
+            echo '<div class="row m-2">
+                        <span class="col text-start text-secondary">' . $address->getCity() . ', ' . $address->getCountry() . ' </span>
+                      </div>';
+
+            echo '</div><div class="row m-2 gap-1">';
+            echo '<button id="editAddressBtn" class="col btn btn-primary fw-bold col rounded justify-content-end" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#editAddressModal" onclick="setCardId(this)">Edit</button>
+                    <button class="btn btn-danger col rounded" data-id="' . $address->getAddressId() . '" data-bs-toggle="modal" data-bs-target="#deleteAddressModal" onclick="setAddressId(this)" id="deleteAddressBtn">Delete</button>
+                            </div>
+                        </div>';
+        }
+    }
+}
+?>
 
 </div>
 
@@ -631,26 +776,40 @@ $loggedInClientId = $_COOKIE['clientId'];
             url: './helpers/get_client_status.php',
             method: 'GET',
             data: {clientId: getCookie('clientId')},
-            dataType: 'text', // Expected data type from server
+            dataType: 'json', // Expected data type from server
             success: function (response) {
                 // Handle successful response
                 console.log('status Info:', response);
 
                 // Update class list
                 const statusDiv = $(".my-status");
-                switch (response) {
+                const statusText = $("#statusName");
+                const nextStatus = $("#nextStatus");
+                const numberOfReservations = parseInt(response.numberOfReservations);
+
+                switch (response.status) {
                     case 'Gold':
+                        nextStatus.html("You are at the highest tier");
                         statusDiv.addClass('gold');
                         break;
                     case 'Silver':
+                        nextStatus.html(15 - numberOfReservations + " until Gold Tier");
                         statusDiv.addClass('silver');
                         break;
                     case 'Bronze':
+                        nextStatus.html(10 - numberOfReservations + " until Silver Tier");
                         statusDiv.addClass('bronze');
                         break;
                     default:
+                        nextStatus.html(5 - numberOfReservations + " until Bronze Tier");
                         statusDiv.addClass('nothing');
+                        statusText.addClass('text-black');
+                        nextStatus.addClass('text-black');
+                        statusText.removeClass('text-white');
+                        nextStatus.removeClass('text-white');
                 }
+
+
 
             },
             error: function (xhr, status, error) {
@@ -682,7 +841,7 @@ $loggedInClientId = $_COOKIE['clientId'];
             }
         });
     });
-    
+
     $(function () {
         $.ajax({
             url: './helpers/get_address_count.php',
@@ -727,6 +886,13 @@ $loggedInClientId = $_COOKIE['clientId'];
             e.preventDefault();
             return false;
         }
+
+        if (cardNumber.length !== 16) {
+            console.log("wrong card number");
+            e.preventDefault();
+            return false;
+        }
+
         return true;
     });
 
@@ -746,5 +912,19 @@ $loggedInClientId = $_COOKIE['clientId'];
         }
         return true;
     });
+
+    $('#editCardModal').on('hidden.bs.modal', function (e) {
+        // Clear form Input fields when closing the form
+        $('.form-control').val('');
+        $('.form-select').val('');
+        $('#card-add-form').removeClass('was-validated');
+    });
+
+    $('#editAddressModal').on('hidden.bs.modal', function (e) {
+        // Clear form Input fields when closing the form
+        $('.form-control').val('');
+        $('#address-add-form').removeClass('was-validated');
+    });
+
 </script>
 </body>

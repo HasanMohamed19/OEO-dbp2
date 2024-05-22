@@ -1,15 +1,6 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
 
-/**
- * Description of CompanyDetails
- *
- * @author Hassan
- */
 class CompanyDetails {
     
     private $comapnyId;
@@ -62,22 +53,37 @@ class CompanyDetails {
             $this->city = $db->sanitizeString($this->city);
             $this->website = $db->sanitizeString($this->website);
             
-            $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
+            if ($this->comapnyId == null) {
+                $q = "INSERT INTO dbProj_CompanyDetails (name, company_size, city, website, client_id) VALUES (?,?,?,?,?)";
+            } else {
+                $q = "UPDATE dbProj_CompanyDetails set
+			name = ?, company_size = ?, city = ?, website = ? WHERE company_id = ?";
+            }
             
             $stmt = mysqli_prepare($db->getDatabase(), $q);
-            if ($stmt) {
-                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
-                
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute Failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            } else {
+            if (!$stmt) {
                 $db->displayError($q);
                 return false;
             }
+            if ($this->comapnyId == null) {
+                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->clientId);
+            } else {
+                $stmt->bind_param('sissi', $this->name, $this->comapnySize, $this->city, $this->website, $this->comapnyId);
+            }
+                
+                
+
+            if (!$stmt->execute()) {
+                var_dump($stmt);
+                echo 'Execute Failed';
+                $db->displayError($q);
+                return false;
+            }
+            
+            if ($this->comapnyId == null) {
+                $this->comapnyId = mysqli_insert_id($db->getDatabase());
+            }
+            
             return true;
             
         }
@@ -90,6 +96,16 @@ class CompanyDetails {
         $this->initWith($data->company_id, $data->name, $data->company_size, $data->city, $data->website, $data->client_id);
 //        var_dump($data);
         if ($data != null) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    function getCompanyDetail() {
+        $db = Database::getInstance();
+        $data = $db->singleFetch("SELECT * FROM dbProj_CompanyDetails WHERE client_id = '$this->clientId'");
+        if ($data == null) {
             return false;
         }
         return true;
@@ -164,10 +180,31 @@ class CompanyDetails {
         if (empty($this->city))
             $errors = false;
 
-        if (empty($this->website))
-            $errors = false;
+//        if (empty($this->website))
+//            $errors = false;
 
         return $errors;
+    }
+    
+    public static function deleteCompanyDetail($clientIdIn) {
+        $db = new Database();
+        $clientId = $db->sanitizeString($clientIdIn);
+        $q = "DELETE FROM dbProj_CompanyDetails WHERE client_id = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('i', $clientId);
+
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute Failed';
+            $db->displayError($q);
+            return false;
+        }
+        return true;
     }
     
     public function getComapnyId() {

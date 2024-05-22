@@ -1,4 +1,5 @@
 <?php
+    include 'debugging.php';
     include './helpers/Database.php';
     include './models/CardDetail.php';
     include './models/PersonalDetails.php';
@@ -8,11 +9,15 @@
     include './models/Reservation.php';
     include './models/hall.php';
     include './models/BillingAddress.php';
-    include './template/header.html';   
+    include './header.php';
     
-    include 'debugging.php';
 //    echo 'what is happening';
     // if add/edit card form submitted
+    
+    // assuming admin id is always 1
+if ($_COOKIE['userId'] == 1) {
+    header("Location: 404.php");
+}
     
     $loggedInClientId = $_COOKIE['clientId'];
     

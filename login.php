@@ -6,7 +6,7 @@ include './models/User.php';
 include './models/Login.php';
 
     if (!empty($_COOKIE['userId'])) {
-        header('Location: myAccount.php');
+        header('Location: displayMyAccount.php');
     }
 
     if (isset($_POST['submitted'])) {
@@ -23,7 +23,12 @@ include './models/Login.php';
 //    }
 
      if ($login->login($username, $password)) {
-         header("Location: displayMyAccount.php");
+         if ($username == 'admin') {
+             header("Location: Admin_ViewHalls.php");
+         } else {
+             header("Location: displayMyAccount.php");
+         }
+         
          echo 'Logged in successfully';
      } else {
 //         header("Location: viewBookings.php");
@@ -33,7 +38,7 @@ include './models/Login.php';
 
 
 
-include './template/header.html';
+//include './template/header.html';
 // start_session();
 
 

@@ -1,15 +1,7 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
+include_once '../helpers/Database.php';
 
-/**
- * Description of CardDetail
- *
- * @author Hassan
- */
 class CardDetail {
 
     private $cardId;
@@ -50,6 +42,9 @@ class CardDetail {
             $errors = false;
 
         if (empty($this->expiryDate))
+            $errors = false;
+
+        if (empty($this->clientId) || $this->clientId <= 0)
             $errors = false;
 
         return $errors;
@@ -120,29 +115,7 @@ class CardDetail {
         $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
     }
 
-    function displayCards($dataSet) {
-
-        if (!empty($dataSet)) {
-            for ($i = 0; $i < count($dataSet); $i++) {
-                $card = new CardDetail();
-                // todo: get this from the login
-                $card->setClientId('1');
-                $cardId = $dataSet[$i]->card_id;
-                $card->initWithCardId($cardId);
-                echo '<div class="card my-3 mx-3 w-50 align-self-center">
-                        <div class="card-body vstack gap-2">';
-
-                echo '<div class="row fw-bold justify-content-center"><h2 class="text-center">' . $card->getCardNumber() . '</h2></div>';
-                echo '<div class="row justify-content-between">'
-                . '<span class="col-3 justify-content-end fw-bold">' . $card->getExpiryDate() . '</span>'
-                . '<span class="col-3 justify-content-start fw-bold">' . $card->getCardholderName() . '</span></div>';
-                echo '<div class="row my-2 gap-2">';
-                echo '<button id="editCardBtn" class=" col btn btn-primary fw-bold col border-0 justify-content-end" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#editCardModal">Edit</button>';
-                echo '<button class=" col btn btn-danger rounded" data-id="' . $card->getCardId() . '" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setCardId(this)" id="deleteCardBtn">Delete</button>';
-                echo '</div></div></div>';
-            }
-        }
-    }
+    
 
     public function deleteCard() {
         try {
@@ -206,6 +179,42 @@ class CardDetail {
 //            return false;
 //        }
     }
+    
+    public function addCardDetail() {
+        if ($this->isValid()) {
+            try {
+                $db = Database::getInstance();
+                $q = 'INSERT INTO `dbProj_Card_Detail`(`card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id`)
+                 VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',\''. $this->expiryDate.'\','.$this->clientId.')';
+                $data = $db->querySql($q);
+                $this->cardId = mysqli_insert_id($db->dblink);
+//                var_dump($q);
+                return true;
+            } catch (Exception $e) {
+                echo 'Exception: ' . $e;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public static function getCards($clientId) {
+        $db = Database::getInstance();
+        $q = 'SELECT `card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id` '
+                . 'FROM `dbProj_Card_Detail` WHERE client_id = '.$clientId;
+        $data = $db->multiFetch($q);
+        return $data;
+    }
+    public function initWithId() {
+        $db = Database::getInstance();
+        $q = 'SELECT `card_id`, `cardholder_name`, `card_number`, `CVV`, `expiry_date`, `client_id` '
+                . 'FROM `dbProj_Card_Detail` WHERE card_id = '.$this->cardId;
+        $data = $db->singleFetch($q);
+        $this->initWith($data->card_id, $data->cardholder_name, $data->card_number, $data->CVV, $data->expiry_date, $data->client_id);
+    }
+    
+    
 
     public function getCardCount($clientId) {
         $db = new Database();
