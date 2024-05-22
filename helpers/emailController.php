@@ -65,7 +65,7 @@ class EmailController {
         
         $mailer->Subject = 'Successfull reservation';
         $mailer->Body    = $body;
-        echo $body;
+//        echo $body;
         $mailer->send();
 //        echo 'Message has been sent';
         $mailer->clearAddresses();

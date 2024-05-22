@@ -8,7 +8,7 @@ include_once ''; './models/Event.php';
 //include './models/MenuItem.php';
 //include './models/ReservationMenuItem.php';
 
-include './template/header.html';
+include 'header.php';
 
 $reservationId = $_GET['reservationId'];
 

@@ -53,12 +53,8 @@ $userName = $_COOKIE['username'];
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
                     <img src="./images/DBLogo.svg" height="50" width="100"/>
-                    <!--<svg id="Layer_1_copy" data-name="Layer 1 copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2084 1165.74"><defs><style>.cls-1{fill:#2261ab;}</style></defs><path class="cls-1" d="M1537.5,169.5h-1018c-204.33,0-370,165.88-370,370.5s165.65,370.5,370,370.5h1018c204.31,0,369.93-165.9,369.93-370.5S1741.81,169.53,1537.5,169.5Zm-1016,733c-200.48,0-363-162.52-363-363s162.52-363,363-363,363,162.52,363,363S722,902.5,521.5,902.5Zm1015,0a362.17,362.17,0,0,1-275-126h-323v-175h240.28a366.19,366.19,0,0,1,3.8-143H938.5v-151h318.81c66.58-80,166.93-131,279.19-131,200.48,0,363,162.52,363,363S1737,902.5,1536.5,902.5Z"/><circle class="cls-1" cx="521" cy="540" r="143"/><circle class="cls-1" cx="1532" cy="539" r="143"/></svg>-->
+                    
                 </a>
-
-<!--              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>-->
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -93,10 +89,11 @@ $userName = $_COOKIE['username'];
                                     <a id="halls" class="nav-link" href="halls.php">Halls</a>
                                 </li>';
                             
-                            echo '<li class="nav-item">
+                            if (isset($_COOKIE['userId'])) {
+                               echo '<li class="nav-item">
                                     <a id="my-account" class="nav-link" href="displayMyAccount.php">My Account</a>
-                                </li>';
-                            
+                                </li>'; 
+                            }                            
                         }
                     ?>
                   
