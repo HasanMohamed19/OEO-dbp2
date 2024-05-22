@@ -68,7 +68,7 @@ class Reservation {
     public function initReservationWithId($reservationId) {
         $db = Database::getInstance();
         $data = $db->singleFetch('SELECT * FROM dbProj_Reservation WHERE reservation_id = ' . $reservationId);
-//        var_dump($data);
+//        ($data);
         $this->initWith($data->reservation_id, $data->hall_id, $data->client_id, $data->event_id, $data->notes, $data->reservation_status_id, $data->reservation_date);
     }
 
@@ -313,7 +313,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
             JOIN dbProj_Client c ON r.client_id = c.client_id
             JOIN dbProj_Invoice i ON r.reservation_id = i.reservation_id
             WHERE r.reservation_id = " . $this->reservationId . " ORDER BY i.invoice_id DESC LIMIT 1");
-//        var_dump($data);
+//        ($data);
         return $data;
     }
 
@@ -392,7 +392,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
             JOIN dbProj_Reservation_Menu_Item rm ON rm.item_id = m.item_id
             JOIN dbProj_Reservation r ON rm.reservation_id = r.reservation_id
             WHERE r.reservation_id =" . $reservationId);
-//        var_dump($data);
+//        ($data);
         return $data;
     }
 
@@ -419,7 +419,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         }
 
         $stmt = mysqli_prepare($db->getDatabase(),$q);
-//        var_dump($stmt);
+//        ($stmt);
         if (!$stmt) {
             $db->displayError($q);
             return false;
@@ -450,7 +450,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
             );
         }
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -458,7 +458,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         if ($this->reservationId == null || $this->reservationId <=0) {
             // get reservation id from OUT parameter
             $res = $db->singleFetch("SELECT @res_id as res_id");
-    //        var_dump($res);
+    //        ($res);
             $this->reservationId = $res->res_id;
         }
         

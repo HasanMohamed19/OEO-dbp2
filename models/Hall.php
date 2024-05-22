@@ -65,7 +65,7 @@ class Hall {
             $db->displayError($q);
             return false;
         }
-//      var_dump($stmt);
+//      ($stmt);
         $stmt->bind_param('s', $hallIdSanitized);
         if (!$stmt->execute()) {
             $db->displayError($q);
@@ -210,16 +210,16 @@ class Hall {
         }
         $stmt->bind_param('s', $searhTerm);
         if (!$stmt->execute()) {
-//                var_dump($stmt);
+//                ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
         }
 
         $result = $stmt->get_result();             
-//        var_dump($result);
+//        ($result);
         $data = $result->fetch_all(MYSQLI_ASSOC);
-//        var_dump($data);
+//        ($data);
         return $data;
     }
 
@@ -281,7 +281,7 @@ class Hall {
             if ($stmt) {
                 $stmt->bind_param('ssdii', $this->hallName, $this->description, $this->rentalCharge, $this->capacity, $this->hallStatus);
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -307,7 +307,7 @@ class Hall {
         if ($stmt) {
             $stmt->bind_param('i', $this->hallId);
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute failed';
                 $db->displayError($q);
                 return false;
@@ -335,7 +335,7 @@ class Hall {
             if ($stmt) {
                 $stmt->bind_param('ssdiii', $this->hallName, $this->description, $this->rentalCharge, $this->capacity, $this->hallStatus, $this->hallId);
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -353,7 +353,7 @@ class Hall {
     function getHallStatusName() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT status_name FROM dbProj_Availability_Status a JOIN dbProj_Hall h ON h.hall_status_id = a.availability_status_id WHERE h.hall_id = '$this->hallId'");
-//       var_dump($data);
+//       ($data);
         return $data;
     }
 
@@ -418,7 +418,7 @@ class Hall {
             }
         }
 //        echo 'Available halls found are: ';
-//        var_dump($availableHalls);
+//        ($availableHalls);
         return $availableHalls;
     }
 

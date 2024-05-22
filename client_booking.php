@@ -46,7 +46,7 @@ if (isset($_POST['submitted'])) {
 
     // now save selected menu items
     $menuItems = json_decode($_POST['menuItems'], true);
-//    var_dump($menuItems);
+//    ($menuItems);
     foreach ($menuItems as $i=>$menuItem) {
         $item = new ReservationMenuItem();
         $item->setReservationMenuItemId($menuItem['reservation_menu_item_id']);

@@ -71,7 +71,7 @@ class CardDetail {
 //                $q = "INSERT INTO dbProj_Card_Detail (card_id, cardholder_name, card_number, CVV, expiry_date, client_id)
 //                 VALUES (NULL,' $this->cardholderName','$this->cardNumber','$this->CVV','$this->expiryDate','$this->clientId')"; 
 //                $data = $db->querySql($q);
-////                var_dump($q);
+////                ($q);
 //                 return true;
 //            } catch (Exception $e) {
 //                echo 'Exception: ' . $e;
@@ -96,7 +96,7 @@ class CardDetail {
                 $stmt->bind_param('ssssi', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate, $this->clientId);
 
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute Failed';
                     $db->displayError($q);
                     return false;
@@ -121,7 +121,7 @@ class CardDetail {
         try {
             $db = Database::getInstance();
             $deleteQry = $db->querySQL("Delete from dbProj_Card_Detail where card_id=" . $this->cardId);
-//            var_dump($deleteQry);
+//            ($deleteQry);
 //            unlink($this->imagePath);
             return true;
         } catch (Exception $e) {
@@ -150,7 +150,7 @@ class CardDetail {
                 $stmt->bind_param('ssss', $this->cardholderName, $this->cardNumber, $this->CVV, $this->expiryDate);
 
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute Failed';
                     $db->displayError($q);
                     return false;
@@ -170,7 +170,7 @@ class CardDetail {
 //                        CVV = \'' . $this->CVV . '\' ,
 //                        expiry_date = \'' . $this->expiryDate . '\'
 //                            WHERE card_id = ' . $this->cardId;
-////            var_dump($data);
+////            ($data);
 //            $db->querySQL($data);
 //            return true;
 //        } catch (Exception $e) {
@@ -188,7 +188,7 @@ class CardDetail {
                  VALUES (NULL, \'' . $this->cardholderName . '\',\'' . $this->cardNumber . '\',\'' . $this->CVV . '\',\''. $this->expiryDate.'\','.$this->clientId.')';
                 $data = $db->querySql($q);
                 $this->cardId = mysqli_insert_id($db->dblink);
-//                var_dump($q);
+//                ($q);
                 return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
@@ -227,14 +227,14 @@ class CardDetail {
             $stmt->bind_param('i', $this->clientId);
 
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute Failed';
                 $db->displayError($q);
 //                    return false;
             } else {
                 $result = $stmt->get_result();
                 $data = $result->fetch_array(MYSQLI_ASSOC);
-//                var_dump($data);
+//                ($data);
                 return $data["cardCount"];
             }
         } else {

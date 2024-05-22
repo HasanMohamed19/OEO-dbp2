@@ -5,7 +5,7 @@ include '../models/CardDetail.php';
 $card = new CardDetail();
 $card->setCardId($_GET['id']);
 $card->initWithId();
-//var_dump($card);
+//($card);
 //echo intval(explode('-', $card->getExpiryDate())[0])."     ";
 $arr = [
     'Number'=>$card->getCardNumber(),
@@ -14,5 +14,5 @@ $arr = [
     'ExpiryMonth'=>intval(explode('-', $card->getExpiryDate())[1]),
     'CVV'=>$card->getCVV()
 ];
-//var_dump($arr);
+//($arr);
 echo json_encode($arr);

@@ -20,9 +20,9 @@ $reservation->initReservationWithId($reservationId);
 
 $reservation->setClientId($_COOKIE['clientId']);
 
-//    var_dump($reservation);
+//    ($reservation);
 $reservationDetails = $reservation->getReservationDetails();
-//var_dump($reservationDetails);
+//($reservationDetails);
 //echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
 //    echo '  reservation details are: ' . count($reservations);
 
@@ -249,7 +249,7 @@ $hallImages = $image->getAllImagesForHall($id);
         echo 'cancelling booking with id: ' . $reservationId;
 //        $db = Database::getInstance();
 //        $data = $db->querySQL('CALL cancelBooking(' . $reservationId .')');
-//        var_dump($data);'
+//        ($data);'
         $reservation = new Reservation();
         $reservation->cancelReservation($reservationId);
     } else {

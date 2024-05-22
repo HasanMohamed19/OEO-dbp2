@@ -63,7 +63,7 @@ class Client extends User {
                 $this->userId);
 
         if (!$clientStmt->execute()) {
-            var_dump($clientStmt);
+            ($clientStmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -107,7 +107,7 @@ class Client extends User {
         $q = 'SELECT `client_status_id` '
                 . 'FROM `dbProj_Client` WHERE client_id = '.$this->clientId;
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         $discountRate = 0;
         if ($data->client_status_id == 1) {$discountRate = GOLDEN_STATUS;}
         if ($data->client_status_id == 2) {$discountRate = SILVER_STATUS;}
@@ -198,7 +198,7 @@ class Client extends User {
     function getClientStatusName($client_id) {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT status_name FROM dbProj_Client_Status cs JOIN dbProj_Client c ON c.client_status_id = cs.client_status_id WHERE c.client_id = '$client_id'");
-//       var_dump($data);
+//       ($data);
         return $data;
     }
 
@@ -218,7 +218,7 @@ class Client extends User {
             $stmt->bind_param('si', $this->phoneNumber, $clientId);
         }
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -246,7 +246,7 @@ class Client extends User {
 //                    $stmt->bind_param('si', $this->phoneNumber, $clientId);
 //                }
 //                    if (!$stmt->execute()) {
-//                        var_dump($stmt);
+//                        ($stmt);
 //                        echo 'Execute failed';
 //                        $db->displayError($q);
 //                        return false;
@@ -261,7 +261,7 @@ class Client extends User {
     static function getTotalReservations($clientId) {
         $db = Database::getInstance();
        $data = $db->singleFetch('SELECT COUNT(*) AS "totalReservations" FROM dbProj_Reservation WHERE client_id = ' . $clientId);
-//       var_dump($data);
+//       ($data);
        return $data;
     }
     
@@ -269,7 +269,7 @@ class Client extends User {
         $db = Database::getInstance();
         $q = "SELECT EXISTS (SELECT * from dbProj_PersonalDetails WHERE client_id=" . $clientId . ") AS hasPersonalDetails";
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         return $data->hasPersonalDetails;
     }
     
@@ -277,7 +277,7 @@ class Client extends User {
         $db = Database::getInstance();
         $q = "SELECT EXISTS(SELECT * from dbProj_CompanyDetails WHERE client_id=" . $clientId . ") AS hasCompanyDetails";
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         return $data->hasCompanyDetails;
     }
     
@@ -285,7 +285,7 @@ class Client extends User {
         $db = Database::getInstance();
         $q = "SELECT * from dbProj_PersonalDetails WHERE client_id=" . $clientId;
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         return $data;
     }
     
@@ -293,7 +293,7 @@ class Client extends User {
         $db = Database::getInstance();
         $q = "SELECT * from dbProj_CompanyDetails WHERE client_id=" . $clientId;
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         return $data;
     }
     

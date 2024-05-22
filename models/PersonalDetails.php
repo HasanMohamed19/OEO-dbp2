@@ -43,7 +43,7 @@ class PersonalDetails {
 //                $q = "INSERT INTO dbProj_PersonalDetails (personal_details_id, first_name, last_name, dob, gender, nationality, client_id)
 //                 VALUES (NULL,' $this->firstName','$this->lastName','$this->dob','$this->gender','$this->nationality','$this->clientId')"; 
 //                $data = $db->querySql($q);
-//                var_dump($q);
+//                ($q);
 //                 return true;
 //            } catch (Exception $e) {
 //                echo 'Exception: ' . $e;
@@ -99,7 +99,7 @@ class PersonalDetails {
         }
 
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute Failed';
             $db->displayError($q);
             return false;
@@ -126,7 +126,7 @@ class PersonalDetails {
 //                $stmt->bind_param('sssssi', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality, $this->clientId);
 //
 //                if (!$stmt->execute()) {
-//                    var_dump($stmt);
+//                    ($stmt);
 //                    echo 'Execute Failed';
 //                    $db->displayError($q);
 //                    return false;
@@ -144,7 +144,7 @@ class PersonalDetails {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
         $this->initWith($data->personal_details_id, $data->first_name, $data->last_name, $data->dob, $data->gender, $data->nationality, $data->client_id);
-//        var_dump($data);
+//        ($data);
         if ($data != null) {
             return false;
         }
@@ -154,7 +154,7 @@ class PersonalDetails {
     function getPersonalDetail() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_PersonalDetails WHERE client_id = '$this->clientId'");
-//        var_dump($data);
+//        ($data);
         if ($data == null) {
             return false;
         }
@@ -185,7 +185,7 @@ class PersonalDetails {
                 $stmt->bind_param('sssss', $this->firstName, $this->lastName, $this->dob, $this->gender, $this->nationality);
 
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute Failed';
                     $db->displayError($q);
                     return false;
@@ -232,7 +232,7 @@ class PersonalDetails {
         $stmt->bind_param('i', $clientId);
 
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute Failed';
             $db->displayError($q);
             return false;

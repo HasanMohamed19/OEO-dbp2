@@ -69,7 +69,7 @@ Class Login extends User {
         $stmt = mysqli_prepare($db->getDatabase(),$q);
             if ($stmt) {
                 // this works:
-//                var_dump($stmt);
+//                ($stmt);
                 $stmt->bind_param('i', $userId);
                 
                 if (!$stmt->execute()) {
@@ -80,7 +80,7 @@ Class Login extends User {
 //                    echo 'Execute successed';
                     $result = $stmt->get_result();
                     $data = $result->fetch_array(MYSQLI_ASSOC);
-//                    var_dump($data);
+//                    ($data);
                     return $data["client_id"];
                 }
                 

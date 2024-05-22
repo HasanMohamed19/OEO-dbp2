@@ -36,7 +36,7 @@ class CompanyDetails {
 //                $q = "INSERT INTO dbProj_CompanyDetails (company_id, name, company_size, city, website, client_id)
 //                 VALUES (NULL,' $this->name','$this->comapnySize','$this->city','$this->website','$this->clientId')"; 
 //                $data = $db->querySql($q);
-////                var_dump($q);
+////                ($q);
 //                 return true;
 //            } catch (Exception $e) {
 //                echo 'Exception: ' . $e;
@@ -74,7 +74,7 @@ class CompanyDetails {
                 
 
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute Failed';
                 $db->displayError($q);
                 return false;
@@ -94,7 +94,7 @@ class CompanyDetails {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT * FROM dbProj_CompanyDetails WHERE client_id = '$this->clientId'");
         $this->initWith($data->company_id, $data->name, $data->company_size, $data->city, $data->website, $data->client_id);
-//        var_dump($data);
+//        ($data);
         if ($data != null) {
             return false;
         }
@@ -129,7 +129,7 @@ class CompanyDetails {
                 $stmt->bind_param('siss', $this->name, $this->comapnySize, $this->city, $this->website);
                 
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute Failed';
                     $db->displayError($q);
                     return false;
@@ -199,7 +199,7 @@ class CompanyDetails {
         $stmt->bind_param('i', $clientId);
 
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute Failed';
             $db->displayError($q);
             return false;

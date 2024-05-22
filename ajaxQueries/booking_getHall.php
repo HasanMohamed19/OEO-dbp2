@@ -13,7 +13,7 @@ $hall = new Hall();
 $hall->setHallId($id);
 $hall->initWithId();
 
-//var_dump($hall);
+//($hall);
 
 $hallImages = new HallImage();
 $hallImages = $hallImages->getAllImagesForHall($id);

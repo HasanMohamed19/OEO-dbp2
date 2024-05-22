@@ -44,7 +44,7 @@ class BillingAddress {
                  VALUES (NULL,' $this->phoneNumber','$this->roadNumber','$this->buildingNumber','$this->blockNumber','$this->city','$this->country',$this->clientId)"; 
                 $data = $db->querySql($q);
                 $this->addressId = mysqli_insert_id($db->dblink);
-//                var_dump($q);
+//                ($q);
                  return true;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e;
@@ -59,7 +59,7 @@ class BillingAddress {
         try {
             $db = Database::getInstance();
             $deleteQry = $db->querySQL("Delete from dbProj_Billing_Address where address_id=" . $this->addressId);
-//            var_dump($deleteQry);
+//            ($deleteQry);
 //            unlink($this->imagePath);
             return true;
         } catch (Exception $e) {
@@ -101,9 +101,9 @@ class BillingAddress {
         $db = Database::getInstance();
         $q = 'SELECT `address_id`, `phone_number`, `road_number`, `building_number`, `block_number`, `city`, `country`, `client_id` '
                 . 'FROM `dbProj_Billing_Address` WHERE address_id = '.$this->addressId;
-//        var_dump($q);
+//        ($q);
         $data = $db->singleFetch($q);
-//        var_dump($data);
+//        ($data);
         $this->initWith($data->address_id, $data->phone_number, $data->road_number, $data->building_number, $data->block_number, $data->city, $data->country, $data->client_id);
     }
     
@@ -210,14 +210,14 @@ class BillingAddress {
             $stmt->bind_param('i', $this->clientId);
 
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute Failed';
                 $db->displayError($q);
 //                    return false;
             } else {
                 $result = $stmt->get_result();
                 $data = $result->fetch_array(MYSQLI_ASSOC);
-//                var_dump($data);
+//                ($data);
                 return $data["addressCount"];
             }
         } else {

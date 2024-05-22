@@ -36,7 +36,7 @@ class Invoice {
         $q = 'CALL insertInvoice(?,?)';
         
         $stmt = mysqli_prepare($db->getDatabase(),$q);
-//        var_dump($stmt);
+//        ($stmt);
         if (!$stmt) {
             $db->displayError($q);
             return false;
@@ -48,7 +48,7 @@ class Invoice {
         );
         
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;

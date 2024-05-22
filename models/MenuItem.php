@@ -204,7 +204,7 @@ class MenuItem {
             if ($stmt) {
                 $stmt->bind_param('ssdsii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->ItemStatus);
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -228,7 +228,7 @@ class MenuItem {
         if ($stmt) {
             $stmt->bind_param('i', $this->itemId);
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute failed';
                 $db->displayError($q);
                 return false;
@@ -264,7 +264,7 @@ class MenuItem {
             if ($stmt) {
                 $stmt->bind_param('ssdsiii', $this->name, $this->description, $this->price, $this->imagePath, $this->cateringServiceId, $this->ItemStatus, $this->itemId);
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -282,7 +282,7 @@ class MenuItem {
     function getItemStatusName() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT status_name FROM dbProj_Availability_Status a JOIN dbProj_Menu_Item m ON m.item_status_id = a.availability_status_id WHERE m.item_id = '$this->itemId'");
-//       var_dump($data);
+//       ($data);
         return $data;
     }
 

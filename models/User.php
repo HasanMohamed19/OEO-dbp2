@@ -86,7 +86,7 @@ class User {
                     $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $this->userId);
                 }
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -106,7 +106,7 @@ class User {
 
             if ($clientStmt) {
                 if (!$clientStmt->execute()) {
-                    var_dump($clientStmt);
+                    ($clientStmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -121,7 +121,7 @@ class User {
 //                $q = 'INSERT INTO dbProj_User (user_id, username, password, email, role_id)
 //                 VALUES (NULL, \'' . $this->username . '\',\'' . $this->password . '\',\'' . $this->email . '\',' . $this->roleId . ')';
 //                $data = $db->querySql($q);
-//                var_dump($q);
+//                ($q);
 //                 return true;
 //            } catch (Exception $e) {
 //                echo 'Exception: ' . $e;
@@ -183,7 +183,7 @@ class User {
         }
         
         if (!$stmt->execute()) {
-            var_dump($stmt);
+//            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -215,13 +215,13 @@ class User {
 
 
             $stmt = mysqli_prepare($db->getDatabase(),$q);
-            var_dump($stmt);
+            ($stmt);
             if ($stmt) {
                 $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
 //                    echo "username" . $this->username ." password ". $this->password;
 
                 if (!$stmt->execute()) {
-                    var_dump($stmt);
+                    ($stmt);
                     echo 'Execute failed';
                     $db->displayError($q);
                     return false;
@@ -252,9 +252,9 @@ class User {
 
 
         $stmt = mysqli_prepare($db->getDatabase(),$q);
-//        var_dump($stmt);
+//        ($stmt);
         if (!$stmt) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -263,7 +263,7 @@ class User {
 //                    echo "username" . $this->username ." password ". $this->password;
 
         if (!$stmt->execute()) {
-            var_dump($stmt);
+            ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
@@ -290,12 +290,12 @@ class User {
         $stmt = mysqli_prepare($db->getDatabase(), $q);
         if ($stmt) {
             // this works:
-//                var_dump($stmt);
+//                ($stmt);
             $stmt->bind_param('ss', $u, $p);
 //                $stmt->execute();
 //                $result = $stmt->get_result();
 //                $data = $result->fetch_array(MYSQLI_ASSOC);
-//                var_dump($data);
+//                ($data);
 //                echo $data["username"]. 'my username is';
 //                $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
 
@@ -307,7 +307,7 @@ class User {
 //                    echo 'Execute successed';
                 $result = $stmt->get_result();
                 $data = $result->fetch_array(MYSQLI_ASSOC);
-//                    var_dump($data);
+//                    ($data);
                 $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
             }
         } else {
@@ -315,9 +315,9 @@ class User {
             return false;
         }
 //        $data = $db->singleFetch("SELECT * FROM dbProj_User WHERE username = '$username' AND AES_DECRYPT(password, 'B4baB00eY') = '$password'");
-//        var_dump($stmt->fetch());
+//        ($stmt->fetch());
 //          $data = $stmt->get_result();
-//          var_dump($data);
+//          ($data);
 //        $this->initWith($data->user_id, $data->username, $data->password, $data->email, $data->role_id);
         return true;
     }
@@ -325,7 +325,7 @@ class User {
     function getClientByUserId() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT client_id FROM dbProj_Client WHERE user_id = " . $this->userId)->client_id;
-//        var_dump($data);
+//        ($data);
         return $data;
     }
 
@@ -348,7 +348,7 @@ class User {
         }
         $result = $stmt->get_result();
         $data = $result->fetch_array(MYSQLI_ASSOC);
-        var_dump($data);
+//        ($data);
         if ($data != null) {
             return false;
         }
@@ -412,7 +412,7 @@ class User {
         if ($stmt) {
             $stmt->bind_param('i', $this->userId);
             if (!$stmt->execute()) {
-                var_dump($stmt);
+//                ($stmt);
                 echo 'Execute failed';
                 $db->displayError($q);
                 return false;
@@ -428,7 +428,7 @@ class User {
 //        include_once  "./helpers/Database.php";
 //        $db = new Database();
 //        echo 'Error occured: ';
-//        var_dump($q);
+//        ($q);
 //        echo 'error:'.mysqli_error($db->getDatabase());
 //    }
 

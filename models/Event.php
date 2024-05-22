@@ -40,7 +40,7 @@ class Event {
                 $q = 'INSERT INTO `dbProj_Event`(`event_id`, `event_name`, `start_date`, `end_date`, `start_time`, `end_time`, `audience_number`)
                  VALUES (NULL, \'' . $this->name . '\',\'' . $this->startDate . '\',\'' . $this->endDate . '\',\'' . $this->startTime . '\',\''. $this->endTime.'\','.$this->audienceNumber.')';
                 $data = $db->querySql($q);
-                var_dump($q);
+                ($q);
                 $this->eventId = mysqli_insert_id($db->dblink);
                 return true;
             } catch (Exception $e) {
@@ -110,7 +110,7 @@ class Event {
             $db->displayError($q);
             return false;
         }
-//      var_dump($stmt);
+//      ($stmt);
         $stmt->bind_param('s', $hallIdSanitized);
         if (!$stmt->execute()) {
             $db->displayError($q);
@@ -170,15 +170,15 @@ class Event {
         }
         $stmt->bind_param('i', $hallId);
         if (!$stmt->execute()) {
-//                var_dump($stmt);
+//                ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
         }
         $result = $stmt->get_result();             
-//        var_dump($result);
+//        ($result);
         $data = $result->fetch_all(MYSQLI_ASSOC);
-//        var_dump($data);
+//        ($data);
         //returns results as array
         return $data;
     }
@@ -213,15 +213,15 @@ class Event {
         // $startDate is used to filter events before/after this date
         $stmt->bind_param('is', $hallId, $startDate);
         if (!$stmt->execute()) {
-//                var_dump($stmt);
+//                ($stmt);
             echo 'Execute failed';
             $db->displayError($q);
             return false;
         }
         $result = $stmt->get_result();             
-//        var_dump($result);
+//        ($result);
         $data = $result->fetch_all(MYSQLI_ASSOC);
-//        var_dump($data);
+//        ($data);
         //returns results as array
         return $data;
     }
@@ -295,14 +295,14 @@ class Event {
             $stmt->bind_param('si', $this->startDate, $this->eventId);
 
             if (!$stmt->execute()) {
-//                var_dump($stmt);
+//                ($stmt);
                 echo 'Execute Failed';
                 $db->displayError($q);
 //                    return false;
             } else {
                 $result = $stmt->get_result();
                 $data = $result->fetch_array(MYSQLI_ASSOC);
-//                var_dump($data);
+//                ($data);
                 return $data["dayDiff"];
             }
         } else {

@@ -67,7 +67,7 @@ if ($_COOKIE['userId'] == 1) {
         
         $personal->initWithClientId();
         $company->initWithClientId();
-//        var_dump($personal);
+//        ($personal);
         
         // personal fields
         $personal->setFirstName($_POST['firstname']);
@@ -179,7 +179,7 @@ if ($_COOKIE['userId'] == 1) {
         echo 'card id is: ' . $cardId;
         $deletedCard = new CardDetail();
         $deletedCard->initWithCardId($cardId);
-    //    var_dump($deletedCard);
+    //    ($deletedCard);
         echo ' id: ' . $deletedCard->getCardId();
         if ($deletedCard->deleteCard()) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
@@ -193,7 +193,7 @@ if ($_COOKIE['userId'] == 1) {
         $deletedAddress = new BillingAddress();
         $deletedAddress->setAddressId($addressId);
         $deletedAddress->initWithId();
-    //    var_dump($deletedCard);
+    //    ($deletedCard);
 //        echo ' id: ' . $deletedAddress->getAddressId();
         if ($deletedAddress->deleteAddress()) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';

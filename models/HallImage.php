@@ -46,7 +46,7 @@ class HallImage {
         if ($stmt) {
             $stmt->bind_param('si', $this->hallImagePath, $this->hall_id);
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute failed';
                 $db->displayError($q);
                 return false;
@@ -69,7 +69,7 @@ class HallImage {
         if ($stmt) {
             $stmt->bind_param('s', $this->hallImagePath);
             if (!$stmt->execute()) {
-                var_dump($stmt);
+                ($stmt);
                 echo 'Execute failed';
                 $db->displayError($q);
                 return false;
