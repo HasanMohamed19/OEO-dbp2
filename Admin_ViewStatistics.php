@@ -97,3 +97,11 @@ if ($_COOKIE['userId'] != 1) {
 </div>
 <?php
 include './template/footer.html';
+?>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dashboard').addClass('active-page');
+    });
+</script>

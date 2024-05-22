@@ -47,3 +47,9 @@ $pagination->page("");
 echo '</div>';
 include './template/footer.html';
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#all-bookings').addClass('active-page');
+    });
+</script>

@@ -194,7 +194,7 @@ if ($_COOKIE['userId'] == 1) {
         $deletedAddress->setAddressId($addressId);
         $deletedAddress->initWithId();
     //    var_dump($deletedCard);
-        echo ' id: ' . $deletedAddress->getAddressId();
+//        echo ' id: ' . $deletedAddress->getAddressId();
         if ($deletedAddress->deleteAddress()) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
@@ -205,3 +205,9 @@ if ($_COOKIE['userId'] == 1) {
     include './template/footer.html';
 
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#my-account').addClass('active-page');
+    });
+</script>

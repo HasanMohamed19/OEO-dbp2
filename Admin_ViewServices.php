@@ -165,3 +165,9 @@ function displayMenuItems($dataSet) {
     }
 }
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#services').addClass('active-page');
+    });
+</script>

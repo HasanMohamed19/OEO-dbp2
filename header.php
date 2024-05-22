@@ -63,38 +63,38 @@ $userName = $_COOKIE['username'];
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                        <a id="home" class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     
                     <?php
                         if ($userName == 'admin') {
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="displayViewBookings.php">Reservations</a>
+                                    <a id="all-bookings" class="nav-link" href="displayViewBookings.php">Reservations</a>
                                 </li>';
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="Admin_ViewHalls.php">Halls</a>
+                                    <a id="halls" class="nav-link" href="Admin_ViewHalls.php">Halls</a>
                                 </li>';
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="Admin_ViewServices.php">Catering</a>
+                                    <a id="services" class="nav-link" href="Admin_ViewServices.php">Catering</a>
                                 </li>';
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="Admin_ViewClients.php">Clients</a>
+                                    <a id="clients" class="nav-link" href="Admin_ViewClients.php">Clients</a>
                                 </li>';    
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="Admin_ViewStatistics.php">Dashboard</a>
+                                    <a id="dashboard" class="nav-link" href="Admin_ViewStatistics.php">Dashboard</a>
                                 </li>';
                         } else {
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="halls.php">Halls</a>
+                                    <a id="halls" class="nav-link" href="halls.php">Halls</a>
                                 </li>';
                             
                             echo '<li class="nav-item">
-                                    <a class="nav-link" href="displayMyAccount.php">My Account</a>
+                                    <a id="my-account" class="nav-link" href="displayMyAccount.php">My Account</a>
                                 </li>';
                             
                         }
@@ -106,7 +106,7 @@ $userName = $_COOKIE['username'];
                     <a class="nav-link" href="#">Royalty Points</a>
                   </li>-->
                   <li class="nav-item">
-                    <a class="nav-link" href="aboutUs.php">About Us</a>
+                    <a id="about" class="nav-link" href="aboutUs.php">About Us</a>
                   </li>
                 </ul>
                   <!--<li class="nav-item">-->

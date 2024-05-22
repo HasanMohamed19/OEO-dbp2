@@ -8,3 +8,9 @@
 <?php
     include './template/footer.html';
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#about').addClass('active-page');
+    });
+</script>

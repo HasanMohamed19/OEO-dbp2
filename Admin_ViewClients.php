@@ -223,3 +223,10 @@ function displayClients($dataSet) {
         }
     }
 }
+?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#clients').addClass('active-page');
+    });
+</script>

@@ -403,3 +403,9 @@ function displayHalls($dataSet) {
     
     include '/template/footer.html';
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#halls').addClass('active-page');
+    });
+</script>

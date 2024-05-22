@@ -189,3 +189,9 @@ function displayHalls($dataSet) {
 }
 ?>
 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#halls').addClass('active-page');
+    });
+</script>
