@@ -70,7 +70,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="mb-3">
                                 <label for="gender" class="form-label">Gender</label>
                                 <select name="gender" class="form-select pdInputs" id="gender">
-                                    <option value="" disabled>Select Gender</option>
+                                    <option value="" selected>Select Gender</option>
                                     <option value="M">Male</option>
                                     <option value="F" >Female</option>
                                 </select>
