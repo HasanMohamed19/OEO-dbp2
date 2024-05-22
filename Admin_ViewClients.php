@@ -38,7 +38,6 @@ if (isset($_POST['clientFormSubmitted'])) {
     $pd->setNationality(trim($_POST['nation']));
     $pd->setDob(trim($_POST['dob']));
 
-    echo 'client id is' . $user->getClientByUserId();
     //get company details
     $cmp = new CompanyDetails();
     $cmp->setName(trim($_POST['cmpName']));
@@ -69,12 +68,11 @@ if (isset($_POST['clientFormSubmitted'])) {
         }
     } else {
         //update user when user id is not empty
-        $user->updateUser($userid);
+        $user->editUser($userid);
         $clientId = $user->getClientByUserId();
         $client = new Client();
         $client->setClientId($clientId);
         $client->setPhoneNumber($_POST['phoneNumber']);
-        echo 'phone number is:' . $client->getPhoneNumber();
         $client->updateClient($clientId);
 
         if (isset($_POST['pdCheckBx'])) {

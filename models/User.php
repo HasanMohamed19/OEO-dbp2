@@ -199,25 +199,16 @@ class User {
         function editUser($userId) {
         include_once  "./helpers/Database.php";
         $db = new Database();
-        //set the old password if password is empty
-        if ($this->password == ''){
-            $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE user_id = ' . $userId);
-            $this->setPassword($data->password);
-        }
-        if ($this->isValid()) {
             $this->username = $db->sanitizeString($this->username);
-            $this->password = $db->sanitizeString($this->password);
             $this->email    = $db->sanitizeString($this->email);
             // assuming role_id never changes
             $q = "UPDATE dbProj_User SET "
-                . "username=?, password=AES_ENCRYPT(?, '".SALT."'), email=? "
+                . "username=?, email=? "
                 . "WHERE user_id=?";
-
-
             $stmt = mysqli_prepare($db->getDatabase(),$q);
             ($stmt);
             if ($stmt) {
-                $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
+                $stmt->bind_param('ssi', $this->username, $this->email, $userId);
 //                    echo "username" . $this->username ." password ". $this->password;
 
                 if (!$stmt->execute()) {
@@ -227,12 +218,7 @@ class User {
                     return false;
                 }
             }
-
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-
+             
     }
     
     // for other use

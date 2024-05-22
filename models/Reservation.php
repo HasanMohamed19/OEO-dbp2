@@ -119,7 +119,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         return $data;
     }
 
-    function getReservationsForClient() {
+    function getReservationsForClient($start,$end) {
         $db = Database::getInstance();
         
          if ($start == 1){
@@ -159,7 +159,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         if (isset($start)) {
             $q .= ' limit ' . $start . ',' . $end;
         }
-        echo "query is: " . $q;
+//        echo "query is: " . $q;
         $data = $db->multiFetch($q);
         return $data;
     }
@@ -260,7 +260,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
     }
 
     
-    public static function countReservationsForClient($clientId) {
+    public static function countReservationsForClient() {
         $db = Database::getInstance();
         $q = 'SELECT r.reservation_id,
             r.reservation_status_id,

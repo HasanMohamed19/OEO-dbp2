@@ -6,15 +6,7 @@
             <h1>Browse Halls</h1>
         </div>
         <div class="row">
-            <div class="col-xl-8 mb-4">
-                <div class="input-group">
-                    <input type="text" class="form-control mb-0" placeholder="Search For a Hall" id="search">
-                    <button class="btn btn-outline-secondary" id="searchBtn">
-                        <i class="bi bi-search"> Search</i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-xl-2">
+            <div class="col-xl-10 text-end">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-funnel-fill"></i>

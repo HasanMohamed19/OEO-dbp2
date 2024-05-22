@@ -10,15 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <h1>Browse Clients</h1>
         </div>
         <div class="row">
-            <div class="col-xl-10 mb-4">
-                <div class="input-group">
-                    <input type="text" class="form-control mb-0" placeholder="Search For a Client" id="search">
-                    <button class="btn btn-outline-secondary" id="searchBtn">
-                        <i class="bi bi-search"> Search</i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-xl-2 text-end">
+            <div class="col-xl-12 text-end">
                 <button id="addClientBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">+ New Client</button>
             </div>
         </div>
