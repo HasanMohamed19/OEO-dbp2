@@ -239,35 +239,37 @@ class User {
     function updateUser($userId) {
         include_once  "./helpers/Database.php";
         $db = new Database();
-        if ($this->isValid()) {
-            $this->username = $db->sanitizeString($this->username);
-            $this->password = $db->sanitizeString($this->password);
-            $this->email    = $db->sanitizeString($this->email);
-            // assuming role_id never changes
-            $q = "UPDATE dbProj_User SET "
-                . "username=?, password=AES_ENCRYPT(?, '".SALT."'), email=? "
-                . "WHERE user_id=?";
+        if (!$this->isValid()) {
+            return false;
+        }
+        $this->username = $db->sanitizeString($this->username);
+        $this->password = $db->sanitizeString($this->password);
+        $this->email    = $db->sanitizeString($this->email);
+        // assuming role_id never changes
+        $q = "UPDATE dbProj_User SET "
+            . "username=?, password=AES_ENCRYPT(?, '".SALT."'), email=? "
+            . "WHERE user_id=?";
 
 
-            $stmt = mysqli_prepare($db->getDatabase(),$q);
+        $stmt = mysqli_prepare($db->getDatabase(),$q);
+//        var_dump($stmt);
+        if (!$stmt) {
             var_dump($stmt);
-            if ($stmt) {
-                $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('sssi', $this->username, $this->password, $this->email, $userId);
 //                    echo "username" . $this->username ." password ". $this->password;
 
-                if (!$stmt->execute()) {
-                    var_dump($stmt);
-                    echo 'Execute failed';
-                    $db->displayError($q);
-                    return false;
-                }
-            }
-
-            } else {
-                $db->displayError($q);
-                return false;
-            }
-
+        if (!$stmt->execute()) {
+            var_dump($stmt);
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        
+        return true;
     }
 
 //    function sanitizeString($var) {
@@ -328,12 +330,55 @@ class User {
     }
 
     function initWithUsername() {
-
+        include_once "./helpers/Database.php";
         $db = Database::getInstance();
-        $data = $db->singleFetch('SELECT * FROM dbProj_User WHERE username = \'' . $this->username . '\'');
+        $u = $db->sanitizeString($this->username);
+        $q = "SELECT * FROM dbProj_User WHERE username = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('s', $u);
+        if (!$stmt->execute()) {
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        $result = $stmt->get_result();
+        $data = $result->fetch_array(MYSQLI_ASSOC);
+        var_dump($data);
         if ($data != null) {
             return false;
         }
+        return true;
+    }
+    
+    function createWithUsername() {
+        include_once "./helpers/Database.php";
+        $db = Database::getInstance();
+        $u = $db->sanitizeString($this->username);
+        $q = "SELECT * FROM dbProj_User WHERE username = ?";
+
+        $stmt = mysqli_prepare($db->getDatabase(), $q);
+        if (!$stmt) {
+            $db->displayError($q);
+            return false;
+        }
+        $stmt->bind_param('s', $u);
+        if (!$stmt->execute()) {
+            echo 'Execute failed';
+            $db->displayError($q);
+            return false;
+        }
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_array(MYSQLI_ASSOC);
+        if (!$data) {
+            return false;
+        }
+        $this->initWith($data["user_id"], $data["username"], $data["password"], $data["email"], $data["role_id"]);
         return true;
     }
 

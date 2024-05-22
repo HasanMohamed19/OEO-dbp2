@@ -1,0 +1,13 @@
+{
+    "name": "vendor/o-e-o-system",
+    "description": "Description of project OEO-System.",
+    "authors": [
+        {
+            "name": "Hassan",
+            "email": "your@email.here"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "v6.9.1"
+    }
+}
