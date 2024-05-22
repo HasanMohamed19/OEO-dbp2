@@ -73,7 +73,7 @@ if (isset($_POST['submitted'])) {
     $user->createWithUsername();
     $price = Invoice::getReservationPrice($resId)->totalCost;
     EmailController::sendBookingReservationEmail($user->getEmail(), $_COOKIE['username'], $resId, $price, 'http://20.126.5.244/~u202101277/OEOProject/booking_detail.php?reservationId='.$resId);
-    
+    header("Location: ./booking_detail.php?reservationId=".$resId);
     exit();
 }
     
