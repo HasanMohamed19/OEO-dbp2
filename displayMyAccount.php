@@ -15,7 +15,7 @@
     // if add/edit card form submitted
     
     // assuming admin id is always 1
-if ($_COOKIE['userId'] == 1) {
+if ($_COOKIE['userId'] == 1 || !isset($_COOKIE['userId'])) {
     header("Location: PageNotFound.html");
 }
     
