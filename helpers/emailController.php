@@ -19,7 +19,7 @@ class EmailController {
     private static function createMailer(): PHPMailer {
         $mailer = new PHPMailer(true);
 
-        $mailer->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+        $mailer->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
         $mailer->isSMTP();                                            //Send using SMTP
         $mailer->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mailer->SMTPAuth = true;                                   //Enable SMTP authentication
@@ -48,7 +48,7 @@ class EmailController {
         $mailer->Subject = 'Forget Password';
         $mailer->Body    = $body;
         $mailer->send();
-        echo 'Message has been sent';
+//        echo 'Message has been sent';
         $mailer->clearAddresses();
     }
     
@@ -67,7 +67,7 @@ class EmailController {
         $mailer->Body    = $body;
         echo $body;
         $mailer->send();
-        echo 'Message has been sent';
+//        echo 'Message has been sent';
         $mailer->clearAddresses();
     }
 

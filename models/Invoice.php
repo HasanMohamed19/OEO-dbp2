@@ -103,7 +103,7 @@ class Invoice {
         SELECT
            i.catering_cost + i.hall_cost AS 'totalCost'
            FROM dbProj_Invoice i
-           WHERE i.reservation_id = 1090
+           WHERE i.reservation_id = " . $resId . "
            ORDER BY i.invoice_id DESC
            LIMIT 1";
         $data = $db->singleFetch($q);

@@ -159,7 +159,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         if (isset($start)) {
             $q .= ' limit ' . $start . ',' . $end;
         }
-//        echo "query is: " . $q;
+        echo "query is: " . $q;
         $data = $db->multiFetch($q);
         return $data;
     }

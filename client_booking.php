@@ -7,6 +7,7 @@ include_once('./models/Event.php');
 include_once('./models/Reservation.php');
 include_once('./models/ReservationMenuItem.php');
 include_once('./models/Invoice.php');
+include_once('./models/User.php');
 include_once('./helpers/emailController.php');
 
 if (isset($_POST['submitted'])) {
@@ -67,8 +68,11 @@ if (isset($_POST['submitted'])) {
     
     // this will flag completed reservation and js will redirect to summary page
     echo $resId;
+    $user = new User();
+    $user->setUsername($_COOKIE['username']);
+    $user->createWithUsername();
     $price = Invoice::getReservationPrice($resId)->totalCost;
-    EmailController::sendBookingReservationEmail('oeobhr@gmail.com', $_COOKIE['username'], $resId, $price, 'http://20.126.5.244/~u202101277/OEOProject/booking_detail.php?reservationId='.$resId);
+    EmailController::sendBookingReservationEmail($user->getEmail(), $_COOKIE['username'], $resId, $price, 'http://20.126.5.244/~u202101277/OEOProject/booking_detail.php?reservationId='.$resId);
     
     exit();
 }
