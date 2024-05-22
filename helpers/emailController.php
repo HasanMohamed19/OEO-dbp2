@@ -52,7 +52,7 @@ class EmailController {
         $mailer->clearAddresses();
     }
     
-    public static function sendBookingReservationEmail($recipient, $username, $resId, $eventName, $startDate, $endDate, $startTime, $endTime, $audiences, $hallName, $totalPrice) {
+    public static function sendBookingReservationEmail($recipient, $username, $resId, $totalPrice, $detailUrl) {
         
         $mailer = EmailController::createMailer();
         $mailer->addAddress($recipient);     //Add a recipient
@@ -60,14 +60,8 @@ class EmailController {
         $body = file_get_contents("./template/reservationEmail.html");
         $body = str_replace('{{username}}', $username, $body);
         $body = str_replace('{{resId}}', $resId, $body);
-        $body = str_replace('{{eventName}}', $eventName, $body);
-        $body = str_replace('{{startDate}}', $startDate, $body);
-        $body = str_replace('{{endDate}}', $endDate, $body);
-        $body = str_replace('{{startTime}}', $startTime, $body);
-        $body = str_replace('{{endTime}}', $endTime, $body);
-        $body = str_replace('{{audiences}}', $audiences, $body);
-        $body = str_replace('{{hallName}}', $hallName, $body);
-        $body = str_replace('{{totalPrice}}', $totalPrice, $body);
+        $body = str_replace('{{totalPrice}}', $totalPrice . ' bhd', $body);
+        $body = str_replace('{{detailUrl}}', $detailUrl, $body);
         
         $mailer->Subject = 'Successfull reservation';
         $mailer->Body    = $body;

@@ -97,6 +97,16 @@ class Invoice {
         $this->issueDate = $issueDate;
     }
 
-
-    
+    public static function getReservationPrice($resId) {
+        $db = Database::getInstance();
+        $q = "
+        SELECT
+           i.catering_cost + i.hall_cost AS 'totalCost'
+           FROM dbProj_Invoice i
+           WHERE i.reservation_id = 1090
+           ORDER BY i.invoice_id DESC
+           LIMIT 1";
+        $data = $db->singleFetch($q);
+        return $data;
+    }
 }
