@@ -121,12 +121,8 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
 
     function getReservationsForClient($start,$end) {
         $db = Database::getInstance();
+        $start = $start * $end - $end; 
         
-         if ($start == 1){
-            $start = 0;
-        } else {
-           $start = $start * $end - $end; 
-        }
         
 //        $start *= $end;
         
@@ -260,7 +256,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
     }
 
     
-    public static function countReservationsForClient() {
+    public static function countReservationsForClient($clientId) {
         $db = Database::getInstance();
         $q = 'SELECT r.reservation_id,
             r.reservation_status_id,
