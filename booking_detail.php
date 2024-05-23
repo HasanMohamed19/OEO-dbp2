@@ -1,4 +1,5 @@
 <?php
+
 include 'debugging.php';
 include './helpers/Database.php';
 include './models/Reservation.php';
@@ -7,7 +8,12 @@ include_once ''; './models/Event.php';
 //include_once './models/HallImage.php';
 //include './models/MenuItem.php';
 //include './models/ReservationMenuItem.php';
-
+if (isset($_POST['cancelReservationSubmitted'])) {
+        $reservationId = $_POST['reservationId'];
+        $reservation = new Reservation();
+        $reservation->cancelReservation($reservationId);
+        header("Location: ./booking_detail.php?reservationId=".$reservationId);
+    }
 include 'header.php';
 
 $reservationId = $_GET['reservationId'];
@@ -32,8 +38,11 @@ $hall->initWithHallid($id);
 $image = new HallImage();
 $hallImages = $image->getAllImagesForHall($id);
 
-?>
 
+    
+    
+    
+?>
 
 
 <div class="container">
@@ -241,17 +250,7 @@ $hallImages = $image->getAllImagesForHall($id);
 
 </div>
 
-<?php
-
-    if (isset($_POST['cancelReservationSubmitted'])) {
-        $reservationId = $_POST['reservationId'];
-        $reservation = new Reservation();
-        $reservation->cancelReservation($reservationId);
-        header("Location: ./displayMyAccount.php");
-    }
-    
-?>
 
 <?php
-include './footer.html';
+    include './template/footer.html';
 ?>
