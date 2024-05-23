@@ -45,16 +45,7 @@ if ($_COOKIE['userId'] == 1 || !isset($_COOKIE['userId'])) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
         
-//        if ($card->addCard()) {
-//            echo 'added card successfully';
-////            echo 'console.log("added card")';
-//        } else {
-//            echo ' card disapperaed';
-//            echo 'console.log("disapperaed card")';
-//        }
-//    }
-}
-//    echo '   ' . $_POST['gender'] . 'gender';
+
     // for profile
     if (isset($_POST['profileSubmitted'])) {
         // create personal and comapny details object
@@ -97,18 +88,7 @@ if ($_COOKIE['userId'] == 1 || !isset($_COOKIE['userId'])) {
             echo '<br><div class="container"><div class="alert alert-error alert-dismissible fade show" role="alert"> An error occured: Personal Details has not been Updated. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
         
-        // upload company details this will be for registration
-//        if ($company->addCompanyDetails()) {
-//            echo 'added details successfully';
-//        } else {
-//            echo 'didnt add details';
-//        }
-//        
-//        if ($personal->addPersonalDetails()) {
-//            echo 'added personal details successfully';
-//        } else {
-//            echo 'didnt add details';
-//        }
+
         
     }
     

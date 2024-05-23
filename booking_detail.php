@@ -247,7 +247,7 @@ $hallImages = $image->getAllImagesForHall($id);
         $reservationId = $_POST['reservationId'];
         $reservation = new Reservation();
         $reservation->cancelReservation($reservationId);
-        header("Location: booking_detail.php?reservationId=".$reservationId);
+        header("Location: ./displayMyAccount.php");
     }
     
 ?>
