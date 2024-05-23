@@ -1,36 +1,35 @@
 <?php
 
-// include './models/Login.php';
-
 session_start();
-
-
-// ini_set('show_errors', 'On');
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-
-// function __autoload($className){
-//     include_once  $className.'.php';
-// }
-
-
-// $obj = new Login();
-// if (!$obj->ok) {
-//     if($_SERVER['PHP_SELF'] != '/~u202101277/OEOProject/login.php'){
-//         header('Location: login.php');
-//         die();
-//     }    
-// }
 
 $userId = $_COOKIE['userId'];
 $userName = $_COOKIE['username'];
+
+$title = '';
+
+switch (basename($_SERVER['PHP_SELF'])) {
+
+  case ('index.php') : $title = 'OEO Home page'; break;
+  case ('halls.php') : $title = 'Halls page'; break;
+  case ('displayMyAccount.php') : $title = 'My Account'; break;
+  case ('aboutUs.php') : $title = 'About Us'; break;
+  case ('login.php') : $title = 'Login'; break;
+  case ('verifyCode.php') : $title = 'Forget Passwrod'; break;
+  case ('forgetPassword.php') : $title = 'Forget Password'; break;
+  case ('register.php') : $title = 'Register Page'; break;
+  case ('displayViewBookings.php') : $title = 'Reservations'; break;
+  case ('Admin_ViewHalls.php.php') : $title = 'Manage Halls'; break;
+  case ('Admin_ViewServices.php') : $title = 'Manage Services'; break;
+  case ('Admin_ViewClients.php') : $title = 'Manage Clients'; break;
+  case ('Admin_ViewStatistics.php') : $title = 'Admin Dashboard'; break;
+}
 
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OEO Homepage</title>
+        <title><?php echo $title ?></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap links -->
@@ -51,7 +50,7 @@ $userName = $_COOKIE['username'];
         <!-- Header -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index.php">
                     <img src="./images/DBLogo.svg" height="50" width="100"/>
                     
                 </a>
