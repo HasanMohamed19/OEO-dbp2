@@ -25,12 +25,9 @@ const getMenuId = (name) => {
         return 4;
     }
 };
+
 const updateCateringMenu = (menuId, pageNumber, itemCount) => {
     
-    const resetMenuItems = (menuName) => {
-//        console.log("Reset menu items for "+menuName);
-//        $('#pagination-items-'+menuName).html("");
-    };
     
     const addMenuItem = (item_id, menuId, itemName, itemPrice, itemImagePath) => {
         let menuName = getMenuName(parseInt(menuId));
@@ -79,10 +76,10 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
         }
     }).then(function(res) {
         let data = JSON.parse(res);
-//        console.log("Response for menu items: " + data);
+        
         let menuCount = 0;
         let menuName = getMenuName(menuId);
-//        resetMenuItems(menuName);
+        
         $.each(data, function(index, obj) {
             addMenuItem(obj.item_id, obj.service_id, obj.name, obj.price, obj.image_path);
             if (isItemAlreadySelected(obj.item_id)) {
@@ -91,7 +88,7 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
             }
             menuCount += 1;
         });
-//        console.log('checking items for menu '+menuId+' : ' + menuName + ', there are '+menuCount+' items.');
+        
         if (menuCount <= 0) {
             // used to display if no items are found
             toggleMenu(menuName);
@@ -100,13 +97,6 @@ const updateCateringMenu = (menuId, pageNumber, itemCount) => {
 //        setCateringSelection();
 //        console.log(selectedMenuItems);
     });
-};
-
-const getServiceIdFromName = (serviceName) => {
-    if (serviceName === "breakfast") {return 1;}
-    else if (serviceName === "lunch") {return 2;}
-    else if (serviceName === "hot") {return 3;}
-    else if (serviceName === "cold") {return 4;}
 };
 
 const enableCateringMenuTabs = () => {
@@ -119,8 +109,7 @@ const enableCateringMenuTabs = () => {
     //      console.log("CLICKED ON TABBB");
         event.preventDefault();
         const menuType = triggerEl.id.split("-",1)[0];
-    //    updateCateringMenu(getServiceIdFromName(menuType),1,10);
-        enablePagination(getServiceIdFromName(menuType), ".cateringItem", cateringItemDisplayCount);
+        enablePagination(getMenuId(menuType), ".cateringItem", cateringItemDisplayCount);
         tabTrigger.show();
       });
     });
@@ -151,6 +140,7 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
         });
     };
     
+    // adds page number
     const appendPageNumber = (index) => {
         const pageButton = document.createElement("button");
         pageButton.className = "page-link ms-2 rounded border-2 pagination-number-button-"+menuType;
@@ -166,6 +156,8 @@ const enablePagination = (menuId, dataListClass, itemCount) => {
             div.appendChild(pageNumber.cloneNode(true));
         });
     };
+    
+    // calculates number of pages and add page numbers
     const setPaginationNumbers = () => {
         paginationNumbersDivs.forEach((div) => {
             div.innerHTML = "";

@@ -32,8 +32,7 @@ const updateSideMenu = () => {
         $('#sideMenu-selectedMenus').html(selectedMenus);
         $('#sideMenu-cost').html(Math.round(cost*1000)/1000+' BHD');
     };
-    // get hall id from GET parameter
-//    console.log("Read hallId from url is: "+hallId);
+    // hallId is set from the start using GET parameter
     // use ajax to acquire the hall and use it to update side menu
     $.ajax({
         type: 'GET',
@@ -44,7 +43,7 @@ const updateSideMenu = () => {
         }
     }).then(function(res) {
         let data = JSON.parse(res);
-//        if (data.error)
+        
         hallRentalCharge = data.rentalCharge;
         hallCapacity = data.capacity;
         updateHallDetails(
@@ -63,6 +62,7 @@ const updateSideMenu = () => {
         );
     
     getMenuItemSelections(); // this updates selectedMenuItems
+    // display message if there are no selected menu items
     if (selectedMenuItems === null || selectedMenuItems.length <= 0) {
         updateCateringDetails('None', 0);
         return;

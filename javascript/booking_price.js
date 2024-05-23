@@ -14,6 +14,7 @@ const setTotalCost = () => {
         // show discount % only if there is discount
         if (discount < 1) 
             discountText = ' (' + Math.round((1-discount)*100) + '% discount)';
+        // show amendment fee if amending
         if (reservationId !== null && reservationId > 0) 
             amendmentText = ' (+'+amendmentFee*100+'% amendment fee)';
         $('#paymentTotalCost').html('Total: '+total+' BHD' + discountText + amendmentText);

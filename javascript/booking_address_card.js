@@ -13,6 +13,9 @@ const clearCardForm = () => {
 
 //      Update address and card dropdowns
 
+// the following functions use the 'type' parameter to select either the 
+// address or the card, in order to make them reusable
+
 const fillForm = (type, id) => {
     const inputElementName = type === 'Address' ? '#paymentBilling' : '#paymentCard';
     $.ajax({
@@ -53,6 +56,7 @@ const updateCardExpiryYearDropdown = () => {
 };
 
 const updateDropdown = (type, selectId = - 1) => {
+    // fills dropdown options
     const inputElementName = type === 'Address' ? '#paymentBillingSelection' : '#paymentCardSelection';
     const phpURLName = type === 'Address' ? 'getAddresses.php' : 'getCards.php';
     $.ajax({
@@ -126,21 +130,19 @@ const saveAddress = () => {
 //            console.log("Address insert success! ID: " + res);
                         } else {
                             // address could not be saved, handle error
-                            console.log("Address insert failed.");
+                            showInvalidAddressError("Address could not be saved.");
                         }
                     });
 
                 }  else {
                     // address could not be saved, handle error
-                    console.log("address insert failed.");
-                    showInvalidAddressError("Sorry, you cannot add more addresses, you have reached maximum addresses limit (4).");
+                    showInvalidAddressError("Maximum address limit reached (4).");
                 }
 
             },
             error: function (xhr, status, error) {
                 // Handle errors
-                showInvalidAddressError("Address insert failed!");
-                console.error('Error fetching Address info:', error);
+                showInvalidAddressError("Address could not be saved.");
             }
         });
     });
@@ -188,20 +190,19 @@ const saveCard = () => {
                     }).then(function (res) {
                         if (res > 0) {
                             updateDropdown('Card', res);
-//            console.log("Card insert success! ID: " + res);
+                        } else {
+                            showInvalidCardError("Card could not be saved.");
                         }
                     });
                 } else {
                     // address could not be saved, handle error
-                    console.log("Card insert failed.");
-                    showInvalidCardError("Sorry, you cannot add more cards, you have reached maximum card limit (4).");
+                    showInvalidCardError("Maximum card limit reached (4).");
                 }
 
             },
             error: function (xhr, status, error) {
                 // Handle errors
-                showInvalidCardError("Card insert failed.");
-                console.error('Error fetching card info:', error);
+                showInvalidCardError("Card could not be saved.");
             }
         });
     });
@@ -245,7 +246,7 @@ const validateAddress = () => {
     if (country === null || country.length === 0)
         return 'Country cannot be empty.';
     if (country.length <= 3)
-        return 'Country must be at least 3 characters.';
+        return 'Country must be at least 4 characters.';
     if (phone === null || phone.length === 0)
         return 'Phone number cannot be empty.';
     if (phone.length < 8)

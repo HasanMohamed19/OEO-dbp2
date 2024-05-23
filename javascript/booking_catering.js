@@ -8,7 +8,6 @@ const handleCateringCheckboxes = (menuType) => {
     const SetQuantityActive = (index, state) => {
         const quantityElement = paginationList.querySelector("#catering-item-"+menuType+"-"+index+"-quantity");
         quantityElement.disabled = state;
-//        console.log('Set quantity state');
     };
     
     // add event listeners to checkboxes
@@ -22,6 +21,8 @@ const handleCateringCheckboxes = (menuType) => {
                 // set quantity to zero instead of removing
                 // because removing will not update it in the DB
                 setItemQuantity(id, 0);
+                // database will automatically remove any items with 
+                // quantity 0
             }
         });
     });
@@ -37,6 +38,7 @@ const handleCateringCheckboxes = (menuType) => {
     
 };
 
+// returns which menus have selected items
 const getCateringSelectedMenus = (menuItems) => {
     let menus = {
         'breakfast':0,
@@ -56,7 +58,7 @@ const getCateringSelectedMenus = (menuItems) => {
 };
 
 const calculateCateringCost = (menuItems) => {
-    // read selected catering items and calculate price using db procedure
+    // read selected catering items and calculate price
     let totalCost = 0.0;
     $.each(menuItems, function(index, obj) {
         totalCost += obj.price * obj.quantity;
@@ -67,16 +69,18 @@ const calculateCateringCost = (menuItems) => {
 const getMenuItemSelections = () => {
     // loop through all quantity input elements (for catering)
     //  and add active ones to array
-    // check if they are already in the array and update
-    // quantity if they are
+    // check if they are already in the array and update quantity if they are
     $('.cateringItemQuantity').each(function(index) {
         if ($(this).prop('disabled')) return;
+        
         let quantity = $(this).val();
         if (quantity <= 0) return;
+        
         let elementId = $(this).attr('id');
         let menuName = elementId.split('-')[2];
         let serviceId = getMenuId(menuName)+"";
         let menuItemId = elementId.split('-')[3];
+        
         if (isItemAlreadySelected(menuItemId)) {
             setItemQuantity(menuItemId, quantity);
             return;

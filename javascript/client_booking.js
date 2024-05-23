@@ -42,7 +42,7 @@ $(document).ready(function() {
 });
 
 $('#bookingForm').on('submit', function(event) {
-    // post request must be made with js to allow sending
+    // post request must be made with AJAX to allow sending
     // list of selected menu items as JSON
     event.preventDefault();
     if (!validateAddressAndCard()) return;
@@ -51,8 +51,7 @@ $('#bookingForm').on('submit', function(event) {
     // get menu items and convert to JSON
     getMenuItemSelections();
     let items = JSON.stringify(selectedMenuItems);
-//    alert("prevented");
-    // submit form
+    // submit form using AJAX
     $.ajax({
         type: 'POST',
         url:'client_booking.php',
@@ -97,7 +96,6 @@ const addPageButtonListeners = () => {
     for (let i = 0; i < sectionButtons.length; i++) {
     //    console.log("Added listener to " + sectionButtons[i]);
         sectionButtons[i].addEventListener("click", function() {
-//            console.log('trying to change page. clicked on num: '+i+'. coming from: '+currentSection);
             // if trying to leave first page (event form)
             // send ajax request to validate input and allow 
             // user to continue or not
@@ -129,14 +127,8 @@ const addPageButtonListeners = () => {
             }
         });
     }
-    nextButton.addEventListener("click", function() {
-//            console.log("Tried to click");
-        if (currentSection < sectionButtons.length - 1) {
-            sectionButtons[currentSection + 1].click();
-//            console.log("clicked");
-        }
-    });
 
+    // hide/show previous button if entering/leaving first page
     const checkFirstPageClicked = (nextSection) => {
         if (nextSection === 0) {
             // if clicked on first page, hide previous button
@@ -150,6 +142,9 @@ const addPageButtonListeners = () => {
             }
         }
     };
+    
+    // if going to last page, hide next button and show save button
+    // if going away from last page, vice versa
     const checkLastPageClicked = (nextSection) => {
         if (nextSection === sectionButtons.length - 1) {
 //            console.log("setting total cost now");
@@ -171,19 +166,22 @@ const addPageButtonListeners = () => {
             }
         }
     };
+    
+    // next/previous button listeners, they just change the page number
+    // and call the function on the section buttons (the ones at the top of the form)
     previousButton.addEventListener("click", function() {
         if (currentSection > 0) {
             sectionButtons[currentSection - 1].click();
         }
     });
-
-    //  add function for complete booking button
-    saveButton.addEventListener("click", function() {
-        // take user to summary page
-    //    window.location.href = "booking_summary.php";
+    nextButton.addEventListener("click", function() {
+        if (currentSection < sectionButtons.length - 1) {
+            sectionButtons[currentSection + 1].click();
+        }
     });
 };
 
+// changes the page between event, catering, and checkout
 const changePage = (currentSection, nextSection) => {
     let sections = document.querySelectorAll("#bookingForm > fieldset");
     let sectionButtons = document.querySelectorAll("#bookingProgress > li");
@@ -198,7 +196,7 @@ const changePage = (currentSection, nextSection) => {
             cards[j].classList.add("inactive");
         }
     }
-
+    
     sections[currentSection = nextSection].classList.add("active");
     sectionButtons[currentSection].classList.add("active");
     if (currentSection < cards.length) {
@@ -209,7 +207,7 @@ const changePage = (currentSection, nextSection) => {
     return currentSection;
 };
 
-
+// returns the event information inputted by client
 const getEventInput = () => {
     let eventName = $('#bookingEventName').val();
     let startDate = $('#bookingStartDate').val();
