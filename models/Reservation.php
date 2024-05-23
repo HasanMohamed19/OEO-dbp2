@@ -150,7 +150,7 @@ JOIN dbProj_Hall h ON r.hall_id = h.hall_id
 JOIN dbProj_Event e ON r.event_id = e.event_id
 JOIN dbProj_Client c ON r.client_id = c.client_id
 JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_status_id
-        ";
+WHERE r.client_id = " . $this->clientId;
 
         if (isset($start)) {
             $q .= ' limit ' . $start . ',' . $end;
@@ -343,7 +343,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
             echo '<td>' . $reservation->getReservationDate() . '</td>';
             echo '<td>' . $event->getName() . '</td>';
             echo '<td>' . $hall->getHallName() . '</td>';
-            echo '<td>' . $dataSet[$i]->TotalCost . '</td>';
+            echo '<td>' . $dataSet[$i]->totalCost . '</td>';
             echo '</tr>';
         }
     }
