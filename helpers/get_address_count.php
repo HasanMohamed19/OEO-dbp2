@@ -1,4 +1,5 @@
 <?php
+// this will check how many addresses does the user have to limit it to 4
 // Include necessary files and classes
 include '../debugging.php';
 include '../models/BillingAddress.php'; // Include the Hall class definition

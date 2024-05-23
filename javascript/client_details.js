@@ -181,7 +181,7 @@ const updateClientDetails = () => {
     }).then(function(res) {
         let data = JSON.parse(res);
         if (!data.error) {
-            console.log('updated client');
+//            console.log('updated client');
             if (data.companyId > 0) {
                 setCompanyId(data.companyId);
             } else if (data.companyId === -1) {

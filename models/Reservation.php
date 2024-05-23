@@ -73,7 +73,7 @@ class Reservation {
     }
 
     
-
+    // gets all reservation for admins
     public function getAllReservations($start, $end) {
         $db = Database::getInstance();
         
@@ -119,6 +119,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         return $data;
     }
 
+    // gets reservation for clients
     function getReservationsForClient($start,$end) {
         $db = Database::getInstance();
         $start = $start * $end - $end; 
@@ -160,6 +161,7 @@ WHERE r.client_id = " . $this->clientId;
         return $data;
     }
     
+    // used for admin reservations pagination
     public static function countAllReservations() {
         $db = Database::getInstance();
         $q = "
@@ -191,7 +193,8 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         return $dataCount;
 //        echo $dataCount . ' datacount found is';
     }
-
+    
+    // this will create the reservations table
     public function createReservationsTable($dataset) {
 
         if (empty($dataset)) {
@@ -255,7 +258,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         . '</table>';
     }
 
-    
+    // this method will be used for pagination for client reservations
     public static function countReservationsForClient($clientId) {
         $db = Database::getInstance();
         $q = 'SELECT r.reservation_id,
@@ -283,7 +286,8 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         return $dataCount;
         
     }
-
+    
+    // gets reservation details
     function getReservationDetails() {
         $db = Database::getInstance();
         $data = $db->singleFetch("SELECT r.reservation_id,
@@ -316,7 +320,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
 
 
     
-
+    // displays client reservations
      public function displayClientReservations($dataSet) {
         if (empty($dataSet)) {
             echo '<h1 class="text-center">No reservations were found.</h1>';
@@ -348,7 +352,7 @@ JOIN dbProj_Reservation_Status rs ON r.reservation_status_id = rs.reservation_st
         }
     }
     
-
+    // displays reservation menu items
     public function displayReservationMenuItems($dataSet) {
         if (empty($dataSet)) {
             echo 'nothing found';

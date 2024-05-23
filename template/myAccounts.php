@@ -524,6 +524,7 @@ displayAddresses($addresses);
 
 <?php
 
+// displays cards
 function displayCards($dataSet) {
 
     if (!empty($dataSet)) {
@@ -548,6 +549,7 @@ function displayCards($dataSet) {
     }
 }
 
+// displays addresses
 function displayAddresses($dataSet) {
 
     if (!empty($dataSet)) {
@@ -608,7 +610,7 @@ function displayAddresses($dataSet) {
         $(document).on('click', '#editCardBtn', function () {
 
             var cardId = $(this).attr('data-id');
-            console.log('Card id is:', cardId);
+//            console.log('Card id is:', cardId);
             // AJAX request
             $.ajax({
                 url: './helpers/get_card_info.php', // URL of your PHP script to fetch hall info
@@ -617,14 +619,14 @@ function displayAddresses($dataSet) {
                 dataType: 'json', // Expected data type from server
                 success: function (response) {
                     // Handle successful response
-                    console.log('Card Info:', response);
+//                    console.log('Card Info:', response);
 
                     // Update form inputs with fetched data
                     $('#cardholdernameInput').val(response.cardholderName);
                     $('#cardNumberInput').val(response.cardNumber);
                     $('#CVVInput').val(response.CVV);
                     const expiryDate = response.expiryDate.split("-");
-                    console.log(parseInt(expiryDate[1]));
+//                    console.log(parseInt(expiryDate[1]));
                     $('#cardExpiryYear').val(expiryDate[0]);
                     $('#cardExpiryMonth').val(parseInt(expiryDate[1]));
 //                    $('#cardExpiryMonth').val(expiryDate[1]);
@@ -642,7 +644,7 @@ function displayAddresses($dataSet) {
         $(document).on('click', '#editAddressBtn', function () {
 
             var addressId = $(this).attr('data-id');
-            console.log('Address id is:', addressId);
+//            console.log('Address id is:', addressId);
             // AJAX request
             $.ajax({
                 url: './helpers/get_address_info.php',
@@ -651,7 +653,7 @@ function displayAddresses($dataSet) {
                 dataType: 'json', // Expected data type from server
                 success: function (response) {
                     // Handle successful response
-                    console.log('address Info:', response);
+//                    console.log('address Info:', response);
 
                     // Update form inputs with fetched data
                     $('#bldgNumberInput').val(response.buildingNumber);
@@ -695,7 +697,7 @@ function displayAddresses($dataSet) {
             dataType: 'json', // Expected data type from server
             success: function (response) {
                 // Handle successful response
-                console.log('status Info:', response);
+//                console.log('status Info:', response);
 
                 // Update class list
                 const statusDiv = $(".my-status");
@@ -743,7 +745,7 @@ function displayAddresses($dataSet) {
             dataType: 'text', // Expected data type from server
             success: function (response) {
                 // Handle successful response
-                console.log('cardCount Info:', response);
+//                console.log('cardCount Info:', response);
 
                 // if there is 4 cards don't allow them to add more cards
                 if (response >= 4) {
@@ -766,7 +768,7 @@ function displayAddresses($dataSet) {
             dataType: 'text', // Expected data type from server
             success: function (response) {
                 // Handle successful response
-                console.log('address Info:', response);
+//                console.log('address Info:', response);
 
                 // if there is 4 cards don't allow them to add more cards
                 if (response >= 4) {
@@ -799,7 +801,7 @@ function displayAddresses($dataSet) {
         var numberOnlyRegex = /^[0-9]+(\.[0-9]+)?$/;
         
         if (cardNumber === '' || cardholderName === '' || CVV === '' ||!numberOnlyRegex.test(cardNumber)
-                || cardholderName.length < 3 || cvv.length !== 3 || cardNumber.length !== 16) {
+                || cardholderName.length < 3 || CVV.length !== 3 || cardNumber.length !== 16) {
             $(this).addClass('was-validated');
             e.preventDefault();
             return false;

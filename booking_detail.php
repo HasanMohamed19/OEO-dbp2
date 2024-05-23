@@ -211,7 +211,7 @@ $hallImages = $image->getAllImagesForHall($id);
             dataType: 'text', // Expected data type from server
             success: function (response) {
                 // Handle successful response
-                console.log('reservation Info:', response);
+//                console.log('reservation Info:', response);
 
                 // Update class list
                 const statusDiv = $("#resStatus");
