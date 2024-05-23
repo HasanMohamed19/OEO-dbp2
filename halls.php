@@ -19,24 +19,24 @@ function getSuggestedDatesForHall($hall, $startDate, $endDate, $checkAfter) {
     $suggestStart = '';
     $suggestEnd = '';
     for ($i = 0; $i < $eventsCount && $i < $checkLimit; $i++) {
-//        echo "Checking event #$i... ";
+
         $event = (object) $events[$i];
 
         $eStartDate = $event->start_date;
         $eEndDate = $event->end_date;
-//        echo "Checking event for hall $hall->hall_name which starts on $eStartDate and ends on $eEndDate.  ";
 
-        // set check parameters based on whether to check after the event or before it
+
+        
         if ($checkAfter) {
             $dateInterval = date_diff(new DateTime($startDate), new DateTime($endDate));
-//            echo "Date interval is ". $dateInterval->format('%R%a days');
+
             $startDateCheck = new DateTime($eEndDate);
             $startDateCheck->modify('+1 day');
             $endDateCheck = clone $startDateCheck;
             $endDateCheck->add($dateInterval);
         } else {
             $dateInterval = date_diff(new DateTime($endDate), new DateTime($startDate));
-//            echo "Date interval is ". $dateInterval->format('%R%a days');
+
             $endDateCheck = new DateTime($eStartDate);
             $endDateCheck->modify('-1 day');
             $startDateCheck = clone $endDateCheck;
