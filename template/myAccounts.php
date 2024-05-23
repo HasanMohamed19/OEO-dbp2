@@ -645,7 +645,7 @@ function displayAddresses($dataSet) {
 
             echo '<div class="card my-3 mx-3 w-50 align-self-center">
                         <div class="card-body vstack gap-2 align-items-center">
-                            <div class="row fw-bold"><h2>Company Address</h2></div>';
+                            <div class="row fw-bold"><h2>Billing Address</h2></div>';
 
             echo '<div class="row m-2">
                         <span class="col text-start text-secondary">Phone Number: ' . $address->getPhoneNumber() . '</span>
