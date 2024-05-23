@@ -710,15 +710,15 @@ function displayAddresses($dataSet) {
                         statusDiv.addClass('gold');
                         break;
                     case 'Silver':
-                        nextStatus.html(15 - numberOfReservations + " until Gold Tier");
+                        nextStatus.html(16 - numberOfReservations + " until Gold Tier");
                         statusDiv.addClass('silver');
                         break;
                     case 'Bronze':
-                        nextStatus.html(10 - numberOfReservations + " until Silver Tier");
+                        nextStatus.html(11 - numberOfReservations + " until Silver Tier");
                         statusDiv.addClass('bronze');
                         break;
                     default:
-                        nextStatus.html(5 - numberOfReservations + " until Bronze Tier");
+                        nextStatus.html(6 - numberOfReservations + " until Bronze Tier");
                         statusDiv.addClass('nothing');
                         statusText.addClass('text-black');
                         nextStatus.addClass('text-black');
