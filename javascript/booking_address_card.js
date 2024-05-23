@@ -8,26 +8,27 @@ const clearBillingForm = () => {
 const clearCardForm = () => {
     // get and clear inputs
     $('#cardForm input').val("");
-    $('#cardForm select').prop('selectedIndex',0);
+    $('#cardForm select').prop('selectedIndex', 0);
 };
 
 //      Update address and card dropdowns
 
-const fillForm = (type,id) => {
+const fillForm = (type, id) => {
     const inputElementName = type === 'Address' ? '#paymentBilling' : '#paymentCard';
     $.ajax({
         type: 'GET',
-        url: 'ajaxQueries/get'+type+'.php',
+        url: 'ajaxQueries/get' + type + '.php',
         datatype: 'json',
         data: {
-            id:id
+            id: id
         }
-    }).then(function(res) {
+    }).then(function (res) {
         let data = JSON.parse(res);
-        if (!data) return;
+        if (!data)
+            return;
         for (let key in data) {
             if (data.hasOwnProperty(key)) {
-                $(inputElementName+key).val(data[key]);
+                $(inputElementName + key).val(data[key]);
 //                console.log('Setting '+(inputElementName+key)+' with value '+data[key]);
             }
         }
@@ -36,35 +37,35 @@ const fillForm = (type,id) => {
 
 const getOptionElementForDropdown = (type, obj) => {
     // returns option element to be used in dropdown for either Address or Card
-    return type === 'Address' ? 
-        `<option value="${obj.address_id}">${obj.phone_number}, ${obj.city}</option>`
-        :
-        `<option value="${obj.card_id}">**** **** **** ${obj.card_number.substring(obj.card_number.length-4)}, ${obj.cardholder_name.split(' ')[0]}</option>`;
+    return type === 'Address' ?
+            `<option value="${obj.address_id}">${obj.phone_number}, ${obj.city}</option>`
+            :
+            `<option value="${obj.card_id}">**** **** **** ${obj.card_number.substring(obj.card_number.length - 4)}, ${obj.cardholder_name.split(' ')[0]}</option>`;
 };
 
 const updateCardExpiryYearDropdown = () => {
     // updates expiry year dropdown to the current year + next 10 years.
     let currentYear = new Date().getFullYear();
-    for (i = currentYear; i <= currentYear+10; i++) {
+    for (i = currentYear; i <= currentYear + 10; i++) {
         $('#paymentCardExpiryYear').append(
                 `<option value="${i}">${i}</option>`);
     }
 };
 
-const updateDropdown = (type, selectId = -1) => {
+const updateDropdown = (type, selectId = - 1) => {
     const inputElementName = type === 'Address' ? '#paymentBillingSelection' : '#paymentCardSelection';
     const phpURLName = type === 'Address' ? 'getAddresses.php' : 'getCards.php';
     $.ajax({
         type: 'GET',
-        url: 'ajaxQueries/'+phpURLName,
+        url: 'ajaxQueries/' + phpURLName,
         datatype: 'json',
         data: {
-            clientId:clientId
+            clientId: clientId
         }
-    }).then(function(res) {
+    }).then(function (res) {
         let data = JSON.parse(res);
-        $(inputElementName).html("<option selected>Choose Saved "+type+"</option>");
-        $.each(data, function(index, obj) {
+        $(inputElementName).html("<option selected>Choose Saved " + type + "</option>");
+        $.each(data, function (index, obj) {
             $(inputElementName).append(getOptionElementForDropdown(type, obj));
         });
         // selectId is used to automatically select an option after loading
@@ -84,37 +85,67 @@ const saveAddress = () => {
         return;
     }
     $('#bookingAddressError').addClass('invisible');
-    
+
     let building = $('#paymentBillingBuilding').val();
     let street = $('#paymentBillingStreet').val();
     let block = $('#paymentBillingBlock').val();
     let area = $('#paymentBillingArea').val();
     let country = $('#paymentBillingCountry').val();
     let phone = $('#paymentBillingPhone').val();
-    
+
 //    console.log(`Adding Address: ${clientId} ${building} ${street} ${block} ${area} ${country} ${phone}`);
-    
-    $.ajax({
-        type: 'POST',
-        url: 'ajaxQueries/saveAddress.php',
-        data: {
-            clientId:clientId,
-            building:building,
-            street:street,
-            block:block,
-            area:area,
-            country:country,
-            phone:phone
-        }
-    }).then(function(res) {
-        if (res > 0) {
-            updateDropdown('Address', res);
+
+    $(function () {
+        $.ajax({
+            url: './helpers/get_address_count.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('address Info:', response);
+
+                // if there is 4 cards don't allow them to add more cards
+                if (response < 4) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'ajaxQueries/saveAddress.php',
+                        data: {
+                            clientId: clientId,
+                            building: building,
+                            street: street,
+                            block: block,
+                            area: area,
+                            country: country,
+                            phone: phone
+                        }
+                    }).then(function (res) {
+                        if (res > 0) {
+                            updateDropdown('Address', res);
 //            console.log("Address insert success! ID: " + res);
-        } else {
-            // address could not be saved, handle error
-            console.log("Address insert failed.");
-        }
+                        } else {
+                            // address could not be saved, handle error
+                            console.log("Address insert failed.");
+                        }
+                    });
+
+                }  else {
+                    // address could not be saved, handle error
+                    console.log("address insert failed.");
+                    showInvalidAddressError("Sorry, you cannot add more addresses, you have reached maximum addresses limit (4).");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                showInvalidAddressError("Address insert failed!");
+                console.error('Error fetching Address info:', error);
+            }
+        });
     });
+
+
 };
 const saveCard = () => {
     let validation = validateCard();
@@ -124,33 +155,58 @@ const saveCard = () => {
         return;
     }
     $('#bookingCardError').addClass('invisible');
-    
+
     let cardNumber = $('#paymentCardNumber').val();
     let cardholderName = $('#paymentCardholderName').val();
     let expiryYear = $('#paymentCardExpiryYear').val();
     let expiryMonth = $('#paymentCardExpiryMonth').val();
     let cvv = $('#paymentCardCVV').val();
-       
-    $.ajax({
-        type: 'POST',
-        url: 'ajaxQueries/saveCard.php',
-        data: {
-            cardNumber:cardNumber,
-            cardholderName:cardholderName,
-            expiryYear:expiryYear,
-            expiryMonth:expiryMonth,
-            cvv:cvv,
-            clientId:clientId
-        }
-    }).then(function(res) {
-        if (res > 0) {
-            updateDropdown('Card', res);
+
+    $(function () {
+        $.ajax({
+            url: './helpers/get_card_count.php',
+            method: 'GET',
+            data: {clientId: getCookie('clientId')},
+            dataType: 'text', // Expected data type from server
+            success: function (response) {
+                // Handle successful response
+                console.log('cardCount Info:', response);
+
+                // if there is 4 cards don't allow them to add more cards
+                if (response < 4) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'ajaxQueries/saveCard.php',
+                        data: {
+                            cardNumber: cardNumber,
+                            cardholderName: cardholderName,
+                            expiryYear: expiryYear,
+                            expiryMonth: expiryMonth,
+                            cvv: cvv,
+                            clientId: clientId
+                        }
+                    }).then(function (res) {
+                        if (res > 0) {
+                            updateDropdown('Card', res);
 //            console.log("Card insert success! ID: " + res);
-        } else {
-            // address could not be saved, handle error
-            console.log("Card insert failed.");
-        }
+                        }
+                    });
+                } else {
+                    // address could not be saved, handle error
+                    console.log("Card insert failed.");
+                    showInvalidCardError("Sorry, you cannot add more cards, you have reached maximum card limit (4).");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                showInvalidCardError("Card insert failed.");
+                console.error('Error fetching card info:', error);
+            }
+        });
     });
+
+
 };
 
 const validateAddressAndCard = () => {
@@ -160,7 +216,7 @@ const validateAddressAndCard = () => {
         return false;
     }
     $('#bookingAddressError').addClass('invisible');
-    
+
     validation = validateCard();
     if (validation !== 1) {
         showInvalidCardError(validation);
@@ -177,7 +233,7 @@ const validateAddress = () => {
     let area = $('#paymentBillingArea').val();
     let country = $('#paymentBillingCountry').val();
     let phone = $('#paymentBillingPhone').val();
-    
+
     if (building === null || building.length === 0)
         return 'Building number cannot be empty.';
     if (street === null || street.length === 0)
@@ -192,7 +248,7 @@ const validateAddress = () => {
         return 'Phone number cannot be empty.';
     if (phone.length < 8)
         return 'Phone number must be at least 8 digits.';
-    
+
     return 1;
 };
 const validateCard = () => {
@@ -202,7 +258,7 @@ const validateCard = () => {
     let expiryMonth = $('#paymentCardExpiryMonth').val();
     let cvv = $('#paymentCardCVV').val();
     var numberOnlyRegex = /^[0-9]+(\.[0-9]+)?$/;
-    
+
     if (cardNumber === null || cardNumber.length === 0)
         return 'Card number cannot be empty.';
     if (cardNumber.length !== 16)
@@ -219,7 +275,7 @@ const validateCard = () => {
         return 'CVV cannot be empty.';
     if (cvv.length !== 3)
         return 'CVV must be 3 digits.';
-    
+
     return 1;
 };
 
