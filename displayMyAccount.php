@@ -12,7 +12,7 @@ include './models/hall.php';
 include './models/BillingAddress.php';
 include './header.php';
 
-//    echo 'what is happening';
+
 // if add/edit card form submitted
 // assuming admin id is always 1
 if ($_COOKIE['userId'] == 1 || !isset($_COOKIE['userId'])) {
@@ -33,7 +33,7 @@ if (isset($_POST['submitted'])) {
     $card->setClientId($loggedInClientId);
     $client = new Client();
     $client->setClientId($loggedInClientId);
-//        echo $client->getClientStatusName('1')->status_name . ' status name';
+
 
     if ($card->getCardId() == '') {
         if ($card->addCard()) {
@@ -41,7 +41,6 @@ if (isset($_POST['submitted'])) {
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
     } else if ($card->updateCard()) {
-//        echo 'expiryDate ' . $card->getExpiryDate() ;
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been Updated Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
 }
@@ -97,15 +96,13 @@ if (isset($_POST['addressSubmitted'])) {
     $address->setBlockNumber($_POST['block']);
     $address->setCity($_POST['area']);
     $address->setCountry($_POST['country']);
-    $address->setPhoneNumber($_POST['phoneNumber']);
-    echo 'phoneNumber ' . $_POST['phoneNumber'];
+    $address->setPhoneNumber($_POST['phoneNumber']);    
     // get from the cookie
     $address->setClientId($loggedInClientId);
-//        echo $address->getCity() . ' city';
+
 
     if ($address->getAddressId() == '') {
         if ($address->addBillingAddress()) {
-            echo 'as ' . $address->getPhoneNumber();
             //display successful message
             echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
@@ -132,7 +129,7 @@ if (isset($_POST['accountSubmitted'])) {
     $user->setRoleId(ROLE_CLIENT);
     $client = new Client();
     $client->setPhoneNumber($phoneNumber);
-//        echo $user->getEmail() . ' is new email';
+
     $updatedUser = $user->updateUser($userId);
     $updatedClient = $client->updateClient($clientId);
     // message remaining
@@ -151,11 +148,11 @@ if (isset($_POST['accountSubmitted'])) {
 // card deletion:
 if (isset($_POST['deleteCardSubmitted'])) {
     $cardId = trim($_POST['cardId']);
-    echo 'card id is: ' . $cardId;
+    
     $deletedCard = new CardDetail();
     $deletedCard->initWithCardId($cardId);
     //    ($deletedCard);
-    echo ' id: ' . $deletedCard->getCardId();
+    
     if ($deletedCard->deleteCard()) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Card has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }
@@ -164,12 +161,11 @@ if (isset($_POST['deleteCardSubmitted'])) {
 // check for deletes:
 if (isset($_POST['deleteAddressSubmitted'])) {
     $addressId = trim($_POST['addressId']);
-    echo '$addressIdis: ' . $addressId;
+    
     $deletedAddress = new BillingAddress();
     $deletedAddress->setAddressId($addressId);
     $deletedAddress->initWithId();
-    //    ($deletedCard);
-//        echo ' id: ' . $deletedAddress->getAddressId();
+    
     if ($deletedAddress->deleteAddress()) {
         echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Address has been deleted Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
     }

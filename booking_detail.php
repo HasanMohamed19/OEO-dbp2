@@ -4,10 +4,7 @@ include 'debugging.php';
 include './helpers/Database.php';
 include './models/Reservation.php';
 include_once ''; './models/Event.php';
-//include_once './models/Hall.php';
-//include_once './models/HallImage.php';
-//include './models/MenuItem.php';
-//include './models/ReservationMenuItem.php';
+
 if (isset($_POST['cancelReservationSubmitted'])) {
         $reservationId = $_POST['reservationId'];
         $reservation = new Reservation();
@@ -26,11 +23,9 @@ $reservation->initReservationWithId($reservationId);
 
 $reservation->setClientId($_COOKIE['clientId']);
 
-//    ($reservation);
+
 $reservationDetails = $reservation->getReservationDetails();
-//($reservationDetails);
-//echo 'catering found: ' . count($reservation->getAdditionalServicesForReservation($reservationId));
-//    echo '  reservation details are: ' . count($reservations);
+
 
 $hall = new Hall();
 $id = $reservationDetails->hall_id;

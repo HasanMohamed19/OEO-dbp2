@@ -97,19 +97,13 @@ switch (basename($_SERVER['PHP_SELF'])) {
                     ?>
                   
                   
-                  
-<!--                  <li class="nav-item">
-                    <a class="nav-link" href="#">Royalty Points</a>
-                  </li>-->
                   <li class="nav-item">
                     <a id="about" class="nav-link" href="aboutUs.php">About Us</a>
                   </li>
                 </ul>
                   <!--<li class="nav-item">-->
                  <?php
-                    if (!isset($userId)) {
-//                        echo '<button type="button" class="btn btn-primary" onclick="window.location.href="login.php"">Login</button>';
-                        
+                    if (!isset($userId)) {                        
                         echo '<a type="button" class="btn btn-primary" href="login.php">Login</a>';
                     } else {
                         echo '<div class="row">';
@@ -118,15 +112,8 @@ switch (basename($_SERVER['PHP_SELF'])) {
                         echo '</div>';
                     }
                  ?>
-                  <!--</li>-->
                   
-                
               </div>
             </div>
         </nav>
         
-       
-        
-        
-    <!--</div>-->
-

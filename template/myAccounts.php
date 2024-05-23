@@ -258,8 +258,7 @@ $p->initWithClientId();
 $c = new CompanyDetails();
 $c->setClientId($loggedInClientId);
 $c->initWithClientId();
-//                            echo $p->getFirstName() . " sdds";
-//                            echo $c->getName() . " sdds";
+
                     ?>
                     <div id="detailsForm" class="card-body">
                         <fieldset id="personalDetailsForm">
@@ -384,7 +383,7 @@ $user->initWithUserid($_COOKIE['userId']);
                     </div>
 
 <?php
-//                            echo 'book address section';
+
 $address = new BillingAddress();
 $address->setClientId($loggedInClientId);
 $addresses = BillingAddress::getAddresses($loggedInClientId);

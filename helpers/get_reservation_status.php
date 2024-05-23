@@ -19,18 +19,11 @@ if (isset($_GET['reservationId'])) {
         $reservationStatus = $reservation->getStatusName($reservation->getStatusId());
         // Prepare the response data
         $responseData = $reservationStatus;
-//        echo $responseData . ' is data';
-//        $responseData = array(
-//            "status"=>$clientStatus,
-//            "numberOfReservations"=>$totalReservations
-//        );
 
-//        echo $responseData->status_name . ' is response data';
 
         // Send JSON response
         header('Content-Type: text/html');
-//        header('Content-Type: application/json'); 
-//        echo json_encode($responseData);
+
         
         echo $responseData;
     } catch (Exception $e) {
