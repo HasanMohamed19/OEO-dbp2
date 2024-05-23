@@ -76,7 +76,7 @@ const registerUser = () => {
         data: data
     }).then(function(res) {
         if (res > 0) {
-            console.log('user registered successfully');
+            window.location.href = "login.php";
         } else {
             displayError(res);
         }
