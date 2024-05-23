@@ -85,6 +85,13 @@ class Event {
         if ($this->endTime <= $this->startTime && $this->startDate === $this->endDate)
             return 'The event must be at least 1 day longer.';
         
+        $dtEndTime = new DateTime($this->endTime);
+        $dtStartTime = new DateTime($this->startTime);
+        $timeDiff = $dtEndTime->diff($dtStartTime);
+        
+        if ($timeDiff->h < 1)
+            return 'The event must be at least 1 hour long.';
+        
         if (empty($this->audienceNumber) || $this->audienceNumber <= 0)
             return 'Please enter a valid audience number.';
 
