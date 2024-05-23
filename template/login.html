@@ -1,30 +1,4 @@
-<!--<!DOCTYPE html>
-<html>
-        <style>
-        .large-title {
-                font-size: 2.5rem; /* Adjust the size as needed */
-                text-align: center;
-                margin-top: 20px; /* Add some space above the title */
-                margin-bottom: 20px; /* Add some space below the title */
-            }
-            
-            .form-control {
-        margin-bottom: 1rem;
-    }
-    #loginBtn {
-        margin-bottom: 1rem;
-        margin-top: 1rem;
-    }
-    .bg-login-image {
-        background-color: gray;
-    }
-    
-    .container{
-        width: 70rem!important;
-    }
-        </style>
-    </head>
-    <body>-->
+
         <div class="container">
             <div class="row justify-content-center">
 
@@ -40,8 +14,8 @@
                                         <h1 class="h1 text-gray-900 mb-4">Login</h1>
                                     </div>
                                     <form class="user account-form" action="login.php" method="post">
-                                        <input type="text" class="form-control form-control-user" id="username" placeholder="Username" name="username">
-                                        <input type="password" class="form-control form-control-user" id="password" placeholder="Password" name="password">
+                                        <input type="text" maxlength="20" class="form-control form-control-user" id="username" placeholder="Username" name="username">
+                                        <input type="password" maxlength="30" class="form-control form-control-user" id="password" placeholder="Password" name="password">
                                         <div class="row">
                                                 <div class="col-md-6">
                                                     <input type="checkbox" class="form-check-input" id="rememberMe">

@@ -97,7 +97,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
                             <div class="mb-3">
                                 <label for="cmpcity" class="form-label">Company City</label>
-                                <input type="text" class="form-control cmpInputs" id="cmpcity" placeholder="Enter Company City" name="cmpcity">
+                                <input type="text" maxlength="50" class="form-control cmpInputs" id="cmpcity" placeholder="Enter Company City" name="cmpcity">
                             </div>
                             <em id="chckboxerror" class="text-center text-danger mb-3"></em>
                             <div class="row">

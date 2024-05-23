@@ -14,13 +14,7 @@ include './models/Login.php';
     $login = new Login();
     $username = $_POST['username'];
     $password = $_POST['password'];
-//     echo 'manually: ' . $login->login($username, $password) . ' is';
-//    if ($login->login($username, $password)) {
-////        header('Location: index.php');
-//        echo "Success";
-//    } else {
-//        echo $error = "Wrong Credintals";
-//    }
+
 
      if ($login->login($username, $password)) {
          if ($username == 'admin') {
