@@ -244,6 +244,8 @@ const validateAddress = () => {
         return 'Area cannot be empty.';
     if (country === null || country.length === 0)
         return 'Country cannot be empty.';
+    if (country.length <= 3)
+        return 'Country must be at least 3 characters.';
     if (phone === null || phone.length === 0)
         return 'Phone number cannot be empty.';
     if (phone.length < 8)

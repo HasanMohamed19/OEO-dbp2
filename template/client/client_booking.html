@@ -113,36 +113,30 @@
                                 <div class="form-group col required">
                                     <label for="bookingEventName" class="form-label">Event Name</label>
                                     <input id="bookingEventName" maxlength="100" name="bookingEventName" type="text" class="form-control" required>
-                                    <div class="invalid-feedback">Enter valid event name.</div>
                                 </div>
                                 <div class="form-group col required">
                                     <label for="bookingNoAudiences" class="form-label">Number of Audiences</label>
-                                    <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" required>
-                                    <div class="invalid-feedback">Enter valid audience number.</div>
+                                    <input id="bookingNoAudiences" name="bookingNoAudiences"  type="number" class="form-control" max="99999" required>
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="form-group col required">
                                     <label for="bookingStartDate" class="form-label">Start Date</label>
                                     <input id="bookingStartDate" name="bookingStartDate"  type="date" class="form-control" required>
-                                    <div class="invalid-feedback">Enter valid start date.</div>
                                 </div>
                                 <div class="form-group col required">
                                     <label for="bookingEndDate" class="form-label">End Date</label>
                                     <input id="bookingEndDate" name="bookingEndDate"  type="date" class="form-control" required >
-                                    <div class="invalid-feedback">Enter valid end date.</div>
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="form-group col required">
                                     <label for="bookingStartTime" class="form-label">Start Time</label>
                                     <input id="bookingStartTime" name="bookingStartTime"  type="time" class="form-control" required>
-                                    <div class="invalid-feedback">Enter valid start time.</div>
                                 </div>
                                 <div class="form-group col required">
                                     <label for="bookingEndTime" class="form-label">End Time</label>
                                     <input id="bookingEndTime" name="bookingEndTime"  type="time" class="form-control" required>
-                                    <div class="invalid-feedback">Enter valid end time.</div>
                                 </div>
                             </div>
                             <div class="row mb-4">
@@ -499,35 +493,35 @@
                             <div id="billingForm">
                                 <div class="row mb-4">
                                     <div class="form-group col required">
-                                        <label class="form-label" for="paymentBillingBuilding">Building Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding" required>
+                                        <label class="form-label" for="paymentBillingBuilding">Building Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingBuilding" name="paymentBillingBuilding" maxlength="10" required>
                                         <div class="invalid-feedback">Enter building number.</div>
                                     </div>
                                     <div class="form-group col required">
-                                        <label class="form-label" for="paymentBillingStreet">Street Name/Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet" required>
+                                        <label class="form-label" for="paymentBillingStreet">Street Number</label>
+                                        <input class="form-control" type="text" id="paymentBillingStreet" name="paymentBillingStreet" maxlength="10" required>
                                 <div class="invalid-feedback">Enter street number.</div>
                                     </div>
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentBillingBlock">Block</label>
-                                        <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock" required>
+                                        <input class="form-control" type="text" id="paymentBillingBlock" name="paymentBillingBlock" maxlength="10" required>
                                         <div class="invalid-feedback">Enter block number.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentBillingArea">Area</label>
-                                        <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea" required>
+                                        <input class="form-control" type="text" id="paymentBillingArea" name="paymentBillingArea" maxlength="25" required>
                                         <div class="invalid-feedback">Enter area.</div>
                                     </div>
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentBillingCountry">Country</label>
-                                        <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry" required>
+                                        <input class="form-control" type="text" id="paymentBillingCountry" name="paymentBillingCountry" maxlength="25" required>
                                         <div class="invalid-feedback">Enter country.</div>
                                     </div>
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentBillingPhone">Phone Number</label>
-                                        <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone" required>
+                                        <input class="form-control" type="text" id="paymentBillingPhone" name="paymentBillingPhone" maxlength="12" required>
                                         <div class="invalid-feedback">Enter phone number.</div>
                                     </div>
                                 </div>
@@ -571,12 +565,12 @@
                                 <div class="row mb-4">
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentCardNumber">Card Number</label>
-                                        <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber" required>
+                                        <input class="form-control" type="text" id="paymentCardNumber" name="paymentCardNumber" maxlength="16" required>
                                         <div class="invalid-feedback">Enter valid card number.</div>
                                     </div>
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentCardholderName">Cardholder Name</label>
-                                        <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName" required>
+                                        <input class="form-control" type="text" id="paymentCardholderName" name="paymentCardholderName" maxlength="50" required>
                                         <div class="invalid-feedback">Enter valid cardholder name.</div>
                                     </div>
                                 </div>
@@ -609,7 +603,7 @@
                                     </div>
                                     <div class="form-group col required">
                                         <label class="form-label" for="paymentCardCVV">CVV</label>
-                                        <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV" required>
+                                        <input class="form-control" type="text" id="paymentCardCVV" name="paymentCardCVV" maxlength="3" required>
                                         <div class="invalid-feedback">Enter CVV.</div>
                                     </div>
                                 </div>

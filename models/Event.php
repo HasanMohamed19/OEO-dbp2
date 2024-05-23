@@ -57,6 +57,9 @@ class Event {
         if (empty($this->name))
             return 'Please enter a name for your event.';
         
+        if (strlen($this->name) <= 3)
+            return 'Event name must be more than three characters long.';
+        
         if (empty($this->startDate))
             return 'Please enter the date your event starts.';
         
