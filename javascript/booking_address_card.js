@@ -201,11 +201,14 @@ const validateCard = () => {
     let expiryYear = $('#paymentCardExpiryYear').val();
     let expiryMonth = $('#paymentCardExpiryMonth').val();
     let cvv = $('#paymentCardCVV').val();
+    var numberOnlyRegex = /^[0-9]+(\.[0-9]+)?$/;
     
     if (cardNumber === null || cardNumber.length === 0)
         return 'Card number cannot be empty.';
     if (cardNumber.length !== 16)
         return 'Card number must be 16 digits.';
+    if (!numberOnlyRegex.test(cardNumber))
+        return 'Card number cannot contain letters.';
     if (cardholderName === null || cardholderName.length === 0)
         return 'Cardholder name cannot be empty.';
     if (expiryYear === null || expiryYear.length === 0 || expiryYear === 'Year')
