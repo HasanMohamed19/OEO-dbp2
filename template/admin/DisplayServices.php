@@ -42,11 +42,11 @@
                             </div> 
                             <div class="mb-3 form-group required">
                                 <label for="ItemName" class="form-label">Item Name</label>
-                                <input type="text" class="form-control" id="ItemName" placeholder="Enter Item Name" name="ItemName" required>
+                                <input type="text" minlength="3" maxlength="50" class="form-control" id="ItemName" placeholder="Enter Item Name" name="ItemName" required>
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="Price" class="form-label">Price</label>
-                                <input type="number" step="any" class="form-control" id="Price" placeholder="Enter Price" name="Price" required>
+                                <input type="number" step="0.001" max="9999999" class="form-control" id="Price" placeholder="Enter Price" name="Price" required>
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="serviceType" class="form-label">Service Type</label>
@@ -68,7 +68,7 @@
                             </div>
                             <div class="mb-3" form-group>
                                 <label for="description">Item Description</label>
-                                <textarea class="form-control" rows="5" id="description" placeholder="Enter Items's Description" name="description" ></textarea>
+                                <textarea class="form-control" maxlength="250" rows="5" id="description" placeholder="Enter Items's Description" name="description" ></textarea>
                             </div>
                             <div class="row">
                                 <div class="col text-start">

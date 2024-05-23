@@ -152,7 +152,7 @@ class Hall {
     }
 
     public function setHallStatus($hallStatus) {
-        echo 'set hall status to ' . $hallStatus;
+//        echo 'set hall status to ' . $hallStatus;
         $this->hallStatus = $hallStatus;
     }
 
@@ -164,7 +164,7 @@ class Hall {
         for ($i = 0; $i < count($hallImages); $i++) {
             $hallImg = new HallImage();
             $hallImg->setHall_id($this->hallId);
-            echo'<h1>Hall id is</h1>' . $this->hallId;
+//            echo'<h1>Hall id is</h1>' . $this->hallId;
             $hallImg->setHallImagePath($hallImages[$i]);
             $hallImg->addHallImage();
         }

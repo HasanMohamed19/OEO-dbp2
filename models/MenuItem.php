@@ -296,14 +296,14 @@ class MenuItem {
             $errors[] = 'You must enter a price';
 
         if (empty($this->imagePath)) {
-            echo'no image';
+//            echo'no image';
             $errors[] = 'You must add an Image Path';
         }
         if (empty($this->ItemStatus))
             $errors[] = 'You must enter a status';
 
         if (empty($this->cateringServiceId)) {
-            echo'no service';
+//            echo'no service';
             $errors[] = 'You must add a catering service type';
         }
         if (empty($errors))

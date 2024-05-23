@@ -17,7 +17,7 @@ include './debugging.php';
         <div class="row text-center mb-3">
             <h1 class="fw-bold">Popular Halls</h1>
         </div>
-        <div id="popularHalls" class="row d-flex justify-content-center mt-3" >
+        <div id="popularHalls" class="row d-flex justify-content-center mt-3 gy-5" >
             <?php
             $hall = new Hall();
             $halls = $hall->getPopularHalls();
@@ -39,7 +39,7 @@ function displayHalls($dataSet) {
         $hallImages = $image->getAllImagesForHall($id);
         echo '
         <div class="col-xl-4">
-            <div class="card mb-5 ">
+            <div class="card mb-5 h-100">
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col">

@@ -73,15 +73,15 @@
                             </div>  
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Hall Name" name="HallName" value="" id="hallNameInput" required >
+                                <input type="text" minlength="3" maxlength="100" class="form-control" placeholder="Enter Hall Name" name="HallName" value="" id="hallNameInput" required >
                             </div>
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Rental Charge</label>
-                                <input type="number" step="any" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
+                                <input type="number" step="0.001" max="9999999" class="form-control" placeholder="Enter Rental Charge" name="RntlCharge" value="" id="RntlchargeInput" required >
                             </div>
                             <div class="mb-3 form-group required">
                                 <label class="form-label">Hall Capacity</label>
-                                <input type="number" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput" required >
+                                <input type="number" max="99999999999" class="form-control" placeholder="Enter Hall's Capacity" name="capacity" value="" id="CapacityInput" required >
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="status" class="form-label">Hall Status</label>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="mb-3 form-group">
                                 <label class="form-label">Hall Description</label>
-                                <textarea class="form-control" rows="5" placeholder="Enter Hall's Description" name="description" id="descriptionInput"></textarea>
+                                <textarea class="form-control" maxlength="500" rows="5" placeholder="Enter Hall's Description" name="description" id="descriptionInput"></textarea>
                             </div>
                             <div class="row">
                                 <div class="col text-start">

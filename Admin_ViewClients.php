@@ -50,7 +50,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     if ($userid == '') {
         if ($user->initWithUsername()) {
             if ($user->addUser()) {
-                echo'user after register is' . $user->getUserId();
+//                echo'user after register is' . $user->getUserId();
                 if (isset($_POST['pdCheckBx'])) {
                     $pd->setClientId($user->getClientByUserId());
                     $pd->addPersonalDetails();

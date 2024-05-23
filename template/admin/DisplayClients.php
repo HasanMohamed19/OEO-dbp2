@@ -29,19 +29,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <form action="Admin_ViewClients.php" id ="add-form" novalidate method="POST" enctype="multipart/form-data">
                             <div class="mb-3 form-group required">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control userInputs" id="usrName" placeholder="Enter Username" name="usrName" required>
+                                <input type="text"  maxlength="20" class="form-control userInputs" id="usrName" placeholder="Enter Username" name="usrName" required>
                             </div>
                             <div class="mb-3 form-group required" id="passwordDiv" hidden>
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control userInputs" id="pwd" placeholder="Enter Password" name="pwd" required>
+                                <input type="password" maxlength="30" class="form-control userInputs" id="pwd" placeholder="Enter Password" name="pwd" required>
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control userInputs" id="email" placeholder="Enter Email" name="email" required>
+                                <input type="text" maxlength="50" class="form-control userInputs" id="email" placeholder="Enter Email" name="email" required>
                             </div>
                             <div class="mb-3 form-group required">
                                 <label for="phoneNum" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control userInputs" id="phoneNum" placeholder="Enter Phone Number" name="phoneNumber" required>
+                                <input type="text" maxlength="25" class="form-control userInputs" id="phoneNum" placeholder="Enter Phone Number" name="phoneNumber" required>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="pdCheckBx" name="pdCheckBx">
@@ -53,11 +53,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             <div class="mb-3">
                                 <label for="fName" class="form-label">First Name</label>
-                                <input type="text" class="form-control pdInputs" id="fName" placeholder="Enter First Name" name="fName">
+                                <input type="text" maxlength="50" class="form-control pdInputs" id="fName" placeholder="Enter First Name" name="fName">
                             </div>
                             <div class="mb-3">
                                 <label for="lName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control pdInputs" id="lName" placeholder="Enter Last Name" name="lName">
+                                <input type="text" maxlength="50" class="form-control pdInputs" id="lName" placeholder="Enter Last Name" name="lName">
                             </div>
                             <div class="mb-3">
                                 <label for="gender" class="form-label">Gender</label>
@@ -69,7 +69,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
                             <div class="mb-3">
                                 <label for="nation" class="form-label">Nationality</label>
-                                <input type="text" class="form-control pdInputs" id="nation" placeholder="Enter Nationality" name="nation">
+                                <input type="text" maxlength="20" class="form-control pdInputs" id="nation" placeholder="Enter Nationality" name="nation">
                             </div>
                             <div class="mb-3">
                                 <label for="dob" class="form-label">Date Of Birth</label>
@@ -85,15 +85,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <hr>
                             <div class="mb-3">
                                 <label for="cmpName" class="form-label">Company Name</label>
-                                <input type="text" class="form-control cmpInputs" id="cmpName" placeholder="Enter Company Name" name="cmpName">
+                                <input type="text" maxlength="50" class="form-control cmpInputs" id="cmpName" placeholder="Enter Company Name" name="cmpName">
                             </div>
                             <div class="mb-3">
                                 <label for="cmpSize" class="form-label">Company Size</label>
-                                <input type="number" class="form-control cmpInputs" id="cmpSize" placeholder="Enter Company Size" name="cmpSize">
+                                <input type="number" max="99999999999" class="form-control cmpInputs" id="cmpSize" placeholder="Enter Company Size" name="cmpSize">
                             </div>
                             <div class="mb-3">
                                 <label for="cmpWeb" class="form-label">Company Website</label>
-                                <input type="text" class="form-control cmpInputs" id="cmpWeb" placeholder="Enter Company Website" name="cmpWeb">
+                                <input type="text" maxlength="50" class="form-control cmpInputs" id="cmpWeb" placeholder="Enter Company Website" name="cmpWeb">
                             </div>
                             <div class="mb-3">
                                 <label for="cmpcity" class="form-label">Company City</label>
