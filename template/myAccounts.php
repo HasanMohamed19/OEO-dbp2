@@ -148,14 +148,14 @@ displayCards($cards);
                                         <div class="col form-group required">
                                             <label for="cardExpiryYear" class="form-label">Card Expiry Year</label>
                                             <select name="cardExpiryYear" id="cardExpiryYear" class="form-select" required>
-                                                <option disabled selected>Year</option>
+                                                <option disabled selected value="">Year</option>
                                             </select>
                                         </div>
 
                                         <div class="col form-group required">
                                             <label for="cardExpiryMonth" class="form-label">Month</label>
                                             <select name="cardExpiryMonth" id="cardExpiryMonth" class="form-select" required>
-                                                <option selected disabled>Month</option>
+                                                <option selected disabled value="">Month</option>
                                                 <option value="1">January (1)</option>
                                                 <option value="2">February (2)</option>
                                                 <option value="3">March (3)</option>
@@ -880,8 +880,9 @@ function displayAddresses($dataSet) {
         var cardholderName = $('#cardholdernameInput').val();
         var CVV = $('#CVVInput').val();
 //        var expirydate = $('#imageUpload');
-
-        if (cardNumber === '' || cardholderName === '' || CVV === '') {
+        var numberOnlyRegex = /^[0-9]+(\.[0-9]+)?$/;
+        
+        if (cardNumber === '' || cardholderName === '' || CVV === '' ||!numberOnlyRegex.test(cardNumber)) {
             $(this).addClass('was-validated');
             e.preventDefault();
             return false;
