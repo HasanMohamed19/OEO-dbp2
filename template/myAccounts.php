@@ -330,6 +330,7 @@ $c->initWithClientId();
                     <script>
                         handleDetailsCheckboxes();
                     </script>
+                </div>
 <!--                   
 
                 <!-- end of profile -->
