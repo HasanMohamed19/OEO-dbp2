@@ -114,11 +114,11 @@ if (isset($_POST['addressSubmitted'])) {
 if (isset($_POST['accountSubmitted'])) {
     $user = new User();
     $userId = $_COOKIE['userId'];
-    echo $userId . ' is userid';
+//    echo $userId . ' is userid';
     $clientId = $_COOKIE['clientId'];
     $username = $_POST['username'];
     $email = $_POST['email'];
-    echo $email . 'is  email';
+//    echo $email . 'is  email';
     $phoneNumber = $_POST['phoneNumber'];
     $password = $_POST['password'];
 
@@ -133,15 +133,15 @@ if (isset($_POST['accountSubmitted'])) {
     $updatedUser = $user->updateUser($userId);
     $updatedClient = $client->updateClient($clientId);
     // message remaining
-    if ($updatedUser && $updatedClient) {
-        echo 'Updated Both';
-    } else if ($updatedClient) {
-        echo 'updated client';
-    } else if ($updatedUser) {
-        echo 'updated user';
-    } else {
-        echo 'nothing updated';
-    }
+//    if ($updatedUser && $updatedClient) {
+//        echo 'Updated Both';
+//    } else if ($updatedClient) {
+//        echo 'updated client';
+//    } else if ($updatedUser) {
+//        echo 'updated user';
+//    } else {
+//        echo 'nothing updated';
+//    }
 }
 
 // check for deletes:

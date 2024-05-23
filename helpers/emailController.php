@@ -16,6 +16,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class EmailController {
 
+    // configuration for the mailer instance
     private static function createMailer(): PHPMailer {
         $mailer = new PHPMailer(true);
 
@@ -35,7 +36,8 @@ class EmailController {
 
         return $mailer;
     }
-
+    
+    // send email for forget password confirmation
     public static function sendForgotPasswordEmail($recipient, $username, $verifyCode) {
         
         $mailer = EmailController::createMailer();
@@ -52,6 +54,7 @@ class EmailController {
         $mailer->clearAddresses();
     }
     
+    // sends email after reservation
     public static function sendBookingReservationEmail($recipient, $username, $resId, $totalPrice, $detailUrl) {
         
         $mailer = EmailController::createMailer();
