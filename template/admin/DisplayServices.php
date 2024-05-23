@@ -131,7 +131,7 @@
                 $.ajax({
                     url: './helpers/get_Item_Info.php', // URL of your PHP script to fetch hall info
                     method: 'GET',
-                    data: {itemId: itemId}, // Send hallId to server
+                    data: {itemId: itemId}, // Send itemID to server
                     dataType: 'json', // Expected data type from server
                     success: function (response) {
                         // Handle successful response
@@ -158,7 +158,7 @@
             });
         });
         $('#addModal').on('hidden.bs.modal', function (e) {
-            // Do something when the modal is dismissed
+            // clear form inputs when the modal is dismissed
             $('.form-control').val('');
             $('.form-select').val('');
             $('#add-form').removeClass('was-validated');

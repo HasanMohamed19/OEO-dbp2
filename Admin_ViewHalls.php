@@ -69,8 +69,10 @@ else $start = 1;
 
 $end = 10;
 
+//apply all filter by default
 $filter = (isset($_GET['filter'])) ? $_GET['filter'] : 'all';
 
+//check the filter 
 switch ($filter) 
 {
     case 'ava':
@@ -83,11 +85,13 @@ switch ($filter)
         $displayby = 'all';
         break;
 }
+//display halls depending on filter chosen
 $hall = new Hall();
 $data = $hall->getAllHalls($start, $end, $displayby);
 echo '<div class="container">';
 displayHalls($data);
 
+//set the pagination total records depending on filter
 $pagination = new Pagination();
 if ($displayby=='all'){
     $pagination->setTotal_records(Hall::countAllHalls());
@@ -104,7 +108,7 @@ include './template/footer.html';
 
 
 <?php
-
+//functiont o display halls using cards
 function displayHalls($dataSet) {
     if (!empty($dataSet)) {
         for ($i = 0; $i < count($dataSet); $i++) {

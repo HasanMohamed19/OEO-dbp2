@@ -17,9 +17,9 @@ include_once 'header.php';
 if ($_COOKIE['userId'] != 1) {
     header("Location: PageNotFound.html");
 }
-
+//check if Add/Edit Client Form is submitted
 if (isset($_POST['clientFormSubmitted'])) {
-//initialze a new Client object
+//initialze a new User object
     $userid = trim($_POST['Add-UserID']);
     $user = new User();
 
@@ -30,7 +30,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $user->setRoleId(ROLE_CLIENT);
     $user->setEmail(trim($_POST['email']));
 
-    //get personal details
+    //get personal details and assign them to a new personal details object
     $pd = new PersonalDetails();
     $pd->setFirstName(trim($_POST['fName']));
     $pd->setLastName(trim($_POST['lName']));
@@ -38,7 +38,7 @@ if (isset($_POST['clientFormSubmitted'])) {
     $pd->setNationality(trim($_POST['nation']));
     $pd->setDob(trim($_POST['dob']));
 
-    //get company details
+    //get company details and assign them to a new company details object
     $cmp = new CompanyDetails();
     $cmp->setName(trim($_POST['cmpName']));
     $cmp->setComapnySize(trim($_POST['cmpSize']));
@@ -46,24 +46,27 @@ if (isset($_POST['clientFormSubmitted'])) {
     $cmp->setCity(trim($_POST['cmpcity']));
     $db = Database::getInstance();
 
-    //if user id is empty (New user) add the user
-    if ($userid == '') {
-        if ($user->initWithUsername()) {
+    
+    if ($userid == '') {//if user id is empty (New user) add the user
+        if ($user->initWithUsername()) {//check if username exists
             if ($user->addUser()) {
 //                echo'user after register is' . $user->getUserId();
-                if (isset($_POST['pdCheckBx'])) {
+                if (isset($_POST['pdCheckBx'])) {//check if the user filled personal details form
                     $pd->setClientId($user->getClientByUserId());
                     $pd->addPersonalDetails();
                 }
-                if (isset($_POST['cmpCheckBx'])) {
+                if (isset($_POST['cmpCheckBx'])) {//check if the user filled company details form
                     $cmp->setClientId($user->getClientByUserId());
                     $cmp->addCompanyDetails();
                 }
+                //display successful message to the user
                 echo '<br><div class="container"><div class="alert alert-success alert-dismissible fade show" role="alert"> The Client has been Added Sucessfullly!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
             } else {
+                //display error messae to the user
                 echo '<br><div class="container"><div class="alert alert-danger alert-dismissible fade show" role="alert">Error: Client has not been Added<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
             }
         } else {
+            //display error messae to the user
             echo '<br><div class="container"><div class="alert alert-danger alert-dismissible fade show" role="alert">Error: Username Already Exists<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
         }
     } else {
@@ -75,7 +78,7 @@ if (isset($_POST['clientFormSubmitted'])) {
         $client->setPhoneNumber($_POST['phoneNumber']);
         $client->updateClient($clientId);
 
-        if (isset($_POST['pdCheckBx'])) {
+        if (isset($_POST['pdCheckBx'])) {//check if the user filled personal details form
             $pd->setClientId($clientId);
             if ($pd->getPersonalDetail()) {
                 $pd->updatePersonalDetails();
@@ -88,7 +91,7 @@ if (isset($_POST['clientFormSubmitted'])) {
                 PersonalDetails::deletePersonalDetail($clientId);
             }
         }
-        if (isset($_POST['cmpCheckBx'])) {
+        if (isset($_POST['cmpCheckBx'])) {//check if the user filled company details form
             $cmp->setClientId($clientId);
             if ($cmp->getCompanyDetail()) {
                 $cmp->updateCompanyDetails();
@@ -104,6 +107,7 @@ if (isset($_POST['clientFormSubmitted'])) {
         }
     }
 }
+//check if delete client form is submitted
 if (isset($_POST['deleteClientSubmitted'])) {
     $userID = trim($_POST['userId']);
     $deletedUser = new User();
@@ -120,7 +124,7 @@ else
     $start = 1;
 
 $end = 10;
-
+//show all users by defualt
 $filter = (isset($_GET['filter'])) ? $_GET['filter'] : 'all';
 
 $client = new Client();
@@ -128,6 +132,7 @@ $data = $client->getAllClients($start, $end);
 echo '<div class="container">';
 displayClients($data);
 
+//create a new pagination and set the total number of clients
 $pagination = new Pagination();
 $pagination->setTotal_records(Client::countAllClients());
 $pagination->setLimit($end);
@@ -136,6 +141,7 @@ echo '</div>';
 
 include './template/footer.html';
 
+// a function to display clients using cards
 function displayClients($dataSet) {
     if (!empty($dataSet)) {
         for ($i = 0; $i < count($dataSet); $i++) {

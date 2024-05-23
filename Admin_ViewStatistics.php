@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
-
+//this page is used to show a statistical summary of the company 
 include_once './debugging.php';
 include_once './models/Hall.php';
 include_once './models/Reservation.php';
@@ -27,8 +27,10 @@ if ($_COOKIE['userId'] != 1) {
                 <div class="card-body text-center">
                     <h4>Most Reserved Hall</h4>
                     <?php
+                    //create a new hall object, and call getbesthall method
                     $rsrvIhall = new Hall();
                     $bestHall = $rsrvIhall->getBestHall();
+                    //dislay hall id and name
                     echo'<h6>#' . $bestHall->hall_id . '</h6>';
                     echo'<h6>' . $bestHall->hall_name . '</h6>';
                     ?>
@@ -40,8 +42,11 @@ if ($_COOKIE['userId'] != 1) {
                 <div class="card-body text-center">
                     <h4>Best Seller In Menu Items</h4>
                     <?php
+                    //create a new reservation menu item object, and call get best seller item function
                     $rsrvItem = new ReservationMenuItem();
                     $bestItem = $rsrvItem->getBestSellerItem();
+                    
+                    //display item id and name
                     echo'<h6>#' . $bestItem->item_id . '</h6>';
                     echo'<h6>' . $bestItem->name . '</h6>';
                     ?>
@@ -54,8 +59,10 @@ if ($_COOKIE['userId'] != 1) {
                 <div class="card-body text-center">
                     <h4>Most Client Made Reservations</h4>
                     <?php
+                    //create a new client object and call best client method
                     $rsrvClient = new Client();
                     $bestClient = $rsrvClient->getBestClient();
+                    //display client username and user id
                     echo'<h6>#' . $bestClient->user_id . '</h6>';
                     echo'<h6>@' . $bestClient->username . '</h6>';
                     ?>
@@ -78,6 +85,7 @@ if ($_COOKIE['userId'] != 1) {
                 </thead>
                 <tbody>
                     <?php
+                    //this is to show the totla number of reservations for each hall 
                     $hall = new Hall();
                     $allHalls = $hall->getAllHallsWithoutFilter();
                     $reservation = new Reservation();

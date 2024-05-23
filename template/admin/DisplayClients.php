@@ -150,6 +150,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     });
     $(document).ready(function () {
         $("#addClientBtn").click(function () {
+            //clear all form inputs when clicking on add client button
             $('.form-control').val('');
             $('.form-select').val('');
             $("#passwordDiv").removeAttr('hidden');
@@ -175,35 +176,37 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     });
     $('#cmpCheckBx').change(function () {
         if ($(this).is(':checked')) {
-            // Do something when the input is checked
+            // check if company check box is checked, and add required propery to all company details form components
             $('.cmpInputs').prop('required', true);
             $('.cmpInputs').prop('disabled', false);
-            $('#pdCheckBx').prop("required", false);
+            $('#pdCheckBx').prop("required", false);//remove the required attributes from personal details form, becaue only one form is required
         } else {
-            // Do something when the input is unchecked
+            // do the opposite when it is unchekced
             $('.cmpInputs').prop('required', false);
             $('.cmpInputs').prop('disabled', true);
         }
     });
     $('#pdCheckBx').change(function () {
         if ($(this).is(':checked')) {
-            // Do something when the input is checked
+             // check if personal check box is checked, and add required propery to all personal details form components
             $('.pdInputs').prop('required', true);
             $('.pdInputs').prop('disabled', false);
             $('#cmpCheckBx').prop("required", false);
         } else {
-            // Do something when the input is unchecked
+           // do the opposite when it is unchekced
             $('.pdInputs').prop('required', false);
             $('.pdInputs').prop('disabled', true);
         }
     });
     $('#add-form').submit(function (e) {
-        var isNotChecked = !($('#pdCheckBx').is(':checked') || $('#cmpCheckBx').is(':checked'));
+        // a var to check if one of the forms is checked
+        var isNotChecked = !($('#pdCheckBx').is(':checked') || $('#cmpCheckBx').is(':checked')); 
+        
         if (isNotChecked) {
-            $('#chckboxerror').html("Personal and/or Company Details must be provided");
+            $('#chckboxerror').html("Personal and/or Company Details must be provided");//display error message when no form is checked
             $('#cmpCheckBx').prop("required", true);
             $('#pdCheckBx').prop("required", true);
-        } else {
+        } else {//clear error message if at least one form is checked
             $('#chckboxerror').html("");
             $('#cmpCheckBx').prop("required", false);
             $('#pdCheckBx').prop("required", false);
@@ -220,7 +223,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         });
         return true;
     });
-    //get Hall ID value 
     $(document).ready(function () {
         $(document).on('click', '#editClientBtn', function () {
             $('#pwd').removeAttr('required');
@@ -231,9 +233,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             console.log('client id is:', clientId);
             // AJAX request
             $.ajax({
-                url: './helpers/get_Client_Info.php', // URL of your PHP script to fetch hall info
+                url: './helpers/get_Client_Info.php', // URL of your PHP script to fetch client info
                 method: 'GET',
-                data: {userId: userId, clientId: clientId}, // Send userId to server
+                data: {userId: userId, clientId: clientId}, // Send userId and client id to server
                 dataType: 'json', // Expected data type from server
                 success: function (response) {
                     // Handle successful response

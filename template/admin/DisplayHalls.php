@@ -147,7 +147,9 @@
 
     //get Hall ID value 
     $(document).ready(function () {
-        var imgArray = [];
+        var imgArray = []; // array to store removed images paths
+        
+        //add event listners to the image upload inputs
         $('#add-file1').click(function () {
             $('#imageUpload1').click();
         });
@@ -160,6 +162,7 @@
         $('#add-file4').click(function () {
             $('#imageUpload4').click();
         });
+        
         $('#imageUpload1').change(function () {
             // Check if any file is selected
             if (this.files.length > 0) {

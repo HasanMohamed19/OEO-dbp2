@@ -77,8 +77,10 @@ else $start = 1;
 
 $end = 10;
 
+//set the all filter by default
 $filter = (isset($_GET['filter'])) ? $_GET['filter'] : 'all';
 
+//get the filter and assign it
 switch ($filter) 
 {
     case 'ava':
@@ -91,11 +93,12 @@ switch ($filter)
         $displayby = 'all';
         break;
 }
+//display menu items depending on filter
 $item = new MenuItem();
 $data = $item->getAllMenuItems($start, $end, $displayby);
 echo '<div class="container">';
 displayMenuItems($data);
-
+//create a new pagintion and assgin the total number of records depending on the filter chosen
 $pagination = new Pagination();
 if ($displayby=='all'){
     $pagination->setTotal_records(MenuItem::countAllItems());
@@ -115,7 +118,7 @@ include './template/footer.html';
 
 
 
-
+//display mneu items using cards
 function displayMenuItems($dataSet) {
     if (!empty($dataSet)) {
         for ($i = 0; $i < count($dataSet); $i++) {
