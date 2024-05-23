@@ -132,17 +132,17 @@ displayCards($cards);
                                     <div class="row">
                                         <div class="col form-group required">
                                             <label for="cardholdername" class="form-label" >Cardholder name</label>
-                                            <input type="text" name="cardholdername" id="cardholdernameInput" class="form-control" required/>
+                                            <input type="text" name="cardholdername" minlength="3" maxlength="50" id="cardholdernameInput" class="form-control" required/>
                                         </div>
                                         <div class="col form-group required">
                                             <label for="cardNumber" class="form-label">Card Number</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9\s]{16}" maxlength="16" id="cardNumberInput" class="form-control" name="cardNumber" required>
+                                            <input type="text" inputmode="numeric" pattern="[0-9\s]{16}" minlength="16" maxlength="16" id="cardNumberInput" class="form-control" name="cardNumber" required>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col form-group required">
                                             <label for="CVV" class="form-label">CVV</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" id="CVVInput" class="form-control" name="CVV" value="" required>
+                                            <input type="text" inputmode="numeric" pattern="[0-9]{3}" minlength="3" maxlength="3" id="CVVInput" class="form-control" name="CVV" value="" required>
                                         </div>
 
                                         <div class="col form-group required">
@@ -269,10 +269,10 @@ $c->initWithClientId();
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" maxlength="50" value="<?php echo $p->getFirstName() ?>" class="form-control form-control-user mb-3" id="firstName" placeholder="First Name" name="firstName">
+                                    <input type="text" maxlength="50" minlength="3" value="<?php echo $p->getFirstName() ?>" class="form-control form-control-user mb-3" id="firstName" placeholder="First Name" name="firstName">
                                 </div>
                                 <div class="col">
-                                    <input type="text" maxlength="50" value="<?php echo $p->getLastName() ?>" class="form-control form-control-user mb-3" id="lastName" placeholder="Last Name" name="lastName">
+                                    <input type="text" maxlength="50" minlength="3" value="<?php echo $p->getLastName() ?>" class="form-control form-control-user mb-3" id="lastName" placeholder="Last Name" name="lastName">
                                 </div>
                             </div>
                             <div class="row">
@@ -284,7 +284,7 @@ $c->initWithClientId();
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <input type="text" maxlength="20" value="<?php echo $p->getNationality() ?>" class="form-control form-control-user" id="nationality" placeholder="Nationality" name="nationality">
+                                    <input type="text" maxlength="20" minlength="3" value="<?php echo $p->getNationality() ?>" class="form-control form-control-user" id="nationality" placeholder="Nationality" name="nationality">
                                 </div>
                             </div>
                             <div class="row">
@@ -302,14 +302,14 @@ $c->initWithClientId();
                                 <input type="checkbox" id="companyDetailsCheck" class="form-check-input mt-2" <?php if ($c->getComapnyId() > 0) echo 'checked' ?>>
                                 <h4 class=""><label for="companyDetailsCheck" class="form-check-label">Company Details</label></h4>
                             </div>
-                            <input type="text" maxlength="50" value="<?php echo $c->getName() ?>" class="form-control form-control-user mb-3" id="companyName" placeholder="Company Name" name="companyName">
-                            <input type="text" maxlength="50" value="<?php echo $c->getWebsite() ?>" class="form-control form-control-user mb-3" id="website" placeholder="Website" name="website">
+                            <input type="text" maxlength="50" minlength="3" value="<?php echo $c->getName() ?>" class="form-control form-control-user mb-3" id="companyName" placeholder="Company Name" name="companyName">
+                            <input type="text" maxlength="50" minlength="10" value="<?php echo $c->getWebsite() ?>" class="form-control form-control-user mb-3" id="website" placeholder="Website" name="website">
                             <div class="row">
                                 <div class="col">
                                     <input type="text" maxlength="50" value="<?php echo $c->getCity() ?>" class="form-control form-control-user" id="city" placeholder="City" name="city">
                                 </div>
                                 <div class="col">
-                                    <input type="number" max="99999999999" value="<?php echo $c->getComapnySize() ?>" class="form-control form-control-user" id="size" placeholder="Company Size" name="size">
+                                    <input type="number" min="1" max="99999999999" value="<?php echo $c->getComapnySize() ?>" class="form-control form-control-user" id="size" placeholder="Company Size" name="size">
                                 </div>
                             </div>
                         </fieldset>
@@ -351,21 +351,21 @@ $user->initWithUserid($_COOKIE['userId']);
                             <div class="row my-2">
                                 <div class="col form-group required">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" maxlength="20" name="username" class="form-control" placeholder="Username" value="<?php echo $user->getUsername(); ?>">
+                                    <input type="text" maxlength="20" minlength="3" name="username" class="form-control" placeholder="Username" value="<?php echo $user->getUsername(); ?>">
                                 </div>
                                 <div class="col form-group required">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" maxlength="50" name="email" class="form-control" placeholder="Email" value="<?php echo $user->getEmail(); ?>">
+                                    <input type="email" maxlength="50" minlength="10" name="email" class="form-control" placeholder="Email" value="<?php echo $user->getEmail(); ?>">
                                 </div>
                             </div>
                             <div class="row my-2 form-group required">
                                 <div class="col">
                                     <label for="phoneNumber" class="form-label">Phone Number</label>
-                                    <input type="text" maxlength="25" name="phoneNumber" class="form-control" placeholder="Phone Number" value="<?php echo $client->getPhoneNumber(); ?>">
+                                    <input type="text" maxlength="25" minlength="8" name="phoneNumber" class="form-control" placeholder="Phone Number" value="<?php echo $client->getPhoneNumber(); ?>">
                                 </div>
                                 <div class="col form-group required">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" maxlength="30" name="password" class="form-control" placeholder="Password">
+                                    <input type="password" maxlength="30" minlength="8" name="password" class="form-control" placeholder="Password">
                                 </div>
                             </div>
                             <div class="row my-2">
@@ -412,29 +412,29 @@ displayAddresses($addresses);
                                 <div class="row">
                                     <div class="col form-group required">
                                         <label for="bldgNumber" class="form-label" >Building Number</label>
-                                        <input type="text" name="bldgNumber" id="bldgNumberInput" class="form-control" required/>
+                                        <input type="text" name="bldgNumber" minlength="3" maxlength="10" id="bldgNumberInput" class="form-control" required/>
                                     </div>
                                     <div class="col form-group required">
                                         <label for="streetNumber" class="form-label">Street Number</label>
-                                        <input type="text" id="streetNumberInput" class="form-control" name="streetNumber" required>
+                                        <input type="text" id="streetNumberInput" minlength="3" maxlength="10" class="form-control" name="streetNumber" required>
                                     </div>
                                     <div class="col form-group required">
                                         <label for="block" class="form-label">Block</label>
-                                        <input type="text" id="blockInput" class="form-control" name="block" value="" required>
+                                        <input type="text" id="blockInput" class="form-control" minlength="3" maxlength="10" name="block" value="" required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col form-group required">
                                         <label for="area" class="form-label">Area</label>
-                                        <input type="text" id="areaInput" class="form-control" name="area" value="" required>
+                                        <input type="text" id="areaInput" minlength="3" maxlength="10" class="form-control" name="area" value="" required>
                                     </div>
                                     <div class="col form-group required">
                                         <label for="country" class="form-label">Country</label>
-                                        <input type="text" id="countryInput" class="form-control" name="country" value="" required>
+                                        <input type="text" id="countryInput" minlength="3" maxlength="25" class="form-control" name="country" value="" required>
                                     </div>
                                     <div class="col form-group required">
                                         <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input type="text" id="phoneNumberInput" class="form-control" name="phoneNumber" value="" required>
+                                        <input type="text" id="phoneNumberInput" minlength="8" maxlength="25" class="form-control" name="phoneNumber" value="" required>
                                     </div>
                                 </div>
 
@@ -798,14 +798,9 @@ function displayAddresses($dataSet) {
 //        var expirydate = $('#imageUpload');
         var numberOnlyRegex = /^[0-9]+(\.[0-9]+)?$/;
         
-        if (cardNumber === '' || cardholderName === '' || CVV === '' ||!numberOnlyRegex.test(cardNumber)) {
+        if (cardNumber === '' || cardholderName === '' || CVV === '' ||!numberOnlyRegex.test(cardNumber)
+                || cardholderName.length < 3 || cvv.length !== 3 || cardNumber.length !== 16) {
             $(this).addClass('was-validated');
-            e.preventDefault();
-            return false;
-        }
-
-        if (cardNumber.length !== 16) {
-            console.log("wrong card number");
             e.preventDefault();
             return false;
         }
@@ -822,7 +817,8 @@ function displayAddresses($dataSet) {
         var phoneNumber = $('#phoneNumberInput').val();
 //        var expirydate = $('#imageUpload');
 
-        if (bldgNumber === '' || streetNumber === '' || blockNumber === '' || area === '' || country === '' || phoneNumber === '') {
+        if (bldgNumber === '' || streetNumber === '' || blockNumber === '' || area === '' || country === '' || phoneNumber === ''
+                || bldgNumber.length < 3 || blockNumber.length < 3 || area.length < 3 || country.length < 3 || phoneNumber.length < 8) {
             $(this).addClass('was-validated');
             e.preventDefault();
             return false;
