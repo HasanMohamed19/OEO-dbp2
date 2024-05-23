@@ -245,15 +245,9 @@ $hallImages = $image->getAllImagesForHall($id);
 
     if (isset($_POST['cancelReservationSubmitted'])) {
         $reservationId = $_POST['reservationId'];
-//        echo "reservation id is: " . $reservationId;
-        echo 'cancelling booking with id: ' . $reservationId;
-//        $db = Database::getInstance();
-//        $data = $db->querySQL('CALL cancelBooking(' . $reservationId .')');
-//        ($data);'
         $reservation = new Reservation();
         $reservation->cancelReservation($reservationId);
-    } else {
-//        echo 'nothing is submitted yet';
+        header("Location: booking_detail.php?reservationId=".$reservationId);
     }
     
 ?>
